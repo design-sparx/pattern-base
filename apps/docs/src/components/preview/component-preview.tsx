@@ -4,7 +4,7 @@ import { Box, Paper, Tabs, Text } from "@mantine/core";
 import { useState } from "react";
 import { CodeBlock } from "./code-block";
 import { FrameworkTabs } from "./framework-tabs";
-import { codeSnippets } from "@/data/code-snippets";
+import { codeSnippets } from "@/data/snippet-templates";
 import { componentRegistry } from "@/lib/registry";
 
 interface ComponentPreviewProps {
