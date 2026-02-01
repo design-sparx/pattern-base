@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge, Group, Paper, Text } from "@mantine/core";
 import Link from "next/link";
 import type { PatternMeta } from "@ai-ui/core";

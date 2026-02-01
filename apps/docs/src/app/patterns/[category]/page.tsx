@@ -9,15 +9,16 @@ import {
 } from "@/data/patterns";
 
 interface Props {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }
 
 export function generateStaticParams() {
   return categories.map((c) => ({ category: c.id }));
 }
 
-export default function CategoryPage({ params }: Props) {
-  const category = getCategoryById(params.category);
+export default async function CategoryPage({ params }: Props) {
+  const { category: categorySlug } = await params;
+  const category = getCategoryById(categorySlug);
   if (!category) notFound();
 
   const categoryPatterns = getPatternsByCategory(category.id);

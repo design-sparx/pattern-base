@@ -1,19 +1,11 @@
-import {
-  Anchor,
-  Badge,
-  Box,
-  Breadcrumbs,
-  Group,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Badge, Box, Breadcrumbs, Group, Text, Title } from "@mantine/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ComponentPreview } from "@/components/preview/component-preview";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 
 interface Props {
-  params: { category: string; pattern: string };
+  params: Promise<{ category: string; pattern: string }>;
 }
 
 export function generateStaticParams() {
@@ -23,26 +15,36 @@ export function generateStaticParams() {
   }));
 }
 
-export default function PatternPage({ params }: Props) {
-  const pattern = getPatternBySlug(params.pattern);
-  const category = getCategoryById(params.category);
+export default async function PatternPage({ params }: Props) {
+  const { category: categorySlug, pattern: patternSlug } = await params;
+  const pattern = getPatternBySlug(patternSlug);
+  const category = getCategoryById(categorySlug);
 
   if (!pattern || !category) notFound();
 
   return (
     <Box p="xl" maw={1000}>
       <Breadcrumbs fz="sm" mb="lg" separator="/">
-        <Anchor component={Link} href="/patterns" c="gray.5" fz="sm">
+        <Link
+          href="/patterns"
+          style={{
+            color: "var(--mantine-color-gray-5)",
+            fontSize: "var(--mantine-font-size-sm)",
+            textDecoration: "none",
+          }}
+        >
           Patterns
-        </Anchor>
-        <Anchor
-          component={Link}
+        </Link>
+        <Link
           href={`/patterns/${category.id}`}
-          c="gray.5"
-          fz="sm"
+          style={{
+            color: "var(--mantine-color-gray-5)",
+            fontSize: "var(--mantine-font-size-sm)",
+            textDecoration: "none",
+          }}
         >
           {category.name}
-        </Anchor>
+        </Link>
         <Text fz="sm" c="gray.9" fw={500}>
           {pattern.name}
         </Text>

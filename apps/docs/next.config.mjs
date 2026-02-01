@@ -3,4 +3,4 @@ const nextConfig = {
   transpilePackages: ["@ai-ui/core", "@ai-ui/bootstrap", "@ai-ui/antd"],
 };
 
-module.exports = nextConfig;
+export default nextConfig;

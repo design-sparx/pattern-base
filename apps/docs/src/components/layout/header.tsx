@@ -1,3 +1,5 @@
+"use client";
+
 import { Anchor, Badge, Box, Group } from "@mantine/core";
 import Link from "next/link";
 
