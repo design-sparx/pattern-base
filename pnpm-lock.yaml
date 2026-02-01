@@ -44,12 +44,21 @@ importers:
       '@ant-design/icons':
         specifier: ^5.5.0
         version: 5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@fontsource/inter':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@mantine/core':
         specifier: ^7.17.0
         version: 7.17.8(@mantine/hooks@7.17.8(react@18.3.1))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mantine/hooks':
         specifier: ^7.17.0
         version: 7.17.8(react@18.3.1)
+      '@mantine/spotlight':
+        specifier: ^7.17.8
+        version: 7.17.8(@mantine/core@7.17.8(@mantine/hooks@7.17.8(react@18.3.1))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.17.8(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tabler/icons-react':
+        specifier: ^3.36.1
+        version: 3.36.1(react@18.3.1)
       antd:
         specifier: ^5.22.0
         version: 5.29.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -833,6 +842,9 @@ packages:
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
 
+  '@fontsource/inter@5.2.8':
+    resolution: {integrity: sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==}
+
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
     engines: {node: '>=10.10.0'}
@@ -1012,6 +1024,19 @@ packages:
 
   '@mantine/hooks@7.17.8':
     resolution: {integrity: sha512-96qygbkTjRhdkzd5HDU8fMziemN/h758/EwrFu7TlWrEP10Vw076u+Ap/sG6OT4RGPZYYoHrTlT+mkCZblWHuw==}
+    peerDependencies:
+      react: ^18.x || ^19.x
+
+  '@mantine/spotlight@7.17.8':
+    resolution: {integrity: sha512-hBjajnPetyf95bEa4eHmqsqylCdsBBgYa2hiSuM+fMNwxx2mVR97Tvn7BiMZa+K0A/s5u5KM7+Yi6SnhUjZNQg==}
+    peerDependencies:
+      '@mantine/core': 7.17.8
+      '@mantine/hooks': 7.17.8
+      react: ^18.x || ^19.x
+      react-dom: ^18.x || ^19.x
+
+  '@mantine/store@7.17.8':
+    resolution: {integrity: sha512-/FrB6PAVH4NEjQ1dsc9qOB+VvVlSuyjf4oOOlM9gscPuapDP/79Ryq7JkhHYfS55VWQ/YUlY24hDI2VV+VptXg==}
     peerDependencies:
       react: ^18.x || ^19.x
 
@@ -1320,6 +1345,14 @@ packages:
 
   '@swc/helpers@0.5.18':
     resolution: {integrity: sha512-TXTnIcNJQEKwThMMqBXsZ4VGAza6bvN4pa41Rkqoio6QBKMvo+5lexeTMScGCIxtzgQJzElcvIltani+adC5PQ==}
+
+  '@tabler/icons-react@3.36.1':
+    resolution: {integrity: sha512-/8nOXeNeMoze9xY/QyEKG65wuvRhkT3q9aytaur6Gj8bYU2A98YVJyLc9MRmc5nVvpy+bRlrrwK/Ykr8WGyUWg==}
+    peerDependencies:
+      react: '>= 16'
+
+  '@tabler/icons@3.36.1':
+    resolution: {integrity: sha512-f4Jg3Fof/Vru5ioix/UO4GX+sdDsF9wQo47FbtvG+utIYYVQ/QVAC0QYgcBbAjQGfbdOh2CCf0BgiFOF9Ixtjw==}
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -5037,6 +5070,8 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
+  '@fontsource/inter@5.2.8': {}
+
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
@@ -5189,6 +5224,18 @@ snapshots:
       - '@types/react'
 
   '@mantine/hooks@7.17.8(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+
+  '@mantine/spotlight@7.17.8(@mantine/core@7.17.8(@mantine/hooks@7.17.8(react@18.3.1))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.17.8(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@mantine/core': 7.17.8(@mantine/hooks@7.17.8(react@18.3.1))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mantine/hooks': 7.17.8(react@18.3.1)
+      '@mantine/store': 7.17.8(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  '@mantine/store@7.17.8(react@18.3.1)':
     dependencies:
       react: 18.3.1
 
@@ -5448,6 +5495,13 @@ snapshots:
   '@swc/helpers@0.5.18':
     dependencies:
       tslib: 2.8.1
+
+  '@tabler/icons-react@3.36.1(react@18.3.1)':
+    dependencies:
+      '@tabler/icons': 3.36.1
+      react: 18.3.1
+
+  '@tabler/icons@3.36.1': {}
 
   '@testing-library/dom@10.4.1':
     dependencies:

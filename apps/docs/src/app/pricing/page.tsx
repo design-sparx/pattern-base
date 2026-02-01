@@ -1,89 +1,101 @@
-import { Box, Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
+
+function FeatureItem({ text }: { text: string }) {
+  return (
+    <Group gap="xs" align="flex-start">
+      <ThemeIcon variant="light" color="green" size="xs" mt={3}>
+        <IconCheck size={10} />
+      </ThemeIcon>
+      <Text fz="sm" c="dimmed">
+        {text}
+      </Text>
+    </Group>
+  );
+}
 
 export default function PricingPage() {
   return (
-    <Box p="xl" maw={800}>
-      <Title order={1} c="gray.9" mb="sm">
+    <Box p="xl" maw={900}>
+      <Title order={1} mb="sm">
         Pricing
       </Title>
-      <Text c="gray.6" mb="xl">
+      <Text c="dimmed" mb="xl">
         AI Vory is currently in early development. Pricing details coming soon.
       </Text>
 
       <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg">
-        <Paper withBorder radius="md" p="lg">
-          <Title order={3} fz="lg" c="gray.9" mb="xs">
+        <Paper withBorder p="lg">
+          <Title order={3} fz="lg" mb="xs">
             Community
           </Title>
-          <Text fz="xl" fw={700} c="gray.9" mb="md">
+          <Text fz="xl" fw={700} mb="md">
             Free
           </Text>
           <Stack gap="xs">
-            <Text fz="sm" c="gray.6">
-              All 10 patterns
-            </Text>
-            <Text fz="sm" c="gray.6">
-              Bootstrap + Ant Design
-            </Text>
-            <Text fz="sm" c="gray.6">
-              MIT License
-            </Text>
-            <Text fz="sm" c="gray.6">
-              Community support
-            </Text>
+            <FeatureItem text="All 10 patterns" />
+            <FeatureItem text="Bootstrap + Ant Design" />
+            <FeatureItem text="MIT License" />
+            <FeatureItem text="Community support" />
           </Stack>
         </Paper>
 
         <Paper
-          radius="md"
           p="lg"
-          style={{ border: "2px solid var(--mantine-color-blue-5)" }}
+          style={{
+            border: "2px solid var(--mantine-color-violet-5)",
+            position: "relative",
+            background:
+              "linear-gradient(180deg, var(--mantine-color-violet-0) 0%, transparent 40%)",
+          }}
         >
-          <Title order={3} fz="lg" c="gray.9" mb="xs">
+          <Badge
+            color="violet"
+            variant="filled"
+            size="sm"
+            style={{ position: "absolute", top: -10, right: 16 }}
+          >
+            Most Popular
+          </Badge>
+          <Title order={3} fz="lg" mb="xs">
             Pro
           </Title>
-          <Text fz="xl" fw={700} c="gray.9" mb="md">
-            <Text component="span" fz="md" c="gray.4" td="line-through">
+          <Text fz="xl" fw={700} mb="md">
+            <Text component="span" fz="md" c="dimmed" td="line-through">
               $49
             </Text>{" "}
             TBD
           </Text>
           <Stack gap="xs">
-            <Text fz="sm" c="gray.6">
-              Everything in Community
-            </Text>
-            <Text fz="sm" c="gray.6">
-              Premium patterns
-            </Text>
-            <Text fz="sm" c="gray.6">
-              Figma design kit
-            </Text>
-            <Text fz="sm" c="gray.6">
-              Priority support
-            </Text>
+            <FeatureItem text="Everything in Community" />
+            <FeatureItem text="Premium patterns" />
+            <FeatureItem text="Figma design kit" />
+            <FeatureItem text="Priority support" />
           </Stack>
         </Paper>
 
-        <Paper withBorder radius="md" p="lg">
-          <Title order={3} fz="lg" c="gray.9" mb="xs">
+        <Paper withBorder p="lg">
+          <Title order={3} fz="lg" mb="xs">
             Enterprise
           </Title>
-          <Text fz="xl" fw={700} c="gray.9" mb="md">
+          <Text fz="xl" fw={700} mb="md">
             Contact us
           </Text>
           <Stack gap="xs">
-            <Text fz="sm" c="gray.6">
-              Everything in Pro
-            </Text>
-            <Text fz="sm" c="gray.6">
-              Custom patterns
-            </Text>
-            <Text fz="sm" c="gray.6">
-              White-label option
-            </Text>
-            <Text fz="sm" c="gray.6">
-              Dedicated support
-            </Text>
+            <FeatureItem text="Everything in Pro" />
+            <FeatureItem text="Custom patterns" />
+            <FeatureItem text="White-label option" />
+            <FeatureItem text="Dedicated support" />
           </Stack>
         </Paper>
       </SimpleGrid>

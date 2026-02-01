@@ -1,0 +1,71 @@
+.root {
+  position: relative;
+  overflow: hidden;
+  padding: 80px var(--mantine-spacing-xl);
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-violet-0) 0%,
+    var(--mantine-color-grape-0) 50%,
+    var(--mantine-color-indigo-0) 100%
+  );
+}
+
+[data-mantine-color-scheme="dark"] .root {
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-dark-8) 0%,
+    var(--mantine-color-dark-7) 50%,
+    var(--mantine-color-dark-8) 100%
+  );
+}
+
+.dotGrid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    var(--mantine-color-violet-2) 1px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+  opacity: 0.4;
+}
+
+[data-mantine-color-scheme="dark"] .dotGrid {
+  background-image: radial-gradient(
+    circle,
+    var(--mantine-color-dark-4) 1px,
+    transparent 1px
+  );
+  opacity: 0.5;
+}
+
+.content {
+  position: relative;
+  max-width: 700px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-violet-8),
+    var(--mantine-color-grape-6)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-mantine-color-scheme="dark"] .title {
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-violet-4),
+    var(--mantine-color-grape-4)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

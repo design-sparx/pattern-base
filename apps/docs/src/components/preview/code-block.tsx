@@ -1,15 +1,21 @@
 "use client";
 
-import { ActionIcon, Group, Paper, Text } from "@mantine/core";
+import { ActionIcon, Box, Group, Paper, Text, Tooltip } from "@mantine/core";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { Highlight, themes } from "prism-react-renderer";
 import { useState } from "react";
 
 interface CodeBlockProps {
   code: string;
   language?: string;
+  filename?: string;
 }
 
-export function CodeBlock({ code, language = "tsx" }: CodeBlockProps) {
+export function CodeBlock({
+  code,
+  language = "tsx",
+  filename,
+}: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -21,24 +27,41 @@ export function CodeBlock({ code, language = "tsx" }: CodeBlockProps) {
   };
 
   return (
-    <Paper radius="md" withBorder style={{ overflow: "hidden" }}>
+    <Paper
+      radius="md"
+      style={{
+        overflow: "hidden",
+        border: "1px solid var(--mantine-color-default-border)",
+      }}
+    >
       <Group
         justify="space-between"
         px="md"
         py="xs"
         style={{
-          backgroundColor: "var(--mantine-color-gray-0)",
-          borderBottom: "1px solid var(--mantine-color-gray-2)",
+          backgroundColor: "#1e1e2e",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        <Text fz="xs" c="gray.5" tt="uppercase" ff="monospace">
-          {language}
+        <Text fz="xs" c="gray.5" ff="monospace">
+          {filename ?? language.toUpperCase()}
         </Text>
-        <ActionIcon variant="default" size="sm" onClick={handleCopy}>
-          <Text fz="xs">{copied ? "✓" : "⎘"}</Text>
-        </ActionIcon>
+        <Tooltip label={copied ? "Copied!" : "Copy code"} withArrow>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            size="sm"
+            onClick={handleCopy}
+          >
+            {copied ? (
+              <IconCheck size={14} color="var(--mantine-color-green-4)" />
+            ) : (
+              <IconCopy size={14} color="var(--mantine-color-gray-5)" />
+            )}
+          </ActionIcon>
+        </Tooltip>
       </Group>
-      <Highlight theme={themes.github} code={code.trim()} language={language}>
+      <Highlight theme={themes.vsDark} code={code.trim()} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
             style={{
@@ -47,13 +70,19 @@ export function CodeBlock({ code, language = "tsx" }: CodeBlockProps) {
               padding: "16px",
               overflow: "auto",
               fontSize: "13px",
+              lineHeight: 1.6,
             }}
           >
             {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line })}>
+              <Box
+                key={i}
+                {...getLineProps({ line })}
+                component="div"
+                style={{ display: "flex" }}
+              >
                 <Text
                   component="span"
-                  c="gray.4"
+                  c="gray.6"
                   fz="xs"
                   ff="monospace"
                   style={{
@@ -62,14 +91,17 @@ export function CodeBlock({ code, language = "tsx" }: CodeBlockProps) {
                     width: 32,
                     textAlign: "right",
                     marginRight: 16,
+                    flexShrink: 0,
                   }}
                 >
                   {i + 1}
                 </Text>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token })} />
-                ))}
-              </div>
+                <span>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token })} />
+                  ))}
+                </span>
+              </Box>
             ))}
           </pre>
         )}

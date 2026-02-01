@@ -21,7 +21,7 @@ export function CategoryNav({
         size="xs"
         radius="xl"
         variant={!activeCategoryId ? "light" : "default"}
-        color={!activeCategoryId ? "blue" : "gray"}
+        color={!activeCategoryId ? "violet" : "gray"}
       >
         All
       </Button>
@@ -33,9 +33,9 @@ export function CategoryNav({
           size="xs"
           radius="xl"
           variant={activeCategoryId === cat.id ? "light" : "default"}
-          color={activeCategoryId === cat.id ? "blue" : "gray"}
+          color={activeCategoryId === cat.id ? "violet" : "gray"}
         >
-          {cat.icon} {cat.name}
+          {cat.name}
         </Button>
       ))}
     </Group>

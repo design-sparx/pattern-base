@@ -1,10 +1,46 @@
-import { Badge, Box, Breadcrumbs, Group, Text, Title } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Breadcrumbs,
+  Group,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+import {
+  IconChevronRight,
+  IconArrowLeft,
+  IconArrowRight,
+  IconKeyboard,
+  IconCompass,
+  IconAdjustments,
+  IconEye,
+  IconShield,
+  IconLayoutGrid,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ComponentPreview } from "@/components/preview/component-preview";
+import { InstallCommand } from "@/components/preview/install-command";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 
-interface Props {
+const categoryIcons: Record<string, React.ElementType> = {
+  "prompt-actions": IconKeyboard,
+  wayfinders: IconCompass,
+  tuners: IconAdjustments,
+  governors: IconEye,
+  "trust-builders": IconShield,
+};
+
+const categoryColors: Record<string, string> = {
+  "prompt-actions": "violet",
+  wayfinders: "teal",
+  tuners: "orange",
+  governors: "blue",
+  "trust-builders": "pink",
+};
+
+interface PatternPageParams {
   params: Promise<{ category: string; pattern: string }>;
 }
 
@@ -15,21 +51,36 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function PatternPage({ params }: Props) {
+export default async function PatternPage({ params }: PatternPageParams) {
   const { category: categorySlug, pattern: patternSlug } = await params;
   const pattern = getPatternBySlug(patternSlug);
   const category = getCategoryById(categorySlug);
 
   if (!pattern || !category) notFound();
 
+  const color = categoryColors[pattern.category] ?? "violet";
+  const Icon = categoryIcons[pattern.category] ?? IconLayoutGrid;
+
+  const currentIndex = patterns.findIndex((p) => p.id === pattern.id);
+  const prev = currentIndex > 0 ? patterns[currentIndex - 1] : null;
+  const next =
+    currentIndex < patterns.length - 1 ? patterns[currentIndex + 1] : null;
+
   return (
     <Box p="xl" maw={1000}>
-      <Breadcrumbs fz="sm" mb="lg" separator="/">
+      {/* Breadcrumbs */}
+      <Breadcrumbs
+        fz="sm"
+        mb="lg"
+        separator={
+          <IconChevronRight size={12} color="var(--mantine-color-dimmed)" />
+        }
+      >
         <Link
           href="/patterns"
           style={{
-            color: "var(--mantine-color-gray-5)",
             fontSize: "var(--mantine-font-size-sm)",
+            color: "var(--mantine-color-dimmed)",
             textDecoration: "none",
           }}
         >
@@ -38,40 +89,88 @@ export default async function PatternPage({ params }: Props) {
         <Link
           href={`/patterns/${category.id}`}
           style={{
-            color: "var(--mantine-color-gray-5)",
             fontSize: "var(--mantine-font-size-sm)",
+            color: "var(--mantine-color-dimmed)",
             textDecoration: "none",
           }}
         >
           {category.name}
         </Link>
-        <Text fz="sm" c="gray.9" fw={500}>
+        <Text fz="sm" fw={500}>
           {pattern.name}
         </Text>
       </Breadcrumbs>
 
+      {/* Header */}
       <Box mb="lg">
         <Group gap="sm" mb="xs">
-          <Title order={1} c="gray.9">
-            {pattern.name}
-          </Title>
-          <Badge size="sm" variant="light" color="blue" radius="xl">
-            {category.name}
-          </Badge>
+          <ThemeIcon variant="light" color={color} size="md">
+            <Icon size={16} />
+          </ThemeIcon>
+          <Title order={1}>{pattern.name}</Title>
         </Group>
-        <Text c="gray.6" fz="lg">
+        <Text c="dimmed" fz="lg">
           {pattern.description}
         </Text>
         <Group gap={4} mt="sm">
           {pattern.tags.map((tag) => (
-            <Badge key={tag} size="xs" variant="light" color="gray" radius="sm">
+            <Badge key={tag} size="xs" variant="light" color="gray">
               {tag}
             </Badge>
           ))}
         </Group>
       </Box>
 
+      {/* Install */}
+      <InstallCommand command="pnpm add @ai-ui/bootstrap @ai-ui/core" />
+
+      {/* Preview */}
       <ComponentPreview patternId={pattern.id} />
+
+      {/* Prev/Next Navigation */}
+      <Group
+        justify="space-between"
+        mt="xl"
+        pt="xl"
+        style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+      >
+        {prev ? (
+          <Link
+            href={`/patterns/${prev.category}/${prev.slug}`}
+            style={{
+              fontSize: "var(--mantine-font-size-sm)",
+              color: "var(--mantine-color-violet-6)",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <IconArrowLeft size={14} />
+            {prev.name}
+          </Link>
+        ) : (
+          <Box />
+        )}
+        {next ? (
+          <Link
+            href={`/patterns/${next.category}/${next.slug}`}
+            style={{
+              fontSize: "var(--mantine-font-size-sm)",
+              color: "var(--mantine-color-violet-6)",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            {next.name}
+            <IconArrowRight size={14} />
+          </Link>
+        ) : (
+          <Box />
+        )}
+      </Group>
     </Box>
   );
 }

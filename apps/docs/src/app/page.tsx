@@ -1,97 +1,163 @@
 "use client";
 
 import {
-  Anchor,
   Box,
-  Button,
   Group,
   Paper,
   SimpleGrid,
   Text,
+  ThemeIcon,
   Title,
 } from "@mantine/core";
+import {
+  IconKeyboard,
+  IconCompass,
+  IconAdjustments,
+  IconEye,
+  IconShield,
+  IconLayoutGrid,
+  IconStack2,
+  IconSparkles,
+} from "@tabler/icons-react";
 import Link from "next/link";
-import { categories, patterns } from "@/data/patterns";
+import { Hero } from "@/components/home/hero";
+import { categories, getPatternsByCategory, patterns } from "@/data/patterns";
+import { componentRegistry } from "@/lib/registry";
+
+const categoryIcons: Record<string, React.ElementType> = {
+  "prompt-actions": IconKeyboard,
+  wayfinders: IconCompass,
+  tuners: IconAdjustments,
+  governors: IconEye,
+  "trust-builders": IconShield,
+};
+
+const categoryColors: Record<string, string> = {
+  "prompt-actions": "violet",
+  wayfinders: "teal",
+  tuners: "orange",
+  governors: "blue",
+  "trust-builders": "pink",
+};
 
 export default function HomePage() {
+  const SuggestionsPreview = componentRegistry.suggestions?.bootstrap ?? null;
+
   return (
-    <Box p="xl" maw={800}>
-      <Box mb="xl">
-        <Title order={1} c="gray.9" mb="sm">
-          AI Vory
-        </Title>
-        <Text fz="xl" c="gray.6" mb="lg">
-          A multi-framework component library for AI user experience patterns.
-          Built with Bootstrap and Ant Design, based on{" "}
-          <Anchor
-            href="https://www.shapeof.ai"
-            target="_blank"
-            rel="noopener noreferrer"
+    <Box>
+      <Hero />
+
+      {/* Live Preview */}
+      {SuggestionsPreview != null && (
+        <Box px="xl" py="xl" maw={900}>
+          <Text fz="xs" fw={600} c="dimmed" tt="uppercase" mb="sm" lts={1}>
+            Live Preview
+          </Text>
+          <Paper
+            withBorder
+            p="xl"
+            className="dot-grid-bg"
+            style={{ overflow: "hidden" }}
           >
-            shapeof.ai
-          </Anchor>{" "}
-          patterns.
-        </Text>
-        <Group gap="sm">
-          <Button component={Link} href="/patterns" radius="md">
-            Browse Patterns
-          </Button>
-          <Button
-            component={Link}
-            href="/pricing"
-            variant="default"
-            radius="md"
-          >
-            Pricing
-          </Button>
-        </Group>
+            <SuggestionsPreview />
+          </Paper>
+        </Box>
+      )}
+
+      {/* Stats */}
+      <Box px="xl" pb="xl">
+        <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="md" maw={900}>
+          <Paper withBorder p="md">
+            <Group gap="sm">
+              <ThemeIcon variant="light" color="violet" size="lg">
+                <IconSparkles size={18} />
+              </ThemeIcon>
+              <Box>
+                <Text fz="xl" fw={700}>
+                  {patterns.length}
+                </Text>
+                <Text fz="sm" c="dimmed">
+                  AI UX Patterns
+                </Text>
+              </Box>
+            </Group>
+          </Paper>
+          <Paper withBorder p="md">
+            <Group gap="sm">
+              <ThemeIcon variant="light" color="violet" size="lg">
+                <IconLayoutGrid size={18} />
+              </ThemeIcon>
+              <Box>
+                <Text fz="xl" fw={700}>
+                  {categories.length}
+                </Text>
+                <Text fz="sm" c="dimmed">
+                  Categories
+                </Text>
+              </Box>
+            </Group>
+          </Paper>
+          <Paper withBorder p="md">
+            <Group gap="sm">
+              <ThemeIcon variant="light" color="violet" size="lg">
+                <IconStack2 size={18} />
+              </ThemeIcon>
+              <Box>
+                <Text fz="xl" fw={700}>
+                  2
+                </Text>
+                <Text fz="sm" c="dimmed">
+                  UI Frameworks
+                </Text>
+              </Box>
+            </Group>
+          </Paper>
+        </SimpleGrid>
       </Box>
 
-      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" mb="xl">
-        <Paper withBorder radius="md" p="md">
-          <Text fz="xl" fw={700} c="blue.6">
-            {patterns.length}
-          </Text>
-          <Text fz="sm" c="gray.6">
-            AI UX Patterns
-          </Text>
-        </Paper>
-        <Paper withBorder radius="md" p="md">
-          <Text fz="xl" fw={700} c="blue.6">
-            2
-          </Text>
-          <Text fz="sm" c="gray.6">
-            UI Frameworks
-          </Text>
-        </Paper>
-      </SimpleGrid>
+      {/* Categories */}
+      <Box px="xl" pb={60}>
+        <Title order={2} mb="md">
+          Categories
+        </Title>
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md" maw={900}>
+          {categories.map((cat) => {
+            const Icon = categoryIcons[cat.id] ?? IconLayoutGrid;
+            const color = categoryColors[cat.id] ?? "violet";
+            const count = getPatternsByCategory(cat.id).length;
 
-      <Title order={2} c="gray.9" mb="md">
-        Categories
-      </Title>
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
-        {categories.map((cat) => (
-          <Paper
-            key={cat.id}
-            component={Link}
-            href={`/patterns/${cat.id}`}
-            withBorder
-            radius="md"
-            p="md"
-            style={{ textDecoration: "none", transition: "all 150ms ease" }}
-          >
-            <Text fz="xl" mb="xs">
-              {cat.icon}
-            </Text>
-            <Text fw={600} fz="md" c="gray.9" mb={4}>
-              {cat.name}
-            </Text>
-            <Text fz="sm" c="gray.6">
-              {cat.description}
-            </Text>
-          </Paper>
-        ))}
-      </SimpleGrid>
+            return (
+              <Paper
+                key={cat.id}
+                component={Link}
+                href={`/patterns/${cat.id}`}
+                withBorder
+                p="lg"
+                style={{
+                  textDecoration: "none",
+                  borderLeft: `3px solid var(--mantine-color-${color}-5)`,
+                  cursor: "pointer",
+                }}
+              >
+                <Group gap="sm" mb="xs">
+                  <ThemeIcon variant="light" color={color} size="md">
+                    <Icon size={16} />
+                  </ThemeIcon>
+                  <Text fw={600} style={{ color: "var(--mantine-color-text)" }}>
+                    {cat.name}
+                  </Text>
+                </Group>
+                <Text fz="sm" c="dimmed" mb="sm">
+                  {cat.description}
+                </Text>
+                <Text fz="xs" c="dimmed">
+                  {count} pattern{count !== 1 ? "s" : ""}
+                </Text>
+              </Paper>
+            );
+          })}
+        </SimpleGrid>
+      </Box>
     </Box>
   );
 }

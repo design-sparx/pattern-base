@@ -1,4 +1,12 @@
-import { Box, SimpleGrid, Text, Title } from "@mantine/core";
+import { Box, Group, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core";
+import {
+  IconKeyboard,
+  IconCompass,
+  IconAdjustments,
+  IconEye,
+  IconShield,
+  IconLayoutGrid,
+} from "@tabler/icons-react";
 import { notFound } from "next/navigation";
 import { CategoryNav } from "@/components/common/category-nav";
 import { PatternCard } from "@/components/common/pattern-card";
@@ -8,7 +16,23 @@ import {
   getPatternsByCategory,
 } from "@/data/patterns";
 
-interface Props {
+const categoryIcons: Record<string, React.ElementType> = {
+  "prompt-actions": IconKeyboard,
+  wayfinders: IconCompass,
+  tuners: IconAdjustments,
+  governors: IconEye,
+  "trust-builders": IconShield,
+};
+
+const categoryColors: Record<string, string> = {
+  "prompt-actions": "violet",
+  wayfinders: "teal",
+  tuners: "orange",
+  governors: "blue",
+  "trust-builders": "pink",
+};
+
+interface CategoryPageParams {
   params: Promise<{ category: string }>;
 }
 
@@ -16,20 +40,26 @@ export function generateStaticParams() {
   return categories.map((c) => ({ category: c.id }));
 }
 
-export default async function CategoryPage({ params }: Props) {
+export default async function CategoryPage({ params }: CategoryPageParams) {
   const { category: categorySlug } = await params;
   const category = getCategoryById(categorySlug);
   if (!category) notFound();
 
   const categoryPatterns = getPatternsByCategory(category.id);
+  const Icon = categoryIcons[category.id] ?? IconLayoutGrid;
+  const color = categoryColors[category.id] ?? "violet";
 
   return (
     <Box p="xl" maw={1000}>
-      <Title order={1} c="gray.9" mb="xs">
-        {category.icon} {category.name}
-      </Title>
-      <Text c="gray.6" mb="lg">
-        {category.description}
+      <Group gap="sm" mb="xs">
+        <ThemeIcon variant="light" color={color} size="lg">
+          <Icon size={20} />
+        </ThemeIcon>
+        <Title order={1}>{category.name}</Title>
+      </Group>
+      <Text c="dimmed" mb="lg">
+        {category.description} &mdash; {categoryPatterns.length} pattern
+        {categoryPatterns.length !== 1 ? "s" : ""}
       </Text>
 
       <CategoryNav categories={categories} activeCategoryId={category.id} />

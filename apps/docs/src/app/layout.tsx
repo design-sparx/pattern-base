@@ -7,6 +7,8 @@ import "./globals.css";
 
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
+import { Footer } from "@/components/layout/footer";
+import { SpotlightProvider } from "@/components/layout/spotlight-provider";
 
 export const metadata: Metadata = {
   title: "AI Vory - AI UX Pattern Library",
@@ -22,10 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript defaultColorScheme="light" />
+        <ColorSchemeScript defaultColorScheme="auto" />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="light">
+        <MantineProvider theme={theme} defaultColorScheme="auto">
+          <SpotlightProvider />
           <Header />
           <Sidebar />
           <Box
@@ -33,10 +36,13 @@ export default function RootLayout({
             style={{
               marginLeft: "var(--sidebar-width)",
               marginTop: "var(--header-height)",
-              minHeight: "100vh",
+              minHeight: "calc(100vh - var(--header-height))",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            {children}
+            <Box style={{ flex: 1 }}>{children}</Box>
+            <Footer />
           </Box>
         </MantineProvider>
       </body>
