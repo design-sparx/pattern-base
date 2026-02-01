@@ -1,5 +1,6 @@
-import Link from 'next/link';
-import type { PatternMeta } from '@ai-ui/core';
+import { Badge, Group, Paper, Text } from "@mantine/core";
+import Link from "next/link";
+import type { PatternMeta } from "@ai-ui/core";
 
 interface PatternCardProps {
   pattern: PatternMeta;
@@ -7,22 +8,27 @@ interface PatternCardProps {
 
 export function PatternCard({ pattern }: PatternCardProps) {
   return (
-    <Link
+    <Paper
+      component={Link}
       href={`/patterns/${pattern.category}/${pattern.slug}`}
-      className="block border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-sm transition-all no-underline"
+      withBorder
+      radius="md"
+      p="md"
+      style={{ textDecoration: "none", transition: "all 150ms ease" }}
     >
-      <h3 className="text-base font-semibold text-gray-900 mb-1">{pattern.name}</h3>
-      <p className="text-sm text-gray-600 mb-3">{pattern.description}</p>
-      <div className="flex flex-wrap gap-1">
+      <Text fw={600} fz="md" c="gray.9" mb={4}>
+        {pattern.name}
+      </Text>
+      <Text fz="sm" c="gray.6" mb="sm">
+        {pattern.description}
+      </Text>
+      <Group gap={4}>
         {pattern.tags.map((tag) => (
-          <span
-            key={tag}
-            className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded"
-          >
+          <Badge key={tag} size="xs" variant="light" color="gray" radius="sm">
             {tag}
-          </span>
+          </Badge>
         ))}
-      </div>
-    </Link>
+      </Group>
+    </Paper>
   );
 }

@@ -1,7 +1,16 @@
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { patterns, categories, getCategoryById, getPatternBySlug } from '@/data/patterns';
-import { ComponentPreview } from '@/components/preview/component-preview';
+import {
+  Anchor,
+  Badge,
+  Box,
+  Breadcrumbs,
+  Group,
+  Text,
+  Title,
+} from "@mantine/core";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ComponentPreview } from "@/components/preview/component-preview";
+import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 
 interface Props {
   params: { category: string; pattern: string };
@@ -21,43 +30,46 @@ export default function PatternPage({ params }: Props) {
   if (!pattern || !category) notFound();
 
   return (
-    <div className="p-8 max-w-5xl">
-      <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/patterns" className="hover:text-gray-700 no-underline text-gray-500">
+    <Box p="xl" maw={1000}>
+      <Breadcrumbs fz="sm" mb="lg" separator="/">
+        <Anchor component={Link} href="/patterns" c="gray.5" fz="sm">
           Patterns
-        </Link>
-        <span>/</span>
-        <Link
+        </Anchor>
+        <Anchor
+          component={Link}
           href={`/patterns/${category.id}`}
-          className="hover:text-gray-700 no-underline text-gray-500"
+          c="gray.5"
+          fz="sm"
         >
           {category.name}
-        </Link>
-        <span>/</span>
-        <span className="text-gray-900 font-medium">{pattern.name}</span>
-      </nav>
+        </Anchor>
+        <Text fz="sm" c="gray.9" fw={500}>
+          {pattern.name}
+        </Text>
+      </Breadcrumbs>
 
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-3xl font-bold text-gray-900">{pattern.name}</h1>
-          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+      <Box mb="lg">
+        <Group gap="sm" mb="xs">
+          <Title order={1} c="gray.9">
+            {pattern.name}
+          </Title>
+          <Badge size="sm" variant="light" color="blue" radius="xl">
             {category.name}
-          </span>
-        </div>
-        <p className="text-gray-600 text-lg">{pattern.description}</p>
-        <div className="flex flex-wrap gap-1 mt-3">
+          </Badge>
+        </Group>
+        <Text c="gray.6" fz="lg">
+          {pattern.description}
+        </Text>
+        <Group gap={4} mt="sm">
           {pattern.tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded"
-            >
+            <Badge key={tag} size="xs" variant="light" color="gray" radius="sm">
               {tag}
-            </span>
+            </Badge>
           ))}
-        </div>
-      </div>
+        </Group>
+      </Box>
 
       <ComponentPreview patternId={pattern.id} />
-    </div>
+    </Box>
   );
 }

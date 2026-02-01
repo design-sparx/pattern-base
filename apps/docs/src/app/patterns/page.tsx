@@ -1,22 +1,26 @@
-import { patterns, categories } from '@/data/patterns';
-import { PatternCard } from '@/components/common/pattern-card';
-import { CategoryNav } from '@/components/common/category-nav';
+import { Box, SimpleGrid, Text, Title } from "@mantine/core";
+import { CategoryNav } from "@/components/common/category-nav";
+import { PatternCard } from "@/components/common/pattern-card";
+import { categories, patterns } from "@/data/patterns";
 
 export default function PatternsPage() {
   return (
-    <div className="p-8 max-w-5xl">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">All Patterns</h1>
-      <p className="text-gray-600 mb-6">
-        Browse all {patterns.length} AI UX patterns across {categories.length} categories.
-      </p>
+    <Box p="xl" maw={1000}>
+      <Title order={1} c="gray.9" mb="xs">
+        All Patterns
+      </Title>
+      <Text c="gray.6" mb="lg">
+        Browse all {patterns.length} AI UX patterns across {categories.length}{" "}
+        categories.
+      </Text>
 
       <CategoryNav categories={categories} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
         {patterns.map((p) => (
           <PatternCard key={p.id} pattern={p} />
         ))}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Box>
   );
 }

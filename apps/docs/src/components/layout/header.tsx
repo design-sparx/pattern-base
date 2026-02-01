@@ -1,34 +1,71 @@
-import Link from 'next/link';
+import { Anchor, Badge, Box, Group } from "@mantine/core";
+import Link from "next/link";
 
 export function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 h-[var(--header-height)] border-b border-gray-200 bg-white z-50 flex items-center px-6">
-      <Link href="/" className="text-xl font-bold text-gray-900 no-underline">
+    <Box
+      component="header"
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: "var(--header-height)",
+        borderBottom: "1px solid var(--mantine-color-gray-2)",
+        backgroundColor: "white",
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        paddingInline: 24,
+      }}
+    >
+      <Anchor
+        component={Link}
+        href="/"
+        fw={700}
+        fz="xl"
+        c="gray.9"
+        underline="never"
+      >
         AI Vory
-      </Link>
-      <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+      </Anchor>
+      <Badge ml="xs" size="xs" variant="light" color="blue">
         v0.1.0
-      </span>
+      </Badge>
 
-      <nav className="ml-8 flex gap-6">
-        <Link href="/patterns" className="text-sm text-gray-600 hover:text-gray-900 no-underline">
+      <Group ml="xl" gap="lg">
+        <Anchor
+          component={Link}
+          href="/patterns"
+          fz="sm"
+          c="gray.6"
+          underline="never"
+        >
           Patterns
-        </Link>
-        <Link href="/pricing" className="text-sm text-gray-600 hover:text-gray-900 no-underline">
+        </Anchor>
+        <Anchor
+          component={Link}
+          href="/pricing"
+          fz="sm"
+          c="gray.6"
+          underline="never"
+        >
           Pricing
-        </Link>
-      </nav>
+        </Anchor>
+      </Group>
 
-      <div className="ml-auto">
-        <a
+      <Box style={{ marginLeft: "auto" }}>
+        <Anchor
           href="https://github.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-gray-500 hover:text-gray-700 no-underline"
+          fz="sm"
+          c="gray.5"
+          underline="never"
         >
           GitHub
-        </a>
-      </div>
-    </header>
+        </Anchor>
+      </Box>
+    </Box>
   );
 }

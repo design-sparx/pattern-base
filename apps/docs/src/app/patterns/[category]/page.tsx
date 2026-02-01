@@ -1,7 +1,12 @@
-import { notFound } from 'next/navigation';
-import { categories, getPatternsByCategory, getCategoryById } from '@/data/patterns';
-import { PatternCard } from '@/components/common/pattern-card';
-import { CategoryNav } from '@/components/common/category-nav';
+import { Box, SimpleGrid, Text, Title } from "@mantine/core";
+import { notFound } from "next/navigation";
+import { CategoryNav } from "@/components/common/category-nav";
+import { PatternCard } from "@/components/common/pattern-card";
+import {
+  categories,
+  getCategoryById,
+  getPatternsByCategory,
+} from "@/data/patterns";
 
 interface Props {
   params: { category: string };
@@ -18,19 +23,21 @@ export default function CategoryPage({ params }: Props) {
   const categoryPatterns = getPatternsByCategory(category.id);
 
   return (
-    <div className="p-8 max-w-5xl">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">
+    <Box p="xl" maw={1000}>
+      <Title order={1} c="gray.9" mb="xs">
         {category.icon} {category.name}
-      </h1>
-      <p className="text-gray-600 mb-6">{category.description}</p>
+      </Title>
+      <Text c="gray.6" mb="lg">
+        {category.description}
+      </Text>
 
       <CategoryNav categories={categories} activeCategoryId={category.id} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
         {categoryPatterns.map((p) => (
           <PatternCard key={p.id} pattern={p} />
         ))}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Box>
   );
 }

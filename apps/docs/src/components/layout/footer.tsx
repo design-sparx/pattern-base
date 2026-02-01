@@ -1,7 +1,19 @@
+import { Box, Text } from "@mantine/core";
+
 export function Footer() {
   return (
-    <footer className="border-t border-gray-200 py-6 px-6 text-center text-sm text-gray-500">
-      <p>AI Vory - AI UX Pattern Library. Based on shapeof.ai patterns.</p>
-    </footer>
+    <Box
+      component="footer"
+      py="lg"
+      px="lg"
+      style={{
+        borderTop: "1px solid var(--mantine-color-gray-2)",
+        textAlign: "center",
+      }}
+    >
+      <Text fz="sm" c="gray.5">
+        AI Vory - AI UX Pattern Library. Based on shapeof.ai patterns.
+      </Text>
+    </Box>
   );
 }

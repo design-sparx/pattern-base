@@ -1,37 +1,41 @@
-import Link from 'next/link';
-import type { CategoryInfo } from '@ai-ui/core';
+import { Button, Group } from "@mantine/core";
+import Link from "next/link";
+import type { CategoryInfo } from "@ai-ui/core";
 
 interface CategoryNavProps {
   categories: CategoryInfo[];
   activeCategoryId?: string;
 }
 
-export function CategoryNav({ categories, activeCategoryId }: CategoryNavProps) {
+export function CategoryNav({
+  categories,
+  activeCategoryId,
+}: CategoryNavProps) {
   return (
-    <div className="flex flex-wrap gap-2 mb-6">
-      <Link
+    <Group gap="xs" mb="lg" wrap="wrap">
+      <Button
+        component={Link}
         href="/patterns"
-        className={`px-3 py-1.5 rounded-full text-sm font-medium no-underline ${
-          !activeCategoryId
-            ? 'bg-blue-100 text-blue-700'
-            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-        }`}
+        size="xs"
+        radius="xl"
+        variant={!activeCategoryId ? "light" : "default"}
+        color={!activeCategoryId ? "blue" : "gray"}
       >
         All
-      </Link>
+      </Button>
       {categories.map((cat) => (
-        <Link
+        <Button
           key={cat.id}
+          component={Link}
           href={`/patterns/${cat.id}`}
-          className={`px-3 py-1.5 rounded-full text-sm font-medium no-underline ${
-            activeCategoryId === cat.id
-              ? 'bg-blue-100 text-blue-700'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
+          size="xs"
+          radius="xl"
+          variant={activeCategoryId === cat.id ? "light" : "default"}
+          color={activeCategoryId === cat.id ? "blue" : "gray"}
         >
           {cat.icon} {cat.name}
-        </Link>
+        </Button>
       ))}
-    </div>
+    </Group>
   );
 }

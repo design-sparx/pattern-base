@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@mantine/core/styles.css';
 
 :root {
   --sidebar-width: 260px;
