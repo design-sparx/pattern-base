@@ -3,6 +3,7 @@
 import { Box, Group, SimpleGrid, Text, TextInput, Title } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
+
 import { CategoryNav } from "@/components/common/category-nav";
 import { PatternCard } from "@/components/common/pattern-card";
 import { categories, patterns } from "@/data/patterns";

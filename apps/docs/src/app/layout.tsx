@@ -1,13 +1,14 @@
 import { Box, ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
+
 import { theme } from "./theme";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 
+import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
-import { Footer } from "@/components/layout/footer";
 import { SpotlightProvider } from "@/components/layout/spotlight-provider";
 
 export const metadata: Metadata = {

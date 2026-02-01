@@ -51,7 +51,9 @@ export function CodeBlock({
             variant="subtle"
             color="gray"
             size="sm"
-            onClick={handleCopy}
+            onClick={() => {
+              void handleCopy();
+            }}
           >
             {copied ? (
               <IconCheck size={14} color="var(--mantine-color-green-4)" />
@@ -73,9 +75,9 @@ export function CodeBlock({
               lineHeight: 1.6,
             }}
           >
-            {tokens.map((line, i) => (
+            {tokens.map((line, lineIndex) => (
               <Box
-                key={i}
+                key={`line-${String(lineIndex)}`}
                 {...getLineProps({ line })}
                 component="div"
                 style={{ display: "flex" }}
@@ -94,11 +96,14 @@ export function CodeBlock({
                     flexShrink: 0,
                   }}
                 >
-                  {i + 1}
+                  {lineIndex + 1}
                 </Text>
                 <span>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token })} />
+                  {line.map((token, tokenIndex) => (
+                    <span
+                      key={`token-${String(tokenIndex)}`}
+                      {...getTokenProps({ token })}
+                    />
                   ))}
                 </span>
               </Box>

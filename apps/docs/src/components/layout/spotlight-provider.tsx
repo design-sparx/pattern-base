@@ -1,15 +1,16 @@
 "use client";
 
 import { Spotlight } from "@mantine/spotlight";
-import { useRouter } from "next/navigation";
-import { categories, patterns } from "@/data/patterns";
 import {
-  IconKeyboard,
-  IconCompass,
   IconAdjustments,
+  IconCompass,
   IconEye,
+  IconKeyboard,
   IconShield,
 } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+
+import { categories, patterns } from "@/data/patterns";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   "prompt-actions": <IconKeyboard size={18} />,

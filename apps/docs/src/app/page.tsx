@@ -10,16 +10,17 @@ import {
   Title,
 } from "@mantine/core";
 import {
-  IconKeyboard,
-  IconCompass,
   IconAdjustments,
+  IconCompass,
   IconEye,
-  IconShield,
+  IconKeyboard,
   IconLayoutGrid,
-  IconStack2,
+  IconShield,
   IconSparkles,
+  IconStack2,
 } from "@tabler/icons-react";
 import Link from "next/link";
+
 import { Hero } from "@/components/home/hero";
 import { categories, getPatternsByCategory, patterns } from "@/data/patterns";
 import { componentRegistry } from "@/lib/registry";
@@ -41,28 +42,26 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function HomePage() {
-  const SuggestionsPreview = componentRegistry.suggestions?.bootstrap ?? null;
+  const SuggestionsPreview = componentRegistry.suggestions.bootstrap;
 
   return (
     <Box>
       <Hero />
 
       {/* Live Preview */}
-      {SuggestionsPreview != null && (
-        <Box px="xl" py="xl" maw={900}>
-          <Text fz="xs" fw={600} c="dimmed" tt="uppercase" mb="sm" lts={1}>
-            Live Preview
-          </Text>
-          <Paper
-            withBorder
-            p="xl"
-            className="dot-grid-bg"
-            style={{ overflow: "hidden" }}
-          >
-            <SuggestionsPreview />
-          </Paper>
-        </Box>
-      )}
+      <Box px="xl" py="xl" maw={900}>
+        <Text fz="xs" fw={600} c="dimmed" tt="uppercase" mb="sm" lts={1}>
+          Live Preview
+        </Text>
+        <Paper
+          withBorder
+          p="xl"
+          className="dot-grid-bg"
+          style={{ overflow: "hidden" }}
+        >
+          <SuggestionsPreview />
+        </Paper>
+      </Box>
 
       {/* Stats */}
       <Box px="xl" pb="xl">

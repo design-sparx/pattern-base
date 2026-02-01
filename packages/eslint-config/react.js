@@ -43,6 +43,7 @@ module.exports = {
       },
     ],
     "simple-import-sort/exports": "warn",
+    "import/order": "off",
     "import/no-default-export": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-non-null-assertion": "warn",

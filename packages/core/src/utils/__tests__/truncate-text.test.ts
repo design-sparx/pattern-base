@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { truncateText, truncateUrl } from "../truncate-text";
 
 describe("truncateText", () => {
@@ -21,7 +22,7 @@ describe("truncateUrl", () => {
   });
 
   it("truncates long URLs", () => {
-    const longUrl = "https://example.com/" + "a".repeat(60);
-    expect(truncateUrl(longUrl, 30)).toBe(longUrl.substring(0, 30) + "...");
+    const longUrl = `https://example.com/${"a".repeat(60)}`;
+    expect(truncateUrl(longUrl, 30)).toBe(`${longUrl.substring(0, 30)}...`);
   });
 });

@@ -1,8 +1,10 @@
 "use client";
 
-import { Box, Group, Paper, SegmentedControl, Tabs, Text } from "@mantine/core";
+import { Box, Group, Paper, SegmentedControl, Tabs } from "@mantine/core";
 import { useState } from "react";
+
 import { CodeBlock } from "./code-block";
+
 import { codeSnippets } from "@/data/snippet-templates";
 import { componentRegistry } from "@/lib/registry";
 
@@ -15,10 +17,6 @@ export function ComponentPreview({ patternId }: ComponentPreviewProps) {
   const [framework, setFramework] = useState("bootstrap");
   const entry = componentRegistry[patternId];
   const snippets = codeSnippets[patternId];
-
-  if (!entry || !snippets) {
-    return <Text c="dimmed">Component not found: {patternId}</Text>;
-  }
 
   const fw = framework as "bootstrap" | "antd";
 

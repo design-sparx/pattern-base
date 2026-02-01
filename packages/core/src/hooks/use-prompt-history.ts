@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
-import { PromptHistoryEntry } from '../types/common';
+import { useCallback, useState } from "react";
+
+import { type PromptHistoryEntry } from "../types/common";
 
 /**
  * Hook for managing prompt history with navigation
@@ -11,7 +12,7 @@ export function usePromptHistory(maxEntries = 50) {
   const addEntry = useCallback(
     (prompt: string, response?: string) => {
       const entry: PromptHistoryEntry = {
-        id: crypto.randomUUID?.() ?? `${Date.now()}`,
+        id: crypto.randomUUID(),
         prompt,
         timestamp: new Date(),
         response,
@@ -22,7 +23,7 @@ export function usePromptHistory(maxEntries = 50) {
       });
       setIndex(-1);
     },
-    [maxEntries]
+    [maxEntries],
   );
 
   const navigateUp = useCallback(() => {

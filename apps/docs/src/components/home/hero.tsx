@@ -3,6 +3,7 @@
 import { Anchor, Box, Button, Group, Text, Title } from "@mantine/core";
 import { IconArrowRight, IconBrandGithub } from "@tabler/icons-react";
 import Link from "next/link";
+
 import classes from "./hero.module.css";
 
 export function Hero() {

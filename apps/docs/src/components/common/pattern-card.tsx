@@ -2,14 +2,15 @@
 
 import { Badge, Group, Paper, Text, ThemeIcon } from "@mantine/core";
 import {
-  IconKeyboard,
-  IconCompass,
   IconAdjustments,
+  IconCompass,
   IconEye,
-  IconShield,
+  IconKeyboard,
   IconLayoutGrid,
+  IconShield,
 } from "@tabler/icons-react";
 import Link from "next/link";
+
 import type { PatternMeta } from "@ai-ui/core";
 
 const categoryIcons: Record<string, React.ElementType> = {

@@ -28,6 +28,7 @@ import {
   Suggestions as BsSuggestions,
   Variations as BsVariations,
 } from "@ai-ui/bootstrap";
+
 import {
   demoCitations,
   demoCostBreakdown,
@@ -45,7 +46,9 @@ interface RegistryEntry {
   antd: React.ComponentType;
 }
 
-const noop = () => {};
+const noop = () => {
+  /* no-op for demo callbacks */
+};
 
 export const componentRegistry: Record<string, RegistryEntry> = {
   "open-input": {

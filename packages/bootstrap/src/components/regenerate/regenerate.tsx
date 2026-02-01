@@ -1,13 +1,14 @@
-import { Button, Dropdown, Spinner } from 'react-bootstrap';
-import type { RegenerateProps } from '@ai-ui/core';
+import { Button, Dropdown, Spinner } from "react-bootstrap";
+
+import type { RegenerateProps } from "@ai-ui/core";
 
 export function Regenerate({
   onRegenerate,
   isRegenerating = false,
-  variant = 'button',
+  variant = "button",
   options,
 }: RegenerateProps) {
-  if (variant === 'dropdown' && options && options.length > 0) {
+  if (variant === "dropdown" && options && options.length > 0) {
     return (
       <Dropdown>
         <Dropdown.Toggle
@@ -21,14 +22,16 @@ export function Regenerate({
               Regenerating...
             </>
           ) : (
-            '\u21BB Regenerate'
+            "\u21BB Regenerate"
           )}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item onClick={onRegenerate}>Regenerate response</Dropdown.Item>
+          <Dropdown.Item onClick={onRegenerate}>
+            Regenerate response
+          </Dropdown.Item>
           <Dropdown.Divider />
-          {options.map((opt, i) => (
-            <Dropdown.Item key={i} onClick={opt.onSelect}>
+          {options.map((opt) => (
+            <Dropdown.Item key={opt.label} onClick={opt.onSelect}>
               {opt.label}
             </Dropdown.Item>
           ))}
@@ -37,7 +40,7 @@ export function Regenerate({
     );
   }
 
-  if (variant === 'icon') {
+  if (variant === "icon") {
     return (
       <Button
         variant="link"
@@ -50,7 +53,7 @@ export function Regenerate({
         {isRegenerating ? (
           <Spinner animation="border" size="sm" />
         ) : (
-          <span style={{ fontSize: '1.2em' }}>{'\u21BB'}</span>
+          <span style={{ fontSize: "1.2em" }}>{"\u21BB"}</span>
         )}
       </Button>
     );
@@ -69,7 +72,7 @@ export function Regenerate({
           Regenerating...
         </>
       ) : (
-        '\u21BB Regenerate'
+        "\u21BB Regenerate"
       )}
     </Button>
   );

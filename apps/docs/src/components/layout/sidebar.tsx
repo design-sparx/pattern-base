@@ -9,18 +9,19 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import {
-  IconChevronRight,
-  IconKeyboard,
-  IconCompass,
   IconAdjustments,
-  IconEye,
-  IconShield,
-  IconLayoutGrid,
+  IconChevronRight,
+  IconCompass,
   IconCreditCard,
+  IconEye,
+  IconKeyboard,
+  IconLayoutGrid,
+  IconShield,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+
 import { categories, getPatternsByCategory } from "@/data/patterns";
 
 const categoryIcons: Record<string, React.ElementType> = {

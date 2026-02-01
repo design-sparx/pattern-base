@@ -1,7 +1,6 @@
 "use client";
 
 import { SegmentedControl } from "@mantine/core";
-import { useState } from "react";
 
 interface FrameworkTabsProps {
   children: (framework: "bootstrap" | "antd") => React.ReactNode;
@@ -9,9 +8,9 @@ interface FrameworkTabsProps {
 }
 
 export function FrameworkTabs({ children }: FrameworkTabsProps) {
-  const [framework] = useState<string>("bootstrap");
+  const framework: "bootstrap" | "antd" = "bootstrap";
 
-  return <div>{children(framework as "bootstrap" | "antd")}</div>;
+  return <div>{children(framework)}</div>;
 }
 
 export function FrameworkToggle({

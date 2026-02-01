@@ -1,13 +1,15 @@
 /**
  * Debounce a function call
  */
-export function debounce<T extends (...args: any[]) => any>(
-  fn: T,
-  delay: number
-): (...args: Parameters<T>) => void {
+export function debounce<A extends unknown[]>(
+  fn: (...args: A) => void,
+  delay: number,
+): (...args: A) => void {
   let timer: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
+  return (...args: A) => {
     clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
   };
 }

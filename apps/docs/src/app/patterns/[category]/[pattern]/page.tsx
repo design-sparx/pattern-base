@@ -8,18 +8,19 @@ import {
   Title,
 } from "@mantine/core";
 import {
-  IconChevronRight,
+  IconAdjustments,
   IconArrowLeft,
   IconArrowRight,
-  IconKeyboard,
+  IconChevronRight,
   IconCompass,
-  IconAdjustments,
   IconEye,
-  IconShield,
+  IconKeyboard,
   IconLayoutGrid,
+  IconShield,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
 import { ComponentPreview } from "@/components/preview/component-preview";
 import { InstallCommand } from "@/components/preview/install-command";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";

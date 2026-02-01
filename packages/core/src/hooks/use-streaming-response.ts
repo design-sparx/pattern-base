@@ -1,18 +1,19 @@
-import { useState, useCallback, useRef } from 'react';
-import { StreamChunk } from '../types/common';
+import { useCallback, useRef, useState } from "react";
+
+import { type StreamChunk } from "../types/common";
 
 /**
  * Hook for managing streaming AI responses
  */
 export function useStreamingResponse() {
   const [chunks, setChunks] = useState<StreamChunk[]>([]);
-  const [fullText, setFullText] = useState('');
+  const [fullText, setFullText] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
   const startStream = useCallback(() => {
     setChunks([]);
-    setFullText('');
+    setFullText("");
     setIsStreaming(true);
     abortRef.current = new AbortController();
   }, []);
@@ -32,7 +33,7 @@ export function useStreamingResponse() {
 
   const reset = useCallback(() => {
     setChunks([]);
-    setFullText('');
+    setFullText("");
     setIsStreaming(false);
   }, []);
 

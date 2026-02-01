@@ -1,39 +1,40 @@
-import { useState, useCallback } from 'react';
-import { GenerationState } from '../types/common';
+import { useCallback, useState } from "react";
+
+import { type GenerationState } from "../types/common";
 
 /**
  * Hook for managing AI generation lifecycle
  */
 export function useAIGeneration() {
   const [state, setState] = useState<GenerationState>({
-    status: 'idle',
+    status: "idle",
   });
 
   const startGeneration = useCallback(() => {
-    setState({ status: 'generating', progress: 0 });
+    setState({ status: "generating", progress: 0 });
   }, []);
 
   const updateProgress = useCallback((progress: number, message?: string) => {
     setState((prev) => ({ ...prev, progress, message }));
   }, []);
 
-  const completeGeneration = useCallback((result: any) => {
-    setState({ status: 'success', result, progress: 100 });
+  const completeGeneration = useCallback((result: unknown) => {
+    setState({ status: "success", result, progress: 100 });
   }, []);
 
   const failGeneration = useCallback((error: Error) => {
-    setState({ status: 'error', error });
+    setState({ status: "error", error });
   }, []);
 
   const reset = useCallback(() => {
-    setState({ status: 'idle' });
+    setState({ status: "idle" });
   }, []);
 
   return {
     state,
-    isGenerating: state.status === 'generating',
-    isSuccess: state.status === 'success',
-    isError: state.status === 'error',
+    isGenerating: state.status === "generating",
+    isSuccess: state.status === "success",
+    isError: state.status === "error",
     startGeneration,
     updateProgress,
     completeGeneration,

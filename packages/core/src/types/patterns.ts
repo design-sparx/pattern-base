@@ -18,7 +18,7 @@ export interface SuggestionsProps {
   suggestions: StarterPrompt[];
   onSelect: (prompt: StarterPrompt) => void;
   columns?: 2 | 3 | 4;
-  variant?: 'chip' | 'card';
+  variant?: "chip" | "card";
 }
 
 // ── Input Patterns ──
@@ -38,20 +38,20 @@ export interface OpenInputProps {
 export interface ParameterControlItem {
   id: string;
   label: string;
-  type: 'slider' | 'toggle' | 'select' | 'matrix';
-  value: any;
+  type: "slider" | "toggle" | "select" | "matrix";
+  value: unknown;
   min?: number;
   max?: number;
   step?: number;
-  options?: Array<{ label: string; value: any }>;
+  options?: { label: string; value: unknown }[];
   description?: string;
 }
 
 export interface ParameterControlProps {
   parameters: ParameterControlItem[];
-  onChange: (id: string, value: any) => void;
+  onChange: (id: string, value: unknown) => void;
   title?: string;
-  layout?: 'vertical' | 'horizontal';
+  layout?: "vertical" | "horizontal";
 }
 
 export interface ModelInfo {
@@ -78,10 +78,10 @@ export interface ModelManagementProps {
 
 export interface ThoughtStep {
   id: string;
-  type: 'thinking' | 'action' | 'tool_call' | 'result';
+  type: "thinking" | "action" | "tool_call" | "result";
   content: string;
   timestamp: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface StreamOfThoughtProps {
@@ -118,14 +118,14 @@ export interface VariationItem {
   id: string;
   content: string;
   label?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface VariationsProps {
   variations: VariationItem[];
   selectedId?: string;
   onSelect?: (id: string) => void;
-  layout?: 'grid' | 'list' | 'tabs';
+  layout?: "grid" | "list" | "tabs";
   columns?: 2 | 3;
 }
 
@@ -150,18 +150,18 @@ export interface CostEstimateProps {
 export interface RegenerateProps {
   onRegenerate: () => void;
   isRegenerating?: boolean;
-  variant?: 'button' | 'icon' | 'dropdown';
-  options?: Array<{
+  variant?: "button" | "icon" | "dropdown";
+  options?: {
     label: string;
     onSelect: () => void;
-  }>;
+  }[];
 }
 
 // ── Trust Builder Patterns ──
 
 export interface DisclosureProps {
-  variant: 'badge' | 'banner' | 'inline';
-  type: 'ai-generated' | 'ai-assisted' | 'ai-suggested';
+  variant: "badge" | "banner" | "inline";
+  type: "ai-generated" | "ai-assisted" | "ai-suggested";
   model?: string;
   timestamp?: Date;
   customLabel?: string;

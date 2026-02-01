@@ -1,23 +1,24 @@
-import { Tag, Alert, Space, Typography } from 'antd';
-import { RobotOutlined } from '@ant-design/icons';
-import type { DisclosureProps } from '@ai-ui/core';
+import { RobotOutlined } from "@ant-design/icons";
+import { Alert, Space, Tag, Typography } from "antd";
+
+import type { DisclosureProps } from "@ai-ui/core";
 
 const { Text } = Typography;
 
-const TYPE_LABELS: Record<DisclosureProps['type'], string> = {
-  'ai-generated': 'AI Generated',
-  'ai-assisted': 'AI Assisted',
-  'ai-suggested': 'AI Suggested',
+const TYPE_LABELS: Record<DisclosureProps["type"], string> = {
+  "ai-generated": "AI Generated",
+  "ai-assisted": "AI Assisted",
+  "ai-suggested": "AI Suggested",
 };
 
-const TYPE_COLORS: Record<DisclosureProps['type'], string> = {
-  'ai-generated': 'processing',
-  'ai-assisted': 'blue',
-  'ai-suggested': 'default',
+const TYPE_COLORS: Record<DisclosureProps["type"], string> = {
+  "ai-generated": "processing",
+  "ai-assisted": "blue",
+  "ai-suggested": "default",
 };
 
 export function Disclosure({
-  variant = 'badge',
+  variant = "badge",
   type,
   model,
   timestamp,
@@ -26,16 +27,20 @@ export function Disclosure({
   const label = customLabel ?? TYPE_LABELS[type];
   const color = TYPE_COLORS[type];
 
-  if (variant === 'badge') {
+  if (variant === "badge") {
     return (
       <Tag color={color} icon={<RobotOutlined />}>
         {label}
-        {model && <Text type="secondary" style={{ marginLeft: 4 }}>({model})</Text>}
+        {model ? (
+          <Text type="secondary" style={{ marginLeft: 4 }}>
+            ({model})
+          </Text>
+        ) : null}
       </Tag>
     );
   }
 
-  if (variant === 'banner') {
+  if (variant === "banner") {
     return (
       <Alert
         type="info"
@@ -44,12 +49,12 @@ export function Disclosure({
         message={
           <Space>
             <span>{label}</span>
-            {model && <Text type="secondary">- {model}</Text>}
-            {timestamp && (
-              <Text type="secondary" style={{ marginLeft: 'auto' }}>
+            {model ? <Text type="secondary">- {model}</Text> : null}
+            {timestamp ? (
+              <Text type="secondary" style={{ marginLeft: "auto" }}>
                 {new Date(timestamp).toLocaleDateString()}
               </Text>
-            )}
+            ) : null}
           </Space>
         }
         style={{ marginBottom: 8 }}
@@ -62,7 +67,7 @@ export function Disclosure({
     <Text type="secondary" style={{ fontSize: 12 }}>
       <RobotOutlined style={{ marginRight: 4 }} />
       {label}
-      {model && ` (${model})`}
+      {model ? ` (${model})` : null}
     </Text>
   );
 }

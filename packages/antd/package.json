@@ -16,6 +16,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "type-check": "tsc --noEmit",

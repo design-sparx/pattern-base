@@ -1,13 +1,14 @@
 import { Box, Group, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core";
 import {
-  IconKeyboard,
-  IconCompass,
   IconAdjustments,
+  IconCompass,
   IconEye,
-  IconShield,
+  IconKeyboard,
   IconLayoutGrid,
+  IconShield,
 } from "@tabler/icons-react";
 import { notFound } from "next/navigation";
+
 import { CategoryNav } from "@/components/common/category-nav";
 import { PatternCard } from "@/components/common/pattern-card";
 import {

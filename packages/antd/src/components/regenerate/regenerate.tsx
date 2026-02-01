@@ -1,19 +1,20 @@
-import { Button, Dropdown } from 'antd';
-import { ReloadOutlined, LoadingOutlined } from '@ant-design/icons';
-import type { RegenerateProps } from '@ai-ui/core';
+import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Button, Dropdown } from "antd";
+
+import type { RegenerateProps } from "@ai-ui/core";
 
 export function Regenerate({
   onRegenerate,
   isRegenerating = false,
-  variant = 'button',
+  variant = "button",
   options,
 }: RegenerateProps) {
-  if (variant === 'dropdown' && options && options.length > 0) {
+  if (variant === "dropdown" && options && options.length > 0) {
     const items = [
-      { key: 'regen', label: 'Regenerate response', onClick: onRegenerate },
-      { type: 'divider' as const },
+      { key: "regen", label: "Regenerate response", onClick: onRegenerate },
+      { type: "divider" as const },
       ...options.map((opt, i) => ({
-        key: `opt-${i}`,
+        key: `opt-${String(i)}`,
         label: opt.label,
         onClick: opt.onSelect,
       })),
@@ -25,13 +26,13 @@ export function Regenerate({
           icon={isRegenerating ? <LoadingOutlined /> : <ReloadOutlined />}
           loading={isRegenerating}
         >
-          {isRegenerating ? 'Regenerating...' : 'Regenerate'}
+          {isRegenerating ? "Regenerating..." : "Regenerate"}
         </Button>
       </Dropdown>
     );
   }
 
-  if (variant === 'icon') {
+  if (variant === "icon") {
     return (
       <Button
         type="text"
@@ -51,7 +52,7 @@ export function Regenerate({
       disabled={isRegenerating}
       loading={isRegenerating}
     >
-      {isRegenerating ? 'Regenerating...' : 'Regenerate'}
+      {isRegenerating ? "Regenerating..." : "Regenerate"}
     </Button>
   );
 }

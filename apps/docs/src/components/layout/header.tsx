@@ -16,8 +16,8 @@ import {
   IconBrandGithub,
   IconMoon,
   IconSearch,
-  IconSun,
   IconSparkles,
+  IconSun,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

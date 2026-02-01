@@ -1,6 +1,7 @@
-import { Card, Row, Col, Tabs, Tag, Space, Typography } from 'antd';
-import { CheckCircleOutlined } from '@ant-design/icons';
-import type { VariationsProps } from '@ai-ui/core';
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { Card, Col, Row, Space, Tabs, Tag, Typography } from "antd";
+
+import type { VariationsProps } from "@ai-ui/core";
 
 const { Text } = Typography;
 
@@ -8,15 +9,17 @@ export function Variations({
   variations,
   selectedId,
   onSelect,
-  layout = 'grid',
+  layout = "grid",
   columns = 2,
 }: VariationsProps) {
-  if (layout === 'tabs') {
+  if (layout === "tabs") {
     const items = variations.map((v, i) => ({
       key: v.id,
-      label: v.label ?? `Variation ${i + 1}`,
+      label: v.label ?? `Variation ${String(i + 1)}`,
       children: (
-        <div style={{ padding: 16, border: '1px solid #f0f0f0', borderRadius: 8 }}>
+        <div
+          style={{ padding: 16, border: "1px solid #f0f0f0", borderRadius: 8 }}
+        >
           {v.content}
         </div>
       ),
@@ -31,25 +34,27 @@ export function Variations({
     );
   }
 
-  if (layout === 'list') {
+  if (layout === "list") {
     return (
-      <Space direction="vertical" style={{ width: '100%' }}>
+      <Space direction="vertical" style={{ width: "100%" }}>
         {variations.map((v, i) => (
           <Card
             key={v.id}
             size="small"
-            hoverable={!!onSelect}
+            hoverable={Boolean(onSelect)}
             style={{
-              borderColor: selectedId === v.id ? '#1890ff' : undefined,
-              cursor: onSelect ? 'pointer' : 'default',
+              borderColor: selectedId === v.id ? "#1890ff" : undefined,
+              cursor: onSelect ? "pointer" : "default",
             }}
             onClick={() => onSelect?.(v.id)}
           >
-            <Space direction="vertical" size={4} style={{ width: '100%' }}>
+            <Space direction="vertical" size={4} style={{ width: "100%" }}>
               <Space>
-                <Tag>{v.label ?? `#${i + 1}`}</Tag>
+                <Tag>{v.label ?? `#${String(i + 1)}`}</Tag>
                 {selectedId === v.id && (
-                  <Tag color="blue" icon={<CheckCircleOutlined />}>Selected</Tag>
+                  <Tag color="blue" icon={<CheckCircleOutlined />}>
+                    Selected
+                  </Tag>
                 )}
               </Space>
               <Text style={{ fontSize: 13 }}>{v.content}</Text>
@@ -67,19 +72,21 @@ export function Variations({
         <Col key={v.id} xs={24} md={24 / columns}>
           <Card
             size="small"
-            hoverable={!!onSelect}
+            hoverable={Boolean(onSelect)}
             style={{
-              height: '100%',
-              borderColor: selectedId === v.id ? '#1890ff' : undefined,
-              cursor: onSelect ? 'pointer' : 'default',
+              height: "100%",
+              borderColor: selectedId === v.id ? "#1890ff" : undefined,
+              cursor: onSelect ? "pointer" : "default",
             }}
             onClick={() => onSelect?.(v.id)}
           >
-            <Space direction="vertical" size={8} style={{ width: '100%' }}>
+            <Space direction="vertical" size={8} style={{ width: "100%" }}>
               <Space>
-                <Tag>{v.label ?? `Variation ${i + 1}`}</Tag>
+                <Tag>{v.label ?? `Variation ${String(i + 1)}`}</Tag>
                 {selectedId === v.id && (
-                  <Tag color="blue" icon={<CheckCircleOutlined />}>Selected</Tag>
+                  <Tag color="blue" icon={<CheckCircleOutlined />}>
+                    Selected
+                  </Tag>
                 )}
               </Space>
               <Text style={{ fontSize: 13 }}>{v.content}</Text>

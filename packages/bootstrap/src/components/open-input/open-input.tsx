@@ -1,26 +1,27 @@
-import { useState, useRef, KeyboardEvent } from 'react';
-import { Form, Button, Badge, InputGroup, Stack } from 'react-bootstrap';
-import type { OpenInputProps } from '@ai-ui/core';
+import { type KeyboardEvent, useRef, useState } from "react";
+import { Badge, Button, Form, InputGroup, Stack } from "react-bootstrap";
+
+import type { OpenInputProps } from "@ai-ui/core";
 
 export function OpenInput({
-  placeholder = 'Ask anything...',
+  placeholder = "Ask anything...",
   onSubmit,
   isLoading = false,
   suggestions = [],
   maxLength,
 }: OpenInputProps) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = () => {
     if (value.trim()) {
       onSubmit(value.trim());
-      setValue('');
+      setValue("");
     }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSubmit();
     }
@@ -30,13 +31,13 @@ export function OpenInput({
     <Stack gap={2}>
       {suggestions.length > 0 && !value && (
         <div className="d-flex flex-wrap gap-1">
-          {suggestions.map((s, i) => (
+          {suggestions.map((s) => (
             <Badge
-              key={i}
+              key={s}
               bg="light"
               text="dark"
               className="border"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 setValue(s);
                 textareaRef.current?.focus();
@@ -53,13 +54,15 @@ export function OpenInput({
           as="textarea"
           ref={textareaRef}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={isLoading}
           rows={1}
           maxLength={maxLength}
-          style={{ resize: 'none' }}
+          style={{ resize: "none" }}
         />
         <Button
           variant="primary"
@@ -72,7 +75,7 @@ export function OpenInput({
               Generating...
             </>
           ) : (
-            'Send'
+            "Send"
           )}
         </Button>
       </InputGroup>

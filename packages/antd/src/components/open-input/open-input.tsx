@@ -1,43 +1,44 @@
-import { useState, useRef, KeyboardEvent } from 'react';
-import { Input, Button, Tag, Space } from 'antd';
-import { SendOutlined, LoadingOutlined } from '@ant-design/icons';
-import type { OpenInputProps } from '@ai-ui/core';
+import { LoadingOutlined, SendOutlined } from "@ant-design/icons";
+import { Button, Input, Space, Tag } from "antd";
+import { type KeyboardEvent, useRef, useState } from "react";
+
+import type { OpenInputProps } from "@ai-ui/core";
 
 const { TextArea } = Input;
 
 export function OpenInput({
-  placeholder = 'Ask anything...',
+  placeholder = "Ask anything...",
   onSubmit,
   isLoading = false,
   suggestions = [],
   maxLength,
 }: OpenInputProps) {
-  const [value, setValue] = useState('');
-  const textareaRef = useRef<any>(null);
+  const [value, setValue] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = () => {
     if (value.trim()) {
       onSubmit(value.trim());
-      setValue('');
+      setValue("");
     }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSubmit();
     }
   };
 
   return (
-    <Space direction="vertical" style={{ width: '100%' }}>
+    <Space direction="vertical" style={{ width: "100%" }}>
       {suggestions.length > 0 && !value && (
         <Space wrap>
-          {suggestions.map((s, i) => (
+          {suggestions.map((s) => (
             <Tag
-              key={i}
+              key={s}
               color="default"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 setValue(s);
                 textareaRef.current?.focus();
@@ -49,17 +50,19 @@ export function OpenInput({
         </Space>
       )}
 
-      <Space.Compact style={{ width: '100%' }}>
+      <Space.Compact style={{ width: "100%" }}>
         <TextArea
           ref={textareaRef}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={isLoading}
           autoSize={{ minRows: 1, maxRows: 6 }}
           maxLength={maxLength}
-          style={{ resize: 'none' }}
+          style={{ resize: "none" }}
         />
         <Button
           type="primary"
@@ -68,7 +71,7 @@ export function OpenInput({
           disabled={!value.trim() || isLoading}
           loading={isLoading}
         >
-          {isLoading ? 'Generating...' : 'Send'}
+          {isLoading ? "Generating..." : "Send"}
         </Button>
       </Space.Compact>
     </Space>

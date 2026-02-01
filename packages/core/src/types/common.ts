@@ -3,10 +3,10 @@
  */
 
 export interface GenerationState {
-  status: 'idle' | 'generating' | 'success' | 'error';
+  status: "idle" | "generating" | "success" | "error";
   progress?: number;
   message?: string;
-  result?: any;
+  result?: unknown;
   error?: Error;
 }
 
@@ -14,7 +14,7 @@ export interface StreamChunk {
   id: string;
   content: string;
   done: boolean;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface PromptHistoryEntry {

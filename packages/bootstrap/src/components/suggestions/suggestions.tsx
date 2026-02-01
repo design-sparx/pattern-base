@@ -1,13 +1,14 @@
-import { Card, Badge, Row, Col } from 'react-bootstrap';
-import type { SuggestionsProps } from '@ai-ui/core';
+import { Badge, Card, Col, Row } from "react-bootstrap";
+
+import type { SuggestionsProps } from "@ai-ui/core";
 
 export function Suggestions({
   suggestions,
   onSelect,
   columns = 2,
-  variant = 'card',
+  variant = "card",
 }: SuggestionsProps) {
-  if (variant === 'chip') {
+  if (variant === "chip") {
     return (
       <div className="d-flex flex-wrap gap-2">
         {suggestions.map((s) => (
@@ -15,10 +16,16 @@ export function Suggestions({
             key={s.id}
             bg="primary"
             pill
-            style={{ cursor: 'pointer', fontSize: '0.9em', padding: '8px 16px' }}
-            onClick={() => onSelect(s)}
+            style={{
+              cursor: "pointer",
+              fontSize: "0.9em",
+              padding: "8px 16px",
+            }}
+            onClick={() => {
+              onSelect(s);
+            }}
           >
-            {s.icon && <span className="me-1">{s.icon}</span>}
+            {s.icon ? <span className="me-1">{s.icon}</span> : null}
             {s.title}
           </Badge>
         ))}
@@ -32,17 +39,21 @@ export function Suggestions({
         <Col key={s.id}>
           <Card
             className="h-100"
-            style={{ cursor: 'pointer' }}
-            onClick={() => onSelect(s)}
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              onSelect(s);
+            }}
           >
             <Card.Body>
               <Card.Title className="fs-6">
-                {s.icon && <span className="me-2">{s.icon}</span>}
+                {s.icon ? <span className="me-2">{s.icon}</span> : null}
                 {s.title}
               </Card.Title>
-              {s.description && (
-                <Card.Text className="text-muted small">{s.description}</Card.Text>
-              )}
+              {s.description ? (
+                <Card.Text className="text-muted small">
+                  {s.description}
+                </Card.Text>
+              ) : null}
             </Card.Body>
           </Card>
         </Col>

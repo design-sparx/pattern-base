@@ -1,15 +1,20 @@
-import { useState } from 'react';
-import { Card, Badge, Collapse, Button, Stack } from 'react-bootstrap';
-import type { CitationProps, CitationsListProps, InlineCitationProps } from '@ai-ui/core';
+import { useState } from "react";
+import { Badge, Button, Card, Collapse, Stack } from "react-bootstrap";
+
+import type {
+  CitationProps,
+  CitationsListProps,
+  InlineCitationProps,
+} from "@ai-ui/core";
 
 export function Citation({ citation }: CitationProps) {
   const [expanded, setExpanded] = useState(false);
   const { source, url, snippet, relevance = 1 } = citation;
 
   const getBadge = (score: number) => {
-    if (score >= 0.8) return { variant: 'success' as const, text: 'High' };
-    if (score >= 0.5) return { variant: 'warning' as const, text: 'Medium' };
-    return { variant: 'secondary' as const, text: 'Low' };
+    if (score >= 0.8) return { variant: "success" as const, text: "High" };
+    if (score >= 0.5) return { variant: "warning" as const, text: "Medium" };
+    return { variant: "secondary" as const, text: "Low" };
   };
 
   const badge = getBadge(relevance);
@@ -19,40 +24,42 @@ export function Citation({ citation }: CitationProps) {
       <Card.Body className="p-3">
         <div className="d-flex justify-content-between align-items-start mb-2">
           <div className="flex-grow-1">
-            <div className="d-flex align-items-center gap-2 mb-1">
-              <strong className="text-primary" style={{ fontSize: '14px' }}>
+            <div className="d-flex align-items-center mb-1 gap-2">
+              <strong className="text-primary" style={{ fontSize: "14px" }}>
                 {source}
               </strong>
               <Badge bg={badge.variant} className="small">
                 {badge.text} Relevance
               </Badge>
             </div>
-            {url && (
+            {url ? (
               <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted small"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
               >
-                {url.length > 60 ? url.substring(0, 60) + '...' : url}
+                {url.length > 60 ? `${url.substring(0, 60)}...` : url}
               </a>
-            )}
+            ) : null}
           </div>
           <Button
             variant="link"
             size="sm"
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => {
+              setExpanded(!expanded);
+            }}
             className="text-decoration-none"
           >
-            {expanded ? 'Hide' : 'View'} excerpt
+            {expanded ? "Hide" : "View"} excerpt
           </Button>
         </div>
 
         <Collapse in={expanded}>
           <div>
-            <blockquote className="mb-0 p-3 border-start border-3 border-primary bg-light">
-              <p className="mb-0 small fst-italic">&ldquo;{snippet}&rdquo;</p>
+            <blockquote className="border-start border-3 border-primary bg-light mb-0 p-3">
+              <p className="small fst-italic mb-0">&ldquo;{snippet}&rdquo;</p>
             </blockquote>
           </div>
         </Collapse>
@@ -63,7 +70,7 @@ export function Citation({ citation }: CitationProps) {
 
 export function CitationsList({
   citations,
-  title = 'Sources',
+  title = "Sources",
   maxVisible = 3,
 }: CitationsListProps) {
   const [showAll, setShowAll] = useState(false);
@@ -84,24 +91,32 @@ export function CitationsList({
         <Button
           variant="outline-primary"
           size="sm"
-          onClick={() => setShowAll(!showAll)}
+          onClick={() => {
+            setShowAll(!showAll);
+          }}
           className="w-100"
         >
-          {showAll ? 'Show fewer' : `Show ${citations.length - maxVisible} more`}
+          {showAll
+            ? "Show fewer"
+            : `Show ${String(citations.length - maxVisible)} more`}
         </Button>
       )}
     </Stack>
   );
 }
 
-export function InlineCitation({ citationNumber, source, url }: InlineCitationProps) {
+export function InlineCitation({
+  citationNumber,
+  source,
+  url,
+}: InlineCitationProps) {
   return (
     <sup>
       <a
-        href={url ?? '#'}
+        href={url ?? "#"}
         title={source}
         className="badge bg-primary text-decoration-none"
-        style={{ fontSize: '10px', marginLeft: '2px' }}
+        style={{ fontSize: "10px", marginLeft: "2px" }}
       >
         [{citationNumber}]
       </a>

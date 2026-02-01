@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { type ReactNode } from "react";
 
 /**
  * Base component props shared across all AI UI components
@@ -22,11 +22,11 @@ export interface PatternMeta {
 }
 
 export type PatternCategory =
-  | 'prompt-actions'
-  | 'wayfinders'
-  | 'tuners'
-  | 'governors'
-  | 'trust-builders';
+  | "prompt-actions"
+  | "wayfinders"
+  | "tuners"
+  | "governors"
+  | "trust-builders";
 
 export interface CategoryInfo {
   id: PatternCategory;
