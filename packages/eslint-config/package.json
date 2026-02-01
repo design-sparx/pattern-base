@@ -1,0 +1,18 @@
+{
+  "name": "@ai-ui/eslint-config",
+  "version": "0.1.0",
+  "private": true,
+  "files": [
+    "library.js",
+    "react.js",
+    "next.js"
+  ],
+  "devDependencies": {
+    "@vercel/style-guide": "^6.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-only-warn": "^1.1.0",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "typescript": "^5.3.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@ai-ui/vitest-config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.ts",
+  "files": [
+    "index.ts",
+    "setup.ts"
+  ],
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
+    "jsdom": "^25.0.0",
+    "vitest": "^2.0.0"
+  }
+}

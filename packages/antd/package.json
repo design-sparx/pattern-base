@@ -15,6 +15,9 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "type-check": "tsc --noEmit",
     "clean": "rimraf dist"
   },
@@ -27,11 +30,18 @@
     "@ant-design/icons": "^5.0.0"
   },
   "devDependencies": {
+    "@ai-ui/eslint-config": "workspace:*",
+    "@ai-ui/vitest-config": "workspace:*",
+    "@ant-design/icons": "^5.5.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
     "@types/react": "^18.2.45",
     "antd": "^5.22.0",
-    "@ant-design/icons": "^5.5.0",
+    "eslint": "^8.57.0",
+    "jsdom": "^25.0.0",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
+    "vitest": "^2.0.0",
     "rimraf": "^5.0.5"
   },
   "publishConfig": {
