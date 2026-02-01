@@ -1,0 +1,40 @@
+{
+  "name": "@ai-ui/antd",
+  "version": "0.1.0",
+  "description": "Ant Design implementation of AI UI components",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@ai-ui/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "antd": "^5.0.0",
+    "@ant-design/icons": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "antd": "^5.22.0",
+    "@ant-design/icons": "^5.5.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "rimraf": "^5.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
