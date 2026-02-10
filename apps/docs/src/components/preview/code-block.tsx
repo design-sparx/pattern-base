@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionIcon, Box, Group, Paper, Text, Tooltip } from "@mantine/core";
+import { Box, Button, Group, Paper, Text } from "@mantine/core";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { Highlight, themes } from "prism-react-renderer";
 import { useState } from "react";
@@ -41,27 +41,28 @@ export function CodeBlock({
         style={{
           backgroundColor: "#1e1e2e",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
+          minHeight: 40,
         }}
       >
         <Text fz="xs" c="gray.5" ff="monospace">
           {filename ?? language.toUpperCase()}
         </Text>
-        <Tooltip label={copied ? "Copied!" : "Copy code"} withArrow>
-          <ActionIcon
-            variant="subtle"
-            color="gray"
-            size="sm"
-            onClick={() => {
-              void handleCopy();
-            }}
-          >
-            {copied ? (
-              <IconCheck size={14} color="var(--mantine-color-green-4)" />
-            ) : (
-              <IconCopy size={14} color="var(--mantine-color-gray-5)" />
-            )}
-          </ActionIcon>
-        </Tooltip>
+        <Button
+          variant="subtle"
+          color={copied ? "green" : "gray"}
+          size="compact-xs"
+          leftSection={
+            copied ? <IconCheck size={14} /> : <IconCopy size={14} />
+          }
+          onClick={() => {
+            void handleCopy();
+          }}
+          styles={{
+            label: { fontSize: "var(--mantine-font-size-xs)" },
+          }}
+        >
+          {copied ? "Copied!" : "Copy"}
+        </Button>
       </Group>
       <Highlight theme={themes.vsDark} code={code.trim()} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (

@@ -1,4 +1,4 @@
-import { Box, ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 
 import { theme } from "./theme";
@@ -6,9 +6,7 @@ import { theme } from "./theme";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 
-import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
-import { Sidebar } from "@/components/layout/sidebar";
+import { AppShellLayout } from "@/components/layout/app-shell-layout";
 import { SpotlightProvider } from "@/components/layout/spotlight-provider";
 
 export const metadata: Metadata = {
@@ -30,21 +28,7 @@ export default function RootLayout({
       <body>
         <MantineProvider theme={theme} defaultColorScheme="auto">
           <SpotlightProvider />
-          <Header />
-          <Sidebar />
-          <Box
-            component="main"
-            style={{
-              marginLeft: "var(--sidebar-width)",
-              marginTop: "var(--header-height)",
-              minHeight: "calc(100vh - var(--header-height))",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Box style={{ flex: 1 }}>{children}</Box>
-            <Footer />
-          </Box>
+          <AppShellLayout>{children}</AppShellLayout>
         </MantineProvider>
       </body>
     </html>

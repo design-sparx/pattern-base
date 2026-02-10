@@ -1,10 +1,30 @@
 "use client";
 
-import { Box, Group, Paper, SegmentedControl, Tabs } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Code,
+  Collapse,
+  CopyButton,
+  Group,
+  Paper,
+  Popover,
+  SegmentedControl,
+  Tooltip,
+} from "@mantine/core";
+import {
+  IconCheck,
+  IconCode,
+  IconCopy,
+  IconDeviceDesktop,
+  IconDeviceMobile,
+  IconDeviceTablet,
+  IconDownload,
+} from "@tabler/icons-react";
 import { useState } from "react";
 
 import { CodeBlock } from "./code-block";
-import { InstallCommand } from "./install-command";
 
 import { codeSnippets } from "@/data/snippet-templates";
 import { componentRegistry } from "@/lib/registry";
@@ -14,62 +34,35 @@ const installCommands: Record<string, string> = {
   antd: "pnpm add antd @ant-design/icons",
 };
 
+const viewports = [
+  { value: "mobile", label: "Mobile", icon: IconDeviceMobile, width: 375 },
+  { value: "tablet", label: "Tablet", icon: IconDeviceTablet, width: 768 },
+  {
+    value: "desktop",
+    label: "Desktop",
+    icon: IconDeviceDesktop,
+    width: undefined,
+  },
+] as const;
+
 interface ComponentPreviewProps {
   patternId: string;
 }
 
 export function ComponentPreview({ patternId }: ComponentPreviewProps) {
-  const [tab, setTab] = useState<string | null>("preview");
   const [framework, setFramework] = useState("bootstrap");
+  const [codeOpen, setCodeOpen] = useState(false);
+  const [viewport, setViewport] = useState("desktop");
+
   const entry = componentRegistry[patternId];
   const snippets = codeSnippets[patternId];
-
   const fw = framework as "bootstrap" | "antd";
+  const activeViewport = viewports.find((v) => v.value === viewport);
 
   return (
-    <Paper withBorder style={{ overflow: "hidden" }}>
-      <Group
-        justify="space-between"
-        px="md"
-        py="xs"
-        style={{
-          borderBottom: "1px solid var(--mantine-color-default-border)",
-          backgroundColor: "var(--mantine-color-default)",
-        }}
-      >
-        <Tabs value={tab} onChange={setTab} variant="unstyled">
-          <Tabs.List>
-            <Tabs.Tab
-              value="preview"
-              fz="sm"
-              fw={tab === "preview" ? 600 : 400}
-              style={{
-                borderBottom:
-                  tab === "preview"
-                    ? "2px solid var(--mantine-color-violet-6)"
-                    : "2px solid transparent",
-                paddingBottom: 8,
-              }}
-            >
-              Preview
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="code"
-              fz="sm"
-              fw={tab === "code" ? 600 : 400}
-              style={{
-                borderBottom:
-                  tab === "code"
-                    ? "2px solid var(--mantine-color-violet-6)"
-                    : "2px solid transparent",
-                paddingBottom: 8,
-              }}
-            >
-              Code
-            </Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
-
+    <Box>
+      {/* Framework toggle — above the card */}
+      <Group justify="flex-end" mb="xs">
         <SegmentedControl
           size="xs"
           value={framework}
@@ -81,24 +74,129 @@ export function ComponentPreview({ patternId }: ComponentPreviewProps) {
         />
       </Group>
 
-      <Box p="md">
-        <InstallCommand command={installCommands[fw]} />
-      </Box>
+      <Paper withBorder style={{ overflow: "hidden" }}>
+        {/* Toolbar */}
+        <Group
+          justify="space-between"
+          px="md"
+          py={6}
+          style={{
+            borderBottom: "1px solid var(--mantine-color-default-border)",
+            backgroundColor: "var(--mantine-color-default)",
+          }}
+        >
+          {/* Viewport controls — left side */}
+          <ActionIcon.Group>
+            {viewports.map((vp) => (
+              <Tooltip key={vp.value} label={vp.label} withArrow>
+                <ActionIcon
+                  variant={viewport === vp.value ? "light" : "default"}
+                  color={viewport === vp.value ? "violet" : "gray"}
+                  size="sm"
+                  onClick={() => {
+                    setViewport(vp.value);
+                  }}
+                >
+                  <vp.icon size={14} />
+                </ActionIcon>
+              </Tooltip>
+            ))}
+          </ActionIcon.Group>
 
-      <Box p="lg" pt={0}>
-        {tab === "preview" ? (
+          {/* Action controls — right side */}
+          <Group gap="xs">
+            {/* Install popover */}
+            <Popover width={360} position="bottom-end" shadow="md" withArrow>
+              <Popover.Target>
+                <Button
+                  variant="subtle"
+                  color="gray"
+                  size="compact-xs"
+                  leftSection={<IconDownload size={14} />}
+                >
+                  Install
+                </Button>
+              </Popover.Target>
+              <Popover.Dropdown p="sm">
+                <Group justify="space-between" gap="xs">
+                  <Code fz="sm" style={{ flex: 1 }}>
+                    {installCommands[fw]}
+                  </Code>
+                  <CopyButton value={installCommands[fw]}>
+                    {({ copied, copy }) => (
+                      <Tooltip label={copied ? "Copied!" : "Copy"} withArrow>
+                        <ActionIcon
+                          variant="subtle"
+                          color={copied ? "green" : "gray"}
+                          size="sm"
+                          onClick={copy}
+                        >
+                          {copied ? (
+                            <IconCheck size={14} />
+                          ) : (
+                            <IconCopy size={14} />
+                          )}
+                        </ActionIcon>
+                      </Tooltip>
+                    )}
+                  </CopyButton>
+                </Group>
+              </Popover.Dropdown>
+            </Popover>
+
+            {/* Code toggle */}
+            <Button
+              variant={codeOpen ? "light" : "subtle"}
+              color={codeOpen ? "violet" : "gray"}
+              size="compact-xs"
+              leftSection={<IconCode size={14} />}
+              onClick={() => {
+                setCodeOpen((o) => !o);
+              }}
+            >
+              {codeOpen ? "Hide Code" : "Show Code"}
+            </Button>
+          </Group>
+        </Group>
+
+        {/* Preview area */}
+        <Box p="md">
           <Box
-            mih={200}
+            mih={120}
             className="dot-grid-bg"
-            p="lg"
-            style={{ borderRadius: 8 }}
+            p="md"
+            style={{
+              borderRadius: 8,
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            {fw === "bootstrap" ? <entry.bootstrap /> : <entry.antd />}
+            <Box
+              w="100%"
+              maw={activeViewport?.width}
+              style={{
+                transition: "max-width 200ms ease",
+              }}
+            >
+              {fw === "bootstrap" ? <entry.bootstrap /> : <entry.antd />}
+            </Box>
           </Box>
-        ) : (
-          <CodeBlock code={snippets[fw]} filename={`${patternId}.tsx`} />
-        )}
-      </Box>
-    </Paper>
+        </Box>
+
+        {/* Collapsible code panel */}
+        <Collapse in={codeOpen}>
+          <Box
+            px="md"
+            pb="md"
+            style={{
+              borderTop: "1px solid var(--mantine-color-default-border)",
+            }}
+            pt="md"
+          >
+            <CodeBlock code={snippets[fw]} filename={`${patternId}.tsx`} />
+          </Box>
+        </Collapse>
+      </Paper>
+    </Box>
   );
 }

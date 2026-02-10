@@ -5,6 +5,7 @@ import {
   Box,
   Collapse,
   NavLink,
+  ScrollArea,
   Text,
   UnstyledButton,
 } from "@mantine/core";
@@ -49,20 +50,7 @@ export function Sidebar() {
   };
 
   return (
-    <Box
-      component="aside"
-      style={{
-        position: "fixed",
-        left: 0,
-        top: "var(--header-height)",
-        bottom: 0,
-        width: "var(--sidebar-width)",
-        borderRight: "1px solid var(--mantine-color-default-border)",
-        backgroundColor: "var(--mantine-color-body)",
-        overflowY: "auto",
-        padding: 12,
-      }}
-    >
+    <ScrollArea h="100%" p={12}>
       <nav>
         <NavLink
           component={Link}
@@ -165,12 +153,17 @@ export function Sidebar() {
           />
         </Box>
 
-        <Box mt="auto" pt="xl">
-          <Text fz="xs" c="dimmed" ta="center">
+        <Box mt="auto" pt="xl" pb="xs">
+          <Text
+            fz={10}
+            c="dimmed"
+            ta="center"
+            style={{ opacity: 0.6, letterSpacing: "0.03em" }}
+          >
             AI Vory v0.1.0
           </Text>
         </Box>
       </nav>
-    </Box>
+    </ScrollArea>
   );
 }

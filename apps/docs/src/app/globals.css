@@ -6,7 +6,6 @@
 @import "@fontsource/inter/700.css";
 
 :root {
-  --sidebar-width: 260px;
   --header-height: 60px;
 }
 
@@ -43,6 +42,16 @@ body {
 
 [data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
   background: var(--mantine-color-dark-4);
+}
+
+/* Header search button hover */
+.header-search:hover {
+  border-color: var(--mantine-color-violet-4) !important;
+}
+
+[data-mantine-color-scheme="dark"] .header-search:hover {
+  border-color: var(--mantine-color-violet-7) !important;
+  background: var(--mantine-color-dark-5) !important;
 }
 
 /* Dot grid background for preview areas */

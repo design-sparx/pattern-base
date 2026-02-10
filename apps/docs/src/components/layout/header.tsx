@@ -4,11 +4,10 @@ import {
   ActionIcon,
   Anchor,
   Badge,
-  Box,
-  Button,
   Group,
   Kbd,
   Text,
+  UnstyledButton,
   useMantineColorScheme,
 } from "@mantine/core";
 import { spotlight } from "@mantine/spotlight";
@@ -32,88 +31,116 @@ export function Header() {
   ];
 
   return (
-    <Box
-      component="header"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: "var(--header-height)",
-        borderBottom: "1px solid var(--mantine-color-default-border)",
-        backgroundColor:
-          colorScheme === "dark"
-            ? "rgba(26, 27, 30, 0.8)"
-            : "rgba(255, 255, 255, 0.8)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        zIndex: 100,
-        display: "flex",
-        alignItems: "center",
-        paddingInline: 24,
-      }}
-    >
-      <Group gap="xs" align="center">
-        <IconSparkles
-          size={22}
-          style={{ color: "var(--mantine-color-violet-6)" }}
-        />
+    <Group h="100%" px="md" justify="space-between">
+      <Group gap="sm">
         <Anchor
           component={Link}
           href="/"
-          fw={700}
-          fz="lg"
           underline="never"
-          style={{ color: "var(--mantine-color-text)" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
         >
-          AI Vory
-        </Anchor>
-        <Badge size="xs" variant="light" color="violet">
-          v0.1.0
-        </Badge>
-      </Group>
-
-      <Group ml="xl" gap={4}>
-        {navLinks.map((link) => {
-          const isActive = pathname.startsWith(link.href);
-          return (
-            <Button
-              key={link.href}
-              component={Link}
-              href={link.href}
-              variant="subtle"
-              color={isActive ? "violet" : "gray"}
-              size="compact-sm"
-              fw={isActive ? 600 : 400}
-            >
-              {link.label}
-            </Button>
-          );
-        })}
-      </Group>
-
-      <Group ml="auto" gap="xs">
-        <Button
-          variant="default"
-          size="compact-sm"
-          leftSection={<IconSearch size={14} />}
-          rightSection={
-            <Group gap={4}>
-              <Kbd size="xs">Ctrl</Kbd>
-              <Kbd size="xs">K</Kbd>
-            </Group>
-          }
-          onClick={spotlight.open}
-          style={{ minWidth: 200 }}
-        >
-          <Text fz="xs" c="dimmed">
-            Search...
+          <IconSparkles
+            size={24}
+            style={{ color: "var(--mantine-color-violet-6)" }}
+          />
+          <Text fw={700} fz="lg" style={{ color: "var(--mantine-color-text)" }}>
+            AI Vory
           </Text>
-        </Button>
+          <Badge
+            size="xs"
+            variant="outline"
+            color="violet"
+            radius="sm"
+            styles={{
+              root: {
+                textTransform: "none",
+                fontWeight: 500,
+                borderStyle: "dashed",
+              },
+            }}
+          >
+            v0.1.0
+          </Badge>
+        </Anchor>
+
+        <Group
+          ml="sm"
+          gap={0}
+          style={{
+            borderLeft: "1px solid var(--mantine-color-default-border)",
+            paddingLeft: 12,
+          }}
+        >
+          {navLinks.map((link) => {
+            const isActive = pathname.startsWith(link.href);
+            return (
+              <Anchor
+                key={link.href}
+                component={Link}
+                href={link.href}
+                underline="never"
+                fz="sm"
+                fw={isActive ? 600 : 400}
+                px={12}
+                py={6}
+                style={{
+                  borderRadius: "var(--mantine-radius-sm)",
+                  color: isActive
+                    ? "var(--mantine-color-violet-6)"
+                    : "var(--mantine-color-dimmed)",
+                  transition: "color 0.15s ease",
+                }}
+              >
+                {link.label}
+              </Anchor>
+            );
+          })}
+        </Group>
+      </Group>
+
+      <Group gap={8}>
+        <UnstyledButton
+          onClick={spotlight.open}
+          className="header-search"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "6px 12px",
+            borderRadius: "var(--mantine-radius-md)",
+            border: "1px solid var(--mantine-color-default-border)",
+            minWidth: 220,
+            background:
+              colorScheme === "dark"
+                ? "var(--mantine-color-dark-6)"
+                : "var(--mantine-color-gray-0)",
+            cursor: "pointer",
+            transition: "border-color 0.15s ease, background 0.15s ease",
+          }}
+        >
+          <IconSearch size={14} color="var(--mantine-color-dimmed)" />
+          <Text fz="xs" c="dimmed" style={{ flex: 1 }}>
+            Search patterns...
+          </Text>
+          <Group gap={3}>
+            <Kbd size="xs" style={{ fontSize: 10, padding: "1px 5px" }}>
+              Ctrl
+            </Kbd>
+            <Kbd size="xs" style={{ fontSize: 10, padding: "1px 5px" }}>
+              K
+            </Kbd>
+          </Group>
+        </UnstyledButton>
 
         <ActionIcon
-          variant="default"
+          variant="subtle"
+          color="gray"
           size="lg"
+          radius="md"
           onClick={toggleColorScheme}
           aria-label="Toggle color scheme"
         >
@@ -129,13 +156,15 @@ export function Header() {
           href="https://github.com"
           target="_blank"
           rel="noopener noreferrer"
-          variant="default"
+          variant="subtle"
+          color="gray"
           size="lg"
+          radius="md"
           aria-label="GitHub"
         >
           <IconBrandGithub size={18} />
         </ActionIcon>
       </Group>
-    </Box>
+    </Group>
   );
 }

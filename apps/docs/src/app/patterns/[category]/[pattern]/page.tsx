@@ -1,8 +1,12 @@
 import {
   Badge,
   Box,
-  Breadcrumbs,
   Group,
+  List,
+  ListItem,
+  Paper,
+  SimpleGrid,
+  Stack,
   Text,
   ThemeIcon,
   Title,
@@ -11,18 +15,26 @@ import {
   IconAdjustments,
   IconArrowLeft,
   IconArrowRight,
+  IconBulb,
   IconChevronRight,
+  IconCircleCheck,
   IconCompass,
   IconEye,
   IconKeyboard,
   IconLayoutGrid,
+  IconLink,
   IconShield,
+  IconTargetArrow,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { AsideToc } from "@/components/preview/aside-toc";
 import { ComponentPreview } from "@/components/preview/component-preview";
+import { PropsTable } from "@/components/preview/props-table";
+import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
+import { propsData } from "@/data/props-data";
 
 const categoryIcons: Record<string, React.ElementType> = {
   "prompt-actions": IconKeyboard,
@@ -66,40 +78,69 @@ export default async function PatternPage({ params }: PatternPageParams) {
   const next =
     currentIndex < patterns.length - 1 ? patterns[currentIndex + 1] : null;
 
+  const hasProps = pattern.id in propsData;
+  const explanation = patternExplanations[pattern.id];
+
+  const tocItems = [
+    ...(explanation ? [{ id: "overview", label: "Overview" }] : []),
+    { id: "preview", label: "Preview" },
+    ...(explanation?.variants.length
+      ? [{ id: "variants", label: "Variants" }]
+      : []),
+    ...(explanation?.useCases.length
+      ? [{ id: "use-cases", label: "Use Cases" }]
+      : []),
+    ...(explanation?.bestPractices.length
+      ? [{ id: "best-practices", label: "Best Practices" }]
+      : []),
+    ...(hasProps ? [{ id: "props", label: "Props" }] : []),
+    ...(explanation?.relatedPatterns.length
+      ? [{ id: "related", label: "Related Patterns" }]
+      : []),
+    { id: "navigation", label: "Navigation" },
+  ];
+
   return (
-    <Box p="xl" maw={1000}>
+    <Box p="xl">
+      {/* Inject TOC into AppShell aside */}
+      <AsideToc items={tocItems} />
+
       {/* Breadcrumbs */}
-      <Breadcrumbs
-        fz="sm"
-        mb="lg"
-        separator={
-          <IconChevronRight size={12} color="var(--mantine-color-dimmed)" />
-        }
-      >
+      <Group gap={6} mb="lg">
         <Link
           href="/patterns"
           style={{
-            fontSize: "var(--mantine-font-size-sm)",
+            fontSize: "var(--mantine-font-size-xs)",
             color: "var(--mantine-color-dimmed)",
             textDecoration: "none",
           }}
         >
           Patterns
         </Link>
+        <IconChevronRight
+          size={12}
+          color="var(--mantine-color-dimmed)"
+          style={{ opacity: 0.5 }}
+        />
         <Link
           href={`/patterns/${category.id}`}
           style={{
-            fontSize: "var(--mantine-font-size-sm)",
+            fontSize: "var(--mantine-font-size-xs)",
             color: "var(--mantine-color-dimmed)",
             textDecoration: "none",
           }}
         >
           {category.name}
         </Link>
-        <Text fz="sm" fw={500}>
+        <IconChevronRight
+          size={12}
+          color="var(--mantine-color-dimmed)"
+          style={{ opacity: 0.5 }}
+        />
+        <Text fz="xs" fw={600} c={color}>
           {pattern.name}
         </Text>
-      </Breadcrumbs>
+      </Group>
 
       {/* Header */}
       <Box mb="lg">
@@ -121,15 +162,147 @@ export default async function PatternPage({ params }: PatternPageParams) {
         </Group>
       </Box>
 
+      {/* Overview */}
+      {explanation ? (
+        <Box id="overview" mb="xl" style={{ scrollMarginTop: 80 }}>
+          <Text fz="md" lh={1.7}>
+            {explanation.overview}
+          </Text>
+        </Box>
+      ) : null}
+
       {/* Preview */}
-      <ComponentPreview patternId={pattern.id} />
+      <Box id="preview" style={{ scrollMarginTop: 80 }}>
+        <ComponentPreview patternId={pattern.id} />
+      </Box>
+
+      {/* Variants */}
+      {explanation?.variants.length ? (
+        <Box id="variants" mt={36} style={{ scrollMarginTop: 80 }}>
+          <Group gap="xs" mb="md">
+            <ThemeIcon variant="light" color={color} size="sm">
+              <IconBulb size={14} />
+            </ThemeIcon>
+            <Title order={3}>Variants</Title>
+          </Group>
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+            {explanation.variants.map((v) => (
+              <Paper key={v.title} p="md" radius="md" withBorder>
+                <Text fw={600} fz="sm" mb={4}>
+                  {v.title}
+                </Text>
+                <Text fz="sm" c="dimmed" lh={1.6}>
+                  {v.description}
+                </Text>
+              </Paper>
+            ))}
+          </SimpleGrid>
+        </Box>
+      ) : null}
+
+      {/* Use Cases */}
+      {explanation?.useCases.length ? (
+        <Box id="use-cases" mt={36} style={{ scrollMarginTop: 80 }}>
+          <Group gap="xs" mb="md">
+            <ThemeIcon variant="light" color={color} size="sm">
+              <IconTargetArrow size={14} />
+            </ThemeIcon>
+            <Title order={3}>Use Cases</Title>
+          </Group>
+          <List
+            spacing="xs"
+            icon={
+              <ThemeIcon variant="light" color={color} size={20} radius="xl">
+                <IconCircleCheck size={12} />
+              </ThemeIcon>
+            }
+          >
+            {explanation.useCases.map((uc) => (
+              <ListItem key={uc}>
+                <Text fz="sm" lh={1.6}>
+                  {uc}
+                </Text>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      ) : null}
+
+      {/* Best Practices */}
+      {explanation?.bestPractices.length ? (
+        <Box id="best-practices" mt={36} style={{ scrollMarginTop: 80 }}>
+          <Group gap="xs" mb="md">
+            <ThemeIcon variant="light" color={color} size="sm">
+              <IconCircleCheck size={14} />
+            </ThemeIcon>
+            <Title order={3}>Best Practices</Title>
+          </Group>
+          <Stack gap="sm">
+            {explanation.bestPractices.map((bp, i) => (
+              <Paper key={i} p="md" radius="md" withBorder>
+                <Text fz="sm" lh={1.6}>
+                  {bp}
+                </Text>
+              </Paper>
+            ))}
+          </Stack>
+        </Box>
+      ) : null}
+
+      {/* Props Table */}
+      {hasProps ? (
+        <Box id="props" mt={36} style={{ scrollMarginTop: 80 }}>
+          <PropsTable props={propsData[pattern.id]} />
+        </Box>
+      ) : null}
+
+      {/* Related Patterns */}
+      {explanation?.relatedPatterns.length ? (
+        <Box id="related" mt={36} style={{ scrollMarginTop: 80 }}>
+          <Group gap="xs" mb="md">
+            <ThemeIcon variant="light" color={color} size="sm">
+              <IconLink size={14} />
+            </ThemeIcon>
+            <Title order={3}>Related Patterns</Title>
+          </Group>
+          <Group gap="sm">
+            {explanation.relatedPatterns.map((rp) => {
+              const related = patterns.find((p) => p.name === rp);
+              return related ? (
+                <Link
+                  key={rp}
+                  href={`/patterns/${related.category}/${related.slug}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Badge
+                    size="lg"
+                    variant="light"
+                    color={categoryColors[related.category] ?? "violet"}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {rp}
+                  </Badge>
+                </Link>
+              ) : (
+                <Badge key={rp} size="lg" variant="light" color="gray">
+                  {rp}
+                </Badge>
+              );
+            })}
+          </Group>
+        </Box>
+      ) : null}
 
       {/* Prev/Next Navigation */}
       <Group
+        id="navigation"
         justify="space-between"
         mt="xl"
         pt="xl"
-        style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+        style={{
+          borderTop: "1px solid var(--mantine-color-default-border)",
+          scrollMarginTop: 80,
+        }}
       >
         {prev ? (
           <Link
