@@ -8,7 +8,7 @@ import { Footer } from "./footer";
 import { Header } from "./header";
 import { Sidebar } from "./sidebar";
 
-function ShellContent({ children }: { children: ReactNode }) {
+function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
   const { content: asideContent } = useAside();
 
   return (
@@ -54,7 +54,9 @@ function ShellContent({ children }: { children: ReactNode }) {
   );
 }
 
-export function AppShellLayout({ children }: { children: ReactNode }) {
+export function AppShellLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <AsideProvider>
       <ShellContent>{children}</ShellContent>

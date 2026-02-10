@@ -1,6 +1,6 @@
 # AI Vory
 
-A multi-framework React component library for AI user experience patterns, based on [shapeof.ai](https://www.shapeof.ai) UX patterns.
+A multi-framework React component library for AI user experience patterns.
 
 ## Overview
 
@@ -67,7 +67,7 @@ Both framework packages expose identical prop interfaces — swap between Bootst
 
 ## Docs Site Architecture
 
-The documentation site (`apps/docs`) is a Next.js 14 app using Mantine UI. It provides live, interactive previews of every pattern in both frameworks.
+The documentation site (`apps/docs`) is a Next.js 16 app using Mantine UI. It provides live, interactive previews of every pattern in both frameworks.
 
 ### How pattern previews work
 
@@ -84,15 +84,16 @@ Each pattern detail page (e.g. `/patterns/prompt-actions/open-input`) is assembl
    }
    ```
 
-3. **Code snippets** (`src/data/code-snippets.ts`) — A map from pattern ID to framework-specific usage examples shown in the Code tab.
+3. **Snippet templates** (`src/data/snippet-templates.ts`) — Template functions keyed by pattern ID that return framework-specific usage examples shown in the Code tab.
 
 The `ComponentPreview` component ties these together with a tabbed UI (Preview / Code) and a framework toggle (Bootstrap / Ant Design).
 
 ### Adding a new pattern to the docs
 
 1. Add pattern metadata to `src/data/patterns.ts`
-2. Register both framework components with demo data in `src/lib/registry.tsx`
-3. Add code snippets for both frameworks in `src/data/code-snippets.ts`
+2. Add demo data to `src/data/demo-data.ts` if needed
+3. Register both framework components with demo data in `src/lib/registry.tsx`
+4. Add snippet templates for both frameworks in `src/data/snippet-templates.ts`
 
 ## Scripts
 
@@ -112,7 +113,7 @@ pnpm clean                            # Remove all dist folders
 - **Build:** tsup (CJS + ESM + .d.ts)
 - **TypeScript:** Strict mode, ES2020 target
 - **Testing:** Vitest + @testing-library/react
-- **Docs:** Next.js 14, Mantine UI
+- **Docs:** Next.js 16, Mantine UI (v7)
 - **Linting:** ESLint, commitlint (conventional commits), husky + lint-staged
 
 ## License

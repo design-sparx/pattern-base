@@ -8,7 +8,7 @@ interface PropsTableProps {
   props: PropDefinition[];
 }
 
-export function PropsTable({ props }: PropsTableProps) {
+export function PropsTable({ props }: Readonly<PropsTableProps>) {
   return (
     <Paper withBorder style={{ overflow: "hidden" }}>
       <Box

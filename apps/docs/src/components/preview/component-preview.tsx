@@ -49,7 +49,9 @@ interface ComponentPreviewProps {
   patternId: string;
 }
 
-export function ComponentPreview({ patternId }: ComponentPreviewProps) {
+export function ComponentPreview({
+  patternId,
+}: Readonly<ComponentPreviewProps>) {
   const [framework, setFramework] = useState("bootstrap");
   const [codeOpen, setCodeOpen] = useState(false);
   const [viewport, setViewport] = useState("desktop");

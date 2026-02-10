@@ -52,6 +52,33 @@ const categoryColors: Record<string, string> = {
   "trust-builders": "pink",
 };
 
+interface TocItem {
+  id: string;
+  label: string;
+}
+
+function buildTocItems(
+  explanation: (typeof patternExplanations)[string] | undefined,
+  hasProps: boolean,
+): TocItem[] {
+  const items: TocItem[] = [];
+
+  if (explanation) items.push({ id: "overview", label: "Overview" });
+  items.push({ id: "preview", label: "Preview" });
+  if (explanation?.variants.length)
+    items.push({ id: "variants", label: "Variants" });
+  if (explanation?.useCases.length)
+    items.push({ id: "use-cases", label: "Use Cases" });
+  if (explanation?.bestPractices.length)
+    items.push({ id: "best-practices", label: "Best Practices" });
+  if (hasProps) items.push({ id: "props", label: "Props" });
+  if (explanation?.relatedPatterns.length)
+    items.push({ id: "related", label: "Related Patterns" });
+  items.push({ id: "navigation", label: "Navigation" });
+
+  return items;
+}
+
 interface PatternPageParams {
   params: Promise<{ category: string; pattern: string }>;
 }
@@ -63,7 +90,9 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function PatternPage({ params }: PatternPageParams) {
+export default async function PatternPage({
+  params,
+}: Readonly<PatternPageParams>) {
   const { category: categorySlug, pattern: patternSlug } = await params;
   const pattern = getPatternBySlug(patternSlug);
   const category = getCategoryById(categorySlug);
@@ -80,25 +109,7 @@ export default async function PatternPage({ params }: PatternPageParams) {
 
   const hasProps = pattern.id in propsData;
   const explanation = patternExplanations[pattern.id];
-
-  const tocItems = [
-    ...(explanation ? [{ id: "overview", label: "Overview" }] : []),
-    { id: "preview", label: "Preview" },
-    ...(explanation?.variants.length
-      ? [{ id: "variants", label: "Variants" }]
-      : []),
-    ...(explanation?.useCases.length
-      ? [{ id: "use-cases", label: "Use Cases" }]
-      : []),
-    ...(explanation?.bestPractices.length
-      ? [{ id: "best-practices", label: "Best Practices" }]
-      : []),
-    ...(hasProps ? [{ id: "props", label: "Props" }] : []),
-    ...(explanation?.relatedPatterns.length
-      ? [{ id: "related", label: "Related Patterns" }]
-      : []),
-    { id: "navigation", label: "Navigation" },
-  ];
+  const tocItems = buildTocItems(explanation, hasProps);
 
   return (
     <Box p="xl">
@@ -238,8 +249,8 @@ export default async function PatternPage({ params }: PatternPageParams) {
             <Title order={3}>Best Practices</Title>
           </Group>
           <Stack gap="sm">
-            {explanation.bestPractices.map((bp, i) => (
-              <Paper key={i} p="md" radius="md" withBorder>
+            {explanation.bestPractices.map((bp) => (
+              <Paper key={bp} p="md" radius="md" withBorder>
                 <Text fz="sm" lh={1.6}>
                   {bp}
                 </Text>

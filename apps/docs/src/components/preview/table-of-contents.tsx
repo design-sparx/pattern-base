@@ -12,7 +12,7 @@ interface TableOfContentsProps {
   items: TocItem[];
 }
 
-export function TableOfContents({ items }: TableOfContentsProps) {
+export function TableOfContents({ items }: Readonly<TableOfContentsProps>) {
   const [activeId, setActiveId] = useState("");
 
   useEffect(() => {

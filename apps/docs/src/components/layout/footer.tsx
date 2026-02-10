@@ -15,16 +15,7 @@ export function Footer() {
     >
       <Group justify="space-between" align="center">
         <Text fz="sm" c="dimmed">
-          Built on{" "}
-          <Anchor
-            href="https://www.shapeof.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            fz="sm"
-          >
-            shapeof.ai
-          </Anchor>{" "}
-          patterns
+          AI Vory — AI UX Pattern Library
         </Text>
         <Group gap="lg">
           <Anchor

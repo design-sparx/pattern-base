@@ -1,6 +1,6 @@
 "use client";
 
-import { Anchor, Box, Button, Group, Text, Title } from "@mantine/core";
+import { Box, Button, Group, Text, Title } from "@mantine/core";
 import { IconArrowRight, IconBrandGithub } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -15,16 +15,8 @@ export function Hero() {
           Build AI interfaces that users trust
         </Title>
         <Text fz="xl" c="dimmed" mb="xl" maw={560}>
-          A multi-framework component library for AI UX patterns. Based on{" "}
-          <Anchor
-            href="https://www.shapeof.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            fw={500}
-          >
-            shapeof.ai
-          </Anchor>{" "}
-          research — built with Bootstrap and Ant Design.
+          A multi-framework component library for AI UX patterns — built with
+          Bootstrap and Ant Design.
         </Text>
         <Group gap="sm">
           <Button

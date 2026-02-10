@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 interface AsideContextValue {
   content: ReactNode;
@@ -15,13 +21,13 @@ const AsideContext = createContext<AsideContextValue>({
   setContent: noop,
 });
 
-export function AsideProvider({ children }: { children: ReactNode }) {
+export function AsideProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [content, setContent] = useState<ReactNode>(null);
 
+  const value = useMemo(() => ({ content, setContent }), [content, setContent]);
+
   return (
-    <AsideContext.Provider value={{ content, setContent }}>
-      {children}
-    </AsideContext.Provider>
+    <AsideContext.Provider value={value}>{children}</AsideContext.Provider>
   );
 }
 

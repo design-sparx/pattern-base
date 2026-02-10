@@ -1,6 +1,5 @@
 /**
  * Core type definitions for AI UX patterns
- * Based on shapeof.ai pattern library
  */
 
 // ── Wayfinder Patterns ──

@@ -15,7 +15,7 @@ export function CodeBlock({
   code,
   language = "tsx",
   filename,
-}: CodeBlockProps) {
+}: Readonly<CodeBlockProps>) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
