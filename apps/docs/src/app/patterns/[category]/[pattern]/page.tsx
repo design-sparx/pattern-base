@@ -22,7 +22,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ComponentPreview } from "@/components/preview/component-preview";
-import { InstallCommand } from "@/components/preview/install-command";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 
 const categoryIcons: Record<string, React.ElementType> = {
@@ -121,9 +120,6 @@ export default async function PatternPage({ params }: PatternPageParams) {
           ))}
         </Group>
       </Box>
-
-      {/* Install */}
-      <InstallCommand command="pnpm add @ai-ui/bootstrap @ai-ui/core" />
 
       {/* Preview */}
       <ComponentPreview patternId={pattern.id} />

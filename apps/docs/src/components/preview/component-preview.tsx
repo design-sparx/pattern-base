@@ -4,9 +4,15 @@ import { Box, Group, Paper, SegmentedControl, Tabs } from "@mantine/core";
 import { useState } from "react";
 
 import { CodeBlock } from "./code-block";
+import { InstallCommand } from "./install-command";
 
 import { codeSnippets } from "@/data/snippet-templates";
 import { componentRegistry } from "@/lib/registry";
+
+const installCommands: Record<string, string> = {
+  bootstrap: "pnpm add react-bootstrap bootstrap",
+  antd: "pnpm add antd @ant-design/icons",
+};
 
 interface ComponentPreviewProps {
   patternId: string;
@@ -75,7 +81,11 @@ export function ComponentPreview({ patternId }: ComponentPreviewProps) {
         />
       </Group>
 
-      <Box p="lg">
+      <Box p="md">
+        <InstallCommand command={installCommands[fw]} />
+      </Box>
+
+      <Box p="lg" pt={0}>
         {tab === "preview" ? (
           <Box
             mih={200}

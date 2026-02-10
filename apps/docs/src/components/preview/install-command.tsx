@@ -20,7 +20,6 @@ export function InstallCommand({ command }: InstallCommandProps) {
     <Paper
       withBorder
       p="sm"
-      mb="xl"
       style={{ backgroundColor: "var(--mantine-color-default)" }}
     >
       <Group justify="space-between">
