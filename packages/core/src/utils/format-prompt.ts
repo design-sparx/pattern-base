@@ -7,7 +7,7 @@ export function formatPrompt(
     systemPrompt?: string;
     context?: string;
     maxLength?: number;
-  }
+  },
 ): string {
   let formatted = userPrompt.trim();
 

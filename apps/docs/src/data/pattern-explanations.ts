@@ -400,4 +400,744 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     ],
     relatedPatterns: ["Cost Estimate", "Parameter Control", "Open Input"],
   },
+
+  "follow-up": {
+    overview:
+      "Follow Up prompts keep the conversation moving after an AI response by suggesting relevant next steps. They reduce the cognitive load of deciding what to ask next and help users explore a topic more deeply without composing prompts from scratch. Well-chosen follow-ups transform a single Q&A exchange into a productive exploration session.",
+    variants: [
+      {
+        title: "Chip prompts",
+        description:
+          "Compact pill-shaped buttons displayed beneath a response, each containing a ready-to-send follow-up question.",
+      },
+      {
+        title: "List prompts",
+        description:
+          "A vertical list of follow-up options with optional descriptions, suited for more complex or detailed suggestions.",
+      },
+      {
+        title: "Contextual buttons",
+        description:
+          "Action-oriented buttons that adapt based on the content of the AI's response, such as 'Show code' or 'Explain further'.",
+      },
+    ],
+    useCases: [
+      "Chat assistants guiding users through multi-turn conversations",
+      "Research tools that help users drill down into topics",
+      "Customer support bots suggesting next troubleshooting steps",
+      "Educational tools that encourage deeper exploration",
+      "Content generation workflows where iterative refinement is common",
+    ],
+    bestPractices: [
+      "Generate follow-ups contextually based on the AI's most recent response, not generic suggestions.",
+      "Limit follow-ups to 3-5 options to prevent decision paralysis.",
+      "Make follow-ups actionable — clicking should immediately send the prompt or pre-fill the input.",
+      "Vary the type of follow-ups: include both deepening questions and broadening ones.",
+      "Place follow-ups where users naturally look after reading a response — directly below the content.",
+    ],
+    relatedPatterns: ["Suggestions", "Open Input", "Regenerate"],
+  },
+
+  templates: {
+    overview:
+      "Templates provide users with structured, reusable prompts that include placeholders for customization. They bridge the gap between a blank input and a well-crafted prompt by offering proven patterns that users can adapt to their specific needs. Templates are especially valuable for repeated tasks where the prompt structure stays consistent but the details change each time.",
+    variants: [
+      {
+        title: "Simple templates",
+        description:
+          "Fixed prompt strings with no variables — users select and send as-is or edit before sending.",
+      },
+      {
+        title: "Variable templates",
+        description:
+          "Templates with named placeholders that users fill in via form fields before the prompt is assembled and sent.",
+      },
+      {
+        title: "Category-grouped templates",
+        description:
+          "Templates organized by domain or use case, making it easy to browse and find the right starting point.",
+      },
+    ],
+    useCases: [
+      "Content creation workflows with repeatable formats (emails, reports, posts)",
+      "Development tools offering common code generation patterns",
+      "Customer support systems with standard response frameworks",
+      "Marketing teams generating variations of campaign copy",
+      "Data analysis workflows with standard query patterns",
+    ],
+    bestPractices: [
+      "Group templates by category or use case so users can scan quickly.",
+      "Make variable fields clearly labeled with helpful placeholders.",
+      "Allow users to preview the assembled prompt before sending.",
+      "Support search and filtering when the template library grows large.",
+      "Let users create and save their own templates for recurring tasks.",
+    ],
+    relatedPatterns: ["Suggestions", "Open Input", "Parameter Control"],
+  },
+
+  gallery: {
+    overview:
+      "Gallery displays a collection of AI-generated or AI-curated items in a browsable grid layout. It's the natural presentation pattern when the output is visual or when users need to compare multiple options at a glance. Galleries support selection, lazy loading, and filtering, making them suitable for both small result sets and large, paginated collections.",
+    variants: [
+      {
+        title: "Image gallery",
+        description:
+          "A grid of image thumbnails with selection support, commonly used for AI image generation results.",
+      },
+      {
+        title: "Card gallery",
+        description:
+          "Content cards with titles and descriptions arranged in a grid, useful for text-based generated content.",
+      },
+      {
+        title: "Mixed media gallery",
+        description:
+          "A grid combining different content types — images, text, and metadata — for heterogeneous result sets.",
+      },
+    ],
+    useCases: [
+      "AI image generation tools displaying multiple outputs",
+      "Design tools showing template or style options",
+      "Content libraries browsing AI-generated articles or posts",
+      "Search results presented as visual cards",
+      "Portfolio displays of AI-assisted creative work",
+    ],
+    bestPractices: [
+      "Support keyboard navigation and selection for accessibility.",
+      "Use consistent card sizes within a gallery for visual rhythm.",
+      "Provide clear selection feedback — borders, checkmarks, or overlays.",
+      "Implement lazy loading for large galleries to maintain performance.",
+      "Offer column count adjustment for different screen sizes and preferences.",
+    ],
+    relatedPatterns: ["Variations", "Filters", "Suggestions"],
+  },
+
+  attachments: {
+    overview:
+      "Attachments enable users to provide files as context for AI processing. Whether uploading documents for summarization, images for analysis, or datasets for exploration, this pattern handles the full lifecycle from upload through processing to management. It must communicate file status clearly and handle errors gracefully, since file operations are inherently asynchronous and failure-prone.",
+    variants: [
+      {
+        title: "Drop zone",
+        description:
+          "A drag-and-drop area with a click-to-browse fallback, providing the most intuitive upload experience.",
+      },
+      {
+        title: "Compact list",
+        description:
+          "A minimal file list showing names and sizes, suitable for space-constrained layouts.",
+      },
+      {
+        title: "Preview cards",
+        description:
+          "File entries with thumbnail previews for images and icons for other types, giving visual context about attachments.",
+      },
+    ],
+    useCases: [
+      "Document analysis tools that process PDFs and text files",
+      "Image generation tools accepting reference images",
+      "Data analysis platforms ingesting CSVs and spreadsheets",
+      "Multi-modal AI assistants that accept mixed file types",
+      "Code review tools that accept source files for analysis",
+    ],
+    bestPractices: [
+      "Show upload progress for large files and clear error states for failures.",
+      "Validate file types and sizes before upload begins, with helpful error messages.",
+      "Display file metadata (name, size, type) so users can verify what they've attached.",
+      "Support both drag-and-drop and click-to-browse for accessibility.",
+      "Allow removal of individual attachments without affecting others.",
+    ],
+    relatedPatterns: ["Open Input", "Filters", "Parameter Control"],
+  },
+
+  filters: {
+    overview:
+      "Filters let users narrow AI-generated results or refine input parameters through structured controls like checkboxes, radio buttons, sliders, and dropdowns. They bring precision to broad queries by letting users specify exactly what they want without rewriting their prompt. Filters are especially valuable when AI produces large result sets or when users need to apply domain-specific constraints.",
+    variants: [
+      {
+        title: "Sidebar filters",
+        description:
+          "A vertical panel of filter groups, common in search and browse interfaces where screen space allows a persistent filter panel.",
+      },
+      {
+        title: "Horizontal filters",
+        description:
+          "Compact filter controls arranged in a row, suitable for simple filtering needs or toolbar integration.",
+      },
+      {
+        title: "Popover filters",
+        description:
+          "Filters hidden behind a button that reveals a popover panel, conserving space while providing full filter capabilities on demand.",
+      },
+    ],
+    useCases: [
+      "Search result refinement by content type, quality, or date",
+      "AI output filtering by confidence score or source",
+      "Dataset exploration with multi-dimensional constraints",
+      "Content moderation tools filtering by category or severity",
+      "Model output comparison filtered by performance metrics",
+    ],
+    bestPractices: [
+      "Show result counts next to filter options so users can gauge the impact of each filter.",
+      "Provide a 'Clear all' action for quick filter reset.",
+      "Preserve filter state across pagination and sorting changes.",
+      "Use the right control type for each filter: checkboxes for multi-select, radios for single-select, sliders for ranges.",
+      "Update results immediately as filters change rather than requiring a separate 'Apply' action.",
+    ],
+    relatedPatterns: ["Gallery", "Parameter Control", "Suggestions"],
+  },
+
+  "action-plan": {
+    overview:
+      "Action Plan makes the AI's intended steps visible and controllable before and during execution. Rather than letting the AI act autonomously, it presents a structured list of planned actions that users can review, approve, modify, or reject. This pattern is essential for agentic workflows where the AI performs multi-step tasks with real-world side effects — file modifications, API calls, data transformations — that users need to understand and authorize.",
+    variants: [
+      {
+        title: "Pre-execution plan",
+        description:
+          "A list of proposed steps shown before any action begins, requiring explicit user approval to proceed.",
+      },
+      {
+        title: "Live execution tracker",
+        description:
+          "A real-time view of steps as they execute, with status indicators showing progress, completion, and failures.",
+      },
+      {
+        title: "Editable plan",
+        description:
+          "An interactive plan where users can reorder, remove, or modify steps before or during execution.",
+      },
+    ],
+    useCases: [
+      "AI coding agents that modify multiple files in a project",
+      "Data pipeline tools that transform and move data across systems",
+      "Automated workflow builders that chain multiple AI operations",
+      "DevOps tools that plan and execute infrastructure changes",
+      "Research assistants that gather and synthesize from multiple sources",
+    ],
+    bestPractices: [
+      "Always show the plan before executing — users should review and approve before any side effects occur.",
+      "Use clear status indicators for each step: pending, in-progress, completed, failed, skipped.",
+      "Show estimated duration or cost per step when available.",
+      "Allow users to pause, cancel, or roll back execution at any point.",
+      "Surface the tools or APIs each step will use so users can assess risk.",
+    ],
+    relatedPatterns: ["Stream of Thought", "Cost Estimate", "Consent"],
+  },
+
+  caveat: {
+    overview:
+      "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",
+    variants: [
+      {
+        title: "Banner caveat",
+        description:
+          "A prominent alert displayed above or below AI output, suitable for important warnings that apply to the entire response.",
+      },
+      {
+        title: "Inline caveat",
+        description:
+          "A subtle text annotation within the content flow, appropriate for low-severity notes that shouldn't interrupt reading.",
+      },
+      {
+        title: "Tooltip caveat",
+        description:
+          "A hover-triggered explanation attached to specific claims or data points, providing context on demand.",
+      },
+    ],
+    useCases: [
+      "Medical or legal AI tools where accuracy is critical",
+      "Financial analysis tools with data freshness concerns",
+      "Creative AI tools where outputs may contain unintended biases",
+      "Research assistants working with potentially outdated information",
+      "Any AI tool where outputs could be mistaken for authoritative facts",
+    ],
+    bestPractices: [
+      "Match caveat severity to actual risk — don't cry wolf with warnings on low-stakes content.",
+      "Be specific about what might be wrong rather than using generic 'AI may make mistakes' disclaimers.",
+      "Place caveats near the content they apply to, not buried in footers or separate pages.",
+      "Make caveats dismissible for repeat users who have acknowledged the limitations.",
+      "Include a 'Learn more' link for users who want to understand the specific limitation.",
+    ],
+    relatedPatterns: ["Disclosure", "Citation", "Consent"],
+  },
+
+  consent: {
+    overview:
+      "Consent collects explicit user permission before AI systems process their data. As AI capabilities expand — analyzing personal documents, learning from conversations, sharing usage patterns — users need clear, granular control over what they're agreeing to. This pattern goes beyond a single 'I agree' checkbox by presenting each data processing activity separately, distinguishing required from optional consent, and making the implications transparent.",
+    variants: [
+      {
+        title: "Inline consent",
+        description:
+          "Consent checkboxes embedded directly in the interface, shown at the point where data processing will occur.",
+      },
+      {
+        title: "Modal consent",
+        description:
+          "A dedicated overlay that blocks interaction until the user has reviewed and responded to consent items.",
+      },
+      {
+        title: "Banner consent",
+        description:
+          "A persistent bar at the top or bottom of the interface summarizing consent requirements with a link to details.",
+      },
+    ],
+    useCases: [
+      "First-run setup when AI features require data access",
+      "Enabling conversation history storage or learning from user data",
+      "Sharing anonymized usage data for model improvement",
+      "Processing sensitive documents like medical records or financial data",
+      "Activating AI features that access third-party integrations",
+    ],
+    bestPractices: [
+      "Separate required consent (necessary for functionality) from optional consent (nice-to-have features).",
+      "Use plain language that explains what will happen with the user's data, not legal jargon.",
+      "Allow users to change their consent preferences at any time, not just during onboarding.",
+      "Visually distinguish required items so users understand what's mandatory vs. optional.",
+      "Never pre-check optional consent items — informed consent must be an active choice.",
+    ],
+    relatedPatterns: ["Disclosure", "Caveat", "Action Plan"],
+  },
+
+  "auto-fill": {
+    overview:
+      "Auto-fill accelerates prompt composition by suggesting completions as the user types. Drawing from recent queries, popular prompts, or AI-powered predictions, it reduces the keystrokes needed to express intent and helps users discover effective prompt patterns they might not have thought of. The key challenge is balancing helpfulness with unobtrusiveness — suggestions should appear quickly and disappear cleanly without interrupting the user's flow.",
+    variants: [
+      {
+        title: "Dropdown suggestions",
+        description:
+          "A list of completion options that appears below the input field, filtered in real time as the user types.",
+      },
+      {
+        title: "Inline ghost text",
+        description:
+          "Semi-transparent text that extends the cursor position, accepted with Tab or dismissed by continuing to type.",
+      },
+      {
+        title: "Categorized suggestions",
+        description:
+          "Completions grouped by source (recent, popular, AI-predicted) with labels indicating provenance.",
+      },
+    ],
+    useCases: [
+      "Search interfaces where users benefit from query suggestions",
+      "Chat interfaces that accelerate common prompt patterns",
+      "Code editors providing AI-powered line completions",
+      "Form fields that auto-populate based on context or history",
+      "Command palettes that suggest actions matching partial input",
+    ],
+    bestPractices: [
+      "Show suggestions after a short debounce (150-300ms) to avoid flickering during fast typing.",
+      "Highlight the matching portion of each suggestion so users can see why it was offered.",
+      "Support keyboard navigation (arrow keys, Enter to select, Escape to dismiss).",
+      "Limit visible suggestions to 4-6 to keep the dropdown scannable.",
+      "Indicate the source of each suggestion (history, popular, AI-generated) for transparency.",
+    ],
+    relatedPatterns: ["Open Input", "Suggestions", "Follow Up"],
+  },
+
+  summary: {
+    overview:
+      "Summary condenses longer content into a brief, digestible overview using AI. Whether summarizing a document, a conversation thread, or a research paper, this pattern presents the essential information in a compact format while preserving access to the full content. It's a core AI capability that saves users time and helps them decide whether deeper engagement with the source material is worthwhile.",
+    variants: [
+      {
+        title: "Card summary",
+        description:
+          "A self-contained card with the summary text, metadata about compression ratio, and action buttons for regeneration or copying.",
+      },
+      {
+        title: "Inline summary",
+        description:
+          "A brief summary rendered directly in the content flow, suitable for previews or hover states.",
+      },
+      {
+        title: "Collapsible summary",
+        description:
+          "A summary that starts collapsed, showing a preview, and expands to reveal the full summarized text.",
+      },
+    ],
+    useCases: [
+      "Document processing tools that extract key points from long texts",
+      "Email clients summarizing long threads",
+      "Research tools condensing academic papers",
+      "Meeting note tools that summarize transcripts",
+      "News aggregators providing article summaries",
+    ],
+    bestPractices: [
+      "Show the compression ratio (original vs. summary length) so users understand how much was condensed.",
+      "Provide a way to regenerate the summary with different parameters (shorter, more detailed, different focus).",
+      "Include a copy button for easy sharing of the summarized content.",
+      "Offer access to the full original content for users who need more detail.",
+      "Show a loading state with clear feedback during summary generation.",
+    ],
+    relatedPatterns: ["Regenerate", "Disclosure", "Citation"],
+  },
+
+  "initial-cta": {
+    overview:
+      "Initial CTA (Call-to-Action) is the first thing users see when they encounter an AI-powered feature for the first time. It introduces the system's capabilities, sets expectations, and provides clear entry points for getting started. A well-designed initial CTA reduces the intimidation of a blank state and guides users toward their first successful interaction with the AI.",
+    variants: [
+      {
+        title: "Card-based CTA",
+        description:
+          "Action cards arranged in a grid, each representing a distinct capability or use case the AI can help with.",
+      },
+      {
+        title: "Hero CTA",
+        description:
+          "A single prominent call-to-action with a headline and description, focused on the primary use case.",
+      },
+      {
+        title: "Minimal CTA",
+        description:
+          "A simple text prompt with a subtle action button, suitable for interfaces where the AI feature is secondary.",
+      },
+    ],
+    useCases: [
+      "First-run experiences for AI assistants and chatbots",
+      "Empty states in AI-powered dashboards and tools",
+      "Onboarding flows that introduce AI capabilities gradually",
+      "Feature discovery moments when new AI features are launched",
+      "Landing pages for AI-powered products",
+    ],
+    bestPractices: [
+      "Limit initial actions to 3-5 options to prevent overwhelming new users.",
+      "Use action-oriented labels that describe what will happen, not just feature names.",
+      "Include brief descriptions that set expectations about what the AI can and cannot do.",
+      "Make the primary action visually prominent while keeping secondary options accessible.",
+      "Consider showing the CTA only for new or returning users who haven't interacted recently.",
+    ],
+    relatedPatterns: ["Suggestions", "Open Input", "Nudges"],
+  },
+
+  nudges: {
+    overview:
+      "Nudges are contextual, non-intrusive prompts that guide users toward productive behaviors or inform them of relevant opportunities. Unlike notifications that demand attention, nudges are gentle suggestions that users can acknowledge or dismiss without breaking their flow. They're particularly effective for feature discovery, usage optimization, and re-engagement.",
+    variants: [
+      {
+        title: "Inline nudge",
+        description:
+          "A subtle message embedded within the content flow, appearing near the relevant context without overlaying other elements.",
+      },
+      {
+        title: "Toast nudge",
+        description:
+          "A temporary notification that slides in from the edge of the screen, auto-dismissing after a set duration.",
+      },
+      {
+        title: "Banner nudge",
+        description:
+          "A persistent or semi-persistent bar at the top or bottom of the interface, used for important but non-blocking information.",
+      },
+    ],
+    useCases: [
+      "Encouraging users to try underutilized AI features",
+      "Reminding users of expiring credits or available upgrades",
+      "Suggesting prompt improvements based on user behavior",
+      "Highlighting new features or capabilities after updates",
+      "Providing contextual tips during complex workflows",
+    ],
+    bestPractices: [
+      "Limit nudge frequency to avoid notification fatigue — one at a time, with cooldown periods.",
+      "Make nudges dismissible and remember dismissal preferences.",
+      "Tie nudges to user context so they feel relevant, not random.",
+      "Use progressive disclosure: start with the nudge, offer 'Learn more' for details.",
+      "Distinguish nudge types visually — tips, reminders, and suggestions should look different.",
+    ],
+    relatedPatterns: ["Initial CTA", "Suggestions", "Follow Up"],
+  },
+
+  "prompt-details": {
+    overview:
+      "Prompt Details surfaces metadata and contextual information about a submitted prompt — what was sent, when, to which model, and at what cost. This transparency helps users understand the full context of their interactions, debug unexpected results, and maintain an audit trail. It's especially valuable in professional settings where prompt provenance matters for compliance, collaboration, or iterative refinement.",
+    variants: [
+      {
+        title: "Card view",
+        description:
+          "A structured card showing the prompt text alongside metadata badges for model, timestamp, token count, and other details.",
+      },
+      {
+        title: "Inline metadata",
+        description:
+          "Compact metadata displayed directly beneath or beside the prompt, minimizing visual footprint while maintaining transparency.",
+      },
+      {
+        title: "Expandable details",
+        description:
+          "A collapsed summary that reveals full metadata on click, keeping the default view clean while offering depth on demand.",
+      },
+    ],
+    useCases: [
+      "Debugging AI responses by reviewing the exact prompt sent",
+      "Auditing prompt history for compliance or quality assurance",
+      "Collaborative environments where team members review each other's prompts",
+      "Cost tracking by surfacing token counts and model information per prompt",
+      "Iterative refinement where users compare prompts across attempts",
+    ],
+    bestPractices: [
+      "Show the exact prompt text as sent, including any system-level modifications.",
+      "Include timestamp, model, and token count as standard metadata fields.",
+      "Support copying the prompt for reuse or sharing with team members.",
+      "Link prompt details to the corresponding response for easy cross-reference.",
+      "Allow filtering and searching through prompt history by metadata fields.",
+    ],
+    relatedPatterns: ["Footprints", "Cost Estimate", "Open Input"],
+  },
+
+  randomize: {
+    overview:
+      "Randomize gives users control over the stochastic element of AI generation. By exposing seed values and providing a 'shuffle' action, it lets users explore the natural variety of model outputs intentionally rather than accidentally. Users who find a result they like can lock the seed for reproducibility, while those seeking inspiration can keep randomizing until something clicks.",
+    variants: [
+      {
+        title: "Shuffle button",
+        description:
+          "A single button that generates a new random seed and re-runs the generation, prioritizing simplicity and speed.",
+      },
+      {
+        title: "Seed input",
+        description:
+          "A text field where users can enter or view specific seed values, enabling reproducible results and sharing.",
+      },
+      {
+        title: "Seed with shuffle",
+        description:
+          "A combined interface with both a visible seed value and a randomize button, balancing exploration with reproducibility.",
+      },
+    ],
+    useCases: [
+      "Image generation tools where users explore visual variations",
+      "Creative writing assistants offering different story directions",
+      "Design tools generating random color palettes or layouts",
+      "Game content generators creating procedural content",
+      "Music generation tools exploring different melodic variations",
+    ],
+    bestPractices: [
+      "Always show the current seed value so users can save and share reproducible results.",
+      "Make the randomize action visually prominent and satisfying — it's a discovery tool.",
+      "Support seed sharing via copy/paste so users can reproduce results across sessions.",
+      "Remember the last few seeds so users can go back to a previous variation.",
+      "Combine with parameter controls to let users randomize within constrained bounds.",
+    ],
+    relatedPatterns: ["Variations", "Regenerate", "Parameter Control"],
+  },
+
+  expand: {
+    overview:
+      "Expand allows users to request additional detail on AI-generated content. When an initial response is too brief or high-level, users can ask the AI to elaborate on specific sections without rewriting their prompt. This pattern supports progressive disclosure of AI content — starting concise and adding depth on demand — which respects both quick-scanning users and those seeking comprehensive information.",
+    variants: [
+      {
+        title: "Accordion expand",
+        description:
+          "Content sections that collapse and expand, letting users reveal additional detail for specific parts of the response.",
+      },
+      {
+        title: "Inline expand",
+        description:
+          "An 'Expand' button that triggers AI generation of additional content, appended directly below the original text.",
+      },
+      {
+        title: "Detail panel",
+        description:
+          "A side panel that shows expanded content alongside the original, preserving context while adding depth.",
+      },
+    ],
+    useCases: [
+      "Research summaries where users want to drill into specific findings",
+      "Technical documentation that offers different levels of detail",
+      "News digests where users can expand stories of interest",
+      "Code explanations that start with an overview and expand to line-by-line detail",
+      "Product descriptions that offer progressive detail for interested buyers",
+    ],
+    bestPractices: [
+      "Clearly indicate which sections can be expanded with visual affordances.",
+      "Show a loading state while additional content is being generated.",
+      "Preserve the original content — expansion should add, not replace.",
+      "Allow collapsing back to the original view after expansion.",
+      "Consider pre-generating expanded content for commonly expanded sections.",
+    ],
+    relatedPatterns: ["Summary", "Regenerate", "Stream of Thought"],
+  },
+
+  transform: {
+    overview:
+      "Transform enables users to convert AI-generated content from one format, tone, or style to another without starting from scratch. Whether making text more formal, translating to another language, converting prose to bullet points, or changing the target audience, this pattern treats the existing output as raw material for rapid iteration. It's a powerful alternative to re-prompting when the content is good but the presentation needs adjustment.",
+    variants: [
+      {
+        title: "Button bar",
+        description:
+          "A row of transformation buttons (e.g. 'Make formal', 'Shorten', 'Simplify') displayed alongside the content.",
+      },
+      {
+        title: "Dropdown menu",
+        description:
+          "A dropdown offering a larger set of transformation options, suitable when many transforms are available.",
+      },
+      {
+        title: "Custom prompt",
+        description:
+          "A text input where users describe the desired transformation in their own words for maximum flexibility.",
+      },
+    ],
+    useCases: [
+      "Tone adjustment for professional communication (formal, casual, friendly)",
+      "Content reformatting (prose to bullets, email to memo, long to short)",
+      "Language translation of generated content",
+      "Audience adaptation (technical to non-technical, expert to beginner)",
+      "Style transfer for creative content (literary styles, brand voices)",
+    ],
+    bestPractices: [
+      "Show a preview of the transformation before committing to the change.",
+      "Preserve the original content so users can revert or compare.",
+      "Group related transforms together (tone transforms, format transforms).",
+      "Support chaining multiple transforms in sequence.",
+      "Show a loading indicator during transformation to set expectations.",
+    ],
+    relatedPatterns: ["Regenerate", "Variations", "Inline Action"],
+  },
+
+  "inline-action": {
+    overview:
+      "Inline Actions are contextual action buttons embedded directly alongside AI-generated content. They provide quick access to common operations — copy, edit, delete, share, bookmark — without requiring users to navigate to a separate menu or toolbar. By placing actions where users are already looking, they reduce interaction cost and support rapid iteration on AI outputs.",
+    variants: [
+      {
+        title: "Toolbar",
+        description:
+          "A horizontal row of icon buttons displayed above or below the content, providing a consistent set of actions.",
+      },
+      {
+        title: "Hover actions",
+        description:
+          "Actions that appear on mouse hover, keeping the interface clean by default and revealing options on demand.",
+      },
+      {
+        title: "Floating menu",
+        description:
+          "A compact floating button that expands into a radial or dropdown menu of actions when clicked.",
+      },
+    ],
+    useCases: [
+      "Copy and share buttons on AI-generated text responses",
+      "Edit and regenerate actions on individual response sections",
+      "Feedback actions (thumbs up/down) for response quality",
+      "Bookmark and save actions for useful AI outputs",
+      "Quick-format actions on generated content blocks",
+    ],
+    bestPractices: [
+      "Limit visible actions to 3-5 most common operations; overflow into a menu.",
+      "Use consistent iconography with tooltips for clarity.",
+      "Group actions by type: constructive (copy, save), destructive (delete), and navigational (share, link).",
+      "Visually distinguish destructive actions (delete, discard) from safe ones.",
+      "Ensure keyboard accessibility for all inline actions.",
+    ],
+    relatedPatterns: ["Transform", "Regenerate", "Expand"],
+  },
+
+  "chained-action": {
+    overview:
+      "Chained Actions represent multi-step workflows where each step depends on the completion of the previous one. This pattern visualizes the pipeline of operations — data fetching, analysis, generation, notification — and lets users monitor progress, inspect intermediate results, and intervene when needed. It's essential for complex AI workflows that go beyond single-prompt interactions.",
+    variants: [
+      {
+        title: "Linear pipeline",
+        description:
+          "A sequential list of steps connected by arrows or lines, showing the progression from input to output.",
+      },
+      {
+        title: "Branching pipeline",
+        description:
+          "A workflow with conditional branches, showing different paths the execution might take based on intermediate results.",
+      },
+      {
+        title: "Compact stepper",
+        description:
+          "A minimal step indicator that shows progress through the chain without displaying full details of each step.",
+      },
+    ],
+    useCases: [
+      "Data pipelines that fetch, transform, and load data using AI",
+      "Content workflows that draft, review, edit, and publish in sequence",
+      "Research processes that search, analyze, synthesize, and summarize",
+      "Automated testing pipelines that generate, execute, and report results",
+      "Multi-model workflows that route tasks to different AI models",
+    ],
+    bestPractices: [
+      "Show the status of each step clearly: idle, active, completed, or failed.",
+      "Display intermediate results so users can verify correctness at each stage.",
+      "Allow users to pause, retry, or skip individual steps in the chain.",
+      "Estimate and display expected duration for the full pipeline.",
+      "Surface errors clearly with options to retry the failed step or restart the chain.",
+    ],
+    relatedPatterns: ["Action Plan", "Stream of Thought", "Cost Estimate"],
+  },
+
+  "data-ownership": {
+    overview:
+      "Data Ownership gives users visibility into and control over the data that AI systems collect, store, and process on their behalf. It presents a clear inventory of data types, their retention periods, and the actions users can take — export, delete, or modify retention. This pattern is critical for building trust and meeting privacy regulations like GDPR, which require transparent data management and the right to erasure.",
+    variants: [
+      {
+        title: "Data inventory list",
+        description:
+          "A table or list of data categories with retention info and action buttons for each, providing a comprehensive overview.",
+      },
+      {
+        title: "Dashboard cards",
+        description:
+          "Visual cards for each data category with storage metrics, retention timelines, and prominent action buttons.",
+      },
+      {
+        title: "Settings panel",
+        description:
+          "A privacy settings section where data management controls are grouped alongside other privacy preferences.",
+      },
+    ],
+    useCases: [
+      "AI assistants that store conversation history and user preferences",
+      "Enterprise tools managing team-level AI interaction data",
+      "Applications subject to GDPR or other data privacy regulations",
+      "Multi-tenant platforms where data isolation must be transparent",
+      "Tools that process sensitive documents and need clear data lifecycle management",
+    ],
+    bestPractices: [
+      "List all data types collected with clear descriptions of what each contains.",
+      "Show retention periods and explain what happens when data expires.",
+      "Provide both individual item deletion and bulk 'delete all' options.",
+      "Include data export functionality so users can take their data elsewhere.",
+      "Confirm destructive actions and explain their consequences before proceeding.",
+    ],
+    relatedPatterns: ["Consent", "Footprints", "Disclosure"],
+  },
+
+  footprints: {
+    overview:
+      "Footprints provide a chronological record of AI interactions — what was asked, what was generated, which model was used, and when. This audit trail serves multiple purposes: users can revisit past conversations, learn from previous prompts, track their usage patterns, and maintain accountability. For teams, footprints enable collaboration by making AI usage transparent across members.",
+    variants: [
+      {
+        title: "Timeline view",
+        description:
+          "A chronological list of interactions with timestamps, showing the flow of AI usage over time.",
+      },
+      {
+        title: "Table view",
+        description:
+          "A structured table with sortable columns for action, model, timestamp, and token usage, suited for power users.",
+      },
+      {
+        title: "Compact feed",
+        description:
+          "A condensed activity feed showing recent interactions with expandable details, optimized for sidebar placement.",
+      },
+    ],
+    useCases: [
+      "Personal AI usage tracking and prompt history",
+      "Team audit trails for compliance and accountability",
+      "Debugging by reviewing the sequence of AI interactions",
+      "Usage analytics for optimizing AI costs and patterns",
+      "Onboarding new team members by sharing interaction history",
+    ],
+    bestPractices: [
+      "Show timestamps in a human-friendly format (relative for recent, absolute for older).",
+      "Include input and output previews so users can scan without opening each entry.",
+      "Support filtering by model, date range, and action type.",
+      "Provide a 'Clear history' option with appropriate confirmation.",
+      "Allow clicking into any entry to view the full interaction details.",
+    ],
+    relatedPatterns: ["Prompt Details", "Data Ownership", "Cost Estimate"],
+  },
 };

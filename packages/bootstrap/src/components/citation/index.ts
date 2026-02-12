@@ -1,1 +1,1 @@
-export { Citation, CitationsList, InlineCitation } from './citation';
+export { Citation, CitationsList, InlineCitation } from "./citation";

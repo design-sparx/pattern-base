@@ -1,1 +1,1 @@
-export { Suggestions } from './suggestions';
+export { Suggestions } from "./suggestions";

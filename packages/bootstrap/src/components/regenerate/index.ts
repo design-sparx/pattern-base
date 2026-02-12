@@ -1,1 +1,1 @@
-export { Regenerate } from './regenerate';
+export { Regenerate } from "./regenerate";

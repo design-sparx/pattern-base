@@ -165,3 +165,365 @@ export interface DisclosureProps {
   timestamp?: Date;
   customLabel?: string;
 }
+
+export interface CaveatProps {
+  message: string;
+  variant?: "inline" | "banner" | "tooltip";
+  severity?: "info" | "warning" | "error";
+  title?: string;
+  learnMoreUrl?: string;
+  dismissible?: boolean;
+  onDismiss?: () => void;
+}
+
+export interface ConsentItem {
+  id: string;
+  label: string;
+  description?: string;
+  required?: boolean;
+  defaultChecked?: boolean;
+}
+
+export interface ConsentProps {
+  items: ConsentItem[];
+  onAccept: (acceptedIds: string[]) => void;
+  onDecline?: () => void;
+  title?: string;
+  description?: string;
+  acceptLabel?: string;
+  declineLabel?: string;
+  variant?: "modal" | "inline" | "banner";
+}
+
+// ── Additional Wayfinder Patterns ──
+
+export interface FollowUpItem {
+  id: string;
+  text: string;
+  icon?: string;
+  category?: string;
+}
+
+export interface FollowUpProps {
+  followUps: FollowUpItem[];
+  onSelect: (followUp: FollowUpItem) => void;
+  variant?: "chip" | "list" | "button";
+  title?: string;
+  maxVisible?: number;
+}
+
+export interface TemplateVariable {
+  id: string;
+  label: string;
+  placeholder?: string;
+  type?: "text" | "select" | "number";
+  options?: { label: string; value: string }[];
+  defaultValue?: string;
+}
+
+export interface TemplateItem {
+  id: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  category?: string;
+  template: string;
+  variables?: TemplateVariable[];
+}
+
+export interface TemplatesProps {
+  templates: TemplateItem[];
+  onSelect: (
+    template: TemplateItem,
+    variables?: Record<string, string>,
+  ) => void;
+  layout?: "grid" | "list";
+  columns?: 2 | 3 | 4;
+  searchable?: boolean;
+  groupByCategory?: boolean;
+}
+
+export interface GalleryItem {
+  id: string;
+  type: "image" | "text" | "card";
+  src?: string;
+  alt?: string;
+  content?: string;
+  title?: string;
+  metadata?: Record<string, unknown>;
+  selected?: boolean;
+}
+
+export interface GalleryProps {
+  items: GalleryItem[];
+  onSelect?: (item: GalleryItem) => void;
+  onLoadMore?: () => void;
+  columns?: 2 | 3 | 4;
+  selectable?: boolean;
+  loading?: boolean;
+  emptyMessage?: string;
+}
+
+// ── Additional Tuner Patterns ──
+
+export interface AttachmentItem {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  url?: string;
+  previewUrl?: string;
+  status?: "uploading" | "complete" | "error";
+  progress?: number;
+}
+
+export interface AttachmentsProps {
+  attachments: AttachmentItem[];
+  onAdd: (files: File[]) => void;
+  onRemove: (id: string) => void;
+  maxFiles?: number;
+  maxSize?: number;
+  acceptedTypes?: string[];
+  showPreview?: boolean;
+  variant?: "compact" | "full";
+}
+
+export interface FilterOption {
+  id: string;
+  label: string;
+  value: string;
+  count?: number;
+}
+
+export interface FilterGroup {
+  id: string;
+  label: string;
+  type: "checkbox" | "radio" | "range" | "select";
+  options?: FilterOption[];
+  min?: number;
+  max?: number;
+  step?: number;
+}
+
+export interface FiltersProps {
+  groups: FilterGroup[];
+  values: Record<string, unknown>;
+  onChange: (groupId: string, value: unknown) => void;
+  onClear?: () => void;
+  layout?: "vertical" | "horizontal" | "popover";
+  title?: string;
+}
+
+// ── Additional Governor Patterns ──
+
+export interface ActionPlanStep {
+  id: string;
+  title: string;
+  description?: string;
+  status: "pending" | "in-progress" | "completed" | "failed" | "skipped";
+  substeps?: ActionPlanStep[];
+  estimatedDuration?: string;
+  tool?: string;
+}
+
+export interface ActionPlanProps {
+  steps: ActionPlanStep[];
+  title?: string;
+  onApprove?: () => void;
+  onReject?: () => void;
+  onStepClick?: (stepId: string) => void;
+  editable?: boolean;
+  showEstimates?: boolean;
+}
+
+// ── Additional Prompt Action Patterns ──
+
+export interface AutoFillSuggestion {
+  id: string;
+  text: string;
+  matchScore?: number;
+  source?: string;
+}
+
+export interface AutoFillProps {
+  suggestions: AutoFillSuggestion[];
+  onSelect: (suggestion: AutoFillSuggestion) => void;
+  onQueryChange?: (query: string) => void;
+  query?: string;
+  isLoading?: boolean;
+  placeholder?: string;
+  maxSuggestions?: number;
+  highlightMatch?: boolean;
+}
+
+export interface SummaryProps {
+  content: string;
+  originalLength?: number;
+  summaryLength?: number;
+  onRegenerate?: () => void;
+  onCopy?: () => void;
+  onExpand?: () => void;
+  isGenerating?: boolean;
+  title?: string;
+  variant?: "card" | "inline" | "collapsible";
+}
+
+// ── Batch 2 Wayfinder Patterns ──
+
+export interface InitialCtaAction {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+}
+
+export interface InitialCtaProps {
+  title: string;
+  subtitle?: string;
+  actions: InitialCtaAction[];
+  onAction: (action: InitialCtaAction) => void;
+  variant?: "centered" | "cards" | "minimal";
+}
+
+export interface NudgeItem {
+  id: string;
+  message: string;
+  type?: "tip" | "reminder" | "suggestion";
+  icon?: string;
+  actionLabel?: string;
+  onAction?: () => void;
+}
+
+export interface NudgesProps {
+  nudges: NudgeItem[];
+  onDismiss?: (id: string) => void;
+  variant?: "toast" | "inline" | "banner";
+  position?: "top" | "bottom";
+  maxVisible?: number;
+}
+
+export interface PromptDetail {
+  id: string;
+  label: string;
+  value: string;
+  type?: "text" | "badge" | "link";
+  url?: string;
+}
+
+export interface PromptDetailsProps {
+  prompt: string;
+  details: PromptDetail[];
+  timestamp?: Date;
+  model?: string;
+  tokenCount?: number;
+  variant?: "card" | "inline" | "popover";
+}
+
+export interface RandomizeProps {
+  onRandomize: () => void;
+  isRandomizing?: boolean;
+  currentSeed?: string;
+  onSeedChange?: (seed: string) => void;
+  showSeed?: boolean;
+  label?: string;
+  variant?: "button" | "icon" | "fab";
+}
+
+// ── Batch 2 Prompt Action Patterns ──
+
+export interface ExpandProps {
+  content: string;
+  onExpand: () => void;
+  expandedContent?: string;
+  isExpanding?: boolean;
+  title?: string;
+  variant?: "button" | "inline" | "accordion";
+}
+
+export interface TransformOption {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+}
+
+export interface TransformProps {
+  content: string;
+  options: TransformOption[];
+  onTransform: (optionId: string) => void;
+  transformedContent?: string;
+  isTransforming?: boolean;
+  title?: string;
+  variant?: "buttons" | "dropdown" | "toolbar";
+}
+
+export interface InlineActionItem {
+  id: string;
+  label: string;
+  icon?: string;
+  type?: "primary" | "secondary" | "danger";
+}
+
+export interface InlineActionProps {
+  actions: InlineActionItem[];
+  onAction: (actionId: string) => void;
+  content?: string;
+  variant?: "toolbar" | "contextual" | "floating";
+  size?: "small" | "medium";
+}
+
+export interface ChainedActionStep {
+  id: string;
+  label: string;
+  description?: string;
+  status?: "idle" | "active" | "completed" | "error";
+  result?: string;
+}
+
+export interface ChainedActionProps {
+  steps: ChainedActionStep[];
+  onExecute: () => void;
+  onStepClick?: (stepId: string) => void;
+  isExecuting?: boolean;
+  title?: string;
+  variant?: "linear" | "branching";
+}
+
+// ── Batch 2 Trust Builder Patterns ──
+
+export interface DataOwnershipItem {
+  id: string;
+  dataType: string;
+  description?: string;
+  retention?: string;
+  deletable?: boolean;
+}
+
+export interface DataOwnershipProps {
+  items: DataOwnershipItem[];
+  onDelete?: (id: string) => void;
+  onExport?: () => void;
+  onDeleteAll?: () => void;
+  title?: string;
+  variant?: "list" | "card" | "table";
+}
+
+export interface FootprintEntry {
+  id: string;
+  action: string;
+  timestamp: Date;
+  model?: string;
+  inputPreview?: string;
+  outputPreview?: string;
+  metadata?: Record<string, unknown>;
+}
+
+export interface FootprintsProps {
+  entries: FootprintEntry[];
+  onEntryClick?: (id: string) => void;
+  onClear?: () => void;
+  title?: string;
+  maxVisible?: number;
+  showTimestamps?: boolean;
+  variant?: "timeline" | "list" | "compact";
+}

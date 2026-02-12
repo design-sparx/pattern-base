@@ -1,1 +1,1 @@
-export { StreamOfThought } from './stream-of-thought';
+export { StreamOfThought } from "./stream-of-thought";

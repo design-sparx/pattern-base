@@ -4,38 +4,96 @@ import React from "react";
 
 // Antd components
 import {
+  ActionPlan as AntActionPlan,
+  Attachments as AntAttachments,
+  AutoFill as AntAutoFill,
+  Caveat as AntCaveat,
+  ChainedAction as AntChainedAction,
   CitationsList as AntCitationsList,
+  Consent as AntConsent,
   CostEstimate as AntCostEstimate,
+  DataOwnership as AntDataOwnership,
   Disclosure as AntDisclosure,
+  Expand as AntExpand,
+  Filters as AntFilters,
+  FollowUp as AntFollowUp,
+  Footprints as AntFootprints,
+  Gallery as AntGallery,
+  InitialCta as AntInitialCta,
+  InlineAction as AntInlineAction,
   ModelManagement as AntModelManagement,
+  Nudges as AntNudges,
   OpenInput as AntOpenInput,
   ParameterControl as AntParameterControl,
+  PromptDetails as AntPromptDetails,
+  Randomize as AntRandomize,
   Regenerate as AntRegenerate,
   StreamOfThought as AntStreamOfThought,
   Suggestions as AntSuggestions,
+  Summary as AntSummary,
+  Templates as AntTemplates,
+  Transform as AntTransform,
   Variations as AntVariations,
 } from "@ai-ui/antd";
 // Bootstrap components
 import {
+  ActionPlan as BsActionPlan,
+  Attachments as BsAttachments,
+  AutoFill as BsAutoFill,
+  Caveat as BsCaveat,
+  ChainedAction as BsChainedAction,
   CitationsList as BsCitationsList,
+  Consent as BsConsent,
   CostEstimate as BsCostEstimate,
+  DataOwnership as BsDataOwnership,
   Disclosure as BsDisclosure,
+  Expand as BsExpand,
+  Filters as BsFilters,
+  FollowUp as BsFollowUp,
+  Footprints as BsFootprints,
+  Gallery as BsGallery,
+  InitialCta as BsInitialCta,
+  InlineAction as BsInlineAction,
   ModelManagement as BsModelManagement,
+  Nudges as BsNudges,
   OpenInput as BsOpenInput,
   ParameterControl as BsParameterControl,
+  PromptDetails as BsPromptDetails,
+  Randomize as BsRandomize,
   Regenerate as BsRegenerate,
   StreamOfThought as BsStreamOfThought,
   Suggestions as BsSuggestions,
+  Summary as BsSummary,
+  Templates as BsTemplates,
+  Transform as BsTransform,
   Variations as BsVariations,
 } from "@ai-ui/bootstrap";
 
 import {
+  demoActionPlanSteps,
+  demoAttachments,
+  demoAutoFillSuggestions,
+  demoChainedSteps,
   demoCitations,
+  demoConsentItems,
   demoCostBreakdown,
+  demoDataOwnershipItems,
+  demoFilterGroups,
+  demoFollowUps,
+  demoFootprintEntries,
+  demoGalleryItems,
+  demoInitialCtaActions,
+  demoInlineActions,
   demoModels,
+  demoNudges,
   demoParameters,
+  demoPromptDetails,
   demoSteps,
   demoSuggestions,
+  demoSummaryContent,
+  demoTemplates,
+  demoTransformContent,
+  demoTransformOptions,
   demoVariations,
 } from "@/data/demo-data";
 
@@ -246,6 +304,420 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onSelectModel={noop}
         showDetails
         groupByProvider
+      />
+    ),
+  },
+
+  "follow-up": {
+    bootstrap: () => (
+      <BsFollowUp
+        followUps={demoFollowUps}
+        onSelect={noop}
+        variant="chip"
+        title="Suggested follow-ups"
+      />
+    ),
+    antd: () => (
+      <AntFollowUp
+        followUps={demoFollowUps}
+        onSelect={noop}
+        variant="chip"
+        title="Suggested follow-ups"
+      />
+    ),
+  },
+
+  templates: {
+    bootstrap: () => (
+      <BsTemplates
+        templates={demoTemplates}
+        onSelect={noop}
+        layout="grid"
+        columns={2}
+        searchable
+      />
+    ),
+    antd: () => (
+      <AntTemplates
+        templates={demoTemplates}
+        onSelect={noop}
+        layout="grid"
+        columns={2}
+        searchable
+      />
+    ),
+  },
+
+  gallery: {
+    bootstrap: () => (
+      <BsGallery
+        items={demoGalleryItems}
+        onSelect={noop}
+        columns={3}
+        selectable
+      />
+    ),
+    antd: () => (
+      <AntGallery
+        items={demoGalleryItems}
+        onSelect={noop}
+        columns={3}
+        selectable
+      />
+    ),
+  },
+
+  attachments: {
+    bootstrap: () => (
+      <BsAttachments
+        attachments={demoAttachments}
+        onAdd={noop}
+        onRemove={noop}
+        maxFiles={5}
+      />
+    ),
+    antd: () => (
+      <AntAttachments
+        attachments={demoAttachments}
+        onAdd={noop}
+        onRemove={noop}
+        maxFiles={5}
+      />
+    ),
+  },
+
+  filters: {
+    bootstrap: () => (
+      <BsFilters
+        groups={demoFilterGroups}
+        values={{ type: ["text"], quality: "high", length: 2000 }}
+        onChange={noop}
+        onClear={noop}
+        title="Filter Results"
+      />
+    ),
+    antd: () => (
+      <AntFilters
+        groups={demoFilterGroups}
+        values={{ type: ["text"], quality: "high", length: 2000 }}
+        onChange={noop}
+        onClear={noop}
+        title="Filter Results"
+      />
+    ),
+  },
+
+  "action-plan": {
+    bootstrap: () => (
+      <BsActionPlan
+        steps={demoActionPlanSteps}
+        title="Execution Plan"
+        onApprove={noop}
+        onReject={noop}
+        showEstimates
+      />
+    ),
+    antd: () => (
+      <AntActionPlan
+        steps={demoActionPlanSteps}
+        title="Execution Plan"
+        onApprove={noop}
+        onReject={noop}
+        showEstimates
+      />
+    ),
+  },
+
+  caveat: {
+    bootstrap: () => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <BsCaveat
+          message="AI-generated content may contain inaccuracies. Please verify important information."
+          variant="banner"
+          severity="warning"
+          title="AI Disclaimer"
+          dismissible
+        />
+        <p>
+          This response was generated by AI.{" "}
+          <BsCaveat
+            message="Results may vary."
+            variant="inline"
+            severity="info"
+          />
+        </p>
+      </div>
+    ),
+    antd: () => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <AntCaveat
+          message="AI-generated content may contain inaccuracies. Please verify important information."
+          variant="banner"
+          severity="warning"
+          title="AI Disclaimer"
+          dismissible
+        />
+        <p>
+          This response was generated by AI.{" "}
+          <AntCaveat
+            message="Results may vary."
+            variant="inline"
+            severity="info"
+          />
+        </p>
+      </div>
+    ),
+  },
+
+  consent: {
+    bootstrap: () => (
+      <BsConsent
+        items={demoConsentItems}
+        onAccept={noop}
+        onDecline={noop}
+        title="Data Processing Consent"
+        description="Please review and accept the following before proceeding."
+      />
+    ),
+    antd: () => (
+      <AntConsent
+        items={demoConsentItems}
+        onAccept={noop}
+        onDecline={noop}
+        title="Data Processing Consent"
+        description="Please review and accept the following before proceeding."
+      />
+    ),
+  },
+
+  "auto-fill": {
+    bootstrap: () => (
+      <BsAutoFill
+        suggestions={demoAutoFillSuggestions}
+        onSelect={noop}
+        placeholder="How do I implement..."
+        maxSuggestions={5}
+      />
+    ),
+    antd: () => (
+      <AntAutoFill
+        suggestions={demoAutoFillSuggestions}
+        onSelect={noop}
+        placeholder="How do I implement..."
+        maxSuggestions={5}
+      />
+    ),
+  },
+
+  summary: {
+    bootstrap: () => (
+      <BsSummary
+        content={demoSummaryContent}
+        title="Research Summary"
+        originalLength={2450}
+        summaryLength={420}
+        onRegenerate={noop}
+        onCopy={noop}
+        variant="card"
+      />
+    ),
+    antd: () => (
+      <AntSummary
+        content={demoSummaryContent}
+        title="Research Summary"
+        originalLength={2450}
+        summaryLength={420}
+        onRegenerate={noop}
+        onCopy={noop}
+        variant="card"
+      />
+    ),
+  },
+
+  "initial-cta": {
+    bootstrap: () => (
+      <BsInitialCta
+        title="Welcome to AI Assistant"
+        subtitle="What would you like to do today?"
+        actions={demoInitialCtaActions}
+        onAction={noop}
+        variant="cards"
+      />
+    ),
+    antd: () => (
+      <AntInitialCta
+        title="Welcome to AI Assistant"
+        subtitle="What would you like to do today?"
+        actions={demoInitialCtaActions}
+        onAction={noop}
+        variant="cards"
+      />
+    ),
+  },
+
+  nudges: {
+    bootstrap: () => (
+      <BsNudges nudges={demoNudges} onDismiss={noop} variant="inline" />
+    ),
+    antd: () => (
+      <AntNudges nudges={demoNudges} onDismiss={noop} variant="inline" />
+    ),
+  },
+
+  "prompt-details": {
+    bootstrap: () => (
+      <BsPromptDetails
+        prompt="Explain the difference between React Server Components and Client Components"
+        details={demoPromptDetails}
+        timestamp={new Date()}
+        model="GPT-4 Turbo"
+        tokenCount={48}
+        variant="card"
+      />
+    ),
+    antd: () => (
+      <AntPromptDetails
+        prompt="Explain the difference between React Server Components and Client Components"
+        details={demoPromptDetails}
+        timestamp={new Date()}
+        model="GPT-4 Turbo"
+        tokenCount={48}
+        variant="card"
+      />
+    ),
+  },
+
+  randomize: {
+    bootstrap: () => (
+      <BsRandomize
+        onRandomize={noop}
+        showSeed
+        currentSeed="42"
+        onSeedChange={noop}
+      />
+    ),
+    antd: () => (
+      <AntRandomize
+        onRandomize={noop}
+        showSeed
+        currentSeed="42"
+        onSeedChange={noop}
+      />
+    ),
+  },
+
+  expand: {
+    bootstrap: () => (
+      <BsExpand
+        content="React Server Components allow you to render components on the server..."
+        onExpand={noop}
+        title="Server Components Overview"
+        variant="accordion"
+      />
+    ),
+    antd: () => (
+      <AntExpand
+        content="React Server Components allow you to render components on the server..."
+        onExpand={noop}
+        title="Server Components Overview"
+        variant="accordion"
+      />
+    ),
+  },
+
+  transform: {
+    bootstrap: () => (
+      <BsTransform
+        content={demoTransformContent}
+        options={demoTransformOptions}
+        onTransform={noop}
+        title="Content Transform"
+        variant="buttons"
+      />
+    ),
+    antd: () => (
+      <AntTransform
+        content={demoTransformContent}
+        options={demoTransformOptions}
+        onTransform={noop}
+        title="Content Transform"
+        variant="buttons"
+      />
+    ),
+  },
+
+  "inline-action": {
+    bootstrap: () => (
+      <BsInlineAction
+        actions={demoInlineActions}
+        onAction={noop}
+        variant="toolbar"
+      />
+    ),
+    antd: () => (
+      <AntInlineAction
+        actions={demoInlineActions}
+        onAction={noop}
+        variant="toolbar"
+      />
+    ),
+  },
+
+  "chained-action": {
+    bootstrap: () => (
+      <BsChainedAction
+        steps={demoChainedSteps}
+        onExecute={noop}
+        title="Data Pipeline"
+      />
+    ),
+    antd: () => (
+      <AntChainedAction
+        steps={demoChainedSteps}
+        onExecute={noop}
+        title="Data Pipeline"
+      />
+    ),
+  },
+
+  "data-ownership": {
+    bootstrap: () => (
+      <BsDataOwnership
+        items={demoDataOwnershipItems}
+        onDelete={noop}
+        onExport={noop}
+        onDeleteAll={noop}
+        title="Your Data"
+      />
+    ),
+    antd: () => (
+      <AntDataOwnership
+        items={demoDataOwnershipItems}
+        onDelete={noop}
+        onExport={noop}
+        onDeleteAll={noop}
+        title="Your Data"
+      />
+    ),
+  },
+
+  footprints: {
+    bootstrap: () => (
+      <BsFootprints
+        entries={demoFootprintEntries}
+        onEntryClick={noop}
+        onClear={noop}
+        title="Activity History"
+        showTimestamps
+      />
+    ),
+    antd: () => (
+      <AntFootprints
+        entries={demoFootprintEntries}
+        onEntryClick={noop}
+        onClear={noop}
+        title="Activity History"
+        showTimestamps
       />
     ),
   },
