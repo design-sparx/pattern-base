@@ -527,3 +527,133 @@ export interface FootprintsProps {
   showTimestamps?: boolean;
   variant?: "timeline" | "list" | "compact";
 }
+
+// ── Batch 3 Prompt Action Patterns ──
+
+export interface DescribeDetail {
+  id: string;
+  label: string;
+  value: string;
+  type?: "text" | "badge" | "code" | "json";
+}
+
+export interface DescribeProps {
+  output: string;
+  details: DescribeDetail[];
+  inferredPrompt?: string;
+  model?: string;
+  seed?: string;
+  parameters?: Record<string, unknown>;
+  onReuse?: (prompt: string) => void;
+  onCopy?: () => void;
+  title?: string;
+  variant?: "panel" | "popover" | "inline";
+}
+
+export interface InpaintingRegion {
+  id: string;
+  label?: string;
+  selected?: boolean;
+}
+
+export interface InpaintingProps {
+  content: string;
+  regions: InpaintingRegion[];
+  onRegionSelect: (regionId: string) => void;
+  onApply: (regionId: string, prompt: string) => void;
+  selectedRegionId?: string;
+  isProcessing?: boolean;
+  prompt?: string;
+  onPromptChange?: (prompt: string) => void;
+  title?: string;
+  variant?: "brush" | "segment" | "inline";
+}
+
+export interface MadlibsVariable {
+  id: string;
+  label: string;
+  placeholder?: string;
+  type?: "text" | "select" | "number" | "textarea";
+  options?: { label: string; value: string }[];
+  required?: boolean;
+  defaultValue?: string;
+}
+
+export interface MadlibsProps {
+  template: string;
+  variables: MadlibsVariable[];
+  values?: Record<string, string>;
+  onChange: (variableId: string, value: string) => void;
+  onSubmit: (values: Record<string, string>) => void;
+  title?: string;
+  description?: string;
+  isGenerating?: boolean;
+  showPreview?: boolean;
+  variant?: "form" | "inline" | "wizard";
+}
+
+export interface RestructureOption {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+}
+
+export interface RestructureProps {
+  content: string;
+  options: RestructureOption[];
+  onRestructure: (optionId: string) => void;
+  restructuredContent?: string;
+  isProcessing?: boolean;
+  showDiff?: boolean;
+  title?: string;
+  variant?: "buttons" | "slider" | "presets";
+}
+
+export interface RestyleOption {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+  preview?: string;
+}
+
+export interface RestyleProps {
+  content: string;
+  options: RestyleOption[];
+  onRestyle: (optionId: string) => void;
+  restyledContent?: string;
+  isProcessing?: boolean;
+  intensity?: number;
+  onIntensityChange?: (value: number) => void;
+  title?: string;
+  variant?: "presets" | "gallery" | "slider";
+}
+
+export interface SynthesisSource {
+  id: string;
+  title: string;
+  content: string;
+  url?: string;
+  relevance?: number;
+}
+
+export interface SynthesisInsight {
+  id: string;
+  text: string;
+  confidence?: number;
+  sourceIds: string[];
+  type?: "fact" | "inference" | "theme";
+}
+
+export interface SynthesisProps {
+  sources: SynthesisSource[];
+  insights: SynthesisInsight[];
+  onSourceClick?: (sourceId: string) => void;
+  onRegenerate?: () => void;
+  isProcessing?: boolean;
+  title?: string;
+  showSources?: boolean;
+  showConfidence?: boolean;
+  variant?: "aggregated" | "comparative" | "thematic";
+}

@@ -276,6 +276,60 @@ export const patterns: PatternMeta[] = [
     description: "Activity history and audit trail of AI interactions",
     tags: ["history", "audit", "trail"],
   },
+  {
+    id: "describe",
+    name: "Describe",
+    slug: "describe",
+    category: "prompt-actions",
+    description:
+      "Deconstruct AI outputs to reveal the prompt, parameters, and settings that produced them",
+    tags: ["describe", "reverse-engineer", "transparency"],
+  },
+  {
+    id: "inpainting",
+    name: "Inpainting",
+    slug: "inpainting",
+    category: "prompt-actions",
+    description:
+      "Selectively edit specific regions of AI-generated content while preserving the rest",
+    tags: ["edit", "region", "selective"],
+  },
+  {
+    id: "madlibs",
+    name: "Madlibs",
+    slug: "madlibs",
+    category: "prompt-actions",
+    description:
+      "Structured prompt templates with fill-in-the-blank variables for consistent generation",
+    tags: ["template", "variables", "structured"],
+  },
+  {
+    id: "restructure",
+    name: "Restructure",
+    slug: "restructure",
+    category: "prompt-actions",
+    description:
+      "Change the structural form of content — condense, expand, reorder, or extract",
+    tags: ["structure", "condense", "reorder"],
+  },
+  {
+    id: "restyle",
+    name: "Restyle",
+    slug: "restyle",
+    category: "prompt-actions",
+    description:
+      "Alter the surface style of AI outputs without changing underlying content",
+    tags: ["style", "tone", "aesthetic"],
+  },
+  {
+    id: "synthesis",
+    name: "Synthesis",
+    slug: "synthesis",
+    category: "governors",
+    description:
+      "Combine data from multiple sources to extract patterns, insights, and themes",
+    tags: ["synthesis", "insights", "multi-source"],
+  },
 ];
 
 export function getPatternsByCategory(

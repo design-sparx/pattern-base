@@ -451,6 +451,118 @@ const entries = [
   title="Activity History"
   showTimestamps
 />`,
+
+  describe: (fw) => `import { Describe } from '@ai-ui/${fw}';
+
+const details = [
+  { id: '1', label: 'Model', value: 'Midjourney v6', type: 'badge' },
+  { id: '2', label: 'Aspect Ratio', value: '16:9', type: 'text' },
+  { id: '3', label: 'Quality', value: 'High', type: 'text' },
+];
+
+<Describe
+  output="A vibrant digital illustration of a futuristic cityscape..."
+  details={details}
+  inferredPrompt="futuristic cityscape, sunset, flying vehicles --ar 16:9"
+  model="Midjourney v6"
+  seed="12345"
+  onReuse={(prompt) => console.log('Reuse:', prompt)}
+  onCopy={() => navigator.clipboard.writeText(output)}
+/>`,
+
+  inpainting: (fw) => `import { Inpainting } from '@ai-ui/${fw}';
+
+const regions = [
+  { id: 'intro', label: 'Introduction' },
+  { id: 'body', label: 'Main Body' },
+  { id: 'conclusion', label: 'Conclusion' },
+];
+
+<Inpainting
+  content="The quarterly report shows strong growth across all divisions..."
+  regions={regions}
+  onRegionSelect={(id) => setSelectedRegion(id)}
+  onApply={(regionId, prompt) => console.log('Apply:', regionId, prompt)}
+  selectedRegionId={selectedRegion}
+  onPromptChange={(p) => setPrompt(p)}
+  title="Edit Content Region"
+/>`,
+
+  madlibs: (fw) => `import { Madlibs } from '@ai-ui/${fw}';
+
+const variables = [
+  { id: 'topic', label: 'Topic', placeholder: 'e.g. AI trends', required: true },
+  { id: 'audience', label: 'Audience', placeholder: 'e.g. developers' },
+  { id: 'tone', label: 'Tone', type: 'select', options: [
+    { label: 'Professional', value: 'professional' },
+    { label: 'Conversational', value: 'conversational' },
+  ]},
+];
+
+<Madlibs
+  template="Write a {{tone}} blog post about {{topic}} for {{audience}}."
+  variables={variables}
+  values={values}
+  onChange={(id, val) => setValues(prev => ({ ...prev, [id]: val }))}
+  onSubmit={(vals) => console.log('Generate:', vals)}
+  title="Blog Post Generator"
+  showPreview
+/>`,
+
+  restructure: (fw) => `import { Restructure } from '@ai-ui/${fw}';
+
+const options = [
+  { id: 'condense', label: 'Make Shorter', icon: '\uD83D\uDCDD' },
+  { id: 'expand', label: 'Elaborate', icon: '\uD83D\uDCD6' },
+  { id: 'bullets', label: 'To Bullet Points', icon: '\uD83D\uDCCB' },
+  { id: 'reorder', label: 'Reorder by Priority', icon: '\uD83D\uDD04' },
+];
+
+<Restructure
+  content="Machine learning has transformed how businesses operate..."
+  options={options}
+  onRestructure={(id) => console.log('Restructure:', id)}
+  title="Restructure Content"
+  showDiff
+/>`,
+
+  restyle: (fw) => `import { Restyle } from '@ai-ui/${fw}';
+
+const options = [
+  { id: 'formal', label: 'Formal', icon: '\uD83C\uDF93', description: 'Professional business tone' },
+  { id: 'casual', label: 'Casual', icon: '\uD83D\uDE0A', description: 'Friendly conversational style' },
+  { id: 'technical', label: 'Technical', icon: '\u2699\uFE0F', description: 'Precise technical language' },
+];
+
+<Restyle
+  content="Our new product helps teams work better together..."
+  options={options}
+  onRestyle={(id) => console.log('Restyle:', id)}
+  title="Restyle Content"
+  variant="presets"
+/>`,
+
+  synthesis: (fw) => `import { Synthesis } from '@ai-ui/${fw}';
+
+const sources = [
+  { id: 's1', title: 'McKinsey AI Report', content: 'AI adoption reached 72%...', relevance: 0.95 },
+  { id: 's2', title: 'Gartner Trends', content: '65% of orgs experimenting...', relevance: 0.88 },
+];
+
+const insights = [
+  { id: 'i1', text: 'Enterprise AI adoption has accelerated significantly...', confidence: 0.92, sourceIds: ['s1', 's2'], type: 'fact' },
+  { id: 'i2', text: 'Healthcare and finance lead investment growth...', confidence: 0.78, sourceIds: ['s2'], type: 'theme' },
+];
+
+<Synthesis
+  sources={sources}
+  insights={insights}
+  onSourceClick={(id) => console.log('Source:', id)}
+  onRegenerate={() => console.log('Regenerating...')}
+  title="AI Industry Analysis"
+  showSources
+  showConfidence
+/>`,
 };
 
 export const codeSnippets: Record<string, { bootstrap: string; antd: string }> =

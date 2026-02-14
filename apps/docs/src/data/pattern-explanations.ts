@@ -1140,4 +1140,226 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     ],
     relatedPatterns: ["Prompt Details", "Data Ownership", "Cost Estimate"],
   },
+
+  describe: {
+    overview:
+      "Describe deconstructs AI-generated outputs to reveal the components that produced them — the prompt (actual or inferred), parameters, model version, seed, and other settings. This reverse-engineering capability serves transparency and reproducibility: users can understand why an output looks the way it does, replicate results, or use the extracted prompt as a starting point for new generations.",
+    variants: [
+      {
+        title: "Panel view",
+        description:
+          "A detailed card showing the output alongside extracted metadata, inferred prompts, and action buttons for reuse.",
+      },
+      {
+        title: "Popover view",
+        description:
+          "A compact overlay triggered by clicking or right-clicking an output, showing key details without navigating away.",
+      },
+      {
+        title: "Inline view",
+        description:
+          "Metadata displayed directly beneath the output in a minimal format, suitable for quick reference.",
+      },
+    ],
+    useCases: [
+      "Reverse-engineering AI image prompts to reproduce or iterate on results",
+      "Understanding which parameters influenced a particular generation",
+      "Sharing reproducible generation settings with team members",
+      "Auditing AI outputs for compliance or quality assurance",
+      "Learning effective prompt patterns by analyzing successful outputs",
+    ],
+    bestPractices: [
+      "Prefer exact extraction over inference when the original prompt is available.",
+      "Provide a compact default view with expandable details for power users.",
+      "Make results actionable — allow one-click reuse of extracted prompts.",
+      "Clearly distinguish between exact prompts and inferred/reconstructed ones.",
+      "Include model version and seed information for full reproducibility.",
+    ],
+    relatedPatterns: ["Prompt Details", "Regenerate", "Parameter Control"],
+  },
+
+  inpainting: {
+    overview:
+      "Inpainting gives users the ability to modify specific portions of AI-generated content while preserving the rest. Rather than regenerating an entire output, users select a region — a paragraph, a section of an image, or a segment of audio — and provide targeted instructions for that area alone. This makes AI collaboration more predictable and controllable, reduces rework, and speeds iteration.",
+    variants: [
+      {
+        title: "Brush selection",
+        description:
+          "Users paint over areas to select them for regeneration, common in image editing tools.",
+      },
+      {
+        title: "Segment selection",
+        description:
+          "Content is pre-divided into labeled segments that users can click to select for editing.",
+      },
+      {
+        title: "Inline selection",
+        description:
+          "Users highlight text directly within the content to mark it for AI modification.",
+      },
+    ],
+    useCases: [
+      "Editing specific sections of AI-generated documents while preserving the rest",
+      "Fixing localized issues in AI-generated images without full regeneration",
+      "Adjusting the tone of specific paragraphs without affecting the whole piece",
+      "Correcting factual errors in AI summaries while keeping accurate sections",
+      "Iterating on specific parts of generated code while preserving working logic",
+    ],
+    bestPractices: [
+      "Clearly highlight which region is selected and will be affected by changes.",
+      "Preserve context from surrounding content to guide the regeneration.",
+      "Show a before/after comparison before committing the change.",
+      "Support undo so users can revert to the original if the edit doesn't improve things.",
+      "Allow users to adjust the scope of the selection before applying changes.",
+    ],
+    relatedPatterns: ["Expand", "Transform", "Regenerate"],
+  },
+
+  madlibs: {
+    overview:
+      "Madlibs simplifies prompt writing by breaking complex tasks into structured input fields. Instead of composing full instructions from scratch, users fill in variables — names, topics, tones, audiences — within a predefined template. This approach reduces errors, maintains consistency across generations, and makes AI accessible to users who aren't skilled prompt engineers.",
+    variants: [
+      {
+        title: "Form-based",
+        description:
+          "A traditional form layout with labeled fields for each variable, suitable for templates with many parameters.",
+      },
+      {
+        title: "Inline fill-in",
+        description:
+          "Variables embedded directly within the template text, highlighted for editing in place.",
+      },
+      {
+        title: "Wizard steps",
+        description:
+          "Variables presented one at a time in a step-by-step flow, reducing cognitive load for complex templates.",
+      },
+    ],
+    useCases: [
+      "Creating product descriptions with consistent structure across items",
+      "Generating standardized email templates with customizable fields",
+      "Building company-wide prompt libraries for common AI tasks",
+      "Drafting release notes, reports, or documentation from templates",
+      "Enabling non-technical users to leverage AI effectively",
+    ],
+    bestPractices: [
+      "Clearly distinguish required from optional fields.",
+      "Show a live preview of the assembled prompt as users fill in variables.",
+      "Provide helpful placeholders that demonstrate expected input format.",
+      "Support both simple text inputs and constrained options (dropdowns) where appropriate.",
+      "Allow users to see and edit the underlying template for advanced customization.",
+    ],
+    relatedPatterns: ["Templates", "Open Input", "Parameter Control"],
+  },
+
+  restructure: {
+    overview:
+      "Restructure changes the structural form of content while keeping it in the same medium. Unlike restyling (surface changes) or transforming (medium shifts), restructuring alters the organization, sequence, scope, or granularity of the content itself. Common operations include condensing, expanding, reordering, extracting key points, converting prose to bullet points, and shifting perspective.",
+    variants: [
+      {
+        title: "Preset buttons",
+        description:
+          "Clearly labeled action buttons like 'Make shorter', 'To bullet points', 'Extract key points' for one-click restructuring.",
+      },
+      {
+        title: "Slider controls",
+        description:
+          "Continuous controls for gradual adjustments like reading level or length, offering fine-grained control.",
+      },
+      {
+        title: "Preset bundles",
+        description:
+          "Named presets combining multiple restructuring operations, like 'Executive summary' or 'Technical deep dive'.",
+      },
+    ],
+    useCases: [
+      "Condensing long documents into concise summaries",
+      "Expanding brief notes into detailed paragraphs",
+      "Converting narrative text into bullet-point lists",
+      "Reordering content by priority or chronology",
+      "Extracting specific elements from larger bodies of content",
+    ],
+    bestPractices: [
+      "Use preset actions with clear labels rather than opaque parameters.",
+      "Highlight changes through diffs or visual callouts so users can review what changed.",
+      "Preserve the original content and offer undo capabilities.",
+      "Support sliders for nuanced adjustments like length or reading level.",
+      "Maintain stylistic consistency when restructuring — don't accidentally restyle.",
+    ],
+    relatedPatterns: ["Transform", "Restyle", "Expand"],
+  },
+
+  restyle: {
+    overview:
+      "Restyle alters the surface style of AI outputs without changing their underlying content or structure. The substance remains constant while the presentation shifts — adjusting tone, voice, register, or aesthetic. This distinction is critical: a restyle should not change claims, sequence, or layout, only how they are expressed. It's a convergent operation that narrows presentation choices while preserving meaning.",
+    variants: [
+      {
+        title: "Preset actions",
+        description:
+          "Quick buttons like 'Make formal' or 'Make casual' that apply predefined style changes with one click.",
+      },
+      {
+        title: "Style gallery",
+        description:
+          "A visual grid of style options with previews or descriptions, reducing guesswork about what each style produces.",
+      },
+      {
+        title: "Intensity slider",
+        description:
+          "A continuous control that adjusts how strongly the style is applied, from subtle to dramatic.",
+      },
+    ],
+    useCases: [
+      "Adjusting writing tone for different audiences (formal, casual, technical)",
+      "Applying brand voice guidelines to AI-generated content",
+      "Restyling images with different aesthetic treatments or palettes",
+      "Adapting content register for different communication channels",
+      "Normalizing inconsistent tone across multi-author documents",
+    ],
+    bestPractices: [
+      "Separate style from substance — restyle should never change meaning or claims.",
+      "Use discoverable presets for common style adjustments.",
+      "Support intensity controls for gradual style application.",
+      "Show before/after comparison to help users judge the effect.",
+      "Allow style combinations and customization beyond fixed presets.",
+    ],
+    relatedPatterns: ["Restructure", "Transform", "Variations"],
+  },
+
+  synthesis: {
+    overview:
+      "Synthesis combines data from multiple sources and reorganizes it to extract patterns, insights, or themes. Unlike summarization (which condenses a single source), synthesis introduces interpretation by cross-referencing, comparing, and drawing connections across inputs. This interpretive nature creates UX challenges — the AI might overstate confidence or distort evidence — making it essential to show reasoning transparently and separate facts from inferences.",
+    variants: [
+      {
+        title: "Aggregated synthesis",
+        description:
+          "Combines findings from multiple sources with minimal added interpretation, similar to a literature review.",
+      },
+      {
+        title: "Comparative synthesis",
+        description:
+          "Aligns and contrasts viewpoints across sources, highlighting agreements and disagreements.",
+      },
+      {
+        title: "Thematic synthesis",
+        description:
+          "Extracts underlying patterns and themes from information sets, like customer feedback analysis.",
+      },
+    ],
+    useCases: [
+      "Research tools that synthesize findings across multiple papers or reports",
+      "Market analysis combining data from multiple industry sources",
+      "Customer feedback analysis extracting themes from survey responses",
+      "Competitive intelligence gathering insights from diverse sources",
+      "Legal research cross-referencing multiple case documents",
+    ],
+    bestPractices: [
+      "Show how sources were grouped and connected — make reasoning visible.",
+      "Visually distinguish factual statements from inferred insights.",
+      "Use confidence indicators for claims with varying levels of support.",
+      "Link every insight back to its source material for verification.",
+      "Allow users to review, validate, and override the AI's groupings and conclusions.",
+    ],
+    relatedPatterns: ["Citation", "Stream of Thought", "Summary"],
+  },
 };

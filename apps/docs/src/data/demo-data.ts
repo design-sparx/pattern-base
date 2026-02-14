@@ -631,3 +631,152 @@ export const demoModels = [
     capabilities: ["chat", "code"],
   },
 ];
+
+export const demoDescribeDetails = [
+  { id: "1", label: "Model", value: "Midjourney v6", type: "badge" as const },
+  { id: "2", label: "Aspect Ratio", value: "16:9", type: "text" as const },
+  { id: "3", label: "Quality", value: "High", type: "text" as const },
+  { id: "4", label: "Stylize", value: "750", type: "code" as const },
+];
+
+export const demoDescribeOutput =
+  "A vibrant digital illustration of a futuristic cityscape at sunset, with flying vehicles and holographic billboards reflecting off glass towers.";
+
+export const demoDescribeInferredPrompt =
+  "futuristic cityscape, sunset, flying vehicles, holographic billboards, glass towers, vibrant digital illustration --ar 16:9 --stylize 750";
+
+export const demoInpaintingRegions = [
+  { id: "intro", label: "Introduction" },
+  { id: "body", label: "Main Body" },
+  { id: "conclusion", label: "Conclusion" },
+  { id: "tone", label: "Tone Adjustment" },
+];
+
+export const demoInpaintingContent =
+  "The quarterly report shows strong growth across all divisions. Revenue increased by 23% year-over-year, driven primarily by the expansion of our cloud services platform. Customer satisfaction scores reached an all-time high of 94%.";
+
+export const demoMadlibsVariables = [
+  {
+    id: "topic",
+    label: "Topic",
+    placeholder: "e.g. AI trends in healthcare",
+    required: true as const,
+  },
+  {
+    id: "audience",
+    label: "Target Audience",
+    placeholder: "e.g. healthcare professionals",
+    required: true as const,
+  },
+  {
+    id: "tone",
+    label: "Tone",
+    type: "select" as const,
+    options: [
+      { label: "Professional", value: "professional" },
+      { label: "Conversational", value: "conversational" },
+      { label: "Academic", value: "academic" },
+    ],
+  },
+  {
+    id: "length",
+    label: "Word Count",
+    type: "number" as const,
+    placeholder: "e.g. 500",
+    defaultValue: "500",
+  },
+];
+
+export const demoMadlibsTemplate =
+  "Write a {{tone}} blog post about {{topic}} targeted at {{audience}}. The post should be approximately {{length}} words long.";
+
+export const demoRestructureOptions = [
+  { id: "condense", label: "Make Shorter", icon: "📝" },
+  { id: "expand", label: "Elaborate", icon: "📖" },
+  { id: "bullets", label: "To Bullet Points", icon: "📋" },
+  { id: "reorder", label: "Reorder by Priority", icon: "🔄" },
+  { id: "extract", label: "Extract Key Points", icon: "🎯" },
+];
+
+export const demoRestructureContent =
+  "Machine learning has transformed how businesses operate. Companies now use predictive analytics for customer behavior, natural language processing for support automation, and computer vision for quality control. The adoption rate has grown 340% since 2020, with mid-size companies showing the fastest growth trajectory.";
+
+export const demoRestyleOptions = [
+  {
+    id: "formal",
+    label: "Formal",
+    icon: "🎩",
+    description: "Professional business tone",
+  },
+  {
+    id: "casual",
+    label: "Casual",
+    icon: "😊",
+    description: "Friendly conversational style",
+  },
+  {
+    id: "technical",
+    label: "Technical",
+    icon: "⚙️",
+    description: "Precise technical language",
+  },
+  {
+    id: "creative",
+    label: "Creative",
+    icon: "🎨",
+    description: "Expressive literary style",
+  },
+];
+
+export const demoRestyleContent =
+  "Our new product helps teams work better together. It combines project management with real-time collaboration tools, making it easy to track progress and share updates.";
+
+export const demoSynthesisSources = [
+  {
+    id: "s1",
+    title: "McKinsey AI Report 2025",
+    content: "AI adoption in enterprises has reached 72%, up from 55% in 2023.",
+    url: "https://mckinsey.com/ai-report",
+    relevance: 0.95,
+  },
+  {
+    id: "s2",
+    title: "Gartner Technology Trends",
+    content:
+      "Generative AI is the most impactful technology trend, with 65% of organizations experimenting.",
+    url: "https://gartner.com/tech-trends",
+    relevance: 0.88,
+  },
+  {
+    id: "s3",
+    title: "Stanford AI Index",
+    content:
+      "Private AI investment reached $93.5B in 2024, with healthcare and finance leading sectors.",
+    url: "https://aiindex.stanford.edu",
+    relevance: 0.82,
+  },
+];
+
+export const demoSynthesisInsights = [
+  {
+    id: "i1",
+    text: "Enterprise AI adoption has accelerated significantly, with over 70% of large organizations now deploying AI solutions.",
+    confidence: 0.92,
+    sourceIds: ["s1", "s2"],
+    type: "fact" as const,
+  },
+  {
+    id: "i2",
+    text: "Healthcare and finance are emerging as the primary sectors driving AI investment growth.",
+    confidence: 0.78,
+    sourceIds: ["s3"],
+    type: "theme" as const,
+  },
+  {
+    id: "i3",
+    text: "The gap between AI experimentation and production deployment is narrowing, suggesting maturation of enterprise AI strategies.",
+    confidence: 0.65,
+    sourceIds: ["s1", "s2", "s3"],
+    type: "inference" as const,
+  },
+];

@@ -13,6 +13,7 @@ import {
   Consent as AntConsent,
   CostEstimate as AntCostEstimate,
   DataOwnership as AntDataOwnership,
+  Describe as AntDescribe,
   Disclosure as AntDisclosure,
   Expand as AntExpand,
   Filters as AntFilters,
@@ -21,6 +22,8 @@ import {
   Gallery as AntGallery,
   InitialCta as AntInitialCta,
   InlineAction as AntInlineAction,
+  Inpainting as AntInpainting,
+  Madlibs as AntMadlibs,
   ModelManagement as AntModelManagement,
   Nudges as AntNudges,
   OpenInput as AntOpenInput,
@@ -28,9 +31,12 @@ import {
   PromptDetails as AntPromptDetails,
   Randomize as AntRandomize,
   Regenerate as AntRegenerate,
+  Restructure as AntRestructure,
+  Restyle as AntRestyle,
   StreamOfThought as AntStreamOfThought,
   Suggestions as AntSuggestions,
   Summary as AntSummary,
+  Synthesis as AntSynthesis,
   Templates as AntTemplates,
   Transform as AntTransform,
   Variations as AntVariations,
@@ -46,6 +52,7 @@ import {
   Consent as BsConsent,
   CostEstimate as BsCostEstimate,
   DataOwnership as BsDataOwnership,
+  Describe as BsDescribe,
   Disclosure as BsDisclosure,
   Expand as BsExpand,
   Filters as BsFilters,
@@ -54,6 +61,8 @@ import {
   Gallery as BsGallery,
   InitialCta as BsInitialCta,
   InlineAction as BsInlineAction,
+  Inpainting as BsInpainting,
+  Madlibs as BsMadlibs,
   ModelManagement as BsModelManagement,
   Nudges as BsNudges,
   OpenInput as BsOpenInput,
@@ -61,9 +70,12 @@ import {
   PromptDetails as BsPromptDetails,
   Randomize as BsRandomize,
   Regenerate as BsRegenerate,
+  Restructure as BsRestructure,
+  Restyle as BsRestyle,
   StreamOfThought as BsStreamOfThought,
   Suggestions as BsSuggestions,
   Summary as BsSummary,
+  Synthesis as BsSynthesis,
   Templates as BsTemplates,
   Transform as BsTransform,
   Variations as BsVariations,
@@ -78,19 +90,32 @@ import {
   demoConsentItems,
   demoCostBreakdown,
   demoDataOwnershipItems,
+  demoDescribeDetails,
+  demoDescribeInferredPrompt,
+  demoDescribeOutput,
   demoFilterGroups,
   demoFollowUps,
   demoFootprintEntries,
   demoGalleryItems,
   demoInitialCtaActions,
   demoInlineActions,
+  demoInpaintingContent,
+  demoInpaintingRegions,
+  demoMadlibsTemplate,
+  demoMadlibsVariables,
   demoModels,
   demoNudges,
   demoParameters,
   demoPromptDetails,
+  demoRestructureContent,
+  demoRestructureOptions,
+  demoRestyleContent,
+  demoRestyleOptions,
   demoSteps,
   demoSuggestions,
   demoSummaryContent,
+  demoSynthesisInsights,
+  demoSynthesisSources,
   demoTemplates,
   demoTransformContent,
   demoTransformOptions,
@@ -718,6 +743,144 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onClear={noop}
         title="Activity History"
         showTimestamps
+      />
+    ),
+  },
+
+  describe: {
+    bootstrap: () => (
+      <BsDescribe
+        output={demoDescribeOutput}
+        details={demoDescribeDetails}
+        inferredPrompt={demoDescribeInferredPrompt}
+        model="Midjourney v6"
+        seed="12345"
+        onReuse={noop}
+        onCopy={noop}
+      />
+    ),
+    antd: () => (
+      <AntDescribe
+        output={demoDescribeOutput}
+        details={demoDescribeDetails}
+        inferredPrompt={demoDescribeInferredPrompt}
+        model="Midjourney v6"
+        seed="12345"
+        onReuse={noop}
+        onCopy={noop}
+      />
+    ),
+  },
+
+  inpainting: {
+    bootstrap: () => (
+      <BsInpainting
+        content={demoInpaintingContent}
+        regions={demoInpaintingRegions}
+        onRegionSelect={noop}
+        onApply={noop}
+        selectedRegionId="body"
+        onPromptChange={noop}
+        title="Edit Content Region"
+      />
+    ),
+    antd: () => (
+      <AntInpainting
+        content={demoInpaintingContent}
+        regions={demoInpaintingRegions}
+        onRegionSelect={noop}
+        onApply={noop}
+        selectedRegionId="body"
+        onPromptChange={noop}
+        title="Edit Content Region"
+      />
+    ),
+  },
+
+  madlibs: {
+    bootstrap: () => (
+      <BsMadlibs
+        template={demoMadlibsTemplate}
+        variables={demoMadlibsVariables}
+        onChange={noop}
+        onSubmit={noop}
+        title="Blog Post Generator"
+        description="Fill in the fields below to generate a customized blog post."
+        showPreview
+      />
+    ),
+    antd: () => (
+      <AntMadlibs
+        template={demoMadlibsTemplate}
+        variables={demoMadlibsVariables}
+        onChange={noop}
+        onSubmit={noop}
+        title="Blog Post Generator"
+        description="Fill in the fields below to generate a customized blog post."
+        showPreview
+      />
+    ),
+  },
+
+  restructure: {
+    bootstrap: () => (
+      <BsRestructure
+        content={demoRestructureContent}
+        options={demoRestructureOptions}
+        onRestructure={noop}
+        title="Restructure Content"
+      />
+    ),
+    antd: () => (
+      <AntRestructure
+        content={demoRestructureContent}
+        options={demoRestructureOptions}
+        onRestructure={noop}
+        title="Restructure Content"
+      />
+    ),
+  },
+
+  restyle: {
+    bootstrap: () => (
+      <BsRestyle
+        content={demoRestyleContent}
+        options={demoRestyleOptions}
+        onRestyle={noop}
+        title="Restyle Content"
+      />
+    ),
+    antd: () => (
+      <AntRestyle
+        content={demoRestyleContent}
+        options={demoRestyleOptions}
+        onRestyle={noop}
+        title="Restyle Content"
+      />
+    ),
+  },
+
+  synthesis: {
+    bootstrap: () => (
+      <BsSynthesis
+        sources={demoSynthesisSources}
+        insights={demoSynthesisInsights}
+        onSourceClick={noop}
+        onRegenerate={noop}
+        title="AI Industry Analysis"
+        showSources
+        showConfidence
+      />
+    ),
+    antd: () => (
+      <AntSynthesis
+        sources={demoSynthesisSources}
+        insights={demoSynthesisInsights}
+        onSourceClick={noop}
+        onRegenerate={noop}
+        title="AI Industry Analysis"
+        showSources
+        showConfidence
       />
     ),
   },
