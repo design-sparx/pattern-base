@@ -201,6 +201,15 @@ export const patterns: PatternMeta[] = [
     tags: ["saved", "styles", "presets"],
   },
   {
+    id: "voice-and-tone",
+    name: "Voice and Tone",
+    slug: "voice-and-tone",
+    category: "tuners",
+    description:
+      "Adjust communication style with controllable axes like formal-casual and technical-plain",
+    tags: ["tone", "voice", "style"],
+  },
+  {
     id: "action-plan",
     name: "Action Plan",
     slug: "action-plan",

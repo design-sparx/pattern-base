@@ -39,3 +39,4 @@ export { Synthesis } from "./components/synthesis";
 export { Templates } from "./components/templates";
 export { Transform } from "./components/transform";
 export { Variations } from "./components/variations";
+export { VoiceAndTone } from "./components/voice-and-tone";

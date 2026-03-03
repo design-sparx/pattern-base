@@ -241,6 +241,38 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  "voice-and-tone": [
+    {
+      name: "axes",
+      type: "VoiceToneAxis[]",
+      description:
+        "Array of tone axes with id, label, left/right labels, value, and optional min/max/step",
+    },
+    {
+      name: "onChange",
+      type: "(axisId: string, value: number) => void",
+      description: "Callback fired when an axis value changes",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Voice and Tone"',
+      description: "Optional heading for the voice/tone control panel",
+    },
+    {
+      name: "showValues",
+      type: "boolean",
+      default: "true",
+      description: "Whether to display current numeric values for each axis",
+    },
+    {
+      name: "variant",
+      type: '"sliders" | "compact"',
+      default: '"sliders"',
+      description: "Display density of the axis controls",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

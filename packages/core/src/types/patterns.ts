@@ -136,6 +136,25 @@ export interface SavedStylesProps {
   maxVisible?: number;
 }
 
+export interface VoiceToneAxis {
+  id: string;
+  label: string;
+  leftLabel: string;
+  rightLabel: string;
+  value: number;
+  min?: number;
+  max?: number;
+  step?: number;
+}
+
+export interface VoiceAndToneProps {
+  axes: VoiceToneAxis[];
+  onChange: (axisId: string, value: number) => void;
+  title?: string;
+  showValues?: boolean;
+  variant?: "sliders" | "compact";
+}
+
 // ── Governor Patterns ──
 
 export interface ThoughtStep {

@@ -586,6 +586,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Preset Styles", "Modes", "Voice and Tone"],
   },
 
+  "voice-and-tone": {
+    overview:
+      "Voice and Tone gives users direct control over communication register through explicit axes such as formal-casual, plain-technical, and direct-empathetic. Unlike presets, this pattern supports fine-grained adjustment and helps teams converge on the exact tone required for each audience.",
+    variants: [
+      {
+        title: "Full sliders",
+        description:
+          "Labeled bipolar sliders with left/right anchors for clear tonal direction.",
+      },
+      {
+        title: "Compact controls",
+        description:
+          "Minimal slider layout for constrained interfaces where space is limited.",
+      },
+      {
+        title: "Hybrid preset + slider",
+        description:
+          "Preset starting points with manual axis refinement for precision.",
+      },
+    ],
+    useCases: [
+      "Adapting AI copy for internal vs customer-facing communication",
+      "Balancing technical accuracy with accessibility for mixed audiences",
+      "Tuning assistant responses in support and success workflows",
+      "Standardizing tone controls across reusable content pipelines",
+      "Fine-tuning outputs beyond preset style bundles",
+    ],
+    bestPractices: [
+      "Use clear axis labels with meaningful opposite anchors.",
+      "Show current numeric values for precision and repeatability.",
+      "Keep axis count focused on the most impactful tone dimensions.",
+      "Pair tonal controls with previewed output whenever possible.",
+      "Offer presets as optional starting points, not replacements for manual tuning.",
+    ],
+    relatedPatterns: ["Modes", "Preset Styles", "Saved Styles"],
+  },
+
   "follow-up": {
     overview:
       "Follow Up prompts keep the conversation moving after an AI response by suggesting relevant next steps. They reduce the cognitive load of deciding what to ask next and help users explore a topic more deeply without composing prompts from scratch. Well-chosen follow-ups transform a single Q&A exchange into a productive exploration session.",

@@ -467,6 +467,39 @@ export const demoSavedStyles = [
   },
 ];
 
+export const demoVoiceToneAxes = [
+  {
+    id: "formality",
+    label: "Formality",
+    leftLabel: "Casual",
+    rightLabel: "Formal",
+    value: 35,
+    min: -100,
+    max: 100,
+    step: 1,
+  },
+  {
+    id: "complexity",
+    label: "Complexity",
+    leftLabel: "Plain",
+    rightLabel: "Technical",
+    value: 20,
+    min: -100,
+    max: 100,
+    step: 1,
+  },
+  {
+    id: "warmth",
+    label: "Warmth",
+    leftLabel: "Direct",
+    rightLabel: "Empathetic",
+    value: 45,
+    min: -100,
+    max: 100,
+    step: 1,
+  },
+];
+
 export const demoActionPlanSteps = [
   {
     id: "1",

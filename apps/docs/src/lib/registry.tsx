@@ -45,6 +45,7 @@ import {
   Templates as AntTemplates,
   Transform as AntTransform,
   Variations as AntVariations,
+  VoiceAndTone as AntVoiceAndTone,
 } from "@ai-ui/antd";
 // Bootstrap components
 import {
@@ -89,6 +90,7 @@ import {
   Templates as BsTemplates,
   Transform as BsTransform,
   Variations as BsVariations,
+  VoiceAndTone as BsVoiceAndTone,
 } from "@ai-ui/bootstrap";
 
 import {
@@ -136,6 +138,7 @@ import {
   demoTransformContent,
   demoTransformOptions,
   demoVariations,
+  demoVoiceToneAxes,
 } from "@/data/demo-data";
 
 // ── Registry ──
@@ -985,6 +988,27 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onDeleteStyle={noop}
         title="My Saved Styles"
         variant="list"
+      />
+    ),
+  },
+
+  "voice-and-tone": {
+    bootstrap: () => (
+      <BsVoiceAndTone
+        axes={demoVoiceToneAxes}
+        onChange={noop}
+        title="Voice and Tone"
+        showValues
+        variant="sliders"
+      />
+    ),
+    antd: () => (
+      <AntVoiceAndTone
+        axes={demoVoiceToneAxes}
+        onChange={noop}
+        title="Voice and Tone"
+        showValues
+        variant="sliders"
       />
     ),
   },

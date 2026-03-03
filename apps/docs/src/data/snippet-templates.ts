@@ -137,6 +137,22 @@ const styles = [
   variant="list"
 />`,
 
+  "voice-and-tone": (fw) => `import { VoiceAndTone } from '@ai-ui/${fw}';
+
+const axes = [
+  { id: 'formality', label: 'Formality', leftLabel: 'Casual', rightLabel: 'Formal', value: 35, min: -100, max: 100 },
+  { id: 'complexity', label: 'Complexity', leftLabel: 'Plain', rightLabel: 'Technical', value: 20, min: -100, max: 100 },
+  { id: 'warmth', label: 'Warmth', leftLabel: 'Direct', rightLabel: 'Empathetic', value: 45, min: -100, max: 100 },
+];
+
+<VoiceAndTone
+  axes={axes}
+  onChange={(axisId, value) => console.log(axisId, value)}
+  title="Voice and Tone"
+  showValues
+  variant="sliders"
+/>`,
+
   "stream-of-thought": (fw) => `import { StreamOfThought } from '@ai-ui/${fw}';
 
 const steps = [
