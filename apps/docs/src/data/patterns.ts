@@ -254,6 +254,15 @@ export const patterns: PatternMeta[] = [
     tags: ["references", "sources", "context"],
   },
   {
+    id: "sample-response",
+    name: "Sample Response",
+    slug: "sample-response",
+    category: "governors",
+    description:
+      "Generate a short preview output before committing to a full response",
+    tags: ["preview", "gating", "quality-check"],
+  },
+  {
     id: "branches",
     name: "Branches",
     slug: "branches",

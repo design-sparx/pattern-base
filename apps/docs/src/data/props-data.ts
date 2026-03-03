@@ -461,6 +461,56 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  "sample-response": [
+    {
+      name: "sample",
+      type: "string",
+      default: "undefined",
+      description: "Optional preview text generated for the sample response",
+    },
+    {
+      name: "prompt",
+      type: "string",
+      default: "undefined",
+      description: "Optional prompt context displayed with the sample",
+    },
+    {
+      name: "onGenerateSample",
+      type: "() => void",
+      description: "Callback fired to request a new sample response",
+    },
+    {
+      name: "onRegenerateSample",
+      type: "() => void",
+      default: "undefined",
+      description: "Optional callback fired to regenerate the sample",
+    },
+    {
+      name: "onAcceptSample",
+      type: "() => void",
+      default: "undefined",
+      description: "Optional callback fired to proceed with full generation",
+    },
+    {
+      name: "isGenerating",
+      type: "boolean",
+      default: "false",
+      description: "Whether sample generation is currently in progress",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Sample Response"',
+      description: "Optional heading for the sample response component",
+    },
+    {
+      name: "variant",
+      type: '"card" | "inline"',
+      default: '"card"',
+      description: "Display style for previewing the sample response",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

@@ -1030,6 +1030,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Citation", "Verification", "Memory"],
   },
 
+  "sample-response": {
+    overview:
+      "Sample Response provides a lightweight preview of what the AI is likely to produce before the user commits to a full generation run. It helps users validate direction, tone, and relevance early, reducing wasted compute and unnecessary long outputs.",
+    variants: [
+      {
+        title: "Inline sample",
+        description:
+          "A compact preview shown directly near the prompt controls for fast iteration.",
+      },
+      {
+        title: "Card preview",
+        description:
+          "A richer preview panel with prompt context and explicit follow-up actions.",
+      },
+      {
+        title: "Sample-to-full gate",
+        description:
+          "Users must review and accept a sample before triggering the full response.",
+      },
+    ],
+    useCases: [
+      "Checking tone and scope before generating long-form content",
+      "Reducing token spend in high-cost model workflows",
+      "Validating prompt quality during iterative prompt engineering",
+      "Previewing output style for stakeholder approval flows",
+      "Guarding against irrelevant responses in agentic pipelines",
+    ],
+    bestPractices: [
+      "Keep samples short and representative rather than exhaustive.",
+      "Make the transition from sample to full response explicit.",
+      "Offer one-click regenerate so users can quickly compare alternatives.",
+      "Show loading feedback to distinguish preview latency from full generation time.",
+      "Retain prompt context near the sample so users can evaluate alignment.",
+    ],
+    relatedPatterns: ["Regenerate", "Variations", "References"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

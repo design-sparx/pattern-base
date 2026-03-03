@@ -697,6 +697,12 @@ export const demoReferences = [
   },
 ];
 
+export const demoSampleResponsePrompt =
+  "Create a rollout plan for migrating our analytics pipeline to a streaming architecture.";
+
+export const demoSampleResponseText =
+  "Phase 1: instrument current batch jobs and define event contracts. Phase 2: stand up a parallel streaming path for high-value events. Phase 3: validate data parity and cut over consumers incrementally.";
+
 export const demoConsentItems = [
   {
     id: "1",

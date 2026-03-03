@@ -316,6 +316,17 @@ export interface ReferencesProps {
   showRelevance?: boolean;
 }
 
+export interface SampleResponseProps {
+  sample?: string;
+  prompt?: string;
+  onGenerateSample: () => void;
+  onRegenerateSample?: () => void;
+  onAcceptSample?: () => void;
+  isGenerating?: boolean;
+  title?: string;
+  variant?: "card" | "inline";
+}
+
 // ── Prompt Action Patterns ──
 
 export interface RegenerateProps {

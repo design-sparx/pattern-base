@@ -463,6 +463,18 @@ const references = [
   showRelevance
 />`,
 
+  "sample-response": (fw) => `import { SampleResponse } from '@ai-ui/${fw}';
+
+<SampleResponse
+  prompt="Create a rollout plan for migrating our analytics pipeline to a streaming architecture."
+  sample="Phase 1: instrument current batch jobs and define event contracts. Phase 2: stand up a parallel streaming path."
+  onGenerateSample={() => console.log('Generate sample')}
+  onRegenerateSample={() => console.log('Regenerate sample')}
+  onAcceptSample={() => console.log('Generate full response')}
+  title="Preview Before Full Run"
+  variant="card"
+/>`,
+
   caveat: (fw) => `import { Caveat } from '@ai-ui/${fw}';
 
 {/* Banner variant */}

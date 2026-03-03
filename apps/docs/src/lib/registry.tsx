@@ -42,6 +42,7 @@ import {
   Regenerate as AntRegenerate,
   Restructure as AntRestructure,
   Restyle as AntRestyle,
+  SampleResponse as AntSampleResponse,
   SavedStyles as AntSavedStyles,
   StreamOfThought as AntStreamOfThought,
   Suggestions as AntSuggestions,
@@ -92,6 +93,7 @@ import {
   Regenerate as BsRegenerate,
   Restructure as BsRestructure,
   Restyle as BsRestyle,
+  SampleResponse as BsSampleResponse,
   SavedStyles as BsSavedStyles,
   StreamOfThought as BsStreamOfThought,
   Suggestions as BsSuggestions,
@@ -139,6 +141,8 @@ import {
   demoPromptEnhancerOriginal,
   demoPromptDetails,
   demoReferences,
+  demoSampleResponsePrompt,
+  demoSampleResponseText,
   demoRestructureContent,
   demoRestructureOptions,
   demoRestyleContent,
@@ -665,6 +669,31 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Session References"
         variant="list"
         showRelevance
+      />
+    ),
+  },
+
+  "sample-response": {
+    bootstrap: () => (
+      <BsSampleResponse
+        prompt={demoSampleResponsePrompt}
+        sample={demoSampleResponseText}
+        onGenerateSample={noop}
+        onRegenerateSample={noop}
+        onAcceptSample={noop}
+        title="Preview Before Full Run"
+        variant="card"
+      />
+    ),
+    antd: () => (
+      <AntSampleResponse
+        prompt={demoSampleResponsePrompt}
+        sample={demoSampleResponseText}
+        onGenerateSample={noop}
+        onRegenerateSample={noop}
+        onAcceptSample={noop}
+        title="Preview Before Full Run"
+        variant="card"
       />
     ),
   },

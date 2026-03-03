@@ -36,6 +36,7 @@ export { Regenerate } from "./components/regenerate";
 export { References } from "./components/references";
 export { Restructure } from "./components/restructure";
 export { Restyle } from "./components/restyle";
+export { SampleResponse } from "./components/sample-response";
 export { SavedStyles } from "./components/saved-styles";
 export { StreamOfThought } from "./components/stream-of-thought";
 export { Suggestions } from "./components/suggestions";
