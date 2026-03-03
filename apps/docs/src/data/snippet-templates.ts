@@ -564,6 +564,17 @@ const [incognitoEnabled, setIncognitoEnabled] = useState(true);
   variant="card"
 />`,
 
+  watermark: (fw) => `import { Watermark } from '@ai-ui/${fw}';
+
+<Watermark
+  label="AI Provenance Mark"
+  visibility="invisible"
+  confidence={0.93}
+  algorithm="C2PA signature"
+  onVerify={() => console.log('Verify watermark')}
+  variant="banner"
+/>`,
+
   "auto-fill": (fw) => `import { AutoFill } from '@ai-ui/${fw}';
 
 const suggestions = [

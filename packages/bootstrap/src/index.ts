@@ -48,4 +48,5 @@ export { Templates } from "./components/templates";
 export { Transform } from "./components/transform";
 export { Variations } from "./components/variations";
 export { Verification } from "./components/verification";
+export { Watermark } from "./components/watermark";
 export { VoiceAndTone } from "./components/voice-and-tone";

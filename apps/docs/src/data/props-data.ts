@@ -640,6 +640,45 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  watermark: [
+    {
+      name: "label",
+      type: "string",
+      default: '"AI Provenance"',
+      description: "Display label used for the watermark marker",
+    },
+    {
+      name: "visibility",
+      type: '"visible" | "invisible"',
+      default: '"visible"',
+      description: "Whether the marker is user-visible or metadata-only",
+    },
+    {
+      name: "variant",
+      type: '"badge" | "inline" | "banner"',
+      default: '"badge"',
+      description: "Presentation style for the watermark UI",
+    },
+    {
+      name: "confidence",
+      type: "number",
+      default: "undefined",
+      description: "Optional confidence score (0-1) for watermark detection",
+    },
+    {
+      name: "algorithm",
+      type: "string",
+      default: "undefined",
+      description: "Optional algorithm/standard label (for example C2PA)",
+    },
+    {
+      name: "onVerify",
+      type: "() => void",
+      default: "undefined",
+      description: "Optional callback for a user-triggered verification action",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

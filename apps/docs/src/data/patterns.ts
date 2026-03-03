@@ -411,6 +411,15 @@ export const patterns: PatternMeta[] = [
     tags: ["privacy", "session", "retention"],
   },
   {
+    id: "watermark",
+    name: "Watermark",
+    slug: "watermark",
+    category: "trust-builders",
+    description:
+      "Visible or invisible provenance markers that identify AI-generated content",
+    tags: ["provenance", "traceability", "identity"],
+  },
+  {
     id: "describe",
     name: "Describe",
     slug: "describe",

@@ -1178,6 +1178,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Consent", "Disclosure", "Data Ownership"],
   },
 
+  watermark: {
+    overview:
+      "Watermark embeds provenance information into AI-generated output so downstream viewers can identify machine-generated content. It can be visible (explicit labels or marks) or invisible (metadata/signatures) depending on product needs. The pattern strengthens traceability, helps moderation workflows, and supports compliance requirements around synthetic media disclosure.",
+    variants: [
+      {
+        title: "Visible watermark",
+        description:
+          "A clear badge, label, or overlay shown directly on generated content to signal AI origin.",
+      },
+      {
+        title: "Invisible watermark",
+        description:
+          "Embedded metadata or cryptographic signatures that are machine-detectable but not visually intrusive.",
+      },
+      {
+        title: "Verification banner",
+        description:
+          "A status panel that reports watermark detection confidence and offers a verification action.",
+      },
+    ],
+    useCases: [
+      "AI image and video generation products",
+      "Enterprise content authenticity workflows",
+      "Social/media platforms handling synthetic media",
+      "Publishing pipelines requiring provenance tracking",
+      "Moderation tools that need origin signals at scale",
+    ],
+    bestPractices: [
+      "Use consistent wording so users understand what the watermark means.",
+      "Differentiate clearly between visible labels and embedded metadata.",
+      "Expose verification actions when confidence may vary.",
+      "Pair watermarking with disclosure and citation for stronger trust signals.",
+      "Avoid presenting watermark confidence as absolute proof of authenticity.",
+    ],
+    relatedPatterns: ["Disclosure", "Verification", "Citation"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

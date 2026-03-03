@@ -951,6 +951,13 @@ export const demoIncognitoState = {
     "Files, prompts, and generated responses are deleted when this session ends.",
 };
 
+export const demoWatermark = {
+  label: "AI Provenance Mark",
+  visibility: "invisible" as const,
+  confidence: 0.93,
+  algorithm: "C2PA signature",
+};
+
 export const demoDataOwnershipItems = [
   {
     id: "1",

@@ -437,6 +437,15 @@ export interface IncognitoModeProps {
   variant?: "card" | "banner" | "inline";
 }
 
+export interface WatermarkProps {
+  label?: string;
+  visibility?: "visible" | "invisible";
+  variant?: "badge" | "inline" | "banner";
+  confidence?: number;
+  algorithm?: string;
+  onVerify?: () => void;
+}
+
 // ── Additional Wayfinder Patterns ──
 
 export interface FollowUpItem {

@@ -54,6 +54,7 @@ import {
   Transform as AntTransform,
   Variations as AntVariations,
   Verification as AntVerification,
+  Watermark as AntWatermark,
   VoiceAndTone as AntVoiceAndTone,
 } from "@ai-ui/antd";
 // Bootstrap components
@@ -108,6 +109,7 @@ import {
   Transform as BsTransform,
   Variations as BsVariations,
   Verification as BsVerification,
+  Watermark as BsWatermark,
   VoiceAndTone as BsVoiceAndTone,
 } from "@ai-ui/bootstrap";
 
@@ -168,6 +170,7 @@ import {
   demoTransformOptions,
   demoVariations,
   demoVerificationClaims,
+  demoWatermark,
   demoVoiceToneAxes,
 } from "@/data/demo-data";
 
@@ -840,6 +843,29 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         description={demoIncognitoState.description}
         retentionNotice={demoIncognitoState.retentionNotice}
         variant="card"
+      />
+    ),
+  },
+
+  watermark: {
+    bootstrap: () => (
+      <BsWatermark
+        label={demoWatermark.label}
+        visibility={demoWatermark.visibility}
+        confidence={demoWatermark.confidence}
+        algorithm={demoWatermark.algorithm}
+        onVerify={noop}
+        variant="banner"
+      />
+    ),
+    antd: () => (
+      <AntWatermark
+        label={demoWatermark.label}
+        visibility={demoWatermark.visibility}
+        confidence={demoWatermark.confidence}
+        algorithm={demoWatermark.algorithm}
+        onVerify={noop}
+        variant="banner"
       />
     ),
   },
