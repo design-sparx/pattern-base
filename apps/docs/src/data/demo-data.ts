@@ -532,6 +532,103 @@ export const demoActionPlanSteps = [
   },
 ];
 
+export const demoBranches = [
+  {
+    id: "main",
+    label: "Main Thread",
+    preview: "Baseline plan and assumptions",
+    depth: 0,
+    createdAt: new Date(Date.now() - 1000 * 60 * 45),
+  },
+  {
+    id: "alt-ui",
+    parentId: "main",
+    label: "UI Alternative",
+    preview: "Exploring a cards-first interaction flow",
+    depth: 1,
+    createdAt: new Date(Date.now() - 1000 * 60 * 30),
+  },
+  {
+    id: "perf-path",
+    parentId: "main",
+    label: "Performance Path",
+    preview: "Reduced payload and lazy rendering strategy",
+    depth: 1,
+    createdAt: new Date(Date.now() - 1000 * 60 * 20),
+  },
+  {
+    id: "perf-a11y",
+    parentId: "perf-path",
+    label: "Perf + A11y",
+    preview: "Adds keyboard-first branch navigation",
+    depth: 2,
+    createdAt: new Date(Date.now() - 1000 * 60 * 8),
+  },
+];
+
+export const demoControls = [
+  {
+    id: "web-search",
+    label: "Web Search",
+    description: "Allow live browsing for up-to-date facts",
+    enabled: true,
+    status: "active" as const,
+  },
+  {
+    id: "memory",
+    label: "Memory",
+    description: "Store preferences and recurring context",
+    enabled: false,
+    status: "disabled" as const,
+  },
+  {
+    id: "code-execution",
+    label: "Code Execution",
+    description: "Run generated code in a sandboxed environment",
+    enabled: true,
+    locked: true,
+    status: "restricted" as const,
+  },
+  {
+    id: "external-actions",
+    label: "External Actions",
+    description: "Allow API calls or side effects outside the app",
+    enabled: false,
+    status: "restricted" as const,
+  },
+];
+
+export const demoDrafts = [
+  {
+    id: "draft-1",
+    number: 1,
+    label: "Initial Draft",
+    preview: "High-level architecture with baseline assumptions.",
+    createdAt: new Date(Date.now() - 1000 * 60 * 40),
+  },
+  {
+    id: "draft-2",
+    number: 2,
+    label: "Refined Scope",
+    preview: "Narrowed APIs and clarified data contracts.",
+    createdAt: new Date(Date.now() - 1000 * 60 * 25),
+  },
+  {
+    id: "draft-3",
+    number: 3,
+    label: "Performance Revision",
+    preview: "Added caching and lazy-loading strategies.",
+    createdAt: new Date(Date.now() - 1000 * 60 * 12),
+  },
+  {
+    id: "draft-4",
+    number: 4,
+    label: "Final Candidate",
+    preview: "Balanced reliability, cost, and rollout safety.",
+    createdAt: new Date(Date.now() - 1000 * 60 * 5),
+  },
+];
+
 export const demoConsentItems = [
   {
     id: "1",

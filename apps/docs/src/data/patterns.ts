@@ -218,6 +218,33 @@ export const patterns: PatternMeta[] = [
     tags: ["plan", "steps", "approval"],
   },
   {
+    id: "controls",
+    name: "Controls",
+    slug: "controls",
+    category: "governors",
+    description:
+      "Master capability toggles for features like web search, memory, and tools",
+    tags: ["toggles", "capabilities", "governance"],
+  },
+  {
+    id: "draft-mode",
+    name: "Draft Mode",
+    slug: "draft-mode",
+    category: "governors",
+    description:
+      "Iterative draft history with quick revert and branch actions from prior drafts",
+    tags: ["drafts", "iteration", "history"],
+  },
+  {
+    id: "branches",
+    name: "Branches",
+    slug: "branches",
+    category: "governors",
+    description:
+      "Fork conversations into parallel paths and switch context between branches",
+    tags: ["branching", "threads", "comparison"],
+  },
+  {
     id: "caveat",
     name: "Caveat",
     slug: "caveat",

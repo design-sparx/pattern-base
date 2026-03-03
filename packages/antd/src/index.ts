@@ -1,15 +1,18 @@
 export { ActionPlan } from "./components/action-plan";
 export { Attachments } from "./components/attachments";
 export { AutoFill } from "./components/auto-fill";
+export { Branches } from "./components/branches";
 export { Caveat } from "./components/caveat";
 export { ChainedAction } from "./components/chained-action";
 export { Citation, CitationsList, InlineCitation } from "./components/citation";
 export { Consent } from "./components/consent";
 export { Connectors } from "./components/connectors";
+export { Controls } from "./components/controls";
 export { CostEstimate } from "./components/cost-estimate";
 export { DataOwnership } from "./components/data-ownership";
 export { Describe } from "./components/describe";
 export { Disclosure } from "./components/disclosure";
+export { DraftMode } from "./components/draft-mode";
 export { Expand } from "./components/expand";
 export { Filters } from "./components/filters";
 export { FollowUp } from "./components/follow-up";

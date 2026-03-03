@@ -845,6 +845,117 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Stream of Thought", "Cost Estimate", "Consent"],
   },
 
+  branches: {
+    overview:
+      "Branches let users fork a conversation at any point and explore alternative paths without losing the original context. This pattern is useful when multiple valid directions exist and teams need to compare outcomes before deciding what to keep as the main thread.",
+    variants: [
+      {
+        title: "Tree view",
+        description:
+          "Indented thread hierarchy showing parent-child branch relationships.",
+      },
+      {
+        title: "Flat list",
+        description:
+          "Single-level list with active branch highlighting for simpler workflows.",
+      },
+      {
+        title: "Timeline branches",
+        description:
+          "Branch points shown inline within chronological conversation history.",
+      },
+    ],
+    useCases: [
+      "Comparing alternate solutions from the same prompt context",
+      "Preserving a stable main thread while testing risky paths",
+      "Collaborative workflows where teammates pursue separate approaches",
+      "Debugging agent behavior by replaying diverging branch histories",
+      "Editorial review where multiple rewrites are explored in parallel",
+    ],
+    bestPractices: [
+      "Make the active branch visually explicit at all times.",
+      "Show concise preview text so users can scan branches quickly.",
+      "Allow branching from any node without losing source context.",
+      "Support quick switching between sibling branches for comparison.",
+      "Pair branching with merge/commit flows when convergence is needed.",
+    ],
+    relatedPatterns: ["Variations", "Draft Mode", "Memory"],
+  },
+
+  controls: {
+    overview:
+      "Controls provide a centralized set of master toggles for AI capabilities such as web search, memory, tool execution, or external actions. This pattern gives users explicit agency over what the AI can and cannot do, making capability boundaries visible and adjustable in real time.",
+    variants: [
+      {
+        title: "Capability list",
+        description:
+          "A vertical list of switches with labels and descriptions for each AI capability.",
+      },
+      {
+        title: "Card grid",
+        description:
+          "A denser, card-like presentation suitable for dashboards with many controls.",
+      },
+      {
+        title: "Policy-locked controls",
+        description:
+          "Some toggles are visible but locked to communicate organization or admin policy constraints.",
+      },
+    ],
+    useCases: [
+      "Turning web browsing on only when fresh data is required",
+      "Disabling memory for sensitive or one-off sessions",
+      "Restricting code execution to trusted workflows",
+      "Allowing users to opt out of external tool actions",
+      "Enterprise policy surfaces where some controls are admin-managed",
+    ],
+    bestPractices: [
+      "Group controls by risk level so users can reason about impact quickly.",
+      "Use concise, plain-language descriptions of what each capability does.",
+      "Show locked states clearly and explain why a control cannot be changed.",
+      "Apply control changes immediately and provide visible confirmation.",
+      "Pair critical capability toggles with audit trails in high-stakes products.",
+    ],
+    relatedPatterns: ["Consent", "Memory", "Action Plan"],
+  },
+
+  "draft-mode": {
+    overview:
+      "Draft Mode exposes an iterative version history of AI outputs so users can compare revisions, revert to an earlier draft, or branch from a previous point. It helps teams keep momentum without losing earlier thinking, especially when refinement cycles produce multiple valid options.",
+    variants: [
+      {
+        title: "Linear draft list",
+        description:
+          "A straightforward ordered list of drafts with active state and quick revert actions.",
+      },
+      {
+        title: "Timeline view",
+        description:
+          "A chronological presentation that highlights progression across revision numbers.",
+      },
+      {
+        title: "Draft with branching",
+        description:
+          "Each draft supports creating a branch, combining revision history with alternative paths.",
+      },
+    ],
+    useCases: [
+      "Long-form writing where teams iterate through multiple rewrites",
+      "Specification drafting with checkpoints before major edits",
+      "Prompt engineering workflows that compare refinement passes",
+      "Agent outputs that need approval before replacing prior versions",
+      "Collaborative review where teammates reference specific draft numbers",
+    ],
+    bestPractices: [
+      "Show stable draft numbers so discussions can reference exact revisions.",
+      "Keep active draft state obvious to avoid editing the wrong version.",
+      "Provide one-click revert actions with clear confirmation.",
+      "Include short previews so users can scan differences quickly.",
+      "Pair with branching when multiple directions should continue in parallel.",
+    ],
+    relatedPatterns: ["Branches", "Variations", "Action Plan"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

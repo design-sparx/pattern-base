@@ -7,15 +7,18 @@ import {
   ActionPlan as AntActionPlan,
   Attachments as AntAttachments,
   AutoFill as AntAutoFill,
+  Branches as AntBranches,
   Caveat as AntCaveat,
   ChainedAction as AntChainedAction,
   CitationsList as AntCitationsList,
   Consent as AntConsent,
   Connectors as AntConnectors,
+  Controls as AntControls,
   CostEstimate as AntCostEstimate,
   DataOwnership as AntDataOwnership,
   Describe as AntDescribe,
   Disclosure as AntDisclosure,
+  DraftMode as AntDraftMode,
   Expand as AntExpand,
   Filters as AntFilters,
   FollowUp as AntFollowUp,
@@ -52,15 +55,18 @@ import {
   ActionPlan as BsActionPlan,
   Attachments as BsAttachments,
   AutoFill as BsAutoFill,
+  Branches as BsBranches,
   Caveat as BsCaveat,
   ChainedAction as BsChainedAction,
   CitationsList as BsCitationsList,
   Consent as BsConsent,
   Connectors as BsConnectors,
+  Controls as BsControls,
   CostEstimate as BsCostEstimate,
   DataOwnership as BsDataOwnership,
   Describe as BsDescribe,
   Disclosure as BsDisclosure,
+  DraftMode as BsDraftMode,
   Expand as BsExpand,
   Filters as BsFilters,
   FollowUp as BsFollowUp,
@@ -97,15 +103,18 @@ import {
   demoActionPlanSteps,
   demoAttachments,
   demoAutoFillSuggestions,
+  demoBranches,
   demoChainedSteps,
   demoCitations,
   demoConsentItems,
   demoConnectors,
+  demoControls,
   demoCostBreakdown,
   demoDataOwnershipItems,
   demoDescribeDetails,
   demoDescribeInferredPrompt,
   demoDescribeOutput,
+  demoDrafts,
   demoFilterGroups,
   demoFollowUps,
   demoFootprintEntries,
@@ -535,6 +544,75 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onApprove={noop}
         onReject={noop}
         showEstimates
+      />
+    ),
+  },
+
+  branches: {
+    bootstrap: () => (
+      <BsBranches
+        branches={demoBranches}
+        activeBranchId="perf-path"
+        onSelectBranch={noop}
+        onCreateBranch={noop}
+        title="Conversation Branches"
+        variant="tree"
+      />
+    ),
+    antd: () => (
+      <AntBranches
+        branches={demoBranches}
+        activeBranchId="perf-path"
+        onSelectBranch={noop}
+        onCreateBranch={noop}
+        title="Conversation Branches"
+        variant="tree"
+      />
+    ),
+  },
+
+  controls: {
+    bootstrap: () => (
+      <BsControls
+        controls={demoControls}
+        onToggleControl={noop}
+        title="AI Capability Controls"
+        variant="list"
+        showStatus
+      />
+    ),
+    antd: () => (
+      <AntControls
+        controls={demoControls}
+        onToggleControl={noop}
+        title="AI Capability Controls"
+        variant="list"
+        showStatus
+      />
+    ),
+  },
+
+  "draft-mode": {
+    bootstrap: () => (
+      <BsDraftMode
+        drafts={demoDrafts}
+        activeDraftId="draft-4"
+        onSelectDraft={noop}
+        onRevertToDraft={noop}
+        onBranchFromDraft={noop}
+        title="Draft History"
+        variant="timeline"
+      />
+    ),
+    antd: () => (
+      <AntDraftMode
+        drafts={demoDrafts}
+        activeDraftId="draft-4"
+        onSelectDraft={noop}
+        onRevertToDraft={noop}
+        onBranchFromDraft={noop}
+        title="Draft History"
+        variant="timeline"
       />
     ),
   },

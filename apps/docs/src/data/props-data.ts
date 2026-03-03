@@ -273,6 +273,118 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  branches: [
+    {
+      name: "branches",
+      type: "BranchItem[]",
+      description:
+        "Array of branch nodes with id, optional parentId, label, optional preview, optional depth, and optional createdAt",
+    },
+    {
+      name: "activeBranchId",
+      type: "string",
+      default: "undefined",
+      description: "ID of the currently active branch",
+    },
+    {
+      name: "onSelectBranch",
+      type: "(branchId: string) => void",
+      description: "Callback fired when a branch is selected",
+    },
+    {
+      name: "onCreateBranch",
+      type: "(fromBranchId: string) => void",
+      description: "Callback fired to fork from an existing branch",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Branches"',
+      description: "Optional heading for the branch explorer",
+    },
+    {
+      name: "variant",
+      type: '"tree" | "list"',
+      default: '"tree"',
+      description: "Visual presentation style for branch navigation",
+    },
+  ],
+
+  controls: [
+    {
+      name: "controls",
+      type: "ControlCapability[]",
+      description:
+        "Array of capability controls with id, label, optional description, enabled state, optional locked state, and optional status",
+    },
+    {
+      name: "onToggleControl",
+      type: "(controlId: string, enabled: boolean) => void",
+      description: "Callback fired when a capability toggle changes",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Controls"',
+      description: "Optional heading for the capability control panel",
+    },
+    {
+      name: "variant",
+      type: '"list" | "cards"',
+      default: '"list"',
+      description: "Display style for the controls UI",
+    },
+    {
+      name: "showStatus",
+      type: "boolean",
+      default: "true",
+      description: "Whether to display capability status badges/tags",
+    },
+  ],
+
+  "draft-mode": [
+    {
+      name: "drafts",
+      type: "DraftItem[]",
+      description:
+        "Array of draft entries with id, number, optional label, optional preview, and optional createdAt",
+    },
+    {
+      name: "activeDraftId",
+      type: "string",
+      default: "undefined",
+      description: "ID of the currently active draft",
+    },
+    {
+      name: "onSelectDraft",
+      type: "(draftId: string) => void",
+      description: "Callback fired when a draft is selected",
+    },
+    {
+      name: "onRevertToDraft",
+      type: "(draftId: string) => void",
+      description: "Callback fired to revert to a selected draft",
+    },
+    {
+      name: "onBranchFromDraft",
+      type: "(draftId: string) => void",
+      default: "undefined",
+      description: "Optional callback to create a new branch from a draft",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Draft Mode"',
+      description: "Optional heading for the draft history panel",
+    },
+    {
+      name: "variant",
+      type: '"list" | "timeline"',
+      default: '"list"',
+      description: "Visual style for presenting draft history",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

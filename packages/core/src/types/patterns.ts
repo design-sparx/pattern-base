@@ -226,6 +226,59 @@ export interface CostEstimateProps {
   showTokens?: boolean;
 }
 
+export interface BranchItem {
+  id: string;
+  parentId?: string;
+  label: string;
+  preview?: string;
+  depth?: number;
+  createdAt?: Date;
+}
+
+export interface BranchesProps {
+  branches: BranchItem[];
+  activeBranchId?: string;
+  onSelectBranch: (branchId: string) => void;
+  onCreateBranch: (fromBranchId: string) => void;
+  title?: string;
+  variant?: "tree" | "list";
+}
+
+export interface ControlCapability {
+  id: string;
+  label: string;
+  description?: string;
+  enabled: boolean;
+  locked?: boolean;
+  status?: "active" | "disabled" | "restricted";
+}
+
+export interface ControlsProps {
+  controls: ControlCapability[];
+  onToggleControl: (controlId: string, enabled: boolean) => void;
+  title?: string;
+  variant?: "list" | "cards";
+  showStatus?: boolean;
+}
+
+export interface DraftItem {
+  id: string;
+  number: number;
+  label?: string;
+  preview?: string;
+  createdAt?: Date;
+}
+
+export interface DraftModeProps {
+  drafts: DraftItem[];
+  activeDraftId?: string;
+  onSelectDraft: (draftId: string) => void;
+  onRevertToDraft: (draftId: string) => void;
+  onBranchFromDraft?: (draftId: string) => void;
+  title?: string;
+  variant?: "list" | "timeline";
+}
+
 // ── Prompt Action Patterns ──
 
 export interface RegenerateProps {

@@ -378,6 +378,57 @@ const steps = [
   showEstimates
 />`,
 
+  branches: (fw) => `import { Branches } from '@ai-ui/${fw}';
+
+const branches = [
+  { id: 'main', label: 'Main Thread', preview: 'Baseline plan and assumptions', depth: 0 },
+  { id: 'alt-ui', parentId: 'main', label: 'UI Alternative', preview: 'Cards-first interaction flow', depth: 1 },
+  { id: 'perf-path', parentId: 'main', label: 'Performance Path', preview: 'Lazy rendering strategy', depth: 1 },
+];
+
+<Branches
+  branches={branches}
+  activeBranchId="perf-path"
+  onSelectBranch={(branchId) => console.log('Select:', branchId)}
+  onCreateBranch={(fromBranchId) => console.log('Branch from:', fromBranchId)}
+  title="Conversation Branches"
+  variant="tree"
+/>`,
+
+  controls: (fw) => `import { Controls } from '@ai-ui/${fw}';
+
+const controls = [
+  { id: 'web-search', label: 'Web Search', description: 'Allow live browsing for up-to-date facts', enabled: true, status: 'active' },
+  { id: 'memory', label: 'Memory', description: 'Store recurring user context', enabled: false, status: 'disabled' },
+  { id: 'code-execution', label: 'Code Execution', description: 'Run code in a sandbox', enabled: true, locked: true, status: 'restricted' },
+];
+
+<Controls
+  controls={controls}
+  onToggleControl={(controlId, enabled) => console.log(controlId, enabled)}
+  title="AI Capability Controls"
+  variant="list"
+  showStatus
+/>`,
+
+  "draft-mode": (fw) => `import { DraftMode } from '@ai-ui/${fw}';
+
+const drafts = [
+  { id: 'draft-1', number: 1, label: 'Initial Draft', preview: 'High-level architecture with baseline assumptions.' },
+  { id: 'draft-2', number: 2, label: 'Refined Scope', preview: 'Narrowed APIs and clarified data contracts.' },
+  { id: 'draft-3', number: 3, label: 'Performance Revision', preview: 'Added caching and lazy-loading strategies.' },
+];
+
+<DraftMode
+  drafts={drafts}
+  activeDraftId="draft-3"
+  onSelectDraft={(draftId) => console.log('Select:', draftId)}
+  onRevertToDraft={(draftId) => console.log('Revert to:', draftId)}
+  onBranchFromDraft={(draftId) => console.log('Branch from:', draftId)}
+  title="Draft History"
+  variant="timeline"
+/>`,
+
   caveat: (fw) => `import { Caveat } from '@ai-ui/${fw}';
 
 {/* Banner variant */}
