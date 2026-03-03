@@ -388,6 +388,45 @@ export const demoModes = [
   },
 ];
 
+export const demoPresetStyles = [
+  {
+    id: "blog-clean",
+    label: "Clean Blog",
+    icon: "✍️",
+    description: "Balanced, readable style for long-form content.",
+    values: {
+      tone: "professional",
+      temperature: 0.6,
+      format: "article",
+      verbosity: "medium",
+    },
+  },
+  {
+    id: "social-punchy",
+    label: "Social Punchy",
+    icon: "🚀",
+    description: "Short, energetic copy optimized for social channels.",
+    values: {
+      tone: "casual",
+      temperature: 0.9,
+      format: "social",
+      verbosity: "short",
+    },
+  },
+  {
+    id: "technical-brief",
+    label: "Technical Brief",
+    icon: "⚙️",
+    description: "Precise, structured output for technical readers.",
+    values: {
+      tone: "technical",
+      temperature: 0.3,
+      format: "brief",
+      verbosity: "high",
+    },
+  },
+];
+
 export const demoActionPlanSteps = [
   {
     id: "1",

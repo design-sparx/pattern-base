@@ -89,6 +89,34 @@ export interface ModesProps {
   variant?: "segmented" | "tabs";
 }
 
+export interface PresetStyle {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+  values: Record<string, unknown>;
+}
+
+export interface PresetStylesProps {
+  presets: PresetStyle[];
+  selectedPresetId?: string;
+  onApplyPreset: (presetId: string, values: Record<string, unknown>) => void;
+  title?: string;
+  variant?: "buttons" | "cards";
+}
+
+export interface PromptEnhancerProps {
+  prompt: string;
+  enhancedPrompt?: string;
+  onEnhance: (prompt: string) => void;
+  onApply?: (enhancedPrompt: string) => void;
+  onEnhancedPromptChange?: (value: string) => void;
+  isEnhancing?: boolean;
+  title?: string;
+  variant?: "split" | "inline";
+  showDiff?: boolean;
+}
+
 // ── Governor Patterns ──
 
 export interface ThoughtStep {

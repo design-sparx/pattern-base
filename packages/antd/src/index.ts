@@ -24,6 +24,7 @@ export { Modes } from "./components/modes";
 export { Nudges } from "./components/nudges";
 export { OpenInput } from "./components/open-input";
 export { ParameterControl } from "./components/parameter-control";
+export { PresetStyles } from "./components/preset-styles";
 export { PromptDetails } from "./components/prompt-details";
 export { Randomize } from "./components/randomize";
 export { Regenerate } from "./components/regenerate";

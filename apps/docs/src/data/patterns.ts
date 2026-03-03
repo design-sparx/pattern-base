@@ -175,6 +175,14 @@ export const patterns: PatternMeta[] = [
     tags: ["mode", "behavior", "control"],
   },
   {
+    id: "preset-styles",
+    name: "Preset Styles",
+    slug: "preset-styles",
+    category: "tuners",
+    description: "Apply bundled parameter/style configurations with one click",
+    tags: ["presets", "style", "configuration"],
+  },
+  {
     id: "action-plan",
     name: "Action Plan",
     slug: "action-plan",

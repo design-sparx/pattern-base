@@ -19,7 +19,7 @@ export default function PatternsPage() {
   );
 
   return (
-    <Box p="xl" maw={1000}>
+    <Box p="xl">
       <Title order={1} mb="xs">
         All Patterns
       </Title>
@@ -46,7 +46,7 @@ export default function PatternsPage() {
         </Text>
       </Group>
 
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing="md">
         {filtered.map((p) => (
           <PatternCard key={p.id} pattern={p} />
         ))}

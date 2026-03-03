@@ -475,6 +475,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Parameter Control", "Preset Styles", "Voice and Tone"],
   },
 
+  "preset-styles": {
+    overview:
+      "Preset Styles package multiple tuning settings into named one-click options so users can shift output behavior without touching individual controls. Instead of adjusting temperature, verbosity, and tone separately, users pick a semantic preset like 'Technical Brief' or 'Social Punchy'. This improves usability for non-experts and creates consistency across teams.",
+    variants: [
+      {
+        title: "Button presets",
+        description:
+          "Compact preset buttons for quick switching in chat or composer toolbars.",
+      },
+      {
+        title: "Preset cards",
+        description:
+          "Descriptive cards that include labels, icons, and contextual guidance for each preset.",
+      },
+      {
+        title: "Category groups",
+        description:
+          "Presets grouped by intent such as writing, coding, support, or compliance.",
+      },
+    ],
+    useCases: [
+      "Helping non-technical users tune output quality with one click",
+      "Applying consistent voice/style rules across a team",
+      "Switching output format between blog, summary, and social copy",
+      "Speeding up workflows where repeatable configurations are common",
+      "Reducing parameter confusion in enterprise AI tools",
+    ],
+    bestPractices: [
+      "Name presets by outcome rather than internal parameter values.",
+      "Show concise descriptions so users understand expected output behavior.",
+      "Keep preset count manageable and focus on clear intent differences.",
+      "Allow preset values to remain inspectable for advanced users.",
+      "Pair presets with manual controls for optional fine-tuning after selection.",
+    ],
+    relatedPatterns: ["Modes", "Parameter Control", "Saved Styles"],
+  },
+
   "follow-up": {
     overview:
       "Follow Up prompts keep the conversation moving after an AI response by suggesting relevant next steps. They reduce the cognitive load of deciding what to ask next and help users explore a topic more deeply without composing prompts from scratch. Well-chosen follow-ups transform a single Q&A exchange into a productive exploration session.",

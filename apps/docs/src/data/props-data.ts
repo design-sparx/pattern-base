@@ -103,6 +103,39 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  "preset-styles": [
+    {
+      name: "presets",
+      type: "PresetStyle[]",
+      description:
+        "Array of presets with id, label, optional description/icon, and values object",
+    },
+    {
+      name: "selectedPresetId",
+      type: "string",
+      default: "undefined",
+      description: "ID of the currently active preset",
+    },
+    {
+      name: "onApplyPreset",
+      type: "(presetId: string, values: Record<string, unknown>) => void",
+      description:
+        "Callback fired when a preset is selected, including its id and values",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Preset Styles"',
+      description: "Optional heading for the preset control",
+    },
+    {
+      name: "variant",
+      type: '"buttons" | "cards"',
+      default: '"buttons"',
+      description: "Display style for showing preset options",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

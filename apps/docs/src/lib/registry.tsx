@@ -30,6 +30,7 @@ import {
   Nudges as AntNudges,
   OpenInput as AntOpenInput,
   ParameterControl as AntParameterControl,
+  PresetStyles as AntPresetStyles,
   PromptDetails as AntPromptDetails,
   Randomize as AntRandomize,
   Regenerate as AntRegenerate,
@@ -71,6 +72,7 @@ import {
   Nudges as BsNudges,
   OpenInput as BsOpenInput,
   ParameterControl as BsParameterControl,
+  PresetStyles as BsPresetStyles,
   PromptDetails as BsPromptDetails,
   Randomize as BsRandomize,
   Regenerate as BsRegenerate,
@@ -112,6 +114,7 @@ import {
   demoModes,
   demoNudges,
   demoParameters,
+  demoPresetStyles,
   demoPromptDetails,
   demoRestructureContent,
   demoRestructureOptions,
@@ -197,6 +200,27 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         parameters={demoParameters}
         onChange={noop}
         title="Generation Settings"
+      />
+    ),
+  },
+
+  "preset-styles": {
+    bootstrap: () => (
+      <BsPresetStyles
+        presets={demoPresetStyles}
+        selectedPresetId="blog-clean"
+        onApplyPreset={noop}
+        title="Style Presets"
+        variant="cards"
+      />
+    ),
+    antd: () => (
+      <AntPresetStyles
+        presets={demoPresetStyles}
+        selectedPresetId="blog-clean"
+        onApplyPreset={noop}
+        title="Style Presets"
+        variant="cards"
       />
     ),
   },

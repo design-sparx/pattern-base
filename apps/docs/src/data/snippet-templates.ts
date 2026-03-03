@@ -64,6 +64,35 @@ const [params, setParams] = useState({
   onChange={(id, value) => setParams(prev => ({ ...prev, [id]: value }))}
 />`,
 
+  "preset-styles": (fw) => `import { PresetStyles } from '@ai-ui/${fw}';
+
+const presets = [
+  {
+    id: 'blog-clean',
+    label: 'Clean Blog',
+    icon: '\u270D\uFE0F',
+    description: 'Balanced style for long-form content',
+    values: { tone: 'professional', temperature: 0.6, format: 'article' },
+  },
+  {
+    id: 'social-punchy',
+    label: 'Social Punchy',
+    icon: '\uD83D\uDE80',
+    description: 'Short, energetic copy for social channels',
+    values: { tone: 'casual', temperature: 0.9, format: 'social' },
+  },
+];
+
+<PresetStyles
+  presets={presets}
+  selectedPresetId="blog-clean"
+  onApplyPreset={(presetId, values) => {
+    console.log('Applying preset:', presetId, values);
+  }}
+  title="Style Presets"
+  variant="cards"
+/>`,
+
   "stream-of-thought": (fw) => `import { StreamOfThought } from '@ai-ui/${fw}';
 
 const steps = [
