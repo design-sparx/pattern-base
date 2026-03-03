@@ -587,6 +587,24 @@ const [incognitoEnabled, setIncognitoEnabled] = useState(true);
   onSelect={() => console.log('Open AI profile')}
 />`,
 
+  color: (fw) => `import { Color } from '@ai-ui/${fw}';
+
+const palette = [
+  { id: 'c1', label: 'Signal Blue', value: '#2563EB' },
+  { id: 'c2', label: 'Trust Green', value: '#059669' },
+  { id: 'c3', label: 'Focus Amber', value: '#D97706' },
+  { id: 'c4', label: 'Neutral Slate', value: '#475569' },
+];
+
+<Color
+  options={palette}
+  selectedColorId="c1"
+  onSelectColor={(id) => console.log('Selected color:', id)}
+  title="AI Identity Palette"
+  showLabels
+  variant="card"
+/>`,
+
   "auto-fill": (fw) => `import { AutoFill } from '@ai-ui/${fw}';
 
 const suggestions = [

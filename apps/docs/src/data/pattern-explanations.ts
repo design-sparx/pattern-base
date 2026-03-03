@@ -1252,6 +1252,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Disclosure", "Shared Vision", "Incognito Mode"],
   },
 
+  color: {
+    overview:
+      "Color assigns a consistent visual signature to AI identity elements such as avatars, badges, and response containers. A stable palette helps users recognize AI-originated interactions at a glance and improves coherence across product surfaces. This pattern should balance recognizability with accessibility so color supports trust without becoming the only indicator.",
+    variants: [
+      {
+        title: "Swatch selector",
+        description:
+          "Clickable color circles used to choose one active AI identity color.",
+      },
+      {
+        title: "Labeled chips",
+        description:
+          "Color options paired with textual labels for accessibility and clarity.",
+      },
+      {
+        title: "Palette card",
+        description:
+          "A panel showing primary and supporting colors for agent identity systems.",
+      },
+    ],
+    useCases: [
+      "Configuring brand-aligned AI assistant identities",
+      "Differentiating multiple AI agents in shared workspaces",
+      "Applying consistent color tags to AI-generated content",
+      "Theme customization for enterprise deployments",
+      "Accessibility-conscious visual identity tuning",
+    ],
+    bestPractices: [
+      "Never rely on color alone; pair with text labels or icons.",
+      "Preserve contrast ratios for text and controls on selected colors.",
+      "Keep the palette small and intentional to avoid visual noise.",
+      "Use the same selected color across avatar, badges, and highlights.",
+      "Provide neutral defaults for users who skip customization.",
+    ],
+    relatedPatterns: ["Avatar", "Disclosure", "Watermark"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

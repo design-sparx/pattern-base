@@ -730,6 +730,45 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  color: [
+    {
+      name: "options",
+      type: "ColorOption[]",
+      description:
+        "Available palette entries with id, label, hex value, and optional description",
+    },
+    {
+      name: "selectedColorId",
+      type: "string",
+      default: "undefined",
+      description: "ID of the currently active color option",
+    },
+    {
+      name: "onSelectColor",
+      type: "(colorId: string) => void",
+      default: "undefined",
+      description: "Optional callback fired when a color option is selected",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"AI Identity Color"',
+      description: "Heading shown above the color selector",
+    },
+    {
+      name: "showLabels",
+      type: "boolean",
+      default: "true",
+      description: "Whether color labels are rendered alongside swatches",
+    },
+    {
+      name: "variant",
+      type: '"swatches" | "chips" | "card"',
+      default: '"swatches"',
+      description: "Visual layout style for the color selector",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

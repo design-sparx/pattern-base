@@ -6,6 +6,7 @@ export { Branches } from "./components/branches";
 export { Caveat } from "./components/caveat";
 export { ChainedAction } from "./components/chained-action";
 export { Citation, CitationsList, InlineCitation } from "./components/citation";
+export { Color } from "./components/color";
 export { Consent } from "./components/consent";
 export { Connectors } from "./components/connectors";
 export { Controls } from "./components/controls";

@@ -429,6 +429,15 @@ export const patterns: PatternMeta[] = [
     tags: ["identity", "agent", "persona"],
   },
   {
+    id: "color",
+    name: "Color",
+    slug: "color",
+    category: "trust-builders",
+    description:
+      "Brand color selection pattern for consistent AI identity signaling across UI surfaces",
+    tags: ["brand", "identity", "palette"],
+  },
+  {
     id: "describe",
     name: "Describe",
     slug: "describe",

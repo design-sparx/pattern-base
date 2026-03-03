@@ -965,6 +965,13 @@ export const demoAvatar = {
   status: "online" as const,
 };
 
+export const demoColorOptions = [
+  { id: "c1", label: "Signal Blue", value: "#2563EB" },
+  { id: "c2", label: "Trust Green", value: "#059669" },
+  { id: "c3", label: "Focus Amber", value: "#D97706" },
+  { id: "c4", label: "Neutral Slate", value: "#475569" },
+];
+
 export const demoDataOwnershipItems = [
   {
     id: "1",

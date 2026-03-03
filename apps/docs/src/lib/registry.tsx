@@ -12,6 +12,7 @@ import {
   Caveat as AntCaveat,
   ChainedAction as AntChainedAction,
   CitationsList as AntCitationsList,
+  Color as AntColor,
   Consent as AntConsent,
   Connectors as AntConnectors,
   Controls as AntControls,
@@ -68,6 +69,7 @@ import {
   Caveat as BsCaveat,
   ChainedAction as BsChainedAction,
   CitationsList as BsCitationsList,
+  Color as BsColor,
   Consent as BsConsent,
   Connectors as BsConnectors,
   Controls as BsControls,
@@ -123,6 +125,7 @@ import {
   demoBranches,
   demoChainedSteps,
   demoCitations,
+  demoColorOptions,
   demoConsentItems,
   demoConnectors,
   demoControls,
@@ -871,6 +874,29 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         size="medium"
         variant="card"
         onSelect={noop}
+      />
+    ),
+  },
+
+  color: {
+    bootstrap: () => (
+      <BsColor
+        options={demoColorOptions}
+        selectedColorId="c1"
+        onSelectColor={noop}
+        title="AI Identity Palette"
+        showLabels
+        variant="card"
+      />
+    ),
+    antd: () => (
+      <AntColor
+        options={demoColorOptions}
+        selectedColorId="c1"
+        onSelectColor={noop}
+        title="AI Identity Palette"
+        showLabels
+        variant="card"
       />
     ),
   },
