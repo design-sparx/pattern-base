@@ -328,6 +328,39 @@ export const demoFilterGroups = [
   },
 ];
 
+export const demoConnectors = [
+  {
+    id: "notion",
+    name: "Notion Workspace",
+    type: "knowledge-base" as const,
+    status: "connected" as const,
+    description: "Project docs and product requirements",
+    lastSyncedAt: new Date(Date.now() - 1000 * 60 * 12),
+  },
+  {
+    id: "drive",
+    name: "Google Drive",
+    type: "file" as const,
+    status: "syncing" as const,
+    description: "Team files and quarterly reports",
+    lastSyncedAt: new Date(Date.now() - 1000 * 60 * 55),
+  },
+  {
+    id: "postgres",
+    name: "Analytics DB",
+    type: "database" as const,
+    status: "error" as const,
+    description: "Connection requires credential refresh",
+  },
+  {
+    id: "docs-site",
+    name: "Public Docs URL",
+    type: "url" as const,
+    status: "disconnected" as const,
+    description: "Crawl product documentation pages",
+  },
+];
+
 export const demoActionPlanSteps = [
   {
     id: "1",

@@ -11,6 +11,7 @@ import {
   ChainedAction as AntChainedAction,
   CitationsList as AntCitationsList,
   Consent as AntConsent,
+  Connectors as AntConnectors,
   CostEstimate as AntCostEstimate,
   DataOwnership as AntDataOwnership,
   Describe as AntDescribe,
@@ -50,6 +51,7 @@ import {
   ChainedAction as BsChainedAction,
   CitationsList as BsCitationsList,
   Consent as BsConsent,
+  Connectors as BsConnectors,
   CostEstimate as BsCostEstimate,
   DataOwnership as BsDataOwnership,
   Describe as BsDescribe,
@@ -88,6 +90,7 @@ import {
   demoChainedSteps,
   demoCitations,
   demoConsentItems,
+  demoConnectors,
   demoCostBreakdown,
   demoDataOwnershipItems,
   demoDescribeDetails,
@@ -511,6 +514,27 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onDecline={noop}
         title="Data Processing Consent"
         description="Please review and accept the following before proceeding."
+      />
+    ),
+  },
+
+  connectors: {
+    bootstrap: () => (
+      <BsConnectors
+        sources={demoConnectors}
+        onConnect={noop}
+        onDisconnect={noop}
+        onSync={noop}
+        title="Connected Sources"
+      />
+    ),
+    antd: () => (
+      <AntConnectors
+        sources={demoConnectors}
+        onConnect={noop}
+        onDisconnect={noop}
+        onSync={noop}
+        title="Connected Sources"
       />
     ),
   },

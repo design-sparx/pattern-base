@@ -314,6 +314,24 @@ export interface FiltersProps {
   title?: string;
 }
 
+export interface ConnectorSource {
+  id: string;
+  name: string;
+  type?: "file" | "url" | "database" | "api" | "knowledge-base";
+  status: "connected" | "syncing" | "error" | "disconnected";
+  description?: string;
+  lastSyncedAt?: Date;
+}
+
+export interface ConnectorsProps {
+  sources: ConnectorSource[];
+  onConnect: (sourceId: string) => void;
+  onDisconnect: (sourceId: string) => void;
+  onSync?: (sourceId: string) => void;
+  title?: string;
+  variant?: "list" | "cards";
+}
+
 // ── Additional Governor Patterns ──
 
 export interface ActionPlanStep {

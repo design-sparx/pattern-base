@@ -401,6 +401,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Cost Estimate", "Parameter Control", "Open Input"],
   },
 
+  connectors: {
+    overview:
+      "Connectors link external data sources to an AI workflow so generation can use real project context instead of only free-form prompts. They surface what sources are currently attached, whether each source is healthy, and when content was last synchronized. This pattern is especially useful in retrieval-augmented systems where the quality of output depends on the freshness and coverage of connected data.",
+    variants: [
+      {
+        title: "Source list",
+        description:
+          "A compact list view showing each source, its connection state, and quick actions like connect, disconnect, and sync.",
+      },
+      {
+        title: "Card catalog",
+        description:
+          "Larger cards with provider metadata and richer status details for teams managing many integrations.",
+      },
+      {
+        title: "Inline picker",
+        description:
+          "A lightweight selector near the input that lets users toggle which connected sources should be used for the current run.",
+      },
+    ],
+    useCases: [
+      "Connecting docs and wiki platforms so AI can answer with product context",
+      "Attaching storage providers for file-aware summarization and Q&A",
+      "Linking databases for analytics-style prompts and report generation",
+      "Monitoring sync health for enterprise knowledge integrations",
+      "Scoping AI responses to selected trusted sources",
+    ],
+    bestPractices: [
+      "Show source status clearly (connected, syncing, error, disconnected) so users can trust retrieval context.",
+      "Expose last sync timestamps and refresh controls to prevent stale context issues.",
+      "Let users connect or disconnect sources without leaving the active workflow.",
+      "Provide actionable error states with guidance when authentication or indexing fails.",
+      "Support source-level permissions and visibility rules in team environments.",
+    ],
+    relatedPatterns: ["References", "Citation", "Model Management"],
+  },
+
   "follow-up": {
     overview:
       "Follow Up prompts keep the conversation moving after an AI response by suggesting relevant next steps. They reduce the cognitive load of deciding what to ask next and help users explore a topic more deeply without composing prompts from scratch. Well-chosen follow-ups transform a single Q&A exchange into a productive exploration session.",

@@ -239,6 +239,22 @@ const groups = [
   title="Filter Results"
 />`,
 
+  connectors: (fw) => `import { Connectors } from '@ai-ui/${fw}';
+
+const sources = [
+  { id: 'notion', name: 'Notion Workspace', type: 'knowledge-base', status: 'connected', description: 'Project docs and requirements' },
+  { id: 'drive', name: 'Google Drive', type: 'file', status: 'syncing', description: 'Team reports and assets' },
+  { id: 'postgres', name: 'Analytics DB', type: 'database', status: 'error', description: 'Credential refresh needed' },
+];
+
+<Connectors
+  sources={sources}
+  onConnect={(sourceId) => console.log('Connect:', sourceId)}
+  onDisconnect={(sourceId) => console.log('Disconnect:', sourceId)}
+  onSync={(sourceId) => console.log('Sync:', sourceId)}
+  title="Connected Sources"
+/>`,
+
   "action-plan": (fw) => `import { ActionPlan } from '@ai-ui/${fw}';
 
 const steps = [

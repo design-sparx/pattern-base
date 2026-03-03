@@ -157,6 +157,15 @@ export const patterns: PatternMeta[] = [
     tags: ["filters", "search", "refinement"],
   },
   {
+    id: "connectors",
+    name: "Connectors",
+    slug: "connectors",
+    category: "tuners",
+    description:
+      "Integrate external data sources into AI context with connection and sync status",
+    tags: ["sources", "integration", "context"],
+  },
+  {
     id: "action-plan",
     name: "Action Plan",
     slug: "action-plan",

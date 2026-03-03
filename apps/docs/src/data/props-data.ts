@@ -289,4 +289,42 @@ export const propsData: Record<string, PropDefinition[]> = {
       description: "Group models under their provider headings",
     },
   ],
+
+  connectors: [
+    {
+      name: "sources",
+      type: "ConnectorSource[]",
+      description:
+        'Array of source entries with id, name, optional type, status ("connected" | "syncing" | "error" | "disconnected"), description, and lastSyncedAt',
+    },
+    {
+      name: "onConnect",
+      type: "(sourceId: string) => void",
+      description: "Callback fired when the user connects a source",
+    },
+    {
+      name: "onDisconnect",
+      type: "(sourceId: string) => void",
+      description: "Callback fired when the user disconnects a source",
+    },
+    {
+      name: "onSync",
+      type: "(sourceId: string) => void",
+      default: "undefined",
+      description:
+        "Optional callback fired when the user manually triggers a sync",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Connectors"',
+      description: "Optional heading shown above the connectors list",
+    },
+    {
+      name: "variant",
+      type: '"list" | "cards"',
+      default: '"list"',
+      description: "Visual presentation style for source items",
+    },
+  ],
 };
