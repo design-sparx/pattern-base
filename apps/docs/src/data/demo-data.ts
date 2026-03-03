@@ -433,6 +433,40 @@ export const demoPromptEnhancerOriginal =
 export const demoPromptEnhancerEnhanced =
   "Write a concise product launch email announcing our new AI feature. Audience: existing B2B customers. Include: clear value proposition, 3 bullet-point benefits, a short CTA linking to release notes, and a professional but friendly tone. Keep length under 180 words.";
 
+export const demoSavedStyles = [
+  {
+    id: "style-default",
+    name: "Team Default",
+    description: "Balanced tone for internal product updates.",
+    isDefault: true,
+    values: {
+      tone: "professional",
+      format: "brief",
+      temperature: 0.6,
+    },
+  },
+  {
+    id: "style-customer",
+    name: "Customer Ready",
+    description: "Polished voice for customer-facing communication.",
+    values: {
+      tone: "friendly",
+      format: "email",
+      temperature: 0.5,
+    },
+  },
+  {
+    id: "style-technical",
+    name: "Technical Deep Dive",
+    description: "Detailed, precise style for technical audiences.",
+    values: {
+      tone: "technical",
+      format: "report",
+      temperature: 0.3,
+    },
+  },
+];
+
 export const demoActionPlanSteps = [
   {
     id: "1",

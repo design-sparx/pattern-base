@@ -31,6 +31,7 @@ export { Randomize } from "./components/randomize";
 export { Regenerate } from "./components/regenerate";
 export { Restructure } from "./components/restructure";
 export { Restyle } from "./components/restyle";
+export { SavedStyles } from "./components/saved-styles";
 export { StreamOfThought } from "./components/stream-of-thought";
 export { Suggestions } from "./components/suggestions";
 export { Summary } from "./components/summary";

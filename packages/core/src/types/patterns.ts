@@ -117,6 +117,25 @@ export interface PromptEnhancerProps {
   showDiff?: boolean;
 }
 
+export interface SavedStyleItem {
+  id: string;
+  name: string;
+  description?: string;
+  values: Record<string, unknown>;
+  isDefault?: boolean;
+}
+
+export interface SavedStylesProps {
+  styles: SavedStyleItem[];
+  selectedStyleId?: string;
+  onSelectStyle: (styleId: string) => void;
+  onSaveStyle: (name: string) => void;
+  onDeleteStyle?: (styleId: string) => void;
+  title?: string;
+  variant?: "list" | "cards";
+  maxVisible?: number;
+}
+
 // ── Governor Patterns ──
 
 export interface ThoughtStep {

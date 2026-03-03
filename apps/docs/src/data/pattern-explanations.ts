@@ -549,6 +549,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Open Input", "Preset Styles", "Madlibs"],
   },
 
+  "saved-styles": {
+    overview:
+      "Saved Styles let users persist custom style configurations and reuse them across prompts or sessions. This pattern builds on presets by allowing personalized, user-defined combinations of tone, format, and parameter values. It reduces repetitive setup work and improves consistency for recurring workflows.",
+    variants: [
+      {
+        title: "List manager",
+        description:
+          "A compact list of saved styles with quick select, save, and delete actions.",
+      },
+      {
+        title: "Card library",
+        description:
+          "Visual cards for each saved style with descriptions and default badges.",
+      },
+      {
+        title: "Inline save action",
+        description:
+          "A lightweight 'save current settings' action embedded near active controls.",
+      },
+    ],
+    useCases: [
+      "Persisting preferred style setups for repeated task types",
+      "Sharing repeatable style configurations within teams",
+      "Reducing setup friction for frequent prompt workflows",
+      "Switching quickly between customer-facing and internal writing styles",
+      "Maintaining output consistency across long-running projects",
+    ],
+    bestPractices: [
+      "Allow quick save from current control state with minimal steps.",
+      "Support default/non-deletable styles as safe fallbacks.",
+      "Show concise descriptions so users remember intent of each style.",
+      "Confirm destructive delete actions for non-recoverable styles.",
+      "Keep selection and save flows accessible from the same surface.",
+    ],
+    relatedPatterns: ["Preset Styles", "Modes", "Voice and Tone"],
+  },
+
   "follow-up": {
     overview:
       "Follow Up prompts keep the conversation moving after an AI response by suggesting relevant next steps. They reduce the cognitive load of deciding what to ask next and help users explore a topic more deeply without composing prompts from scratch. Well-chosen follow-ups transform a single Q&A exchange into a productive exploration session.",

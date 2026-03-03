@@ -64,14 +64,14 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 | Status                     | Count  |
 | -------------------------- | ------ |
-| ✅ Implemented & committed | 40     |
+| ✅ Implemented & committed | 41     |
 | 🔄 In progress             | 0      |
-| ⬜ Planned                 | 14     |
+| ⬜ Planned                 | 13     |
 | **Total**                  | **54** |
 
 ---
 
-## Completed Patterns — 40
+## Completed Patterns — 41
 
 ### Prompt Actions (10/10 complete for this sub-group)
 
@@ -100,7 +100,7 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Prompt Details** — Metadata and context display for submitted prompts
 - [x] **Randomize** — Random seed control for exploring generation variety
 
-### Tuners (8 complete)
+### Tuners (9 complete)
 
 - [x] **Parameter Control** — Sliders, toggles, selects for fine-tuning AI parameters
 - [x] **Model Management** — Model selector with provider grouping and capability details
@@ -110,6 +110,7 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Modes** — Discrete operating modes that change AI behavior wholesale _(added in latest commit)_
 - [x] **Preset Styles** — One-click style presets that apply a bundle of parameter values at once _(added in latest commit)_
 - [x] **Prompt Enhancer** — Automatically rewrites raw prompts into clearer, structured prompts with before/after review _(added in latest commit)_
+- [x] **Saved Styles** — Persist and recall user-defined style configurations across prompts and sessions _(added in latest commit)_
 
 ### Governors (5 complete)
 
@@ -130,13 +131,12 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 ---
 
-## Remaining Patterns — 14
+## Remaining Patterns — 13
 
-### Batch 2: Tuners — 2 patterns ⬅️ NEXT
+### Batch 2: Tuners — 1 pattern ⬅️ NEXT
 
-These 2 patterns complete the Tuners category. They all deal with adjusting AI _behaviour and style_ before or during generation — distinct from parameter sliders (which tune _model settings_).
+This final pattern completes the Tuners category. It focuses on adjusting AI _behaviour and style_ before or during generation — distinct from parameter sliders (which tune _model settings_).
 
-- [ ] **Saved Styles** — Persist and recall user-defined style configurations; like bookmarks for parameter combinations
 - [ ] **Voice and Tone** — Axis control for adjusting the communication register of AI outputs (formal↔casual, technical↔plain, etc.)
 
 ### Batch 3: Governors — 8 patterns

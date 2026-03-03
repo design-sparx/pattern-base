@@ -192,6 +192,15 @@ export const patterns: PatternMeta[] = [
     tags: ["prompt", "rewrite", "quality"],
   },
   {
+    id: "saved-styles",
+    name: "Saved Styles",
+    slug: "saved-styles",
+    category: "tuners",
+    description:
+      "Persist and reuse custom style configurations across prompts and sessions",
+    tags: ["saved", "styles", "presets"],
+  },
+  {
     id: "action-plan",
     name: "Action Plan",
     slug: "action-plan",

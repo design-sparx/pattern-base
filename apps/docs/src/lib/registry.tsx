@@ -37,6 +37,7 @@ import {
   Regenerate as AntRegenerate,
   Restructure as AntRestructure,
   Restyle as AntRestyle,
+  SavedStyles as AntSavedStyles,
   StreamOfThought as AntStreamOfThought,
   Suggestions as AntSuggestions,
   Summary as AntSummary,
@@ -80,6 +81,7 @@ import {
   Regenerate as BsRegenerate,
   Restructure as BsRestructure,
   Restyle as BsRestyle,
+  SavedStyles as BsSavedStyles,
   StreamOfThought as BsStreamOfThought,
   Suggestions as BsSuggestions,
   Summary as BsSummary,
@@ -124,6 +126,7 @@ import {
   demoRestructureOptions,
   demoRestyleContent,
   demoRestyleOptions,
+  demoSavedStyles,
   demoSteps,
   demoSuggestions,
   demoSummaryContent,
@@ -957,6 +960,31 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         options={demoRestyleOptions}
         onRestyle={noop}
         title="Restyle Content"
+      />
+    ),
+  },
+
+  "saved-styles": {
+    bootstrap: () => (
+      <BsSavedStyles
+        styles={demoSavedStyles}
+        selectedStyleId="style-customer"
+        onSelectStyle={noop}
+        onSaveStyle={noop}
+        onDeleteStyle={noop}
+        title="My Saved Styles"
+        variant="list"
+      />
+    ),
+    antd: () => (
+      <AntSavedStyles
+        styles={demoSavedStyles}
+        selectedStyleId="style-customer"
+        onSelectStyle={noop}
+        onSaveStyle={noop}
+        onDeleteStyle={noop}
+        title="My Saved Styles"
+        variant="list"
       />
     ),
   },

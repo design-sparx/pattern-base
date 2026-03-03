@@ -192,6 +192,55 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  "saved-styles": [
+    {
+      name: "styles",
+      type: "SavedStyleItem[]",
+      description:
+        "Array of saved style items with id, name, optional description, values map, and optional isDefault flag",
+    },
+    {
+      name: "selectedStyleId",
+      type: "string",
+      default: "undefined",
+      description: "ID of the currently selected saved style",
+    },
+    {
+      name: "onSelectStyle",
+      type: "(styleId: string) => void",
+      description: "Callback fired when a saved style is selected",
+    },
+    {
+      name: "onSaveStyle",
+      type: "(name: string) => void",
+      description: "Callback fired to save current settings under a style name",
+    },
+    {
+      name: "onDeleteStyle",
+      type: "(styleId: string) => void",
+      default: "undefined",
+      description: "Optional callback fired when deleting a saved style",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Saved Styles"',
+      description: "Optional heading for the saved styles panel",
+    },
+    {
+      name: "variant",
+      type: '"list" | "cards"',
+      default: '"list"',
+      description: "Display style for listing saved styles",
+    },
+    {
+      name: "maxVisible",
+      type: "number",
+      default: "undefined",
+      description: "Optional cap on number of style entries shown",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

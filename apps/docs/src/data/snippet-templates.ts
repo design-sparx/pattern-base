@@ -109,6 +109,34 @@ const enhancedPrompt =
   showDiff
 />`,
 
+  "saved-styles": (fw) => `import { SavedStyles } from '@ai-ui/${fw}';
+
+const styles = [
+  {
+    id: 'style-default',
+    name: 'Team Default',
+    description: 'Balanced tone for internal updates',
+    isDefault: true,
+    values: { tone: 'professional', format: 'brief', temperature: 0.6 },
+  },
+  {
+    id: 'style-customer',
+    name: 'Customer Ready',
+    description: 'Polished voice for customer communication',
+    values: { tone: 'friendly', format: 'email', temperature: 0.5 },
+  },
+];
+
+<SavedStyles
+  styles={styles}
+  selectedStyleId="style-customer"
+  onSelectStyle={(id) => console.log('Selected style:', id)}
+  onSaveStyle={(name) => console.log('Save style:', name)}
+  onDeleteStyle={(id) => console.log('Delete style:', id)}
+  title="My Saved Styles"
+  variant="list"
+/>`,
+
   "stream-of-thought": (fw) => `import { StreamOfThought } from '@ai-ui/${fw}';
 
 const steps = [
