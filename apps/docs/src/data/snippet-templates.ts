@@ -575,6 +575,18 @@ const [incognitoEnabled, setIncognitoEnabled] = useState(true);
   variant="banner"
 />`,
 
+  avatar: (fw) => `import { Avatar } from '@ai-ui/${fw}';
+
+<Avatar
+  name="Avery"
+  persona="Research Assistant"
+  badgeLabel="AI Agent"
+  status="online"
+  size="medium"
+  variant="card"
+  onSelect={() => console.log('Open AI profile')}
+/>`,
+
   "auto-fill": (fw) => `import { AutoFill } from '@ai-ui/${fw}';
 
 const suggestions = [

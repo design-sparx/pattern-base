@@ -64,14 +64,14 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 | Status                     | Count  |
 | -------------------------- | ------ |
-| ✅ Implemented & committed | 52     |
+| ✅ Implemented & committed | 53     |
 | 🔄 In progress             | 0      |
-| ⬜ Planned                 | 2      |
+| ⬜ Planned                 | 1      |
 | **Total**                  | **54** |
 
 ---
 
-## Completed Patterns — 52
+## Completed Patterns — 53
 
 ### Prompt Actions (10/10 complete for this sub-group)
 
@@ -130,7 +130,7 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Shared Vision** — Align participants, goals, and constraints in a collaborative context board before major AI runs _(added in latest commit)_
 - [x] **Verification** — Fact-check claims with confidence indicators and linked supporting sources _(added in latest commit)_
 
-### Trust Builders (7 complete)
+### Trust Builders (8 complete)
 
 - [x] **Disclosure** — AI-generated content badge and banner indicators
 - [x] **Caveat** — Contextual warnings and disclaimers for AI-generated content
@@ -139,10 +139,11 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Footprints** — Activity history and audit trail of AI interactions
 - [x] **Incognito Mode** — Private session mode with explicit no-retention signals and end-session controls _(added in latest commit)_
 - [x] **Watermark** — Visible/invisible provenance marker with verification affordances _(added in latest commit)_
+- [x] **Avatar** — AI identity card with name, persona, status, and badge labeling _(added in latest commit)_
 
 ---
 
-## Remaining Patterns — 2
+## Remaining Patterns — 1
 
 ### Batch 2: Tuners — Complete ✅
 
@@ -152,11 +153,10 @@ Tuners are now complete. Next focus moves to Batch 3 (Governors).
 
 Governors are now complete. Next focus moves to Batch 4 (Trust Builders + Identifiers).
 
-### Batch 4: Trust Builders + Identifiers — 2 remaining
+### Batch 4: Trust Builders + Identifiers — 1 remaining
 
 These patterns handle AI _identity_ and user _trust signals_ — the layer users see to understand they are working with AI and what kind.
 
-- [ ] **Avatar** — Visual identity for the AI agent; configurable icon, name, and persona
 - [ ] **Color** — Brand-colour assignment for AI identity elements across the UI
 
 > **Note:** Identifiers (Iconography, Name, Personality) are likely styling/branding concerns rather than standalone interactive components. They may be documented as guidelines in the docs rather than implemented as component exports. To be decided when we reach that batch.

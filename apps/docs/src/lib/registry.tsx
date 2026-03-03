@@ -6,6 +6,7 @@ import React from "react";
 import {
   ActionPlan as AntActionPlan,
   Attachments as AntAttachments,
+  Avatar as AntAvatar,
   AutoFill as AntAutoFill,
   Branches as AntBranches,
   Caveat as AntCaveat,
@@ -61,6 +62,7 @@ import {
 import {
   ActionPlan as BsActionPlan,
   Attachments as BsAttachments,
+  Avatar as BsAvatar,
   AutoFill as BsAutoFill,
   Branches as BsBranches,
   Caveat as BsCaveat,
@@ -116,6 +118,7 @@ import {
 import {
   demoActionPlanSteps,
   demoAttachments,
+  demoAvatar,
   demoAutoFillSuggestions,
   demoBranches,
   demoChainedSteps,
@@ -843,6 +846,31 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         description={demoIncognitoState.description}
         retentionNotice={demoIncognitoState.retentionNotice}
         variant="card"
+      />
+    ),
+  },
+
+  avatar: {
+    bootstrap: () => (
+      <BsAvatar
+        name={demoAvatar.name}
+        persona={demoAvatar.persona}
+        badgeLabel={demoAvatar.badgeLabel}
+        status={demoAvatar.status}
+        size="medium"
+        variant="card"
+        onSelect={noop}
+      />
+    ),
+    antd: () => (
+      <AntAvatar
+        name={demoAvatar.name}
+        persona={demoAvatar.persona}
+        badgeLabel={demoAvatar.badgeLabel}
+        status={demoAvatar.status}
+        size="medium"
+        variant="card"
+        onSelect={noop}
       />
     ),
   },

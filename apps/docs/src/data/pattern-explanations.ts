@@ -1215,6 +1215,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Disclosure", "Verification", "Citation"],
   },
 
+  avatar: {
+    overview:
+      "Avatar gives the AI agent a stable visual and textual identity so users can quickly recognize who is responding. It combines a name, persona label, and status signal to reduce ambiguity in mixed human/AI interfaces. A clear avatar pattern improves trust and orientation, especially in collaborative spaces where multiple agents and people appear together.",
+    variants: [
+      {
+        title: "Inline avatar",
+        description:
+          "A compact identity token shown in chat rows, prompt bars, or result headers.",
+      },
+      {
+        title: "Compact profile",
+        description:
+          "Name and persona with a small status marker for dense sidebars and activity feeds.",
+      },
+      {
+        title: "Profile card",
+        description:
+          "A richer card with role badge, status, and action link to agent details.",
+      },
+    ],
+    useCases: [
+      "Chat interfaces with multiple AI assistants",
+      "Team workspaces mixing human and AI participants",
+      "Agent marketplaces with role-based assistants",
+      "Task panels that show which agent handled a result",
+      "Support tools that hand off between bots and people",
+    ],
+    bestPractices: [
+      "Use a consistent name and visual identity across surfaces.",
+      "Differentiate AI avatars from human participants without stigmatizing.",
+      "Show current status (online/idle/offline) with simple, clear markers.",
+      "Include persona/role labels so users know when to engage each agent.",
+      "Pair avatar identity with disclosure patterns for explicit AI labeling.",
+    ],
+    relatedPatterns: ["Disclosure", "Shared Vision", "Incognito Mode"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

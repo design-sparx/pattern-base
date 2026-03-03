@@ -1,5 +1,6 @@
 export { ActionPlan } from "./components/action-plan";
 export { Attachments } from "./components/attachments";
+export { Avatar } from "./components/avatar";
 export { AutoFill } from "./components/auto-fill";
 export { Branches } from "./components/branches";
 export { Caveat } from "./components/caveat";

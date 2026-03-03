@@ -420,6 +420,15 @@ export const patterns: PatternMeta[] = [
     tags: ["provenance", "traceability", "identity"],
   },
   {
+    id: "avatar",
+    name: "Avatar",
+    slug: "avatar",
+    category: "trust-builders",
+    description:
+      "AI agent identity component with name, persona, status, and profile marker",
+    tags: ["identity", "agent", "persona"],
+  },
+  {
     id: "describe",
     name: "Describe",
     slug: "describe",

@@ -679,6 +679,57 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  avatar: [
+    {
+      name: "name",
+      type: "string",
+      description: "Primary display name for the AI agent",
+    },
+    {
+      name: "persona",
+      type: "string",
+      default: "undefined",
+      description:
+        "Optional role/persona subtitle displayed below or beside name",
+    },
+    {
+      name: "imageUrl",
+      type: "string",
+      default: "undefined",
+      description: "Optional image source URL for the avatar photo",
+    },
+    {
+      name: "badgeLabel",
+      type: "string",
+      default: "undefined",
+      description: "Optional badge text, for example AI Agent or Reviewer",
+    },
+    {
+      name: "status",
+      type: '"online" | "idle" | "offline"',
+      default: '"online"',
+      description: "Availability/status indicator shown with the avatar",
+    },
+    {
+      name: "size",
+      type: '"small" | "medium" | "large"',
+      default: '"medium"',
+      description: "Avatar visual size",
+    },
+    {
+      name: "variant",
+      type: '"inline" | "compact" | "card"',
+      default: '"inline"',
+      description: "Layout style for presenting the avatar identity",
+    },
+    {
+      name: "onSelect",
+      type: "() => void",
+      default: "undefined",
+      description: "Optional callback fired when profile action is selected",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

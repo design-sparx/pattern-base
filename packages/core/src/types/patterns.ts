@@ -446,6 +446,33 @@ export interface WatermarkProps {
   onVerify?: () => void;
 }
 
+export interface AvatarProps {
+  name: string;
+  persona?: string;
+  imageUrl?: string;
+  badgeLabel?: string;
+  status?: "online" | "idle" | "offline";
+  size?: "small" | "medium" | "large";
+  variant?: "inline" | "compact" | "card";
+  onSelect?: () => void;
+}
+
+export interface ColorOption {
+  id: string;
+  label: string;
+  value: string;
+  description?: string;
+}
+
+export interface ColorProps {
+  options: ColorOption[];
+  selectedColorId?: string;
+  onSelectColor?: (colorId: string) => void;
+  title?: string;
+  showLabels?: boolean;
+  variant?: "swatches" | "chips" | "card";
+}
+
 // ── Additional Wayfinder Patterns ──
 
 export interface FollowUpItem {

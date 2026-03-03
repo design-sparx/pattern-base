@@ -958,6 +958,13 @@ export const demoWatermark = {
   algorithm: "C2PA signature",
 };
 
+export const demoAvatar = {
+  name: "Avery",
+  persona: "Research Assistant",
+  badgeLabel: "AI Agent",
+  status: "online" as const,
+};
+
 export const demoDataOwnershipItems = [
   {
     id: "1",
