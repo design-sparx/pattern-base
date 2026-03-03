@@ -943,6 +943,14 @@ export const demoChainedSteps = [
   },
 ];
 
+export const demoIncognitoState = {
+  enabled: true,
+  description:
+    "This private workspace is excluded from saved conversation history.",
+  retentionNotice:
+    "Files, prompts, and generated responses are deleted when this session ends.",
+};
+
 export const demoDataOwnershipItems = [
   {
     id: "1",

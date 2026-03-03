@@ -550,6 +550,20 @@ const items = [
   description="Please review and accept the following."
 />`,
 
+  "incognito-mode": (fw) => `import { IncognitoMode } from '@ai-ui/${fw}';
+
+const [incognitoEnabled, setIncognitoEnabled] = useState(true);
+
+<IncognitoMode
+  enabled={incognitoEnabled}
+  onToggle={setIncognitoEnabled}
+  onEndSession={() => console.log('Incognito session ended')}
+  title="Private Session"
+  description="This workspace is excluded from saved history."
+  retentionNotice="Prompts, files, and outputs are deleted when the session ends."
+  variant="card"
+/>`,
+
   "auto-fill": (fw) => `import { AutoFill } from '@ai-ui/${fw}';
 
 const suggestions = [

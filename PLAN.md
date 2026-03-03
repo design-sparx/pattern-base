@@ -64,14 +64,14 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 | Status                     | Count  |
 | -------------------------- | ------ |
-| ✅ Implemented & committed | 50     |
+| ✅ Implemented & committed | 51     |
 | 🔄 In progress             | 0      |
-| ⬜ Planned                 | 4      |
+| ⬜ Planned                 | 3      |
 | **Total**                  | **54** |
 
 ---
 
-## Completed Patterns — 50
+## Completed Patterns — 51
 
 ### Prompt Actions (10/10 complete for this sub-group)
 
@@ -137,10 +137,11 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Consent** — Explicit user consent collection for AI data processing
 - [x] **Data Ownership** — User control over their data lifecycle and retention
 - [x] **Footprints** — Activity history and audit trail of AI interactions
+- [x] **Incognito Mode** — Private session mode with explicit no-retention signals and end-session controls _(added in latest commit)_
 
 ---
 
-## Remaining Patterns — 4
+## Remaining Patterns — 3
 
 ### Batch 2: Tuners — Complete ✅
 
@@ -150,11 +151,10 @@ Tuners are now complete. Next focus moves to Batch 3 (Governors).
 
 Governors are now complete. Next focus moves to Batch 4 (Trust Builders + Identifiers).
 
-### Batch 4: Trust Builders + Identifiers — 4 remaining
+### Batch 4: Trust Builders + Identifiers — 3 remaining
 
 These patterns handle AI _identity_ and user _trust signals_ — the layer users see to understand they are working with AI and what kind.
 
-- [ ] **Incognito Mode** — Session that leaves no history; clearly signals data is not retained after the session ends
 - [ ] **Watermark** — Embeds a visible or invisible AI-provenance marker in generated content
 - [ ] **Avatar** — Visual identity for the AI agent; configurable icon, name, and persona
 - [ ] **Color** — Brand-colour assignment for AI identity elements across the UI

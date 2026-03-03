@@ -402,6 +402,15 @@ export const patterns: PatternMeta[] = [
     tags: ["history", "audit", "trail"],
   },
   {
+    id: "incognito-mode",
+    name: "Incognito Mode",
+    slug: "incognito-mode",
+    category: "trust-builders",
+    description:
+      "Private AI sessions that avoid retention and clearly signal temporary handling",
+    tags: ["privacy", "session", "retention"],
+  },
+  {
     id: "describe",
     name: "Describe",
     slug: "describe",

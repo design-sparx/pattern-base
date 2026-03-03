@@ -25,6 +25,7 @@ import {
   Footprints as AntFootprints,
   Gallery as AntGallery,
   InitialCta as AntInitialCta,
+  IncognitoMode as AntIncognitoMode,
   InlineAction as AntInlineAction,
   Inpainting as AntInpainting,
   Madlibs as AntMadlibs,
@@ -78,6 +79,7 @@ import {
   Footprints as BsFootprints,
   Gallery as BsGallery,
   InitialCta as BsInitialCta,
+  IncognitoMode as BsIncognitoMode,
   InlineAction as BsInlineAction,
   Inpainting as BsInpainting,
   Madlibs as BsMadlibs,
@@ -130,6 +132,7 @@ import {
   demoFootprintEntries,
   demoGalleryItems,
   demoInitialCtaActions,
+  demoIncognitoState,
   demoInlineActions,
   demoInpaintingContent,
   demoInpaintingRegions,
@@ -812,6 +815,31 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onDecline={noop}
         title="Data Processing Consent"
         description="Please review and accept the following before proceeding."
+      />
+    ),
+  },
+
+  "incognito-mode": {
+    bootstrap: () => (
+      <BsIncognitoMode
+        enabled={demoIncognitoState.enabled}
+        onToggle={noop}
+        onEndSession={noop}
+        title="Private Session"
+        description={demoIncognitoState.description}
+        retentionNotice={demoIncognitoState.retentionNotice}
+        variant="card"
+      />
+    ),
+    antd: () => (
+      <AntIncognitoMode
+        enabled={demoIncognitoState.enabled}
+        onToggle={noop}
+        onEndSession={noop}
+        title="Private Session"
+        description={demoIncognitoState.description}
+        retentionNotice={demoIncognitoState.retentionNotice}
+        variant="card"
       />
     ),
   },

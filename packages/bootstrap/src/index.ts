@@ -19,6 +19,7 @@ export { FollowUp } from "./components/follow-up";
 export { Footprints } from "./components/footprints";
 export { Gallery } from "./components/gallery";
 export { InitialCta } from "./components/initial-cta";
+export { IncognitoMode } from "./components/incognito-mode";
 export { InlineAction } from "./components/inline-action";
 export { Inpainting } from "./components/inpainting";
 export { Madlibs } from "./components/madlibs";

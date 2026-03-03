@@ -427,6 +427,16 @@ export interface ConsentProps {
   variant?: "modal" | "inline" | "banner";
 }
 
+export interface IncognitoModeProps {
+  enabled: boolean;
+  onToggle?: (enabled: boolean) => void;
+  onEndSession?: () => void;
+  title?: string;
+  description?: string;
+  retentionNotice?: string;
+  variant?: "card" | "banner" | "inline";
+}
+
 // ── Additional Wayfinder Patterns ──
 
 export interface FollowUpItem {

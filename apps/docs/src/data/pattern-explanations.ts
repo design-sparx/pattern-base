@@ -1141,6 +1141,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Citation", "References", "Sample Response"],
   },
 
+  "incognito-mode": {
+    overview:
+      "Incognito Mode creates a private AI session where activity is intentionally not retained after the session ends. It gives users a clear signal that prompts, uploads, and outputs are temporary, which is especially important for sensitive tasks. The pattern should combine a visible status indicator with plain-language retention messaging so users understand exactly what is and is not stored.",
+    variants: [
+      {
+        title: "Inline status",
+        description:
+          "A compact status chip or toggle near the prompt input that shows whether private mode is currently active.",
+      },
+      {
+        title: "Banner notice",
+        description:
+          "A prominent session-level notice that explains retention behavior and allows quick toggle control.",
+      },
+      {
+        title: "Session card",
+        description:
+          "A richer panel with mode state, retention details, and an explicit action to end the private session.",
+      },
+    ],
+    useCases: [
+      "Handling sensitive brainstorming, legal, or HR prompts",
+      "Temporary sessions on shared or public devices",
+      "Customer support workflows where data minimization is required",
+      "Enterprise environments with strict retention policies",
+      "User-facing privacy modes for AI copilots",
+    ],
+    bestPractices: [
+      "Use explicit wording about retention duration and deletion timing.",
+      "Show private mode state persistently, not only in settings.",
+      "Provide a clear way to end the private session immediately.",
+      "Avoid conflicting indicators that imply history is still being stored.",
+      "Pair the mode with consent and disclosure patterns for full transparency.",
+    ],
+    relatedPatterns: ["Consent", "Disclosure", "Data Ownership"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

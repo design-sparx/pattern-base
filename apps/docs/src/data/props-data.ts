@@ -595,6 +595,51 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  "incognito-mode": [
+    {
+      name: "enabled",
+      type: "boolean",
+      description: "Whether private/incognito session mode is currently active",
+    },
+    {
+      name: "onToggle",
+      type: "(enabled: boolean) => void",
+      default: "undefined",
+      description: "Optional callback fired when the mode toggle is changed",
+    },
+    {
+      name: "onEndSession",
+      type: "() => void",
+      default: "undefined",
+      description: "Optional callback to immediately end the private session",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Incognito Mode"',
+      description: "Heading text displayed for the incognito status section",
+    },
+    {
+      name: "description",
+      type: "string",
+      default: "undefined",
+      description:
+        "Optional summary text describing the current retention state",
+    },
+    {
+      name: "retentionNotice",
+      type: "string",
+      default: "undefined",
+      description: "Optional explicit note about what data is discarded",
+    },
+    {
+      name: "variant",
+      type: '"card" | "banner" | "inline"',
+      default: '"card"',
+      description: "Presentation style for the incognito mode UI",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",
