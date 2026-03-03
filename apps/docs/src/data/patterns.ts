@@ -245,6 +245,15 @@ export const patterns: PatternMeta[] = [
     tags: ["memory", "profile", "control"],
   },
   {
+    id: "references",
+    name: "References",
+    slug: "references",
+    category: "governors",
+    description:
+      "Manage and inspect the URLs, documents, and snippets used as session context",
+    tags: ["references", "sources", "context"],
+  },
+  {
     id: "branches",
     name: "Branches",
     slug: "branches",

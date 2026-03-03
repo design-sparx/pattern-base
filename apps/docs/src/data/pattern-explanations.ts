@@ -993,6 +993,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Controls", "Consent", "Data Ownership"],
   },
 
+  references: {
+    overview:
+      "References make the AI's working context explicit by listing the documents, URLs, and snippets currently informing a session. Instead of hiding source context behind the scenes, this pattern lets users inspect relevance, open sources, remove noisy references, and control what evidence the model can rely on.",
+    variants: [
+      {
+        title: "Reference list",
+        description:
+          "A simple stacked list optimized for scanning titles, excerpts, and quick actions.",
+      },
+      {
+        title: "Reference cards",
+        description:
+          "Card-style references that surface richer metadata and work well in dashboards.",
+      },
+      {
+        title: "Selectable context",
+        description:
+          "References can be toggled or selected to narrow the active context for the next run.",
+      },
+    ],
+    useCases: [
+      "Reviewing which uploaded docs are influencing a generated answer",
+      "Removing low-quality or outdated sources from session context",
+      "Comparing relevance across internal and external references",
+      "Auditing evidence used in regulated workflows",
+      "Curating focused context before expensive generation steps",
+    ],
+    bestPractices: [
+      "Show concise excerpts so users can judge relevance without opening every source.",
+      "Expose source type and location to reduce ambiguity.",
+      "Allow quick removal to prevent stale context from polluting outputs.",
+      "Use relevance indicators as guidance, not as absolute truth.",
+      "Pair references with citation views for output-level traceability.",
+    ],
+    relatedPatterns: ["Citation", "Verification", "Memory"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

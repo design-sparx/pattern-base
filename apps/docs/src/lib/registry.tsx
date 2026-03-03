@@ -38,6 +38,7 @@ import {
   PromptEnhancer as AntPromptEnhancer,
   PromptDetails as AntPromptDetails,
   Randomize as AntRandomize,
+  References as AntReferences,
   Regenerate as AntRegenerate,
   Restructure as AntRestructure,
   Restyle as AntRestyle,
@@ -87,6 +88,7 @@ import {
   PromptEnhancer as BsPromptEnhancer,
   PromptDetails as BsPromptDetails,
   Randomize as BsRandomize,
+  References as BsReferences,
   Regenerate as BsRegenerate,
   Restructure as BsRestructure,
   Restyle as BsRestyle,
@@ -136,6 +138,7 @@ import {
   demoPromptEnhancerEnhanced,
   demoPromptEnhancerOriginal,
   demoPromptDetails,
+  demoReferences,
   demoRestructureContent,
   demoRestructureOptions,
   demoRestyleContent,
@@ -639,6 +642,29 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Stored Memory"
         variant="list"
         showTimestamps
+      />
+    ),
+  },
+
+  references: {
+    bootstrap: () => (
+      <BsReferences
+        references={demoReferences}
+        onSelectReference={noop}
+        onRemoveReference={noop}
+        title="Session References"
+        variant="list"
+        showRelevance
+      />
+    ),
+    antd: () => (
+      <AntReferences
+        references={demoReferences}
+        onSelectReference={noop}
+        onRemoveReference={noop}
+        title="Session References"
+        variant="list"
+        showRelevance
       />
     ),
   },

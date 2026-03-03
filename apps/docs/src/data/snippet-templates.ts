@@ -446,6 +446,23 @@ const memories = [
   showTimestamps
 />`,
 
+  references: (fw) => `import { References } from '@ai-ui/${fw}';
+
+const references = [
+  { id: 'ref-prd', title: 'Product Requirements Doc', type: 'document', location: 'https://docs.acme.dev/prd/ai-assistant', excerpt: 'Scope, acceptance criteria, and rollout constraints.', selected: true, relevance: 0.92 },
+  { id: 'ref-api', title: 'API Integration Notes', type: 'snippet', location: 'https://internal.acme.dev/notes/api-connectors', excerpt: 'Rate limits and retry strategy.', relevance: 0.84 },
+  { id: 'ref-policy', title: 'Security Policy', type: 'url', location: 'https://security.acme.dev/policies/ai-usage', excerpt: 'PII handling and audit requirements.', relevance: 0.77 },
+];
+
+<References
+  references={references}
+  onSelectReference={(referenceId) => console.log('Select:', referenceId)}
+  onRemoveReference={(referenceId) => console.log('Remove:', referenceId)}
+  title="Session References"
+  variant="list"
+  showRelevance
+/>`,
+
   caveat: (fw) => `import { Caveat } from '@ai-ui/${fw}';
 
 {/* Banner variant */}

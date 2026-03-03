@@ -661,6 +661,42 @@ export const demoMemories = [
   },
 ];
 
+export const demoReferences = [
+  {
+    id: "ref-prd",
+    title: "Product Requirements Doc",
+    type: "document" as const,
+    location: "https://docs.acme.dev/prd/ai-assistant",
+    excerpt: "Defines scope, acceptance criteria, and rollout constraints.",
+    selected: true,
+    relevance: 0.92,
+  },
+  {
+    id: "ref-api",
+    title: "API Integration Notes",
+    type: "snippet" as const,
+    location: "https://internal.acme.dev/notes/api-connectors",
+    excerpt: "Rate limits and retry strategy for external providers.",
+    relevance: 0.84,
+  },
+  {
+    id: "ref-policy",
+    title: "Security Policy",
+    type: "url" as const,
+    location: "https://security.acme.dev/policies/ai-usage",
+    excerpt: "PII handling and audit requirements for AI outputs.",
+    relevance: 0.77,
+  },
+  {
+    id: "ref-brief",
+    title: "Customer Interview Brief",
+    type: "document" as const,
+    location: "https://drive.acme.dev/customer-brief-q1",
+    excerpt: "Primary pain points and desired outcomes from pilot users.",
+    relevance: 0.69,
+  },
+];
+
 export const demoConsentItems = [
   {
     id: "1",

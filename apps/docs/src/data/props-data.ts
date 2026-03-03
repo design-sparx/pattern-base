@@ -422,6 +422,45 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  references: [
+    {
+      name: "references",
+      type: "ReferenceItem[]",
+      description:
+        "Array of reference entries with id, title, optional type, optional location, optional excerpt, optional selected, and optional relevance",
+    },
+    {
+      name: "onSelectReference",
+      type: "(referenceId: string) => void",
+      default: "undefined",
+      description: "Optional callback fired when a reference is selected",
+    },
+    {
+      name: "onRemoveReference",
+      type: "(referenceId: string) => void",
+      default: "undefined",
+      description: "Optional callback fired when a reference is removed",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"References"',
+      description: "Optional heading for the references panel",
+    },
+    {
+      name: "variant",
+      type: '"list" | "cards"',
+      default: '"list"',
+      description: "Display style for reference entries",
+    },
+    {
+      name: "showRelevance",
+      type: "boolean",
+      default: "true",
+      description: "Whether to show relevance indicators for each reference",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

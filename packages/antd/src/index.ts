@@ -33,6 +33,7 @@ export { PromptEnhancer } from "./components/prompt-enhancer";
 export { PromptDetails } from "./components/prompt-details";
 export { Randomize } from "./components/randomize";
 export { Regenerate } from "./components/regenerate";
+export { References } from "./components/references";
 export { Restructure } from "./components/restructure";
 export { Restyle } from "./components/restyle";
 export { SavedStyles } from "./components/saved-styles";

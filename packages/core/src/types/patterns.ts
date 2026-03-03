@@ -297,6 +297,25 @@ export interface MemoryProps {
   showTimestamps?: boolean;
 }
 
+export interface ReferenceItem {
+  id: string;
+  title: string;
+  type?: "url" | "document" | "snippet";
+  location?: string;
+  excerpt?: string;
+  selected?: boolean;
+  relevance?: number;
+}
+
+export interface ReferencesProps {
+  references: ReferenceItem[];
+  onSelectReference?: (referenceId: string) => void;
+  onRemoveReference?: (referenceId: string) => void;
+  title?: string;
+  variant?: "list" | "cards";
+  showRelevance?: boolean;
+}
+
 // ── Prompt Action Patterns ──
 
 export interface RegenerateProps {
