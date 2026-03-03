@@ -512,6 +512,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Modes", "Parameter Control", "Saved Styles"],
   },
 
+  "prompt-enhancer": {
+    overview:
+      "Prompt Enhancer rewrites rough user input into clearer, more structured prompts before submission. It helps users who know what they want but struggle to articulate constraints, audience, format, or tone. By showing original and enhanced versions side-by-side, the pattern improves both output quality and user trust in the rewrite step.",
+    variants: [
+      {
+        title: "Split compare",
+        description:
+          "Original and enhanced prompts shown side-by-side for quick review and editing.",
+      },
+      {
+        title: "Inline rewrite",
+        description:
+          "Single-column flow where users enhance then refine directly in place.",
+      },
+      {
+        title: "Auto-enhance",
+        description:
+          "Enhancement applied automatically on submit with an optional review step.",
+      },
+    ],
+    useCases: [
+      "Improving vague user prompts before expensive model calls",
+      "Standardizing prompts for team workflows and reusable templates",
+      "Adding structure for format, tone, and output constraints",
+      "Helping novice users get better first-try AI responses",
+      "Preprocessing prompts in enterprise AI copilots",
+    ],
+    bestPractices: [
+      "Always show what changed between original and enhanced prompts.",
+      "Let users edit the enhanced prompt before final submission.",
+      "Keep rewritten prompts concise and task-focused.",
+      "Preserve user intent rather than over-constraining the request.",
+      "Provide a one-click way to apply or revert the enhancement.",
+    ],
+    relatedPatterns: ["Open Input", "Preset Styles", "Madlibs"],
+  },
+
   "follow-up": {
     overview:
       "Follow Up prompts keep the conversation moving after an AI response by suggesting relevant next steps. They reduce the cognitive load of deciding what to ask next and help users explore a topic more deeply without composing prompts from scratch. Well-chosen follow-ups transform a single Q&A exchange into a productive exploration session.",

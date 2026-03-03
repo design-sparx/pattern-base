@@ -31,6 +31,7 @@ import {
   OpenInput as AntOpenInput,
   ParameterControl as AntParameterControl,
   PresetStyles as AntPresetStyles,
+  PromptEnhancer as AntPromptEnhancer,
   PromptDetails as AntPromptDetails,
   Randomize as AntRandomize,
   Regenerate as AntRegenerate,
@@ -73,6 +74,7 @@ import {
   OpenInput as BsOpenInput,
   ParameterControl as BsParameterControl,
   PresetStyles as BsPresetStyles,
+  PromptEnhancer as BsPromptEnhancer,
   PromptDetails as BsPromptDetails,
   Randomize as BsRandomize,
   Regenerate as BsRegenerate,
@@ -115,6 +117,8 @@ import {
   demoNudges,
   demoParameters,
   demoPresetStyles,
+  demoPromptEnhancerEnhanced,
+  demoPromptEnhancerOriginal,
   demoPromptDetails,
   demoRestructureContent,
   demoRestructureOptions,
@@ -221,6 +225,31 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onApplyPreset={noop}
         title="Style Presets"
         variant="cards"
+      />
+    ),
+  },
+
+  "prompt-enhancer": {
+    bootstrap: () => (
+      <BsPromptEnhancer
+        prompt={demoPromptEnhancerOriginal}
+        enhancedPrompt={demoPromptEnhancerEnhanced}
+        onEnhance={noop}
+        onApply={noop}
+        onEnhancedPromptChange={noop}
+        variant="split"
+        showDiff
+      />
+    ),
+    antd: () => (
+      <AntPromptEnhancer
+        prompt={demoPromptEnhancerOriginal}
+        enhancedPrompt={demoPromptEnhancerEnhanced}
+        onEnhance={noop}
+        onApply={noop}
+        onEnhancedPromptChange={noop}
+        variant="split"
+        showDiff
       />
     ),
   },

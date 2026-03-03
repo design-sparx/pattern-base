@@ -427,6 +427,12 @@ export const demoPresetStyles = [
   },
 ];
 
+export const demoPromptEnhancerOriginal =
+  "write a launch email for our new ai feature";
+
+export const demoPromptEnhancerEnhanced =
+  "Write a concise product launch email announcing our new AI feature. Audience: existing B2B customers. Include: clear value proposition, 3 bullet-point benefits, a short CTA linking to release notes, and a professional but friendly tone. Keep length under 180 words.";
+
 export const demoActionPlanSteps = [
   {
     id: "1",

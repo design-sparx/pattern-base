@@ -93,6 +93,22 @@ const presets = [
   variant="cards"
 />`,
 
+  "prompt-enhancer": (fw) => `import { PromptEnhancer } from '@ai-ui/${fw}';
+
+const originalPrompt = 'write a launch email for our new ai feature';
+const enhancedPrompt =
+  'Write a concise launch email for existing B2B customers. Include value proposition, three bullet-point benefits, and a short CTA. Keep it under 180 words.';
+
+<PromptEnhancer
+  prompt={originalPrompt}
+  enhancedPrompt={enhancedPrompt}
+  onEnhance={(prompt) => console.log('Enhancing:', prompt)}
+  onApply={(finalPrompt) => console.log('Apply:', finalPrompt)}
+  onEnhancedPromptChange={(value) => console.log('Edit:', value)}
+  variant="split"
+  showDiff
+/>`,
+
   "stream-of-thought": (fw) => `import { StreamOfThought } from '@ai-ui/${fw}';
 
 const steps = [

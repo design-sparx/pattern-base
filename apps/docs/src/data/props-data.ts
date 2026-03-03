@@ -136,6 +136,62 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  "prompt-enhancer": [
+    {
+      name: "prompt",
+      type: "string",
+      description: "Original user prompt before enhancement",
+    },
+    {
+      name: "enhancedPrompt",
+      type: "string",
+      default: "undefined",
+      description: "Enhanced prompt text generated or edited by the user",
+    },
+    {
+      name: "onEnhance",
+      type: "(prompt: string) => void",
+      description: "Callback fired when enhancement is requested",
+    },
+    {
+      name: "onApply",
+      type: "(enhancedPrompt: string) => void",
+      default: "undefined",
+      description: "Optional callback to apply the enhanced prompt",
+    },
+    {
+      name: "onEnhancedPromptChange",
+      type: "(value: string) => void",
+      default: "undefined",
+      description: "Optional callback for editing enhanced prompt text",
+    },
+    {
+      name: "isEnhancing",
+      type: "boolean",
+      default: "false",
+      description: "Whether enhancement is currently in progress",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Prompt Enhancer"',
+      description: "Optional heading for the enhancer panel",
+    },
+    {
+      name: "variant",
+      type: '"split" | "inline"',
+      default: '"split"',
+      description: "Layout mode for comparing and editing prompt versions",
+    },
+    {
+      name: "showDiff",
+      type: "boolean",
+      default: "true",
+      description:
+        "Whether to show a lightweight change summary between versions",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

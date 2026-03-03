@@ -183,6 +183,15 @@ export const patterns: PatternMeta[] = [
     tags: ["presets", "style", "configuration"],
   },
   {
+    id: "prompt-enhancer",
+    name: "Prompt Enhancer",
+    slug: "prompt-enhancer",
+    category: "tuners",
+    description:
+      "Rewrite raw prompts into clearer, structured prompts with before/after review",
+    tags: ["prompt", "rewrite", "quality"],
+  },
+  {
     id: "action-plan",
     name: "Action Plan",
     slug: "action-plan",
