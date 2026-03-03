@@ -385,6 +385,43 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  memory: [
+    {
+      name: "memories",
+      type: "MemoryEntry[]",
+      description:
+        "Array of memory entries with id, label, value, optional category, optional updatedAt, and optional locked",
+    },
+    {
+      name: "onEditMemory",
+      type: "(memoryId: string, value: string) => void",
+      description: "Callback fired when a memory value is edited and saved",
+    },
+    {
+      name: "onDeleteMemory",
+      type: "(memoryId: string) => void",
+      description: "Callback fired when a memory entry is deleted",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Memory"',
+      description: "Optional heading for the memory management panel",
+    },
+    {
+      name: "variant",
+      type: '"list" | "cards"',
+      default: '"list"',
+      description: "Display style for memory entries",
+    },
+    {
+      name: "showTimestamps",
+      type: "boolean",
+      default: "true",
+      description: "Whether to show last-updated timestamps on memory entries",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

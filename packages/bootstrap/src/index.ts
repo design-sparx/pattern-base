@@ -22,6 +22,7 @@ export { InitialCta } from "./components/initial-cta";
 export { InlineAction } from "./components/inline-action";
 export { Inpainting } from "./components/inpainting";
 export { Madlibs } from "./components/madlibs";
+export { Memory } from "./components/memory";
 export { ModelManagement } from "./components/model-management";
 export { Modes } from "./components/modes";
 export { Nudges } from "./components/nudges";

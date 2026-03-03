@@ -956,6 +956,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Branches", "Variations", "Action Plan"],
   },
 
+  memory: {
+    overview:
+      "Memory surfaces what the AI has stored about a user or workspace and lets people review, edit, or delete individual entries. By making memory explicit and editable, this pattern turns a hidden personalization layer into something users can inspect and control.",
+    variants: [
+      {
+        title: "Memory list",
+        description:
+          "A straightforward list of memory entries with edit/delete actions per row.",
+      },
+      {
+        title: "Memory cards",
+        description:
+          "Card-style memory blocks with categories and metadata for denser dashboards.",
+      },
+      {
+        title: "Policy-locked memory",
+        description:
+          "Certain entries remain visible but non-deletable to communicate governance constraints.",
+      },
+    ],
+    useCases: [
+      "Letting users correct stale profile details used by the assistant",
+      "Removing sensitive preferences from long-term memory",
+      "Reviewing what organizational context the AI can reference",
+      "Editing persistent communication preferences like tone and verbosity",
+      "Enterprise workspaces where some memory entries are policy-managed",
+    ],
+    bestPractices: [
+      "Show memory entries in plain language so users can quickly judge accuracy.",
+      "Make edit and delete controls explicit for each memory item.",
+      "Visually distinguish locked memories and explain why they are restricted.",
+      "Display last-updated times to help users identify stale context.",
+      "Pair memory management with consent and retention controls.",
+    ],
+    relatedPatterns: ["Controls", "Consent", "Data Ownership"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

@@ -629,6 +629,38 @@ export const demoDrafts = [
   },
 ];
 
+export const demoMemories = [
+  {
+    id: "pref-tone",
+    label: "Preferred Tone",
+    value: "Keep responses concise and professional.",
+    category: "Preference",
+    updatedAt: new Date(Date.now() - 1000 * 60 * 20),
+  },
+  {
+    id: "team-name",
+    label: "Team Context",
+    value: "User works in Platform Engineering at Acme Corp.",
+    category: "Profile",
+    updatedAt: new Date(Date.now() - 1000 * 60 * 90),
+  },
+  {
+    id: "timezone",
+    label: "Timezone",
+    value: "America/New_York",
+    category: "Preference",
+    updatedAt: new Date(Date.now() - 1000 * 60 * 5),
+  },
+  {
+    id: "policy-lock",
+    label: "Compliance Rule",
+    value: "Never include customer PII in generated summaries.",
+    category: "Policy",
+    updatedAt: new Date(Date.now() - 1000 * 60 * 180),
+    locked: true,
+  },
+];
+
 export const demoConsentItems = [
   {
     id: "1",

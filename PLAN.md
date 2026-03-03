@@ -64,14 +64,14 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 | Status                     | Count  |
 | -------------------------- | ------ |
-| ✅ Implemented & committed | 44     |
+| ✅ Implemented & committed | 46     |
 | 🔄 In progress             | 0      |
-| ⬜ Planned                 | 10     |
+| ⬜ Planned                 | 8      |
 | **Total**                  | **54** |
 
 ---
 
-## Completed Patterns — 44
+## Completed Patterns — 46
 
 ### Prompt Actions (10/10 complete for this sub-group)
 
@@ -113,7 +113,7 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Saved Styles** — Persist and recall user-defined style configurations across prompts and sessions _(added in latest commit)_
 - [x] **Voice and Tone** — Axis controls for adjusting communication register _(added in latest commit)_
 
-### Governors (8 complete)
+### Governors (10 complete)
 
 - [x] **Stream of Thought** — Step-by-step display of AI reasoning process
 - [x] **Citation** — Source attribution with relevance scores for AI-generated content
@@ -123,6 +123,8 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Synthesis** — Combine data from multiple sources to extract patterns and insights _(added in latest commit)_
 - [x] **Branches** — Fork conversation paths and compare divergent threads from shared context _(added in latest commit)_
 - [x] **Controls** — Master toggles for AI capabilities like web search, memory, and code execution _(added in latest commit)_
+- [x] **Draft Mode** — Iterative draft history with numbered revisions, revert actions, and optional branching from prior drafts _(added in latest commit)_
+- [x] **Memory** — Inspect, edit, and delete stored user/context memories that the AI can reference _(added in latest commit)_
 
 ### Trust Builders (6 complete)
 
@@ -134,18 +136,16 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 ---
 
-## Remaining Patterns — 10
+## Remaining Patterns — 8
 
 ### Batch 2: Tuners — Complete ✅
 
 Tuners are now complete. Next focus moves to Batch 3 (Governors).
 
-### Batch 3: Governors — 6 patterns
+### Batch 3: Governors — 4 patterns
 
 These patterns give users visibility and control over _how_ the AI works — building trust through transparency and edit access to intermediate states.
 
-- [ ] **Draft Mode** — Iterative draft-and-refine workflow; shows numbered drafts with the ability to revert or branch from any prior draft
-- [ ] **Memory** — Surface what the AI has stored about the user; allow viewing, editing, and deleting individual memories
 - [ ] **References** — Manage and display the documents, URLs, or context chunks the AI is drawing from in a given session
 - [ ] **Sample Response** — Preview a short AI-generated example before committing to full generation; like a "taste" button
 - [ ] **Shared Vision** — Collaborative workspace where multiple users contribute context or goals that the AI synthesises

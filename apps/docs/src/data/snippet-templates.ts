@@ -429,6 +429,23 @@ const drafts = [
   variant="timeline"
 />`,
 
+  memory: (fw) => `import { Memory } from '@ai-ui/${fw}';
+
+const memories = [
+  { id: 'pref-tone', label: 'Preferred Tone', value: 'Keep responses concise and professional.', category: 'Preference' },
+  { id: 'team-name', label: 'Team Context', value: 'User works in Platform Engineering at Acme Corp.', category: 'Profile' },
+  { id: 'policy-lock', label: 'Compliance Rule', value: 'Never include customer PII in generated summaries.', category: 'Policy', locked: true },
+];
+
+<Memory
+  memories={memories}
+  onEditMemory={(memoryId, value) => console.log('Edit:', memoryId, value)}
+  onDeleteMemory={(memoryId) => console.log('Delete:', memoryId)}
+  title="Stored Memory"
+  variant="list"
+  showTimestamps
+/>`,
+
   caveat: (fw) => `import { Caveat } from '@ai-ui/${fw}';
 
 {/* Banner variant */}

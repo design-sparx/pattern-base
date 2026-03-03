@@ -236,6 +236,15 @@ export const patterns: PatternMeta[] = [
     tags: ["drafts", "iteration", "history"],
   },
   {
+    id: "memory",
+    name: "Memory",
+    slug: "memory",
+    category: "governors",
+    description:
+      "View, edit, and delete user memory entries that the AI can reference",
+    tags: ["memory", "profile", "control"],
+  },
+  {
     id: "branches",
     name: "Branches",
     slug: "branches",

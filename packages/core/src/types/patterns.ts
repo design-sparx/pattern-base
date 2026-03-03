@@ -279,6 +279,24 @@ export interface DraftModeProps {
   variant?: "list" | "timeline";
 }
 
+export interface MemoryEntry {
+  id: string;
+  label: string;
+  value: string;
+  category?: string;
+  updatedAt?: Date;
+  locked?: boolean;
+}
+
+export interface MemoryProps {
+  memories: MemoryEntry[];
+  onEditMemory: (memoryId: string, value: string) => void;
+  onDeleteMemory: (memoryId: string) => void;
+  title?: string;
+  variant?: "list" | "cards";
+  showTimestamps?: boolean;
+}
+
 // ── Prompt Action Patterns ──
 
 export interface RegenerateProps {

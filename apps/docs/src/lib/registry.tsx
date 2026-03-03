@@ -28,6 +28,7 @@ import {
   InlineAction as AntInlineAction,
   Inpainting as AntInpainting,
   Madlibs as AntMadlibs,
+  Memory as AntMemory,
   ModelManagement as AntModelManagement,
   Modes as AntModes,
   Nudges as AntNudges,
@@ -76,6 +77,7 @@ import {
   InlineAction as BsInlineAction,
   Inpainting as BsInpainting,
   Madlibs as BsMadlibs,
+  Memory as BsMemory,
   ModelManagement as BsModelManagement,
   Modes as BsModes,
   Nudges as BsNudges,
@@ -125,6 +127,7 @@ import {
   demoInpaintingRegions,
   demoMadlibsTemplate,
   demoMadlibsVariables,
+  demoMemories,
   demoModels,
   demoModes,
   demoNudges,
@@ -613,6 +616,29 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onBranchFromDraft={noop}
         title="Draft History"
         variant="timeline"
+      />
+    ),
+  },
+
+  memory: {
+    bootstrap: () => (
+      <BsMemory
+        memories={demoMemories}
+        onEditMemory={noop}
+        onDeleteMemory={noop}
+        title="Stored Memory"
+        variant="list"
+        showTimestamps
+      />
+    ),
+    antd: () => (
+      <AntMemory
+        memories={demoMemories}
+        onEditMemory={noop}
+        onDeleteMemory={noop}
+        title="Stored Memory"
+        variant="list"
+        showTimestamps
       />
     ),
   },
