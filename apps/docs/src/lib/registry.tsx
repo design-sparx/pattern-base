@@ -26,6 +26,7 @@ import {
   Inpainting as AntInpainting,
   Madlibs as AntMadlibs,
   ModelManagement as AntModelManagement,
+  Modes as AntModes,
   Nudges as AntNudges,
   OpenInput as AntOpenInput,
   ParameterControl as AntParameterControl,
@@ -66,6 +67,7 @@ import {
   Inpainting as BsInpainting,
   Madlibs as BsMadlibs,
   ModelManagement as BsModelManagement,
+  Modes as BsModes,
   Nudges as BsNudges,
   OpenInput as BsOpenInput,
   ParameterControl as BsParameterControl,
@@ -107,6 +109,7 @@ import {
   demoMadlibsTemplate,
   demoMadlibsVariables,
   demoModels,
+  demoModes,
   demoNudges,
   demoParameters,
   demoPromptDetails,
@@ -332,6 +335,27 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onSelectModel={noop}
         showDetails
         groupByProvider
+      />
+    ),
+  },
+
+  modes: {
+    bootstrap: () => (
+      <BsModes
+        modes={demoModes}
+        selectedModeId="balanced"
+        onModeChange={noop}
+        title="Assistant Mode"
+        variant="segmented"
+      />
+    ),
+    antd: () => (
+      <AntModes
+        modes={demoModes}
+        selectedModeId="balanced"
+        onModeChange={noop}
+        title="Assistant Mode"
+        variant="segmented"
       />
     ),
   },

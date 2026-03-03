@@ -20,6 +20,7 @@ export { InlineAction } from "./components/inline-action";
 export { Inpainting } from "./components/inpainting";
 export { Madlibs } from "./components/madlibs";
 export { ModelManagement } from "./components/model-management";
+export { Modes } from "./components/modes";
 export { Nudges } from "./components/nudges";
 export { OpenInput } from "./components/open-input";
 export { ParameterControl } from "./components/parameter-control";

@@ -361,6 +361,33 @@ export const demoConnectors = [
   },
 ];
 
+export const demoModes = [
+  {
+    id: "creative",
+    label: "Creative",
+    icon: "🎨",
+    description: "High-divergence output for brainstorming and ideation.",
+  },
+  {
+    id: "balanced",
+    label: "Balanced",
+    icon: "⚖️",
+    description: "Mixes clarity and creativity for general-purpose use.",
+  },
+  {
+    id: "precise",
+    label: "Precise",
+    icon: "🎯",
+    description: "Prioritizes factual and concise responses.",
+  },
+  {
+    id: "safe",
+    label: "Safe",
+    icon: "🛡️",
+    description: "Adds extra caution for sensitive or policy-heavy tasks.",
+  },
+];
+
 export const demoActionPlanSteps = [
   {
     id: "1",

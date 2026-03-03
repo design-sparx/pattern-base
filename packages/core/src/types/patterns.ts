@@ -73,6 +73,22 @@ export interface ModelManagementProps {
   groupByProvider?: boolean;
 }
 
+export interface ModeOption {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+  disabled?: boolean;
+}
+
+export interface ModesProps {
+  modes: ModeOption[];
+  selectedModeId: string;
+  onModeChange: (modeId: string) => void;
+  title?: string;
+  variant?: "segmented" | "tabs";
+}
+
 // ── Governor Patterns ──
 
 export interface ThoughtStep {

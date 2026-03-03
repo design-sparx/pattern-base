@@ -158,6 +158,23 @@ const models = [
   groupByProvider
 />`,
 
+  modes: (fw) => `import { Modes } from '@ai-ui/${fw}';
+
+const modes = [
+  { id: 'creative', label: 'Creative', icon: '\uD83C\uDFA8', description: 'High-divergence brainstorming mode' },
+  { id: 'balanced', label: 'Balanced', icon: '\u2696\uFE0F', description: 'General-purpose mix of clarity and creativity' },
+  { id: 'precise', label: 'Precise', icon: '\uD83C\uDFAF', description: 'Factual, concise, and deterministic responses' },
+  { id: 'safe', label: 'Safe', icon: '\uD83D\uDEE1\uFE0F', description: 'Extra caution for sensitive tasks' },
+];
+
+<Modes
+  modes={modes}
+  selectedModeId="balanced"
+  onModeChange={(modeId) => console.log('Mode:', modeId)}
+  title="Assistant Mode"
+  variant="segmented"
+/>`,
+
   "follow-up": (fw) => `import { FollowUp } from '@ai-ui/${fw}';
 
 const followUps = [

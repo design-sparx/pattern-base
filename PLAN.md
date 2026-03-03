@@ -64,14 +64,14 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 | Status                     | Count  |
 | -------------------------- | ------ |
-| ✅ Implemented & committed | 37     |
+| ✅ Implemented & committed | 38     |
 | 🔄 In progress             | 0      |
-| ⬜ Planned                 | 17     |
+| ⬜ Planned                 | 16     |
 | **Total**                  | **54** |
 
 ---
 
-## Completed Patterns — 37
+## Completed Patterns — 38
 
 ### Prompt Actions (10/10 complete for this sub-group)
 
@@ -100,13 +100,14 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 - [x] **Prompt Details** — Metadata and context display for submitted prompts
 - [x] **Randomize** — Random seed control for exploring generation variety
 
-### Tuners (5 complete)
+### Tuners (6 complete)
 
 - [x] **Parameter Control** — Sliders, toggles, selects for fine-tuning AI parameters
 - [x] **Model Management** — Model selector with provider grouping and capability details
 - [x] **Attachments** — File upload and attachment management for AI context
 - [x] **Filters** — Multi-type filter controls for refining AI output or input
 - [x] **Connectors** — Integrate external data sources into AI context with connection and sync status indicators _(added in latest commit)_
+- [x] **Modes** — Discrete operating modes that change AI behavior wholesale _(added in latest commit)_
 
 ### Governors (5 complete)
 
@@ -127,13 +128,12 @@ All patterns are sourced from [shapeof.ai](https://www.shapeof.ai). The site org
 
 ---
 
-## Remaining Patterns — 17
+## Remaining Patterns — 16
 
-### Batch 2: Tuners — 5 patterns ⬅️ NEXT
+### Batch 2: Tuners — 4 patterns ⬅️ NEXT
 
-These 5 patterns complete the Tuners category. They all deal with adjusting AI _behaviour and style_ before or during generation — distinct from parameter sliders (which tune _model settings_).
+These 4 patterns complete the Tuners category. They all deal with adjusting AI _behaviour and style_ before or during generation — distinct from parameter sliders (which tune _model settings_).
 
-- [ ] **Modes** — Discrete operating modes that change AI behaviour wholesale (e.g. Creative / Precise / Safe); presented as a segmented control or tab strip
 - [ ] **Preset Styles** — One-click style presets that apply a bundle of parameter values at once; enables non-technical users to switch aesthetics without touching sliders
 - [ ] **Prompt Enhancer** — Automatically rewrites or augments a user's raw prompt before submission to improve output quality; shows before/after diff
 - [ ] **Saved Styles** — Persist and recall user-defined style configurations; like bookmarks for parameter combinations

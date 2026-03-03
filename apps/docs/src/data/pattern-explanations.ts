@@ -438,6 +438,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["References", "Citation", "Model Management"],
   },
 
+  modes: {
+    overview:
+      "Modes provide a high-level behavior switch that changes how the assistant operates without requiring users to tune low-level model parameters. Instead of adjusting multiple sliders, users pick a named operating mode like Creative, Precise, or Safe. This pattern is especially useful for non-technical users who need clear intent-level control over output behavior.",
+    variants: [
+      {
+        title: "Segmented control",
+        description:
+          "A compact horizontal switch for fast toggling between a small set of modes.",
+      },
+      {
+        title: "Tabs",
+        description:
+          "Tab-style selection with optional per-mode descriptions for richer context.",
+      },
+      {
+        title: "Inline chip picker",
+        description:
+          "Mode chips near the prompt field for quick context switching during chat.",
+      },
+    ],
+    useCases: [
+      "Switching between brainstorming and execution workflows",
+      "Applying safer defaults for compliance or sensitive domains",
+      "Choosing concise vs expressive output behavior by task",
+      "Providing simple control surfaces for non-technical teams",
+      "Rapidly changing assistant behavior without prompt rewrites",
+    ],
+    bestPractices: [
+      "Use clear, human-readable mode labels that describe behavior outcomes.",
+      "Show active mode persistently so users understand current AI behavior.",
+      "Pair each mode with a short description of expected output differences.",
+      "Keep the number of modes small to reduce decision fatigue.",
+      "Allow runtime switching without resetting user context or history.",
+    ],
+    relatedPatterns: ["Parameter Control", "Preset Styles", "Voice and Tone"],
+  },
+
   "follow-up": {
     overview:
       "Follow Up prompts keep the conversation moving after an AI response by suggesting relevant next steps. They reduce the cognitive load of deciding what to ask next and help users explore a topic more deeply without composing prompts from scratch. Well-chosen follow-ups transform a single Q&A exchange into a productive exploration session.",

@@ -290,6 +290,37 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  modes: [
+    {
+      name: "modes",
+      type: "ModeOption[]",
+      description:
+        "Array of mode options with id, label, optional description/icon, and optional disabled flag",
+    },
+    {
+      name: "selectedModeId",
+      type: "string",
+      description: "ID of the currently selected mode",
+    },
+    {
+      name: "onModeChange",
+      type: "(modeId: string) => void",
+      description: "Callback fired when mode selection changes",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Modes"',
+      description: "Optional heading shown above mode controls",
+    },
+    {
+      name: "variant",
+      type: '"segmented" | "tabs"',
+      default: '"segmented"',
+      description: "Display style for mode selection",
+    },
+  ],
+
   connectors: [
     {
       name: "sources",

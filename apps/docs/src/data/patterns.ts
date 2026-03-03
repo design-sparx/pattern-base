@@ -166,6 +166,15 @@ export const patterns: PatternMeta[] = [
     tags: ["sources", "integration", "context"],
   },
   {
+    id: "modes",
+    name: "Modes",
+    slug: "modes",
+    category: "tuners",
+    description:
+      "Switch between discrete AI operating modes like Creative, Precise, or Safe",
+    tags: ["mode", "behavior", "control"],
+  },
+  {
     id: "action-plan",
     name: "Action Plan",
     slug: "action-plan",
