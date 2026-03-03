@@ -751,6 +751,31 @@ export const demoSharedVisionContext = [
   },
 ];
 
+export const demoVerificationClaims = [
+  {
+    id: "v1",
+    text: "Enterprise AI adoption exceeded 70% in 2025.",
+    confidence: 0.91,
+    status: "verified" as const,
+    source: "McKinsey AI Report 2025",
+    url: "https://mckinsey.com/ai-report",
+  },
+  {
+    id: "v2",
+    text: "Average inference cost dropped by 45% year-over-year.",
+    confidence: 0.62,
+    status: "uncertain" as const,
+    source: "Internal cost benchmark draft",
+  },
+  {
+    id: "v3",
+    text: "All healthcare providers now require AI output disclosures.",
+    confidence: 0.29,
+    status: "disputed" as const,
+    source: "Policy summary memo",
+  },
+];
+
 export const demoConsentItems = [
   {
     id: "1",

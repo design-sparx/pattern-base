@@ -556,6 +556,45 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  verification: [
+    {
+      name: "claims",
+      type: "VerificationClaim[]",
+      description:
+        "Array of claims with id, text, confidence, optional status, optional source, and optional url",
+    },
+    {
+      name: "onRunVerification",
+      type: "() => void",
+      default: "undefined",
+      description: "Optional callback to trigger a verification run",
+    },
+    {
+      name: "onSelectClaim",
+      type: "(claimId: string) => void",
+      default: "undefined",
+      description: "Optional callback fired when a claim row is selected",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Verification"',
+      description: "Optional heading for the verification panel",
+    },
+    {
+      name: "showSources",
+      type: "boolean",
+      default: "true",
+      description: "Whether to show supporting source labels/links",
+    },
+    {
+      name: "variant",
+      type: '"list" | "inline"',
+      default: '"list"',
+      description: "Display style for showing verification results",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",

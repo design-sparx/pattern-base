@@ -272,6 +272,15 @@ export const patterns: PatternMeta[] = [
     tags: ["collaboration", "alignment", "context"],
   },
   {
+    id: "verification",
+    name: "Verification",
+    slug: "verification",
+    category: "governors",
+    description:
+      "Fact-check claims with confidence indicators and linked supporting sources",
+    tags: ["fact-check", "confidence", "evidence"],
+  },
+  {
     id: "branches",
     name: "Branches",
     slug: "branches",

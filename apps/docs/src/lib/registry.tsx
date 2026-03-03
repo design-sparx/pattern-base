@@ -52,6 +52,7 @@ import {
   Templates as AntTemplates,
   Transform as AntTransform,
   Variations as AntVariations,
+  Verification as AntVerification,
   VoiceAndTone as AntVoiceAndTone,
 } from "@ai-ui/antd";
 // Bootstrap components
@@ -104,6 +105,7 @@ import {
   Templates as BsTemplates,
   Transform as BsTransform,
   Variations as BsVariations,
+  Verification as BsVerification,
   VoiceAndTone as BsVoiceAndTone,
 } from "@ai-ui/bootstrap";
 
@@ -162,6 +164,7 @@ import {
   demoTransformContent,
   demoTransformOptions,
   demoVariations,
+  demoVerificationClaims,
   demoVoiceToneAxes,
 } from "@/data/demo-data";
 
@@ -724,6 +727,29 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onSelectParticipant={noop}
         title="Team Alignment Board"
         variant="board"
+      />
+    ),
+  },
+
+  verification: {
+    bootstrap: () => (
+      <BsVerification
+        claims={demoVerificationClaims}
+        onRunVerification={noop}
+        onSelectClaim={noop}
+        title="Claim Verification"
+        showSources
+        variant="list"
+      />
+    ),
+    antd: () => (
+      <AntVerification
+        claims={demoVerificationClaims}
+        onRunVerification={noop}
+        onSelectClaim={noop}
+        title="Claim Verification"
+        showSources
+        variant="list"
       />
     ),
   },

@@ -358,6 +358,24 @@ export interface SharedVisionProps {
   variant?: "board" | "compact";
 }
 
+export interface VerificationClaim {
+  id: string;
+  text: string;
+  confidence: number;
+  status?: "verified" | "uncertain" | "disputed";
+  source?: string;
+  url?: string;
+}
+
+export interface VerificationProps {
+  claims: VerificationClaim[];
+  onRunVerification?: () => void;
+  onSelectClaim?: (claimId: string) => void;
+  title?: string;
+  showSources?: boolean;
+  variant?: "list" | "inline";
+}
+
 // ── Prompt Action Patterns ──
 
 export interface RegenerateProps {

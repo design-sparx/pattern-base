@@ -1104,6 +1104,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Action Plan", "References", "Controls"],
   },
 
+  verification: {
+    overview:
+      "Verification highlights factual claims in AI output and attaches confidence signals plus supporting evidence. It helps users quickly distinguish well-supported statements from uncertain or disputed ones before acting on results.",
+    variants: [
+      {
+        title: "Verification list",
+        description:
+          "A structured claim list with confidence bars, status labels, and source links.",
+      },
+      {
+        title: "Inline verification",
+        description:
+          "Compact claim confidence annotations shown inline with generated content.",
+      },
+      {
+        title: "On-demand verification",
+        description:
+          "Users explicitly trigger verification runs for cost-sensitive workflows.",
+      },
+    ],
+    useCases: [
+      "Fact-checking research summaries before publishing",
+      "Validating compliance-sensitive claims in enterprise reports",
+      "Reviewing uncertain statements in medical or legal support tools",
+      "Prioritizing manual review for low-confidence outputs",
+      "Auditing generated insights with linked evidence",
+    ],
+    bestPractices: [
+      "Expose confidence as a heuristic, not a guarantee of truth.",
+      "Link each claim to at least one traceable source when available.",
+      "Use clear status states: verified, uncertain, disputed.",
+      "Let users drill into individual claims for deeper review.",
+      "Pair verification with citation and references to maintain context.",
+    ],
+    relatedPatterns: ["Citation", "References", "Sample Response"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

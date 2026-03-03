@@ -503,6 +503,23 @@ const context = [
   variant="board"
 />`,
 
+  verification: (fw) => `import { Verification } from '@ai-ui/${fw}';
+
+const claims = [
+  { id: 'v1', text: 'Enterprise AI adoption exceeded 70% in 2025.', confidence: 0.91, status: 'verified', source: 'McKinsey AI Report 2025', url: 'https://mckinsey.com/ai-report' },
+  { id: 'v2', text: 'Average inference cost dropped by 45% year-over-year.', confidence: 0.62, status: 'uncertain', source: 'Internal cost benchmark draft' },
+  { id: 'v3', text: 'All healthcare providers now require AI output disclosures.', confidence: 0.29, status: 'disputed', source: 'Policy summary memo' },
+];
+
+<Verification
+  claims={claims}
+  onRunVerification={() => console.log('Run verification')}
+  onSelectClaim={(claimId) => console.log('Select claim:', claimId)}
+  title="Claim Verification"
+  showSources
+  variant="list"
+/>`,
+
   caveat: (fw) => `import { Caveat } from '@ai-ui/${fw}';
 
 {/* Banner variant */}
