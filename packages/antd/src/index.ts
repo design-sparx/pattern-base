@@ -38,6 +38,7 @@ export { Restructure } from "./components/restructure";
 export { Restyle } from "./components/restyle";
 export { SampleResponse } from "./components/sample-response";
 export { SavedStyles } from "./components/saved-styles";
+export { SharedVision } from "./components/shared-vision";
 export { StreamOfThought } from "./components/stream-of-thought";
 export { Suggestions } from "./components/suggestions";
 export { Summary } from "./components/summary";

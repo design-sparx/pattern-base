@@ -327,6 +327,37 @@ export interface SampleResponseProps {
   variant?: "card" | "inline";
 }
 
+export interface SharedVisionParticipant {
+  id: string;
+  name: string;
+  role?: string;
+  isActive?: boolean;
+}
+
+export interface SharedVisionGoal {
+  id: string;
+  text: string;
+  priority?: "high" | "medium" | "low";
+  ownerId?: string;
+}
+
+export interface SharedVisionContextItem {
+  id: string;
+  label: string;
+  value: string;
+  type?: "constraint" | "assumption" | "input";
+}
+
+export interface SharedVisionProps {
+  participants: SharedVisionParticipant[];
+  goals: SharedVisionGoal[];
+  context: SharedVisionContextItem[];
+  onAddGoal?: (goal: string) => void;
+  onSelectParticipant?: (participantId: string) => void;
+  title?: string;
+  variant?: "board" | "compact";
+}
+
 // ── Prompt Action Patterns ──
 
 export interface RegenerateProps {

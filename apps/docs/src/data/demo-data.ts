@@ -703,6 +703,54 @@ export const demoSampleResponsePrompt =
 export const demoSampleResponseText =
   "Phase 1: instrument current batch jobs and define event contracts. Phase 2: stand up a parallel streaming path for high-value events. Phase 3: validate data parity and cut over consumers incrementally.";
 
+export const demoSharedVisionParticipants = [
+  { id: "p1", name: "Maya", role: "PM", isActive: true },
+  { id: "p2", name: "Jordan", role: "Engineer", isActive: true },
+  { id: "p3", name: "Rina", role: "Designer" },
+];
+
+export const demoSharedVisionGoals = [
+  {
+    id: "g1",
+    text: "Ship a guided onboarding flow for first-time users",
+    priority: "high" as const,
+    ownerId: "p1",
+  },
+  {
+    id: "g2",
+    text: "Keep median response time under 2 seconds",
+    priority: "medium" as const,
+    ownerId: "p2",
+  },
+  {
+    id: "g3",
+    text: "Ensure accessibility for keyboard-only navigation",
+    priority: "high" as const,
+    ownerId: "p3",
+  },
+];
+
+export const demoSharedVisionContext = [
+  {
+    id: "c1",
+    label: "Constraint",
+    value: "Must support enterprise SSO from day one.",
+    type: "constraint" as const,
+  },
+  {
+    id: "c2",
+    label: "Assumption",
+    value: "Most users start from desktop web before mobile.",
+    type: "assumption" as const,
+  },
+  {
+    id: "c3",
+    label: "Input",
+    value: "Pilot feedback requests better transparency controls.",
+    type: "input" as const,
+  },
+];
+
 export const demoConsentItems = [
   {
     id: "1",

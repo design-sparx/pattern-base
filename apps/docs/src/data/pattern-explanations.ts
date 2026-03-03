@@ -1067,6 +1067,43 @@ export const patternExplanations: Record<string, PatternExplanation> = {
     relatedPatterns: ["Regenerate", "Variations", "References"],
   },
 
+  "shared-vision": {
+    overview:
+      "Shared Vision creates a collaborative planning surface where multiple contributors align on goals, constraints, and assumptions before the AI executes major work. It turns scattered team context into a single, structured source of truth the AI can reference.",
+    variants: [
+      {
+        title: "Board layout",
+        description:
+          "Full collaboration board with participants, goals, and contextual inputs visible at once.",
+      },
+      {
+        title: "Compact mode",
+        description:
+          "Condensed presentation for side panels where only essential alignment data is shown.",
+      },
+      {
+        title: "Goal-centric view",
+        description:
+          "Prioritized goal list with contributor ownership and lightweight context references.",
+      },
+    ],
+    useCases: [
+      "Cross-functional planning for AI-generated project proposals",
+      "Team alignment before high-impact automation runs",
+      "Collaborative requirements gathering for assistant behavior",
+      "Capturing constraints and assumptions in shared workflows",
+      "Keeping stakeholder intent visible in multi-user AI sessions",
+    ],
+    bestPractices: [
+      "Make participant roles explicit so ownership is clear.",
+      "Prioritize goals to prevent conflicting objectives.",
+      "Separate constraints from assumptions to avoid hidden ambiguity.",
+      "Keep context items concise and actionable.",
+      "Use shared vision updates as preconditions for major AI actions.",
+    ],
+    relatedPatterns: ["Action Plan", "References", "Controls"],
+  },
+
   caveat: {
     overview:
       "Caveats are contextual warnings and disclaimers that set appropriate expectations for AI-generated content. They acknowledge the inherent limitations of AI systems — potential inaccuracies, biases, or knowledge cutoffs — and empower users to approach outputs with informed skepticism. Unlike generic legal disclaimers, well-designed caveats are specific, timely, and proportional to the risk level of the content.",

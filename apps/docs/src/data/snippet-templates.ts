@@ -475,6 +475,34 @@ const references = [
   variant="card"
 />`,
 
+  "shared-vision": (fw) => `import { SharedVision } from '@ai-ui/${fw}';
+
+const participants = [
+  { id: 'p1', name: 'Maya', role: 'PM', isActive: true },
+  { id: 'p2', name: 'Jordan', role: 'Engineer', isActive: true },
+  { id: 'p3', name: 'Rina', role: 'Designer' },
+];
+
+const goals = [
+  { id: 'g1', text: 'Ship a guided onboarding flow for first-time users', priority: 'high' },
+  { id: 'g2', text: 'Keep median response time under 2 seconds', priority: 'medium' },
+];
+
+const context = [
+  { id: 'c1', label: 'Constraint', value: 'Must support enterprise SSO from day one.', type: 'constraint' },
+  { id: 'c2', label: 'Input', value: 'Pilot feedback requests better transparency controls.', type: 'input' },
+];
+
+<SharedVision
+  participants={participants}
+  goals={goals}
+  context={context}
+  onAddGoal={(goal) => console.log('Add goal:', goal)}
+  onSelectParticipant={(id) => console.log('Select participant:', id)}
+  title="Team Alignment Board"
+  variant="board"
+/>`,
+
   caveat: (fw) => `import { Caveat } from '@ai-ui/${fw}';
 
 {/* Banner variant */}

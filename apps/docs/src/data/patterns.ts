@@ -263,6 +263,15 @@ export const patterns: PatternMeta[] = [
     tags: ["preview", "gating", "quality-check"],
   },
   {
+    id: "shared-vision",
+    name: "Shared Vision",
+    slug: "shared-vision",
+    category: "governors",
+    description:
+      "Collaborative board for participants, shared goals, and contextual constraints",
+    tags: ["collaboration", "alignment", "context"],
+  },
+  {
     id: "branches",
     name: "Branches",
     slug: "branches",

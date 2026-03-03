@@ -44,6 +44,7 @@ import {
   Restyle as AntRestyle,
   SampleResponse as AntSampleResponse,
   SavedStyles as AntSavedStyles,
+  SharedVision as AntSharedVision,
   StreamOfThought as AntStreamOfThought,
   Suggestions as AntSuggestions,
   Summary as AntSummary,
@@ -95,6 +96,7 @@ import {
   Restyle as BsRestyle,
   SampleResponse as BsSampleResponse,
   SavedStyles as BsSavedStyles,
+  SharedVision as BsSharedVision,
   StreamOfThought as BsStreamOfThought,
   Suggestions as BsSuggestions,
   Summary as BsSummary,
@@ -148,6 +150,9 @@ import {
   demoRestyleContent,
   demoRestyleOptions,
   demoSavedStyles,
+  demoSharedVisionContext,
+  demoSharedVisionGoals,
+  demoSharedVisionParticipants,
   demoSteps,
   demoSuggestions,
   demoSummaryContent,
@@ -694,6 +699,31 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onAcceptSample={noop}
         title="Preview Before Full Run"
         variant="card"
+      />
+    ),
+  },
+
+  "shared-vision": {
+    bootstrap: () => (
+      <BsSharedVision
+        participants={demoSharedVisionParticipants}
+        goals={demoSharedVisionGoals}
+        context={demoSharedVisionContext}
+        onAddGoal={noop}
+        onSelectParticipant={noop}
+        title="Team Alignment Board"
+        variant="board"
+      />
+    ),
+    antd: () => (
+      <AntSharedVision
+        participants={demoSharedVisionParticipants}
+        goals={demoSharedVisionGoals}
+        context={demoSharedVisionContext}
+        onAddGoal={noop}
+        onSelectParticipant={noop}
+        title="Team Alignment Board"
+        variant="board"
       />
     ),
   },

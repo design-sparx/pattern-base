@@ -511,6 +511,51 @@ export const propsData: Record<string, PropDefinition[]> = {
     },
   ],
 
+  "shared-vision": [
+    {
+      name: "participants",
+      type: "SharedVisionParticipant[]",
+      description:
+        "Array of collaboration participants with id, name, optional role, and optional active state",
+    },
+    {
+      name: "goals",
+      type: "SharedVisionGoal[]",
+      description:
+        "Array of shared goals with id, text, optional priority, and optional ownerId",
+    },
+    {
+      name: "context",
+      type: "SharedVisionContextItem[]",
+      description:
+        "Array of context items with id, label, value, and optional type (constraint, assumption, input)",
+    },
+    {
+      name: "onAddGoal",
+      type: "(goal: string) => void",
+      default: "undefined",
+      description: "Optional callback fired when adding a new shared goal",
+    },
+    {
+      name: "onSelectParticipant",
+      type: "(participantId: string) => void",
+      default: "undefined",
+      description: "Optional callback fired when selecting a participant",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: '"Shared Vision"',
+      description: "Optional heading for the shared collaboration panel",
+    },
+    {
+      name: "variant",
+      type: '"board" | "compact"',
+      default: '"board"',
+      description: "Display style for the collaboration view",
+    },
+  ],
+
   "stream-of-thought": [
     {
       name: "steps",
