@@ -1,3 +1,5 @@
+import { type ReactNode } from "react";
+
 /**
  * Core type definitions for AI UX patterns
  */
@@ -10,7 +12,7 @@ export interface StarterPrompt {
   description?: string;
   prompt: string;
   category?: string;
-  icon?: string;
+  icon?: ReactNode;
 }
 
 export interface SuggestionsProps {
@@ -77,7 +79,7 @@ export interface ModeOption {
   id: string;
   label: string;
   description?: string;
-  icon?: string;
+  icon?: ReactNode;
   disabled?: boolean;
 }
 
@@ -93,7 +95,7 @@ export interface PresetStyle {
   id: string;
   label: string;
   description?: string;
-  icon?: string;
+  icon?: ReactNode;
   values: Record<string, unknown>;
 }
 
@@ -478,7 +480,7 @@ export interface ColorProps {
 export interface FollowUpItem {
   id: string;
   text: string;
-  icon?: string;
+  icon?: ReactNode;
   category?: string;
 }
 
@@ -503,7 +505,7 @@ export interface TemplateItem {
   id: string;
   name: string;
   description?: string;
-  icon?: string;
+  icon?: ReactNode;
   category?: string;
   template: string;
   variables?: TemplateVariable[];
@@ -670,7 +672,7 @@ export interface InitialCtaAction {
   id: string;
   label: string;
   description?: string;
-  icon?: string;
+  icon?: ReactNode;
 }
 
 export interface InitialCtaProps {
@@ -685,7 +687,7 @@ export interface NudgeItem {
   id: string;
   message: string;
   type?: "tip" | "reminder" | "suggestion";
-  icon?: string;
+  icon?: ReactNode;
   actionLabel?: string;
   onAction?: () => void;
 }
@@ -740,7 +742,7 @@ export interface TransformOption {
   id: string;
   label: string;
   description?: string;
-  icon?: string;
+  icon?: ReactNode;
 }
 
 export interface TransformProps {
@@ -756,7 +758,7 @@ export interface TransformProps {
 export interface InlineActionItem {
   id: string;
   label: string;
-  icon?: string;
+  icon?: ReactNode;
   type?: "primary" | "secondary" | "danger";
 }
 
@@ -892,7 +894,7 @@ export interface RestructureOption {
   id: string;
   label: string;
   description?: string;
-  icon?: string;
+  icon?: ReactNode;
 }
 
 export interface RestructureProps {
@@ -910,7 +912,7 @@ export interface RestyleOption {
   id: string;
   label: string;
   description?: string;
-  icon?: string;
+  icon?: ReactNode;
   preview?: string;
 }
 
