@@ -1,6 +1,6 @@
 {
   "name": "@ai-ui/antd",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Ant Design implementation of AI UI components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
