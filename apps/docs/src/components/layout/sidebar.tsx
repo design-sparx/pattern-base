@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Badge,
   Box,
   Collapse,
   NavLink,
@@ -92,20 +91,12 @@ export function Sidebar() {
                   style={{
                     flex: 1,
                     color: isCatActive
-                      ? "var(--mantine-color-violet-6)"
+                      ? "var(--mantine-primary-color-filled)"
                       : "var(--mantine-color-text)",
                   }}
                 >
-                  {cat.name}
+                  {cat.name} ({catPatterns.length})
                 </Text>
-                <Badge
-                  size="xs"
-                  variant="light"
-                  color={isCatActive ? "violet" : "gray"}
-                  circle
-                >
-                  {catPatterns.length}
-                </Badge>
                 <IconChevronRight
                   size={14}
                   style={{
