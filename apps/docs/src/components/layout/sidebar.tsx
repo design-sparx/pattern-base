@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AppShell,
   Box,
   Collapse,
   NavLink,
@@ -49,8 +50,8 @@ export function Sidebar() {
   };
 
   return (
-    <ScrollArea h="100%" p={12}>
-      <nav>
+    <>
+      <AppShell.Section grow my="md" component={ScrollArea} px="md">
         <NavLink
           component={Link}
           href="/patterns"
@@ -84,7 +85,7 @@ export function Sidebar() {
                   gap: 8,
                 }}
               >
-                <Icon size={18} stroke={1.5} />
+                <Icon size={16} stroke={1.5} />
                 <Text
                   fz="sm"
                   fw={isCatActive ? 600 : 500}
@@ -143,8 +144,9 @@ export function Sidebar() {
             color="violet"
           />
         </Box>
-
-        <Box mt="auto" pt="xl" pb="xs">
+      </AppShell.Section>
+      <AppShell.Section>
+        <Box mt="auto">
           <Text
             fz={10}
             c="dimmed"
@@ -154,7 +156,7 @@ export function Sidebar() {
             AI Vory v0.1.0
           </Text>
         </Box>
-      </nav>
-    </ScrollArea>
+      </AppShell.Section>
+    </>
   );
 }
