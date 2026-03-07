@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
   const color = categoryColors[category.id] ?? "violet";
 
   return (
-    <Box p="xl" maw={1000}>
+    <Box p="xl">
       <Group gap="sm" mb="xs">
         <ThemeIcon variant="light" color={color} size="lg">
           <Icon size={20} />
@@ -65,7 +65,7 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
 
       <CategoryNav categories={categories} activeCategoryId={category.id} />
 
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing="md">
         {categoryPatterns.map((p) => (
           <PatternCard key={p.id} pattern={p} />
         ))}
