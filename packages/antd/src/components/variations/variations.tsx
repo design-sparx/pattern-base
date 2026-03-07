@@ -1,5 +1,5 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { Card, Col, Row, Space, Tabs, Tag, Typography } from "antd";
+import { Card, Col, Row, Space, Tabs, Tag, theme, Typography } from "antd";
 
 import type { VariationsProps } from "@ai-ui/core";
 
@@ -12,13 +12,18 @@ export function Variations({
   layout = "grid",
   columns = 2,
 }: VariationsProps) {
+  const { token } = theme.useToken();
   if (layout === "tabs") {
     const items = variations.map((v, i) => ({
       key: v.id,
       label: v.label ?? `Variation ${String(i + 1)}`,
       children: (
         <div
-          style={{ padding: 16, border: "1px solid #f0f0f0", borderRadius: 8 }}
+          style={{
+            padding: 16,
+            border: `1px solid ${token.colorBorderSecondary}`,
+            borderRadius: 8,
+          }}
         >
           {v.content}
         </div>
@@ -43,7 +48,7 @@ export function Variations({
             size="small"
             hoverable={Boolean(onSelect)}
             style={{
-              borderColor: selectedId === v.id ? "#1890ff" : undefined,
+              borderColor: selectedId === v.id ? token.colorPrimary : undefined,
               cursor: onSelect ? "pointer" : "default",
             }}
             onClick={() => onSelect?.(v.id)}
@@ -75,7 +80,7 @@ export function Variations({
             hoverable={Boolean(onSelect)}
             style={{
               height: "100%",
-              borderColor: selectedId === v.id ? "#1890ff" : undefined,
+              borderColor: selectedId === v.id ? token.colorPrimary : undefined,
               cursor: onSelect ? "pointer" : "default",
             }}
             onClick={() => onSelect?.(v.id)}

@@ -1,5 +1,14 @@
-import { Button, Card, List, Progress, Space, Tag, Typography } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  List,
+  Progress,
+  Space,
+  Tag,
+  theme,
+  Typography,
+} from "antd";
 
 import type { SynthesisProps } from "@ai-ui/core";
 
@@ -22,6 +31,7 @@ export function Synthesis({
   showConfidence = true,
   variant: _variant = "aggregated",
 }: Readonly<SynthesisProps>) {
+  const { token } = theme.useToken();
   return (
     <Card
       size="small"
@@ -75,10 +85,10 @@ export function Synthesis({
                     style={{ width: 80 }}
                     strokeColor={
                       insight.confidence >= 0.8
-                        ? "#52c41a"
+                        ? token.colorSuccess
                         : insight.confidence >= 0.5
-                          ? "#faad14"
-                          : "#ff4d4f"
+                          ? token.colorWarning
+                          : token.colorError
                     }
                   />
                 ) : null}
@@ -120,7 +130,7 @@ export function Synthesis({
                 key={src.id}
                 style={{
                   padding: "4px 8px",
-                  background: "#fafafa",
+                  background: token.colorBgLayout,
                   borderRadius: 4,
                   cursor: onSourceClick ? "pointer" : undefined,
                 }}

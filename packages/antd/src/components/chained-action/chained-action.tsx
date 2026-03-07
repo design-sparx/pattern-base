@@ -4,7 +4,7 @@ import {
   CloseCircleOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Steps, Typography } from "antd";
+import { Button, Card, Steps, theme, Typography } from "antd";
 
 import type { ChainedActionProps } from "@ai-ui/core";
 
@@ -17,13 +17,6 @@ const statusToSteps: Record<string, "wait" | "process" | "finish" | "error"> = {
   error: "error",
 };
 
-const statusIcon: Record<string, React.ReactNode> = {
-  idle: <ClockCircleOutlined />,
-  active: <LoadingOutlined />,
-  completed: <CheckCircleOutlined style={{ color: "#52c41a" }} />,
-  error: <CloseCircleOutlined style={{ color: "#ff4d4f" }} />,
-};
-
 export function ChainedAction({
   steps,
   onExecute,
@@ -31,6 +24,14 @@ export function ChainedAction({
   isExecuting = false,
   title,
 }: Readonly<ChainedActionProps>) {
+  const { token } = theme.useToken();
+  const statusIcon: Record<string, React.ReactNode> = {
+    idle: <ClockCircleOutlined />,
+    active: <LoadingOutlined />,
+    completed: <CheckCircleOutlined style={{ color: token.colorSuccess }} />,
+    error: <CloseCircleOutlined style={{ color: token.colorError }} />,
+  };
+
   return (
     <Card size="small">
       {title ? (

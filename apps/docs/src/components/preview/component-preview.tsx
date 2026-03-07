@@ -12,6 +12,7 @@ import {
   Popover,
   SegmentedControl,
   Tooltip,
+  useMantineColorScheme,
 } from "@mantine/core";
 import {
   IconCheck,
@@ -22,6 +23,7 @@ import {
   IconDeviceTablet,
   IconDownload,
 } from "@tabler/icons-react";
+import { ConfigProvider, theme as antdTheme } from "antd";
 import { useState } from "react";
 
 import { CodeBlock } from "./code-block";
@@ -52,6 +54,7 @@ interface ComponentPreviewProps {
 export function ComponentPreview({
   patternId,
 }: Readonly<ComponentPreviewProps>) {
+  const { colorScheme } = useMantineColorScheme();
   const [framework, setFramework] = useState("bootstrap");
   const [codeOpen, setCodeOpen] = useState(false);
   const [viewport, setViewport] = useState("desktop");
@@ -180,7 +183,24 @@ export function ComponentPreview({
                 transition: "max-width 200ms ease",
               }}
             >
-              {fw === "bootstrap" ? <entry.bootstrap /> : <entry.antd />}
+              {fw === "bootstrap" ? (
+                <div data-bs-theme={colorScheme}>
+                  <entry.bootstrap />
+                </div>
+              ) : (
+                <div className="antd-preview">
+                  <ConfigProvider
+                    theme={{
+                      algorithm:
+                        colorScheme === "dark"
+                          ? antdTheme.darkAlgorithm
+                          : antdTheme.defaultAlgorithm,
+                    }}
+                  >
+                    <entry.antd />
+                  </ConfigProvider>
+                </div>
+              )}
             </Box>
           </Box>
         </Box>

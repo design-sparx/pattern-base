@@ -1,5 +1,14 @@
 import { DeleteOutlined, LinkOutlined } from "@ant-design/icons";
-import { Button, Card, List, Progress, Space, Tag, Typography } from "antd";
+import {
+  Button,
+  Card,
+  List,
+  Progress,
+  Space,
+  Tag,
+  theme,
+  Typography,
+} from "antd";
 
 import type { ReferencesProps } from "@ai-ui/core";
 
@@ -13,6 +22,7 @@ export function References({
   variant = "list",
   showRelevance = true,
 }: Readonly<ReferencesProps>) {
+  const { token } = theme.useToken();
   return (
     <Card size="small" title={title}>
       <List
@@ -26,7 +36,10 @@ export function References({
               size={6}
               style={{
                 width: "100%",
-                border: variant === "cards" ? "1px solid #f0f0f0" : "none",
+                border:
+                  variant === "cards"
+                    ? `1px solid ${token.colorBorderSecondary}`
+                    : "none",
                 borderRadius: variant === "cards" ? 8 : 0,
                 padding: variant === "cards" ? 12 : 0,
                 background: reference.selected

@@ -35,7 +35,7 @@ export function Nudges({
           <Alert
             key={n.id}
             type={typeMap[n.type ?? "tip"] ?? "info"}
-            closable={!!onDismiss}
+            closable={Boolean(onDismiss)}
             onClose={() => onDismiss?.(n.id)}
             message={
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>

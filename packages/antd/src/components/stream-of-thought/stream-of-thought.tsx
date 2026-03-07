@@ -1,4 +1,4 @@
-import { Badge, Collapse, Space, Spin, Tag, Typography } from "antd";
+import { Badge, Collapse, Space, Spin, Tag, theme, Typography } from "antd";
 
 import type { StreamOfThoughtProps } from "@ai-ui/core";
 
@@ -16,6 +16,7 @@ export function StreamOfThought({
   isStreaming = false,
   collapsible = true,
 }: StreamOfThoughtProps) {
+  const { token } = theme.useToken();
   const items = steps.map((step, index) => {
     const config = STEP_CONFIG[step.type] ?? {
       icon: "\u2022",
@@ -44,7 +45,7 @@ export function StreamOfThought({
           {step.metadata && Object.keys(step.metadata).length > 0 ? (
             <div
               style={{
-                borderTop: "1px solid #f0f0f0",
+                borderTop: `1px solid ${token.colorBorderSecondary}`,
                 paddingTop: 8,
                 marginTop: 8,
               }}
@@ -52,7 +53,7 @@ export function StreamOfThought({
               <Text strong style={{ fontSize: 12 }}>
                 Metadata:
               </Text>
-              <pre style={{ fontSize: 12, color: "#999" }}>
+              <pre style={{ fontSize: 12, color: token.colorTextTertiary }}>
                 {JSON.stringify(step.metadata, null, 2)}
               </pre>
             </div>
@@ -87,7 +88,7 @@ export function StreamOfThought({
               <div
                 key={step.id}
                 style={{
-                  border: "1px solid #f0f0f0",
+                  border: `1px solid ${token.colorBorderSecondary}`,
                   borderRadius: 8,
                   padding: 12,
                 }}
@@ -95,7 +96,7 @@ export function StreamOfThought({
                 <Space style={{ marginBottom: 4 }}>
                   <Badge
                     count={index + 1}
-                    style={{ backgroundColor: "#6b7280" }}
+                    style={{ backgroundColor: token.colorTextSecondary }}
                   />
                   <span>{config.icon}</span>
                   <Text strong style={{ textTransform: "capitalize" as const }}>

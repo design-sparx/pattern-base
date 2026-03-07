@@ -58,7 +58,7 @@ export function Citation({ citation }: CitationProps) {
 
         <Collapse in={expanded}>
           <div>
-            <blockquote className="border-start border-3 border-primary bg-light mb-0 p-3">
+            <blockquote className="border-start border-3 border-primary bg-body-secondary mb-0 p-3">
               <p className="small fst-italic mb-0">&ldquo;{snippet}&rdquo;</p>
             </blockquote>
           </div>

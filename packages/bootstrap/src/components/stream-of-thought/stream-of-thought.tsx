@@ -4,10 +4,10 @@ import { Accordion, Badge, Spinner, Stack } from "react-bootstrap";
 import type { StreamOfThoughtProps } from "@ai-ui/core";
 
 const STEP_CONFIG: Record<string, { icon: string; color: string }> = {
-  thinking: { icon: "\uD83D\uDCAD", color: "#8b5cf6" },
-  action: { icon: "\u26A1", color: "#3b82f6" },
-  tool_call: { icon: "\uD83D\uDD27", color: "#f59e0b" },
-  result: { icon: "\u2705", color: "#10b981" },
+  thinking: { icon: "\uD83D\uDCAD", color: "var(--bs-purple)" },
+  action: { icon: "\u26A1", color: "var(--bs-primary)" },
+  tool_call: { icon: "\uD83D\uDD27", color: "var(--bs-warning)" },
+  result: { icon: "\u2705", color: "var(--bs-success)" },
 };
 
 export function StreamOfThought({
@@ -37,7 +37,7 @@ export function StreamOfThought({
           {steps.map((step, index) => {
             const config = STEP_CONFIG[step.type] ?? {
               icon: "\u2022",
-              color: "#6b7280",
+              color: "var(--bs-secondary-color)",
             };
             return (
               <Accordion.Item key={step.id} eventKey={step.id}>
@@ -86,7 +86,7 @@ export function StreamOfThought({
           {steps.map((step, index) => {
             const config = STEP_CONFIG[step.type] ?? {
               icon: "\u2022",
-              color: "#6b7280",
+              color: "var(--bs-secondary-color)",
             };
             return (
               <div key={step.id} className="rounded border p-2">

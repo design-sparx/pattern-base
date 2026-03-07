@@ -49,7 +49,7 @@ export function Footprints({
             {visible.map((e) => (
               <ListGroup.Item
                 key={e.id}
-                action={!!onEntryClick}
+                action={Boolean(onEntryClick)}
                 onClick={() => onEntryClick?.(e.id)}
               >
                 <div className="d-flex justify-content-between">

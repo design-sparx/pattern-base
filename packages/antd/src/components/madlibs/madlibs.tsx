@@ -1,4 +1,13 @@
-import { Button, Card, Input, Select, Space, Spin, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Input,
+  Select,
+  Space,
+  Spin,
+  theme,
+  Typography,
+} from "antd";
 
 import type { MadlibsProps } from "@ai-ui/core";
 
@@ -17,6 +26,7 @@ export function Madlibs({
   showPreview = false,
   variant: _variant = "form",
 }: Readonly<MadlibsProps>) {
+  const { token } = theme.useToken();
   const filledTemplate = variables.reduce((acc, v) => {
     const val = values[v.id] ?? v.defaultValue ?? `{{${v.label}}}`;
     return acc.replace(new RegExp(`\\{\\{${v.id}\\}\\}`, "g"), val);
@@ -81,9 +91,9 @@ export function Madlibs({
           style={{
             marginTop: 12,
             padding: 8,
-            background: "#fafafa",
+            background: token.colorBgLayout,
             borderRadius: 6,
-            border: "1px dashed #d9d9d9",
+            border: `1px dashed ${token.colorBorder}`,
           }}
         >
           <Text

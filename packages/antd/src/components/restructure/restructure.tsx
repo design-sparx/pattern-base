@@ -1,4 +1,4 @@
-import { Button, Card, Space, Spin, Typography } from "antd";
+import { Button, Card, Space, Spin, theme, Typography } from "antd";
 
 import type { RestructureProps } from "@ai-ui/core";
 
@@ -14,6 +14,7 @@ export function Restructure({
   title,
   variant = "buttons",
 }: Readonly<RestructureProps>) {
+  const { token } = theme.useToken();
   const displayContent = restructuredContent ?? content;
 
   if (variant === "presets") {
@@ -25,9 +26,9 @@ export function Restructure({
             style={{
               marginBottom: 12,
               padding: 8,
-              background: "#f6ffed",
+              background: token.colorSuccessBg,
               borderRadius: 6,
-              border: "1px solid #b7eb8f",
+              border: `1px solid ${token.colorSuccessBorder}`,
             }}
           >
             <Text type="secondary" style={{ fontSize: 11 }}>

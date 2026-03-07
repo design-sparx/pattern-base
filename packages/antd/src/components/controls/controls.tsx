@@ -1,4 +1,4 @@
-import { Card, List, Space, Switch, Tag, Typography } from "antd";
+import { Card, List, Space, Switch, Tag, theme, Typography } from "antd";
 
 import type { ControlsProps } from "@ai-ui/core";
 
@@ -17,6 +17,7 @@ export function Controls({
   variant = "list",
   showStatus = true,
 }: Readonly<ControlsProps>) {
+  const { token } = theme.useToken();
   return (
     <Card title={title} size="small">
       <List
@@ -30,7 +31,10 @@ export function Controls({
               size={4}
               style={{
                 width: "100%",
-                border: variant === "cards" ? "1px solid #f0f0f0" : "none",
+                border:
+                  variant === "cards"
+                    ? `1px solid ${token.colorBorderSecondary}`
+                    : "none",
                 borderRadius: variant === "cards" ? 8 : 0,
                 padding: variant === "cards" ? 12 : 0,
               }}

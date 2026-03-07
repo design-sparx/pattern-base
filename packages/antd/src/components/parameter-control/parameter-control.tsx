@@ -1,5 +1,13 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Select, Slider, Space, Switch, Tooltip, Typography } from "antd";
+import {
+  Select,
+  Slider,
+  Space,
+  Switch,
+  theme,
+  Tooltip,
+  Typography,
+} from "antd";
 
 import type { ParameterControlProps } from "@ai-ui/core";
 
@@ -11,6 +19,7 @@ export function ParameterControl({
   title = "Parameters",
   layout = "vertical",
 }: ParameterControlProps) {
+  const { token } = theme.useToken();
   return (
     <Space direction="vertical" style={{ width: "100%" }} size="large">
       {title ? (
@@ -37,7 +46,9 @@ export function ParameterControl({
               <Text strong>{param.label}</Text>
               {param.description ? (
                 <Tooltip title={param.description}>
-                  <InfoCircleOutlined style={{ color: "#999" }} />
+                  <InfoCircleOutlined
+                    style={{ color: token.colorTextSecondary }}
+                  />
                 </Tooltip>
               ) : null}
             </Space>

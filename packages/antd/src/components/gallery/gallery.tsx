@@ -1,4 +1,4 @@
-import { Button, Card, Col, Empty, Row, Spin, Typography } from "antd";
+import { Button, Card, Col, Empty, Row, Spin, theme, Typography } from "antd";
 
 import type { GalleryProps } from "@ai-ui/core";
 
@@ -13,6 +13,7 @@ export function Gallery({
   loading = false,
   emptyMessage = "No items to display",
 }: Readonly<GalleryProps>) {
+  const { token } = theme.useToken();
   if (items.length === 0 && !loading) {
     return <Empty description={emptyMessage} />;
   }
@@ -27,7 +28,7 @@ export function Gallery({
               onClick={() => onSelect?.(item)}
               style={{
                 height: "100%",
-                borderColor: item.selected ? "#1677ff" : undefined,
+                borderColor: item.selected ? token.colorPrimary : undefined,
                 borderWidth: item.selected ? 2 : undefined,
               }}
               cover={

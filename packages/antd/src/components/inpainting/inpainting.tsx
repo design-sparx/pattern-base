@@ -1,5 +1,5 @@
-import { Button, Card, Input, Space, Spin, Tag, Typography } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
+import { Button, Card, Input, Space, Spin, Tag, Typography } from "antd";
 
 import type { InpaintingProps } from "@ai-ui/core";
 

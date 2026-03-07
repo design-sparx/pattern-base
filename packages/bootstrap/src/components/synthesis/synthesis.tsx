@@ -109,7 +109,7 @@ export function Synthesis({
             {sources.map((src) => (
               <div
                 key={src.id}
-                className="bg-light mb-1 rounded px-2 py-1"
+                className="bg-body-secondary mb-1 rounded px-2 py-1"
                 style={{ cursor: onSourceClick ? "pointer" : undefined }}
                 role={onSourceClick ? "button" : undefined}
                 tabIndex={onSourceClick ? 0 : undefined}

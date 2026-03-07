@@ -1,4 +1,4 @@
-import { Card, Space, Tag, Typography } from "antd";
+import { Card, Space, Tag, theme, Typography } from "antd";
 
 import type { ColorProps } from "@ai-ui/core";
 
@@ -12,6 +12,7 @@ export function Color({
   showLabels = true,
   variant = "swatches",
 }: Readonly<ColorProps>) {
+  const { token } = theme.useToken();
   const renderSwatch = (option: {
     id: string;
     label: string;
@@ -29,7 +30,9 @@ export function Color({
           width: variant === "chips" ? 22 : 28,
           height: variant === "chips" ? 22 : 28,
           borderRadius: "50%",
-          border: selected ? "2px solid #111" : "1px solid #d9d9d9",
+          border: selected
+            ? `2px solid ${token.colorText}`
+            : `1px solid ${token.colorBorder}`,
           backgroundColor: option.value,
           cursor: onSelectColor ? "pointer" : "default",
         }}

@@ -1,5 +1,5 @@
 import { DeleteOutlined, InboxOutlined } from "@ant-design/icons";
-import { Button, Progress, Tag, Typography, Upload } from "antd";
+import { Button, Progress, Tag, theme, Typography, Upload } from "antd";
 
 import type { AttachmentsProps } from "@ai-ui/core";
 
@@ -20,6 +20,7 @@ export function Attachments({
   showPreview = false,
   variant = "full",
 }: Readonly<AttachmentsProps>) {
+  const { token } = theme.useToken();
   const canAdd = !maxFiles || attachments.length < maxFiles;
 
   return (
@@ -51,7 +52,7 @@ export function Attachments({
             gap: 8,
             marginBottom: 8,
             padding: 8,
-            border: "1px solid #d9d9d9",
+            border: `1px solid ${token.colorBorder}`,
             borderRadius: 6,
           }}
         >

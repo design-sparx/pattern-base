@@ -1,4 +1,4 @@
-import { Button, Card, Dropdown, Space, Spin, Typography } from "antd";
+import { Button, Card, Dropdown, Space, Spin, theme, Typography } from "antd";
 
 import type { TransformProps } from "@ai-ui/core";
 
@@ -13,6 +13,7 @@ export function Transform({
   title,
   variant = "buttons",
 }: Readonly<TransformProps>) {
+  const { token } = theme.useToken();
   const displayContent = transformedContent ?? content;
 
   if (variant === "dropdown") {
@@ -59,7 +60,7 @@ export function Transform({
         ) : null}
         <div
           style={{
-            border: "1px solid #d9d9d9",
+            border: `1px solid ${token.colorBorder}`,
             borderRadius: 6,
             padding: 8,
             marginBottom: 8,

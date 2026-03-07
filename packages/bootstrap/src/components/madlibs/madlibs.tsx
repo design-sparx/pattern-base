@@ -70,7 +70,7 @@ export function Madlibs({
           </Form.Group>
         ))}
         {showPreview ? (
-          <div className="bg-light mb-3 rounded border border-dashed p-2">
+          <div className="bg-body-secondary mb-3 rounded border p-2">
             <small className="text-muted d-block mb-1">Preview</small>
             <p className="small mb-0">{filledTemplate}</p>
           </div>

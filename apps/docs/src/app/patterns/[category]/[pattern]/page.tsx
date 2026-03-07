@@ -188,7 +188,7 @@ export default async function PatternPage({
       </Box>
 
       {/* Variants */}
-      {explanation?.variants.length ? (
+      {explanation.variants.length ? (
         <Box id="variants" mt={36} style={{ scrollMarginTop: 80 }}>
           <Group gap="xs" mb="md">
             <ThemeIcon variant="light" color={color} size="sm">
@@ -212,7 +212,7 @@ export default async function PatternPage({
       ) : null}
 
       {/* Use Cases */}
-      {explanation?.useCases.length ? (
+      {explanation.useCases.length ? (
         <Box id="use-cases" mt={36} style={{ scrollMarginTop: 80 }}>
           <Group gap="xs" mb="md">
             <ThemeIcon variant="light" color={color} size="sm">
@@ -240,7 +240,7 @@ export default async function PatternPage({
       ) : null}
 
       {/* Best Practices */}
-      {explanation?.bestPractices.length ? (
+      {explanation.bestPractices.length ? (
         <Box id="best-practices" mt={36} style={{ scrollMarginTop: 80 }}>
           <Group gap="xs" mb="md">
             <ThemeIcon variant="light" color={color} size="sm">
@@ -268,7 +268,7 @@ export default async function PatternPage({
       ) : null}
 
       {/* Related Patterns */}
-      {explanation?.relatedPatterns.length ? (
+      {explanation.relatedPatterns.length ? (
         <Box id="related" mt={36} style={{ scrollMarginTop: 80 }}>
           <Group gap="xs" mb="md">
             <ThemeIcon variant="light" color={color} size="sm">

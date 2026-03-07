@@ -5,19 +5,11 @@ import {
   LoadingOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Space, Steps, Typography } from "antd";
+import { Button, Card, Space, Steps, theme, Typography } from "antd";
 
 import type { ActionPlanProps, ActionPlanStep } from "@ai-ui/core";
 
 const { Text } = Typography;
-
-const statusIcon: Record<ActionPlanStep["status"], React.ReactNode> = {
-  pending: <ClockCircleOutlined />,
-  "in-progress": <LoadingOutlined />,
-  completed: <CheckCircleOutlined style={{ color: "#52c41a" }} />,
-  failed: <CloseCircleOutlined style={{ color: "#ff4d4f" }} />,
-  skipped: <MinusCircleOutlined style={{ color: "#8c8c8c" }} />,
-};
 
 const statusToSteps: Record<
   ActionPlanStep["status"],
@@ -38,6 +30,15 @@ export function ActionPlan({
   onStepClick,
   showEstimates = false,
 }: Readonly<ActionPlanProps>) {
+  const { token } = theme.useToken();
+  const statusIcon: Record<ActionPlanStep["status"], React.ReactNode> = {
+    pending: <ClockCircleOutlined />,
+    "in-progress": <LoadingOutlined />,
+    completed: <CheckCircleOutlined style={{ color: token.colorSuccess }} />,
+    failed: <CloseCircleOutlined style={{ color: token.colorError }} />,
+    skipped: <MinusCircleOutlined style={{ color: token.colorTextTertiary }} />,
+  };
+
   return (
     <Card size="small">
       {title ? (

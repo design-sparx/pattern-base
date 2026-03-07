@@ -29,7 +29,7 @@ export function Nudges({
         <Alert
           key={n.id}
           variant={typeVariant[n.type ?? "tip"] ?? "info"}
-          dismissible={!!onDismiss}
+          dismissible={Boolean(onDismiss)}
           onClose={() => onDismiss?.(n.id)}
           className="mb-2"
         >

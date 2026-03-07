@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";
-import { Button, Card, Input, List, Space, Tag, Typography } from "antd";
+import { Button, Card, Input, List, Space, Tag, theme, Typography } from "antd";
 import { useState } from "react";
 
 import type { MemoryProps } from "@ai-ui/core";
@@ -14,6 +14,7 @@ export function Memory({
   variant = "list",
   showTimestamps = true,
 }: Readonly<MemoryProps>) {
+  const { token } = theme.useToken();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draftValue, setDraftValue] = useState("");
 
@@ -32,7 +33,10 @@ export function Memory({
                 size={6}
                 style={{
                   width: "100%",
-                  border: variant === "cards" ? "1px solid #f0f0f0" : "none",
+                  border:
+                    variant === "cards"
+                      ? `1px solid ${token.colorBorderSecondary}`
+                      : "none",
                   borderRadius: variant === "cards" ? 8 : 0,
                   padding: variant === "cards" ? 12 : 0,
                 }}

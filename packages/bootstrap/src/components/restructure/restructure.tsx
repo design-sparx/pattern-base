@@ -22,7 +22,10 @@ export function Restructure({
         {showDiff && restructuredContent ? (
           <div
             className="mb-3 rounded p-2"
-            style={{ background: "#f0fff4", border: "1px solid #c6f6d5" }}
+            style={{
+              background: "var(--bs-success-bg-subtle)",
+              border: "1px solid var(--bs-success-border-subtle)",
+            }}
           >
             <small className="text-muted d-block">Original:</small>
             <p

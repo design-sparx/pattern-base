@@ -1,5 +1,5 @@
-import { Button, Card, Space, Tag, Typography } from "antd";
 import { CopyOutlined, SendOutlined } from "@ant-design/icons";
+import { Button, Card, Space, Tag, theme, Typography } from "antd";
 
 import type { DescribeProps } from "@ai-ui/core";
 
@@ -16,6 +16,7 @@ export function Describe({
   title,
   variant = "panel",
 }: Readonly<DescribeProps>) {
+  const { token } = theme.useToken();
   if (variant === "inline") {
     return (
       <div>
@@ -27,7 +28,7 @@ export function Describe({
         <Paragraph
           style={{
             fontSize: 13,
-            background: "#fafafa",
+            background: token.colorBgLayout,
             padding: 8,
             borderRadius: 6,
           }}
@@ -39,9 +40,20 @@ export function Describe({
             <Text type="secondary" style={{ fontSize: 12 }}>
               Inferred prompt:
             </Text>
-            <Paragraph code style={{ fontSize: 12, margin: "4px 0 0" }}>
+            <pre
+              style={{
+                fontSize: 12,
+                margin: "4px 0 0",
+                padding: "8px 12px",
+                background: token.colorFillTertiary,
+                borderRadius: token.borderRadiusSM,
+                fontFamily: "monospace",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-all",
+              }}
+            >
               {inferredPrompt}
-            </Paragraph>
+            </pre>
           </div>
         ) : null}
         <Space wrap size={4}>
@@ -73,7 +85,9 @@ export function Describe({
               size="small"
               type="primary"
               icon={<SendOutlined />}
-              onClick={() => onReuse(inferredPrompt)}
+              onClick={() => {
+                onReuse(inferredPrompt);
+              }}
             >
               Reuse Prompt
             </Button>
@@ -90,9 +104,21 @@ export function Describe({
           >
             Inferred Prompt
           </Text>
-          <Paragraph code style={{ fontSize: 12, margin: 0 }}>
+          <pre
+            style={{
+              fontSize: 12,
+              margin: 0,
+              padding: "8px 12px",
+              background: token.colorFillTertiary,
+              borderRadius: token.borderRadiusSM,
+              color: token.colorText,
+              fontFamily: "monospace",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-all",
+            }}
+          >
             {inferredPrompt}
-          </Paragraph>
+          </pre>
         </div>
       ) : null}
       <Space wrap size={4}>

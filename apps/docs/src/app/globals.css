@@ -78,3 +78,23 @@ body {
     transparent 1px
   );
 }
+
+/* Reset Bootstrap's opinionated HTML tag styles that bleed into Ant Design previews.
+   Bootstrap is loaded globally for the Bootstrap component previews, but its default
+   styles (e.g. code → pink, kbd → inverted, mark → yellow) must not affect antd components. */
+.antd-preview code,
+.antd-preview pre {
+  color: inherit;
+}
+
+.antd-preview kbd {
+  color: inherit;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.antd-preview mark {
+  background-color: transparent;
+  color: inherit;
+}

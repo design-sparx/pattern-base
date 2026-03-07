@@ -1,4 +1,4 @@
-import { Button, Space, Typography } from "antd";
+import { Button, Space, theme, Typography } from "antd";
 
 import type { InlineActionProps } from "@ai-ui/core";
 
@@ -20,6 +20,7 @@ export function InlineAction({
   variant = "toolbar",
   size = "small",
 }: Readonly<InlineActionProps>) {
+  const { token } = theme.useToken();
   const btnSize = size === "small" ? "small" : "middle";
 
   if (variant === "contextual" || variant === "floating") {
@@ -61,7 +62,7 @@ export function InlineAction({
         display: "flex",
         flexWrap: "wrap",
         gap: 4,
-        border: "1px solid #d9d9d9",
+        border: `1px solid ${token.colorBorder}`,
         borderRadius: 6,
         padding: 8,
       }}

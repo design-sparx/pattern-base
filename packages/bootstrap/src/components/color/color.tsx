@@ -27,7 +27,9 @@ export function Color({
           width: variant === "chips" ? 22 : 28,
           height: variant === "chips" ? 22 : 28,
           borderRadius: "50%",
-          border: selected ? "2px solid #111" : "1px solid #ced4da",
+          border: selected
+            ? "2px solid var(--bs-emphasis-color)"
+            : "1px solid var(--bs-border-color)",
           backgroundColor: option.value,
           cursor: onSelectColor ? "pointer" : "default",
         }}

@@ -17,13 +17,15 @@ export function Describe({
     return (
       <div>
         {title ? <h6>{title}</h6> : null}
-        <div className="bg-light mb-2 rounded p-2">
+        <div className="bg-body-secondary mb-2 rounded p-2">
           <p className="small mb-0">{output}</p>
         </div>
         {inferredPrompt ? (
           <div className="mb-2">
             <small className="text-muted d-block">Inferred prompt:</small>
-            <code className="small">{inferredPrompt}</code>
+            <code className="small" style={{ color: "var(--bs-body-color)" }}>
+              {inferredPrompt}
+            </code>
           </div>
         ) : null}
         <div className="d-flex flex-wrap gap-1">
@@ -54,7 +56,9 @@ export function Describe({
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => onReuse(inferredPrompt)}
+                onClick={() => {
+                  onReuse(inferredPrompt);
+                }}
               >
                 Reuse Prompt
               </Button>
@@ -65,7 +69,10 @@ export function Describe({
         {inferredPrompt ? (
           <div className="mb-3">
             <small className="text-muted d-block mb-1">Inferred Prompt</small>
-            <code className="small d-block bg-light rounded p-2">
+            <code
+              className="small d-block bg-body-secondary rounded p-2"
+              style={{ color: "var(--bs-body-color)", fontFamily: "monospace" }}
+            >
               {inferredPrompt}
             </code>
           </div>

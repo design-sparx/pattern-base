@@ -74,7 +74,7 @@ export function ModelManagement({
         {Object.entries(grouped).map(([provider, providerModels]) => (
           <Stack key={provider} gap={0}>
             {groupByProvider ? (
-              <div className="bg-light border-bottom px-3 py-2">
+              <div className="bg-body-secondary border-bottom px-3 py-2">
                 <small className="fw-semibold text-uppercase text-muted">
                   {provider}
                 </small>

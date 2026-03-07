@@ -1,5 +1,5 @@
 import { LinkOutlined } from "@ant-design/icons";
-import { Badge, Button, Card, Space, Tag, Typography } from "antd";
+import { Badge, Button, Card, Space, Tag, theme, Typography } from "antd";
 import { useState } from "react";
 
 import type {
@@ -11,6 +11,7 @@ import type {
 const { Text, Paragraph } = Typography;
 
 export function Citation({ citation }: CitationProps) {
+  const { token } = theme.useToken();
   const [expanded, setExpanded] = useState(false);
   const { source, url, snippet, relevance = 1 } = citation;
 
@@ -38,7 +39,7 @@ export function Citation({ citation }: CitationProps) {
         >
           <Space direction="vertical" size={2}>
             <Space>
-              <Text strong style={{ color: "#1890ff" }}>
+              <Text strong style={{ color: token.colorPrimary }}>
                 {source}
               </Text>
               <Tag color={getColor(relevance)}>
@@ -71,9 +72,9 @@ export function Citation({ citation }: CitationProps) {
         {expanded ? (
           <div
             style={{
-              borderLeft: "3px solid #1890ff",
+              borderLeft: `3px solid ${token.colorPrimary}`,
               paddingLeft: 12,
-              backgroundColor: "#fafafa",
+              backgroundColor: token.colorBgLayout,
               padding: "8px 12px",
               borderRadius: 4,
             }}
@@ -93,6 +94,7 @@ export function CitationsList({
   title = "Sources",
   maxVisible = 3,
 }: CitationsListProps) {
+  const { token } = theme.useToken();
   const [showAll, setShowAll] = useState(false);
   const display = showAll ? citations : citations.slice(0, maxVisible);
 
@@ -102,7 +104,7 @@ export function CitationsList({
         <Text strong>{title}</Text>
         <Badge
           count={citations.length}
-          style={{ backgroundColor: "#6b7280" }}
+          style={{ backgroundColor: token.colorTextSecondary }}
         />
       </Space>
 
@@ -133,14 +135,15 @@ export function InlineCitation({
   source,
   url,
 }: InlineCitationProps) {
+  const { token } = theme.useToken();
   return (
     <sup>
       <a
         href={url ?? "#"}
         title={source}
         style={{
-          background: "#1890ff",
-          color: "#fff",
+          background: token.colorPrimary,
+          color: token.colorWhite,
           padding: "0 4px",
           borderRadius: 4,
           fontSize: 10,
