@@ -46,6 +46,7 @@ export function SpotlightProvider() {
       searchProps={{
         placeholder: "Search patterns...",
       }}
+      limit={7}
     />
   );
 }
