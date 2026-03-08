@@ -19,16 +19,9 @@ import {
   IconSun,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 export function Header() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const pathname = usePathname();
-
-  const navLinks = [
-    { href: "/patterns", label: "Patterns" },
-    { href: "/pricing", label: "Pricing" },
-  ];
 
   return (
     <Group h="100%" px="md" justify="space-between">
@@ -66,40 +59,6 @@ export function Header() {
             v0.1.0
           </Badge>
         </Anchor>
-
-        <Group
-          ml="sm"
-          gap={0}
-          style={{
-            borderLeft: "1px solid var(--mantine-color-default-border)",
-            paddingLeft: 12,
-          }}
-        >
-          {navLinks.map((link) => {
-            const isActive = pathname.startsWith(link.href);
-            return (
-              <Anchor
-                key={link.href}
-                component={Link}
-                href={link.href}
-                underline="never"
-                fz="sm"
-                fw={isActive ? 600 : 400}
-                px={12}
-                py={6}
-                style={{
-                  borderRadius: "var(--mantine-radius-sm)",
-                  color: isActive
-                    ? "var(--mantine-color-violet-6)"
-                    : "var(--mantine-color-dimmed)",
-                  transition: "color 0.15s ease",
-                }}
-              >
-                {link.label}
-              </Anchor>
-            );
-          })}
-        </Group>
       </Group>
 
       <Group gap={8}>
