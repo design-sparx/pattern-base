@@ -4,8 +4,8 @@ import { AppShell, Box, NavLink, ScrollArea, Text } from "@mantine/core";
 import {
   IconAdjustments,
   IconCompass,
-  IconCreditCard,
   IconEye,
+  IconInfoCircle,
   IconKeyboard,
   IconLayoutGrid,
   IconShield,
@@ -89,10 +89,10 @@ export function Sidebar() {
         >
           <NavLink
             component={Link}
-            href="/pricing"
-            label="Pricing"
-            leftSection={<IconCreditCard size={16} stroke={1.5} />}
-            active={pathname === "/pricing"}
+            href="/about"
+            label="About"
+            leftSection={<IconInfoCircle size={16} stroke={1.5} />}
+            active={pathname === "/about"}
             variant="light"
             color="violet"
           />
