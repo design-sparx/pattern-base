@@ -23,15 +23,11 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
       footer={{ height: 60 }}
       padding={0}
     >
-      <AppShell.Header
-        style={{
-          borderBottom: "1px solid var(--mantine-color-default-border)",
-        }}
-      >
+      <AppShell.Header>
         <Header />
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">
+      <AppShell.Navbar>
         <Sidebar />
       </AppShell.Navbar>
 
