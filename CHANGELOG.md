@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 (2026-03-08)
+
+- feat: added layout to patterns ([a9b48ad](https://github.com/kelvink96/ai-vory/commit/a9b48ad))
+- feat: added mantine AI components ([ef084a4](https://github.com/kelvink96/ai-vory/commit/ef084a4))
+- feat: remove redundant header links ([2e151e3](https://github.com/kelvink96/ai-vory/commit/2e151e3))
+- feat: removed pricing page and added about page ([0ea806a](https://github.com/kelvink96/ai-vory/commit/0ea806a))
+- feat: updated landing page ([a2c1b68](https://github.com/kelvink96/ai-vory/commit/a2c1b68))
+- feat: updated nested sidebar links, chore: resolved eslint issues ([6f0d156](https://github.com/kelvink96/ai-vory/commit/6f0d156))
+- feat: updated our fonts ([8f3293f](https://github.com/kelvink96/ai-vory/commit/8f3293f))
+- chore: renamed eslint from .eslintrc.js to eslintrc.cjs ([3178bd5](https://github.com/kelvink96/ai-vory/commit/3178bd5))
+- fix: resolve tsup watch mode settings ([e40c357](https://github.com/kelvink96/ai-vory/commit/e40c357))
+
 ## 0.2.0 (2026-03-07)
 
 - chore: add components, utilities, and data for pattern previews and demos. ([8ac1ad9](https://github.com/kelvink96/ai-vory/commit/8ac1ad9))

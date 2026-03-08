@@ -1,6 +1,6 @@
 {
   "name": "@ai-ui/core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared types, hooks, and utilities for AI UI components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
