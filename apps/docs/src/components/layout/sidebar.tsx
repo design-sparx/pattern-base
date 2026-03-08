@@ -50,7 +50,7 @@ export function Sidebar() {
           return (
             <NavLink
               key={cat.id}
-              label={`${cat.name} (${catPatterns.length})`}
+              label={`${cat.name} (${String(catPatterns.length)})`}
               leftSection={<Icon size={16} stroke={1.5} />}
               active={isCatActive}
               defaultOpened={isOpen}
@@ -60,17 +60,24 @@ export function Sidebar() {
               childrenOffset={28}
               mb={2}
             >
-              {catPatterns.map((p) => (
-                <NavLink
-                  key={p.id}
-                  component={Link}
-                  href={`/patterns/${cat.id}/${p.slug}`}
-                  label={p.name}
-                  active={pathname === `/patterns/${cat.id}/${p.slug}`}
-                  variant="light"
-                  color="violet"
-                />
-              ))}
+              <Box
+                style={{
+                  borderLeft: "1.5px solid var(--mantine-color-default-border)",
+                  marginLeft: 4,
+                }}
+              >
+                {catPatterns.map((p) => (
+                  <NavLink
+                    key={p.id}
+                    component={Link}
+                    href={`/patterns/${cat.id}/${p.slug}`}
+                    label={p.name}
+                    active={pathname === `/patterns/${cat.id}/${p.slug}`}
+                    variant="light"
+                    color="violet"
+                  />
+                ))}
+              </Box>
             </NavLink>
           );
         })}

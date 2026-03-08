@@ -67,6 +67,32 @@ export function ComponentPreview({
   const snippets = codeSnippets[patternId];
   const fw = framework;
   const activeViewport = viewports.find((v) => v.value === viewport);
+  let previewContent: React.ReactNode;
+
+  if (fw === "bootstrap") {
+    previewContent = (
+      <div data-bs-theme={colorScheme}>
+        <entry.bootstrap />
+      </div>
+    );
+  } else if (fw === "antd") {
+    previewContent = (
+      <div className="antd-preview">
+        <ConfigProvider
+          theme={{
+            algorithm:
+              colorScheme === "dark"
+                ? antdTheme.darkAlgorithm
+                : antdTheme.defaultAlgorithm,
+          }}
+        >
+          <entry.antd />
+        </ConfigProvider>
+      </div>
+    );
+  } else {
+    previewContent = <entry.mantine />;
+  }
 
   return (
     <Box>
@@ -190,26 +216,7 @@ export function ComponentPreview({
                 transition: "max-width 200ms ease",
               }}
             >
-              {fw === "bootstrap" ? (
-                <div data-bs-theme={colorScheme}>
-                  <entry.bootstrap />
-                </div>
-              ) : fw === "antd" ? (
-                <div className="antd-preview">
-                  <ConfigProvider
-                    theme={{
-                      algorithm:
-                        colorScheme === "dark"
-                          ? antdTheme.darkAlgorithm
-                          : antdTheme.defaultAlgorithm,
-                    }}
-                  >
-                    <entry.antd />
-                  </ConfigProvider>
-                </div>
-              ) : (
-                <entry.mantine />
-              )}
+              {previewContent}
             </Box>
           </Box>
         </Box>

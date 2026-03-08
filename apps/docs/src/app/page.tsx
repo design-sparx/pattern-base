@@ -48,7 +48,7 @@ const features = [
   {
     icon: IconSparkles,
     color: "violet",
-    count: `${patterns.length}`,
+    count: String(patterns.length),
     title: "AI UX Patterns",
     description:
       "Battle-tested interaction patterns sourced from real product research and the shapeof.ai library.",

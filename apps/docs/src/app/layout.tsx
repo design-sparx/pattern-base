@@ -1,6 +1,10 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono as geistMonoFont,
+  Space_Grotesk as spaceGroteskFont,
+} from "next/font/google";
 
 import { theme } from "./theme";
 
@@ -16,13 +20,13 @@ const geist = Geist({
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
+const geistMono = geistMonoFont({
   subsets: ["latin"],
   variable: "--font-geist-mono",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const spaceGrotesk = spaceGroteskFont({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
   display: "swap",

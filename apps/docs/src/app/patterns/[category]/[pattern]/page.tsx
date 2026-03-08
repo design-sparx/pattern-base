@@ -108,7 +108,7 @@ export default async function PatternPage({
     currentIndex < patterns.length - 1 ? patterns[currentIndex + 1] : null;
 
   const hasProps = pattern.id in propsData;
-  const explanation = patternExplanations[pattern.id];
+  const explanation = patternExplanations[pattern.id] ?? null;
   const tocItems = buildTocItems(explanation, hasProps);
 
   return (
@@ -174,13 +174,11 @@ export default async function PatternPage({
       </Box>
 
       {/* Overview */}
-      {explanation ? (
-        <Box id="overview" mb="xl" style={{ scrollMarginTop: 80 }}>
-          <Text fz="md" lh={1.7}>
-            {explanation.overview}
-          </Text>
-        </Box>
-      ) : null}
+      <Box id="overview" mb="xl" style={{ scrollMarginTop: 80 }}>
+        <Text fz="md" lh={1.7}>
+          {explanation.overview}
+        </Text>
+      </Box>
 
       {/* Preview */}
       <Box id="preview" style={{ scrollMarginTop: 80 }}>
