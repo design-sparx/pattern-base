@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell, NavLink, ScrollArea, Text, Box } from "@mantine/core";
+import { AppShell, Box, NavLink, ScrollArea, Text } from "@mantine/core";
 import {
   IconAdjustments,
   IconCompass,

@@ -79,6 +79,39 @@ body {
   );
 }
 
+/* ── Card hover interactions ─────────────────────────────────────────────── */
+.feature-card,
+.category-card {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.15s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease !important;
+}
+
+.feature-card:hover,
+.category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-mantine-color-scheme="dark"] .feature-card:hover,
+[data-mantine-color-scheme="dark"] .category-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.category-arrow {
+  opacity: 0.35;
+  color: var(--mantine-color-dimmed);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.category-card:hover .category-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
 /* Reset Bootstrap's opinionated HTML tag styles that bleed into Ant Design previews.
    Bootstrap is loaded globally for the Bootstrap component previews, but its default
    styles (e.g. code → pink, kbd → inverted, mark → yellow) must not affect antd components. */

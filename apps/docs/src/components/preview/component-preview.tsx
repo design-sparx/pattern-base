@@ -75,7 +75,9 @@ export function ComponentPreview({
         <SegmentedControl
           size="xs"
           value={framework}
-          onChange={(v) => setFramework(v as "bootstrap" | "antd" | "mantine")}
+          onChange={(v) => {
+            setFramework(v as "bootstrap" | "antd" | "mantine");
+          }}
           data={[
             { label: "Bootstrap", value: "bootstrap" },
             { label: "Ant Design", value: "antd" },

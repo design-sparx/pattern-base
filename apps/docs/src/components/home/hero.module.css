@@ -1,71 +1,228 @@
+/* ── Root ─────────────────────────────────────────────────────────────────── */
 .root {
   position: relative;
   overflow: hidden;
-  padding: 80px var(--mantine-spacing-xl);
-  background: linear-gradient(
-    135deg,
-    var(--mantine-color-violet-0) 0%,
-    var(--mantine-color-grape-0) 50%,
-    var(--mantine-color-indigo-0) 100%
-  );
+  padding: 72px var(--mantine-spacing-xl) 80px;
 }
 
-[data-mantine-color-scheme="dark"] .root {
-  background: linear-gradient(
-    135deg,
-    var(--mantine-color-dark-8) 0%,
-    var(--mantine-color-dark-7) 50%,
-    var(--mantine-color-dark-8) 100%
-  );
+.root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 500px at 0% 60%, rgba(124, 58, 237, 0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 400px 300px at 100% 0%, rgba(168, 85, 247, 0.04) 0%, transparent 100%);
+  pointer-events: none;
 }
 
+[data-mantine-color-scheme="dark"] .root::before {
+  background:
+    radial-gradient(ellipse 600px 500px at 0% 60%, rgba(124, 58, 237, 0.14) 0%, transparent 100%),
+    radial-gradient(ellipse 400px 300px at 100% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 100%);
+}
+
+/* ── Dot grid ─────────────────────────────────────────────────────────────── */
 .dotGrid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(
-    circle,
-    var(--mantine-color-violet-2) 1px,
-    transparent 1px
-  );
-  background-size: 32px 32px;
-  opacity: 0.4;
+  background-image: radial-gradient(circle, var(--mantine-color-violet-2) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 [data-mantine-color-scheme="dark"] .dotGrid {
-  background-image: radial-gradient(
-    circle,
-    var(--mantine-color-dark-4) 1px,
-    transparent 1px
-  );
-  opacity: 0.5;
+  background-image: radial-gradient(circle, var(--mantine-color-dark-4) 1px, transparent 1px);
+  opacity: 0.4;
 }
 
-.content {
+/* ── Orbs ─────────────────────────────────────────────────────────────────── */
+.orb1,
+.orb2 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  animation: driftOrb 12s ease-in-out infinite;
+}
+
+.orb1 {
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  left: -150px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+}
+
+.orb2 {
+  width: 350px;
+  height: 350px;
+  bottom: -100px;
+  right: 10%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
+  animation-delay: -5s;
+  animation-duration: 10s;
+}
+
+@keyframes driftOrb {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(30px, -25px); }
+  66% { transform: translate(-15px, 20px); }
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+.inner {
   position: relative;
-  max-width: 700px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+@media (max-width: 860px) {
+  .inner {
+    grid-template-columns: 1fr;
+  }
+
+  .visual {
+    display: none;
+  }
+}
+
+/* ── Content ──────────────────────────────────────────────────────────────── */
+.content {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-lg);
 }
 
 .title {
-  font-size: 48px;
+  font-size: clamp(34px, 4.5vw, 52px);
   font-weight: 800;
-  line-height: 1.1;
-  background: linear-gradient(
-    135deg,
-    var(--mantine-color-violet-8),
-    var(--mantine-color-grape-6)
-  );
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-family: var(--font-syne, inherit);
+  color: var(--mantine-color-text);
+  margin-top: var(--mantine-spacing-xs);
+}
+
+.subtitle {
+  max-width: 500px;
+}
+
+.titleAccent {
+  background: linear-gradient(135deg, var(--mantine-color-violet-7), var(--mantine-color-grape-5));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-[data-mantine-color-scheme="dark"] .title {
-  background: linear-gradient(
-    135deg,
-    var(--mantine-color-violet-4),
-    var(--mantine-color-grape-4)
-  );
+[data-mantine-color-scheme="dark"] .titleAccent {
+  background: linear-gradient(135deg, var(--mantine-color-violet-4), var(--mantine-color-grape-3));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ── Framework pills ──────────────────────────────────────────────────────── */
+.frameworkPill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: 6px;
+  background: var(--mantine-color-body);
+  transition: border-color 0.18s, transform 0.18s, background 0.18s;
+  cursor: default;
+}
+
+.frameworkPill:hover {
+  border-color: var(--mantine-color-violet-5);
+  transform: translateY(-1px);
+  background: var(--mantine-color-violet-0);
+}
+
+[data-mantine-color-scheme="dark"] .frameworkPill:hover {
+  background: rgba(124, 58, 237, 0.08);
+}
+
+.frameworkDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Visual / right column ────────────────────────────────────────────────── */
+.visual {
+  position: relative;
+  animation: fadeInRight 0.6s 0.25s ease-out forwards;
+  opacity: 0;
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mantine-color-green-5);
+  flex-shrink: 0;
+  animation: livePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(81, 207, 102, 0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(81, 207, 102, 0); }
+}
+
+.visualCard {
+  border-radius: 12px !important;
+  overflow: hidden;
+  animation: floatCard 6s ease-in-out infinite;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .visualCard {
+  box-shadow:
+    0 4px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ── Entry animations ─────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.fadeIn1 {
+  animation: fadeUp 0.55s 0s ease-out forwards;
+  opacity: 0;
+}
+
+.fadeIn2 {
+  animation: fadeUp 0.55s 0.1s ease-out forwards;
+  opacity: 0;
+}
+
+.fadeIn3 {
+  animation: fadeUp 0.55s 0.2s ease-out forwards;
+  opacity: 0;
+}
+
+.fadeIn4 {
+  animation: fadeUp 0.55s 0.3s ease-out forwards;
+  opacity: 0;
 }

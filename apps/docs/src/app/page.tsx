@@ -5,13 +5,17 @@ import {
   Group,
   Paper,
   SimpleGrid,
+  Stack,
   Text,
   ThemeIcon,
   Title,
 } from "@mantine/core";
 import {
   IconAdjustments,
+  IconArrowUpRight,
+  IconCode,
   IconCompass,
+  IconCopy,
   IconEye,
   IconKeyboard,
   IconLayoutGrid,
@@ -23,7 +27,6 @@ import Link from "next/link";
 
 import { Hero } from "@/components/home/hero";
 import { categories, getPatternsByCategory, patterns } from "@/data/patterns";
-import { componentRegistry } from "@/lib/registry";
 
 const categoryIcons: Record<string, React.ElementType> = {
   "prompt-actions": IconKeyboard,
@@ -41,89 +44,89 @@ const categoryColors: Record<string, string> = {
   "trust-builders": "pink",
 };
 
-export default function HomePage() {
-  const SuggestionsPreview = componentRegistry.suggestions.bootstrap;
+const features = [
+  {
+    icon: IconSparkles,
+    color: "violet",
+    count: `${patterns.length}`,
+    title: "AI UX Patterns",
+    description:
+      "Battle-tested interaction patterns sourced from real product research and the shapeof.ai library.",
+  },
+  {
+    icon: IconStack2,
+    color: "teal",
+    count: "3",
+    title: "UI Frameworks",
+    description:
+      "Full implementations for Bootstrap, Ant Design, and Mantine — choose your stack and drop in components.",
+  },
+  {
+    icon: IconCode,
+    color: "blue",
+    count: "100%",
+    title: "TypeScript Coverage",
+    description:
+      "Shared prop interfaces across all packages. Full type safety with strict null checks — no guessing.",
+  },
+  {
+    icon: IconCopy,
+    color: "orange",
+    count: "∞",
+    title: "Copy-Paste Ready",
+    description:
+      "Every pattern ships with a live preview and framework-specific code snippet. See it, ship it.",
+  },
+];
 
+export default function HomePage() {
   return (
     <Box>
       <Hero />
 
-      {/* Live Preview */}
-      <Box px="xl" py="xl" maw={900}>
-        <Text fz="xs" fw={600} c="dimmed" tt="uppercase" mb="sm" lts={1}>
-          Live Preview
-        </Text>
-        <Paper
-          withBorder
-          p="xl"
-          className="dot-grid-bg"
-          style={{ overflow: "hidden" }}
-        >
-          <SuggestionsPreview />
-        </Paper>
-      </Box>
-
-      {/* Stats */}
-      <Box px="xl" pb="xl">
-        <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="md" maw={900}>
-          <Paper withBorder p="md">
-            <Group gap="sm">
-              <ThemeIcon variant="light" color="violet" size="lg">
-                <IconSparkles size={18} />
+      {/* Features */}
+      <Box px="xl" py="xl">
+        <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }} spacing="md">
+          {features.map((f) => (
+            <Paper key={f.title} withBorder p="lg" className="feature-card">
+              <ThemeIcon variant="light" color={f.color} size="lg" mb="xs">
+                <f.icon size={18} />
               </ThemeIcon>
-              <Box>
-                <Text fz="xl" fw={700}>
-                  {patterns.length}
+              <Group gap={6} align="baseline" mb={4}>
+                <Text fz="xl" fw={800} lh={1}>
+                  {f.count}
                 </Text>
-                <Text fz="sm" c="dimmed">
-                  AI UX Patterns
+                <Text fz="sm" fw={600} c="dimmed">
+                  {f.title}
                 </Text>
-              </Box>
-            </Group>
-          </Paper>
-          <Paper withBorder p="md">
-            <Group gap="sm">
-              <ThemeIcon variant="light" color="violet" size="lg">
-                <IconLayoutGrid size={18} />
-              </ThemeIcon>
-              <Box>
-                <Text fz="xl" fw={700}>
-                  {categories.length}
-                </Text>
-                <Text fz="sm" c="dimmed">
-                  Categories
-                </Text>
-              </Box>
-            </Group>
-          </Paper>
-          <Paper withBorder p="md">
-            <Group gap="sm">
-              <ThemeIcon variant="light" color="violet" size="lg">
-                <IconStack2 size={18} />
-              </ThemeIcon>
-              <Box>
-                <Text fz="xl" fw={700}>
-                  2
-                </Text>
-                <Text fz="sm" c="dimmed">
-                  UI Frameworks
-                </Text>
-              </Box>
-            </Group>
-          </Paper>
+              </Group>
+              <Text fz="sm" c="dimmed" lh={1.6}>
+                {f.description}
+              </Text>
+            </Paper>
+          ))}
         </SimpleGrid>
       </Box>
 
       {/* Categories */}
-      <Box px="xl" pb={60}>
-        <Title order={2} mb="md">
-          Categories
-        </Title>
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md" maw={900}>
+      <Box px="xl" pb={80}>
+        <Box mb="lg">
+          <Title order={2} mb={4}>
+            Pattern Categories
+          </Title>
+          <Text c="dimmed" fz="sm">
+            {patterns.length} patterns organized across {categories.length}{" "}
+            purposeful categories.
+          </Text>
+        </Box>
+
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
           {categories.map((cat) => {
             const Icon = categoryIcons[cat.id] ?? IconLayoutGrid;
             const color = categoryColors[cat.id] ?? "violet";
-            const count = getPatternsByCategory(cat.id).length;
+            const catPatterns = getPatternsByCategory(cat.id);
+            const count = catPatterns.length;
+            const examples = catPatterns.slice(0, 3).map((p) => p.name);
 
             return (
               <Paper
@@ -132,26 +135,42 @@ export default function HomePage() {
                 href={`/patterns/${cat.id}`}
                 withBorder
                 p="lg"
+                className="category-card"
                 style={{
                   textDecoration: "none",
                   borderLeft: `3px solid var(--mantine-color-${color}-5)`,
                   cursor: "pointer",
                 }}
               >
-                <Group gap="sm" mb="xs">
-                  <ThemeIcon variant="light" color={color} size="md">
-                    <Icon size={16} />
-                  </ThemeIcon>
-                  <Text fw={600} style={{ color: "var(--mantine-color-text)" }}>
-                    {cat.name}
-                  </Text>
+                <Group justify="space-between" mb="xs">
+                  <Group gap="sm">
+                    <ThemeIcon variant="light" color={color} size="md">
+                      <Icon size={16} />
+                    </ThemeIcon>
+                    <Text
+                      fw={600}
+                      style={{ color: "var(--mantine-color-text)" }}
+                    >
+                      {cat.name}
+                    </Text>
+                  </Group>
+                  <IconArrowUpRight size={14} className="category-arrow" />
                 </Group>
-                <Text fz="sm" c="dimmed" mb="sm">
+                <Text fz="sm" c="dimmed" mb="md" lh={1.55}>
                   {cat.description}
                 </Text>
-                <Text fz="xs" c="dimmed">
-                  {count} pattern{count !== 1 ? "s" : ""}
-                </Text>
+                <Stack gap={3}>
+                  {examples.map((name) => (
+                    <Text key={name} fz="xs" c="dimmed">
+                      · {name}
+                    </Text>
+                  ))}
+                  {count > 3 && (
+                    <Text fz="xs" c={`${color}.5`} fw={500}>
+                      +{count - 3} more patterns
+                    </Text>
+                  )}
+                </Stack>
               </Paper>
             );
           })}

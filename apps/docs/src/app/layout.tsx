@@ -1,5 +1,6 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
+import { Syne } from "next/font/google";
 
 import { theme } from "./theme";
 
@@ -8,6 +9,13 @@ import "./globals.css";
 
 import { AppShellLayout } from "@/components/layout/app-shell-layout";
 import { SpotlightProvider } from "@/components/layout/spotlight-provider";
+
+const syne = Syne({
+  subsets: ["latin"],
+  variable: "--font-syne",
+  display: "swap",
+  weight: ["600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: "AI Vory - AI UX Pattern Library",
@@ -21,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={syne.variable}>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
         <link
