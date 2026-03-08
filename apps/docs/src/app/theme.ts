@@ -6,10 +6,12 @@ export const theme = createTheme({
   primaryColor: "violet",
   primaryShade: { light: 6, dark: 5 },
   fontFamily:
-    '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    'var(--font-geist), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  fontFamilyMonospace:
+    "var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace",
   headings: {
     fontFamily:
-      '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      'var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontWeight: "700",
   },
   defaultRadius: "md",

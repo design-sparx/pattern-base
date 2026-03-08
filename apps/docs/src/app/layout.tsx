@@ -1,6 +1,6 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
-import { Syne } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 
 import { theme } from "./theme";
 
@@ -10,11 +10,22 @@ import "./globals.css";
 import { AppShellLayout } from "@/components/layout/app-shell-layout";
 import { SpotlightProvider } from "@/components/layout/spotlight-provider";
 
-const syne = Syne({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-syne",
+  variable: "--font-geist",
   display: "swap",
-  weight: ["600", "700", "800"],
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +40,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={syne.variable}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geist.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}
+    >
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
         <link
