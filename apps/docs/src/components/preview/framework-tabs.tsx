@@ -3,12 +3,12 @@
 import { SegmentedControl } from "@mantine/core";
 
 interface FrameworkTabsProps {
-  children: (framework: "bootstrap" | "antd") => React.ReactNode;
-  onChange?: (framework: "bootstrap" | "antd") => void;
+  children: (framework: "bootstrap" | "antd" | "mantine") => React.ReactNode;
+  onChange?: (framework: "bootstrap" | "antd" | "mantine") => void;
 }
 
 export function FrameworkTabs({ children }: FrameworkTabsProps) {
-  const framework: "bootstrap" | "antd" = "bootstrap";
+  const framework: "bootstrap" | "antd" | "mantine" = "bootstrap";
 
   return <div>{children(framework)}</div>;
 }
@@ -28,6 +28,7 @@ export function FrameworkToggle({
       data={[
         { label: "Bootstrap", value: "bootstrap" },
         { label: "Ant Design", value: "antd" },
+        { label: "Mantine", value: "mantine" },
       ]}
     />
   );

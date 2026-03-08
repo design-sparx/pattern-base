@@ -13,6 +13,8 @@
     "@ai-ui/antd": "workspace:*",
     "@ai-ui/bootstrap": "workspace:*",
     "@ai-ui/core": "workspace:*",
+    "@ai-ui/mantine": "workspace:*",
+    "@mantine/dropzone": "^7.17.0",
     "@ant-design/icons": "^5.5.0",
     "@fontsource/inter": "^5.2.8",
     "@mantine/core": "^7.17.0",

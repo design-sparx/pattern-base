@@ -5,14 +5,7 @@ import { IconBrandGithub, IconExternalLink } from "@tabler/icons-react";
 
 export function Footer() {
   return (
-    <Box
-      component="footer"
-      py="xl"
-      px="xl"
-      style={{
-        borderTop: "1px solid var(--mantine-color-default-border)",
-      }}
-    >
+    <Box component="footer">
       <Group justify="space-between" align="center">
         <Text fz="sm" c="dimmed">
           AI Vory — AI UX Pattern Library

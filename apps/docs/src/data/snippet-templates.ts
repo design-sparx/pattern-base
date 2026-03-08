@@ -3,7 +3,7 @@
  * Replaces the duplicated code-snippets.ts file.
  */
 
-type Framework = "bootstrap" | "antd";
+type Framework = "bootstrap" | "antd" | "mantine";
 type SnippetTemplate = (fw: Framework) => string;
 
 const snippetTemplates: Record<string, SnippetTemplate> = {
@@ -884,10 +884,16 @@ const insights = [
 />`,
 };
 
-export const codeSnippets: Record<string, { bootstrap: string; antd: string }> =
-  Object.fromEntries(
-    Object.entries(snippetTemplates).map(([id, tmpl]) => [
-      id,
-      { bootstrap: tmpl("bootstrap"), antd: tmpl("antd") },
-    ]),
-  );
+export const codeSnippets: Record<
+  string,
+  { bootstrap: string; antd: string; mantine: string }
+> = Object.fromEntries(
+  Object.entries(snippetTemplates).map(([id, tmpl]) => [
+    id,
+    {
+      bootstrap: tmpl("bootstrap"),
+      antd: tmpl("antd"),
+      mantine: tmpl("mantine"),
+    },
+  ]),
+);

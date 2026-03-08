@@ -20,6 +20,7 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
         breakpoint: "lg",
         collapsed: { desktop: !asideContent, mobile: true },
       }}
+      footer={{ height: 60 }}
       padding={0}
     >
       <AppShell.Header
@@ -30,7 +31,7 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
         <Header />
       </AppShell.Header>
 
-      <AppShell.Navbar>
+      <AppShell.Navbar p="md">
         <Sidebar />
       </AppShell.Navbar>
 
@@ -48,8 +49,10 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
         }}
       >
         <Box style={{ flex: 1 }}>{children}</Box>
-        <Footer />
       </AppShell.Main>
+      <AppShell.Footer p="md">
+        <Footer />
+      </AppShell.Footer>
     </AppShell>
   );
 }

@@ -34,6 +34,8 @@ import { componentRegistry } from "@/lib/registry";
 const installCommands: Record<string, string> = {
   bootstrap: "pnpm add react-bootstrap bootstrap",
   antd: "pnpm add antd @ant-design/icons",
+  mantine:
+    "pnpm add @mantine/core @mantine/hooks @mantine/dropzone @tabler/icons-react",
 };
 
 const viewports = [
@@ -55,13 +57,15 @@ export function ComponentPreview({
   patternId,
 }: Readonly<ComponentPreviewProps>) {
   const { colorScheme } = useMantineColorScheme();
-  const [framework, setFramework] = useState("bootstrap");
+  const [framework, setFramework] = useState<"bootstrap" | "antd" | "mantine">(
+    "bootstrap",
+  );
   const [codeOpen, setCodeOpen] = useState(false);
   const [viewport, setViewport] = useState("desktop");
 
   const entry = componentRegistry[patternId];
   const snippets = codeSnippets[patternId];
-  const fw = framework as "bootstrap" | "antd";
+  const fw = framework;
   const activeViewport = viewports.find((v) => v.value === viewport);
 
   return (
@@ -71,10 +75,11 @@ export function ComponentPreview({
         <SegmentedControl
           size="xs"
           value={framework}
-          onChange={setFramework}
+          onChange={(v) => setFramework(v as "bootstrap" | "antd" | "mantine")}
           data={[
             { label: "Bootstrap", value: "bootstrap" },
             { label: "Ant Design", value: "antd" },
+            { label: "Mantine", value: "mantine" },
           ]}
         />
       </Group>
@@ -187,7 +192,7 @@ export function ComponentPreview({
                 <div data-bs-theme={colorScheme}>
                   <entry.bootstrap />
                 </div>
-              ) : (
+              ) : fw === "antd" ? (
                 <div className="antd-preview">
                   <ConfigProvider
                     theme={{
@@ -200,6 +205,8 @@ export function ComponentPreview({
                     <entry.antd />
                   </ConfigProvider>
                 </div>
+              ) : (
+                <entry.mantine />
               )}
             </Box>
           </Box>

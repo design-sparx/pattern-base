@@ -1,0 +1,1 @@
+export { Inpainting } from "./inpainting";

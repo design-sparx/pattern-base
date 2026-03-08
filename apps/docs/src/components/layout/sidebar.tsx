@@ -28,7 +28,7 @@ export function Sidebar() {
 
   return (
     <>
-      <AppShell.Section grow my="md" component={ScrollArea} px="md">
+      <AppShell.Section grow my="md" component={ScrollArea}>
         <NavLink
           component={Link}
           href="/patterns"

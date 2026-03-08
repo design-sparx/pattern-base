@@ -116,6 +116,63 @@ import {
   VoiceAndTone as BsVoiceAndTone,
   Watermark as BsWatermark,
 } from "@ai-ui/bootstrap";
+// Mantine components
+import {
+  ActionPlan as MnActionPlan,
+  Attachments as MnAttachments,
+  AutoFill as MnAutoFill,
+  Avatar as MnAvatar,
+  Branches as MnBranches,
+  Caveat as MnCaveat,
+  ChainedAction as MnChainedAction,
+  CitationsList as MnCitationsList,
+  Color as MnColor,
+  Connectors as MnConnectors,
+  Consent as MnConsent,
+  Controls as MnControls,
+  CostEstimate as MnCostEstimate,
+  DataOwnership as MnDataOwnership,
+  Describe as MnDescribe,
+  Disclosure as MnDisclosure,
+  DraftMode as MnDraftMode,
+  Expand as MnExpand,
+  Filters as MnFilters,
+  FollowUp as MnFollowUp,
+  Footprints as MnFootprints,
+  Gallery as MnGallery,
+  IncognitoMode as MnIncognitoMode,
+  InitialCta as MnInitialCta,
+  InlineAction as MnInlineAction,
+  Inpainting as MnInpainting,
+  Madlibs as MnMadlibs,
+  Memory as MnMemory,
+  ModelManagement as MnModelManagement,
+  Modes as MnModes,
+  Nudges as MnNudges,
+  OpenInput as MnOpenInput,
+  ParameterControl as MnParameterControl,
+  PresetStyles as MnPresetStyles,
+  PromptDetails as MnPromptDetails,
+  PromptEnhancer as MnPromptEnhancer,
+  Randomize as MnRandomize,
+  References as MnReferences,
+  Regenerate as MnRegenerate,
+  Restructure as MnRestructure,
+  Restyle as MnRestyle,
+  SampleResponse as MnSampleResponse,
+  SavedStyles as MnSavedStyles,
+  SharedVision as MnSharedVision,
+  StreamOfThought as MnStreamOfThought,
+  Suggestions as MnSuggestions,
+  Summary as MnSummary,
+  Synthesis as MnSynthesis,
+  Templates as MnTemplates,
+  Transform as MnTransform,
+  Variations as MnVariations,
+  Verification as MnVerification,
+  VoiceAndTone as MnVoiceAndTone,
+  Watermark as MnWatermark,
+} from "@ai-ui/mantine";
 
 import {
   demoActionPlanSteps,
@@ -185,6 +242,7 @@ import {
 interface RegistryEntry {
   bootstrap: React.ComponentType;
   antd: React.ComponentType;
+  mantine: React.ComponentType;
 }
 
 const noop = () => {
@@ -215,6 +273,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         ]}
       />
     ),
+    mantine: () => (
+      <MnOpenInput
+        placeholder="Ask me anything..."
+        onSubmit={noop}
+        suggestions={[
+          "Write a poem",
+          "Summarize this article",
+          "Translate to French",
+        ]}
+      />
+    ),
   },
 
   suggestions: {
@@ -228,6 +297,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntSuggestions
+        suggestions={demoSuggestions}
+        onSelect={noop}
+        variant="card"
+        columns={2}
+      />
+    ),
+    mantine: () => (
+      <MnSuggestions
         suggestions={demoSuggestions}
         onSelect={noop}
         variant="card"
@@ -251,6 +328,13 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Generation Settings"
       />
     ),
+    mantine: () => (
+      <MnParameterControl
+        parameters={demoParameters}
+        onChange={noop}
+        title="Generation Settings"
+      />
+    ),
   },
 
   "preset-styles": {
@@ -265,6 +349,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntPresetStyles
+        presets={demoPresetStyles}
+        selectedPresetId="blog-clean"
+        onApplyPreset={noop}
+        title="Style Presets"
+        variant="cards"
+      />
+    ),
+    mantine: () => (
+      <MnPresetStyles
         presets={demoPresetStyles}
         selectedPresetId="blog-clean"
         onApplyPreset={noop}
@@ -297,6 +390,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         showDiff
       />
     ),
+    mantine: () => (
+      <MnPromptEnhancer
+        prompt={demoPromptEnhancerOriginal}
+        enhancedPrompt={demoPromptEnhancerEnhanced}
+        onEnhance={noop}
+        onApply={noop}
+        onEnhancedPromptChange={noop}
+        variant="split"
+        showDiff
+      />
+    ),
   },
 
   "stream-of-thought": {
@@ -305,6 +409,9 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntStreamOfThought steps={demoSteps} isStreaming={false} collapsible />
+    ),
+    mantine: () => (
+      <MnStreamOfThought steps={demoSteps} isStreaming={false} collapsible />
     ),
   },
 
@@ -318,6 +425,13 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntCitationsList
+        citations={demoCitations}
+        title="Sources"
+        maxVisible={3}
+      />
+    ),
+    mantine: () => (
+      <MnCitationsList
         citations={demoCitations}
         title="Sources"
         maxVisible={3}
@@ -339,6 +453,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntRegenerate
+        onRegenerate={noop}
+        variant="dropdown"
+        options={[
+          { label: "More creative", onSelect: noop },
+          { label: "More concise", onSelect: noop },
+          { label: "Different tone", onSelect: noop },
+        ]}
+      />
+    ),
+    mantine: () => (
+      <MnRegenerate
         onRegenerate={noop}
         variant="dropdown"
         options={[
@@ -380,6 +505,20 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         </p>
       </div>
     ),
+    mantine: () => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <MnDisclosure variant="badge" type="ai-generated" model="GPT-4" />
+        <MnDisclosure
+          variant="banner"
+          type="ai-assisted"
+          model="Claude"
+          timestamp={new Date()}
+        />
+        <p>
+          This content was <MnDisclosure variant="inline" type="ai-suggested" />
+        </p>
+      </div>
+    ),
   },
 
   variations: {
@@ -401,6 +540,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         columns={3}
       />
     ),
+    mantine: () => (
+      <MnVariations
+        variations={demoVariations}
+        selectedId="1"
+        onSelect={noop}
+        layout="grid"
+        columns={3}
+      />
+    ),
   },
 
   "cost-estimate": {
@@ -413,6 +561,9 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         currency="USD"
         showTokens
       />
+    ),
+    mantine: () => (
+      <MnCostEstimate breakdown={demoCostBreakdown} currency="USD" showTokens />
     ),
   },
 
@@ -428,6 +579,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntModelManagement
+        models={demoModels}
+        selectedModelId="gpt4"
+        onSelectModel={noop}
+        showDetails
+        groupByProvider
+      />
+    ),
+    mantine: () => (
+      <MnModelManagement
         models={demoModels}
         selectedModelId="gpt4"
         onSelectModel={noop}
@@ -456,6 +616,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="segmented"
       />
     ),
+    mantine: () => (
+      <MnModes
+        modes={demoModes}
+        selectedModeId="balanced"
+        onModeChange={noop}
+        title="Assistant Mode"
+        variant="segmented"
+      />
+    ),
   },
 
   "follow-up": {
@@ -469,6 +638,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntFollowUp
+        followUps={demoFollowUps}
+        onSelect={noop}
+        variant="chip"
+        title="Suggested follow-ups"
+      />
+    ),
+    mantine: () => (
+      <MnFollowUp
         followUps={demoFollowUps}
         onSelect={noop}
         variant="chip"
@@ -496,6 +673,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         searchable
       />
     ),
+    mantine: () => (
+      <MnTemplates
+        templates={demoTemplates}
+        onSelect={noop}
+        layout="grid"
+        columns={2}
+        searchable
+      />
+    ),
   },
 
   gallery: {
@@ -515,6 +701,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         selectable
       />
     ),
+    mantine: () => (
+      <MnGallery
+        items={demoGalleryItems}
+        onSelect={noop}
+        columns={3}
+        selectable
+      />
+    ),
   },
 
   attachments: {
@@ -528,6 +722,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntAttachments
+        attachments={demoAttachments}
+        onAdd={noop}
+        onRemove={noop}
+        maxFiles={5}
+      />
+    ),
+    mantine: () => (
+      <MnAttachments
         attachments={demoAttachments}
         onAdd={noop}
         onRemove={noop}
@@ -555,6 +757,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Filter Results"
       />
     ),
+    mantine: () => (
+      <MnFilters
+        groups={demoFilterGroups}
+        values={{ type: ["text"], quality: "high", length: 2000 }}
+        onChange={noop}
+        onClear={noop}
+        title="Filter Results"
+      />
+    ),
   },
 
   "action-plan": {
@@ -569,6 +780,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntActionPlan
+        steps={demoActionPlanSteps}
+        title="Execution Plan"
+        onApprove={noop}
+        onReject={noop}
+        showEstimates
+      />
+    ),
+    mantine: () => (
+      <MnActionPlan
         steps={demoActionPlanSteps}
         title="Execution Plan"
         onApprove={noop}
@@ -599,6 +819,16 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="tree"
       />
     ),
+    mantine: () => (
+      <MnBranches
+        branches={demoBranches}
+        activeBranchId="perf-path"
+        onSelectBranch={noop}
+        onCreateBranch={noop}
+        title="Conversation Branches"
+        variant="tree"
+      />
+    ),
   },
 
   controls: {
@@ -613,6 +843,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntControls
+        controls={demoControls}
+        onToggleControl={noop}
+        title="AI Capability Controls"
+        variant="list"
+        showStatus
+      />
+    ),
+    mantine: () => (
+      <MnControls
         controls={demoControls}
         onToggleControl={noop}
         title="AI Capability Controls"
@@ -645,6 +884,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="timeline"
       />
     ),
+    mantine: () => (
+      <MnDraftMode
+        drafts={demoDrafts}
+        activeDraftId="draft-4"
+        onSelectDraft={noop}
+        onRevertToDraft={noop}
+        onBranchFromDraft={noop}
+        title="Draft History"
+        variant="timeline"
+      />
+    ),
   },
 
   memory: {
@@ -660,6 +910,16 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntMemory
+        memories={demoMemories}
+        onEditMemory={noop}
+        onDeleteMemory={noop}
+        title="Stored Memory"
+        variant="list"
+        showTimestamps
+      />
+    ),
+    mantine: () => (
+      <MnMemory
         memories={demoMemories}
         onEditMemory={noop}
         onDeleteMemory={noop}
@@ -691,6 +951,16 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         showRelevance
       />
     ),
+    mantine: () => (
+      <MnReferences
+        references={demoReferences}
+        onSelectReference={noop}
+        onRemoveReference={noop}
+        title="Session References"
+        variant="list"
+        showRelevance
+      />
+    ),
   },
 
   "sample-response": {
@@ -707,6 +977,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntSampleResponse
+        prompt={demoSampleResponsePrompt}
+        sample={demoSampleResponseText}
+        onGenerateSample={noop}
+        onRegenerateSample={noop}
+        onAcceptSample={noop}
+        title="Preview Before Full Run"
+        variant="card"
+      />
+    ),
+    mantine: () => (
+      <MnSampleResponse
         prompt={demoSampleResponsePrompt}
         sample={demoSampleResponseText}
         onGenerateSample={noop}
@@ -741,6 +1022,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="board"
       />
     ),
+    mantine: () => (
+      <MnSharedVision
+        participants={demoSharedVisionParticipants}
+        goals={demoSharedVisionGoals}
+        context={demoSharedVisionContext}
+        onAddGoal={noop}
+        onSelectParticipant={noop}
+        title="Team Alignment Board"
+        variant="board"
+      />
+    ),
   },
 
   verification: {
@@ -756,6 +1048,16 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntVerification
+        claims={demoVerificationClaims}
+        onRunVerification={noop}
+        onSelectClaim={noop}
+        title="Claim Verification"
+        showSources
+        variant="list"
+      />
+    ),
+    mantine: () => (
+      <MnVerification
         claims={demoVerificationClaims}
         onRunVerification={noop}
         onSelectClaim={noop}
@@ -805,6 +1107,25 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         </p>
       </div>
     ),
+    mantine: () => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <MnCaveat
+          message="AI-generated content may contain inaccuracies. Please verify important information."
+          variant="banner"
+          severity="warning"
+          title="AI Disclaimer"
+          dismissible
+        />
+        <p>
+          This response was generated by AI.{" "}
+          <MnCaveat
+            message="Results may vary."
+            variant="inline"
+            severity="info"
+          />
+        </p>
+      </div>
+    ),
   },
 
   consent: {
@@ -819,6 +1140,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntConsent
+        items={demoConsentItems}
+        onAccept={noop}
+        onDecline={noop}
+        title="Data Processing Consent"
+        description="Please review and accept the following before proceeding."
+      />
+    ),
+    mantine: () => (
+      <MnConsent
         items={demoConsentItems}
         onAccept={noop}
         onDecline={noop}
@@ -842,6 +1172,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntIncognitoMode
+        enabled={demoIncognitoState.enabled}
+        onToggle={noop}
+        onEndSession={noop}
+        title="Private Session"
+        description={demoIncognitoState.description}
+        retentionNotice={demoIncognitoState.retentionNotice}
+        variant="card"
+      />
+    ),
+    mantine: () => (
+      <MnIncognitoMode
         enabled={demoIncognitoState.enabled}
         onToggle={noop}
         onEndSession={noop}
@@ -876,6 +1217,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onSelect={noop}
       />
     ),
+    mantine: () => (
+      <MnAvatar
+        name={demoAvatar.name}
+        persona={demoAvatar.persona}
+        badgeLabel={demoAvatar.badgeLabel}
+        status={demoAvatar.status}
+        size="medium"
+        variant="card"
+        onSelect={noop}
+      />
+    ),
   },
 
   color: {
@@ -891,6 +1243,16 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntColor
+        options={demoColorOptions}
+        selectedColorId="c1"
+        onSelectColor={noop}
+        title="AI Identity Palette"
+        showLabels
+        variant="card"
+      />
+    ),
+    mantine: () => (
+      <MnColor
         options={demoColorOptions}
         selectedColorId="c1"
         onSelectColor={noop}
@@ -922,6 +1284,16 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="banner"
       />
     ),
+    mantine: () => (
+      <MnWatermark
+        label={demoWatermark.label}
+        visibility={demoWatermark.visibility}
+        confidence={demoWatermark.confidence}
+        algorithm={demoWatermark.algorithm}
+        onVerify={noop}
+        variant="banner"
+      />
+    ),
   },
 
   connectors: {
@@ -943,6 +1315,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Connected Sources"
       />
     ),
+    mantine: () => (
+      <MnConnectors
+        sources={demoConnectors}
+        onConnect={noop}
+        onDisconnect={noop}
+        onSync={noop}
+        title="Connected Sources"
+      />
+    ),
   },
 
   "auto-fill": {
@@ -956,6 +1337,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntAutoFill
+        suggestions={demoAutoFillSuggestions}
+        onSelect={noop}
+        placeholder="How do I implement..."
+        maxSuggestions={5}
+      />
+    ),
+    mantine: () => (
+      <MnAutoFill
         suggestions={demoAutoFillSuggestions}
         onSelect={noop}
         placeholder="How do I implement..."
@@ -987,6 +1376,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="card"
       />
     ),
+    mantine: () => (
+      <MnSummary
+        content={demoSummaryContent}
+        title="Research Summary"
+        originalLength={2450}
+        summaryLength={420}
+        onRegenerate={noop}
+        onCopy={noop}
+        variant="card"
+      />
+    ),
   },
 
   "initial-cta": {
@@ -1008,6 +1408,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="cards"
       />
     ),
+    mantine: () => (
+      <MnInitialCta
+        title="Welcome to AI Assistant"
+        subtitle="What would you like to do today?"
+        actions={demoInitialCtaActions}
+        onAction={noop}
+        variant="cards"
+      />
+    ),
   },
 
   nudges: {
@@ -1016,6 +1425,9 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntNudges nudges={demoNudges} onDismiss={noop} variant="inline" />
+    ),
+    mantine: () => (
+      <MnNudges nudges={demoNudges} onDismiss={noop} variant="inline" />
     ),
   },
 
@@ -1032,6 +1444,16 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntPromptDetails
+        prompt="Explain the difference between React Server Components and Client Components"
+        details={demoPromptDetails}
+        timestamp={new Date()}
+        model="GPT-4 Turbo"
+        tokenCount={48}
+        variant="card"
+      />
+    ),
+    mantine: () => (
+      <MnPromptDetails
         prompt="Explain the difference between React Server Components and Client Components"
         details={demoPromptDetails}
         timestamp={new Date()}
@@ -1059,6 +1481,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         onSeedChange={noop}
       />
     ),
+    mantine: () => (
+      <MnRandomize
+        onRandomize={noop}
+        showSeed
+        currentSeed="42"
+        onSeedChange={noop}
+      />
+    ),
   },
 
   expand: {
@@ -1072,6 +1502,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntExpand
+        content="React Server Components allow you to render components on the server..."
+        onExpand={noop}
+        title="Server Components Overview"
+        variant="accordion"
+      />
+    ),
+    mantine: () => (
+      <MnExpand
         content="React Server Components allow you to render components on the server..."
         onExpand={noop}
         title="Server Components Overview"
@@ -1099,6 +1537,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="buttons"
       />
     ),
+    mantine: () => (
+      <MnTransform
+        content={demoTransformContent}
+        options={demoTransformOptions}
+        onTransform={noop}
+        title="Content Transform"
+        variant="buttons"
+      />
+    ),
   },
 
   "inline-action": {
@@ -1111,6 +1558,13 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntInlineAction
+        actions={demoInlineActions}
+        onAction={noop}
+        variant="toolbar"
+      />
+    ),
+    mantine: () => (
+      <MnInlineAction
         actions={demoInlineActions}
         onAction={noop}
         variant="toolbar"
@@ -1133,6 +1587,13 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Data Pipeline"
       />
     ),
+    mantine: () => (
+      <MnChainedAction
+        steps={demoChainedSteps}
+        onExecute={noop}
+        title="Data Pipeline"
+      />
+    ),
   },
 
   "data-ownership": {
@@ -1147,6 +1608,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntDataOwnership
+        items={demoDataOwnershipItems}
+        onDelete={noop}
+        onExport={noop}
+        onDeleteAll={noop}
+        title="Your Data"
+      />
+    ),
+    mantine: () => (
+      <MnDataOwnership
         items={demoDataOwnershipItems}
         onDelete={noop}
         onExport={noop}
@@ -1175,6 +1645,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         showTimestamps
       />
     ),
+    mantine: () => (
+      <MnFootprints
+        entries={demoFootprintEntries}
+        onEntryClick={noop}
+        onClear={noop}
+        title="Activity History"
+        showTimestamps
+      />
+    ),
   },
 
   describe: {
@@ -1191,6 +1670,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntDescribe
+        output={demoDescribeOutput}
+        details={demoDescribeDetails}
+        inferredPrompt={demoDescribeInferredPrompt}
+        model="Midjourney v6"
+        seed="12345"
+        onReuse={noop}
+        onCopy={noop}
+      />
+    ),
+    mantine: () => (
+      <MnDescribe
         output={demoDescribeOutput}
         details={demoDescribeDetails}
         inferredPrompt={demoDescribeInferredPrompt}
@@ -1225,6 +1715,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Edit Content Region"
       />
     ),
+    mantine: () => (
+      <MnInpainting
+        content={demoInpaintingContent}
+        regions={demoInpaintingRegions}
+        onRegionSelect={noop}
+        onApply={noop}
+        selectedRegionId="body"
+        onPromptChange={noop}
+        title="Edit Content Region"
+      />
+    ),
   },
 
   madlibs: {
@@ -1241,6 +1742,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntMadlibs
+        template={demoMadlibsTemplate}
+        variables={demoMadlibsVariables}
+        onChange={noop}
+        onSubmit={noop}
+        title="Blog Post Generator"
+        description="Fill in the fields below to generate a customized blog post."
+        showPreview
+      />
+    ),
+    mantine: () => (
+      <MnMadlibs
         template={demoMadlibsTemplate}
         variables={demoMadlibsVariables}
         onChange={noop}
@@ -1269,6 +1781,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         title="Restructure Content"
       />
     ),
+    mantine: () => (
+      <MnRestructure
+        content={demoRestructureContent}
+        options={demoRestructureOptions}
+        onRestructure={noop}
+        title="Restructure Content"
+      />
+    ),
   },
 
   restyle: {
@@ -1282,6 +1802,14 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntRestyle
+        content={demoRestyleContent}
+        options={demoRestyleOptions}
+        onRestyle={noop}
+        title="Restyle Content"
+      />
+    ),
+    mantine: () => (
+      <MnRestyle
         content={demoRestyleContent}
         options={demoRestyleOptions}
         onRestyle={noop}
@@ -1313,6 +1841,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
         variant="list"
       />
     ),
+    mantine: () => (
+      <MnSavedStyles
+        styles={demoSavedStyles}
+        selectedStyleId="style-customer"
+        onSelectStyle={noop}
+        onSaveStyle={noop}
+        onDeleteStyle={noop}
+        title="My Saved Styles"
+        variant="list"
+      />
+    ),
   },
 
   "voice-and-tone": {
@@ -1327,6 +1866,15 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntVoiceAndTone
+        axes={demoVoiceToneAxes}
+        onChange={noop}
+        title="Voice and Tone"
+        showValues
+        variant="sliders"
+      />
+    ),
+    mantine: () => (
+      <MnVoiceAndTone
         axes={demoVoiceToneAxes}
         onChange={noop}
         title="Voice and Tone"
@@ -1350,6 +1898,17 @@ export const componentRegistry: Record<string, RegistryEntry> = {
     ),
     antd: () => (
       <AntSynthesis
+        sources={demoSynthesisSources}
+        insights={demoSynthesisInsights}
+        onSourceClick={noop}
+        onRegenerate={noop}
+        title="AI Industry Analysis"
+        showSources
+        showConfidence
+      />
+    ),
+    mantine: () => (
+      <MnSynthesis
         sources={demoSynthesisSources}
         insights={demoSynthesisInsights}
         onSourceClick={noop}
