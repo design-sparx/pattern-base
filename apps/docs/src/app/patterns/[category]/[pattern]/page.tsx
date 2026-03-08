@@ -16,7 +16,6 @@ import {
   IconArrowLeft,
   IconArrowRight,
   IconBulb,
-  IconChevronRight,
   IconCircleCheck,
   IconCompass,
   IconEye,
@@ -115,43 +114,6 @@ export default async function PatternPage({
     <Box p="xl">
       {/* Inject TOC into AppShell aside */}
       <AsideToc items={tocItems} />
-
-      {/* Breadcrumbs */}
-      <Group gap={6} mb="lg">
-        <Link
-          href="/patterns"
-          style={{
-            fontSize: "var(--mantine-font-size-xs)",
-            color: "var(--mantine-color-dimmed)",
-            textDecoration: "none",
-          }}
-        >
-          Patterns
-        </Link>
-        <IconChevronRight
-          size={12}
-          color="var(--mantine-color-dimmed)"
-          style={{ opacity: 0.5 }}
-        />
-        <Link
-          href={`/patterns/${category.id}`}
-          style={{
-            fontSize: "var(--mantine-font-size-xs)",
-            color: "var(--mantine-color-dimmed)",
-            textDecoration: "none",
-          }}
-        >
-          {category.name}
-        </Link>
-        <IconChevronRight
-          size={12}
-          color="var(--mantine-color-dimmed)"
-          style={{ opacity: 0.5 }}
-        />
-        <Text fz="xs" fw={600} c={color}>
-          {pattern.name}
-        </Text>
-      </Group>
 
       {/* Header */}
       <Box mb="lg">
