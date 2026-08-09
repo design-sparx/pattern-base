@@ -1,6 +1,6 @@
 import { ActionIcon, Badge, Card, Group, Stack, Text } from "@mantine/core";
 import { IconLock, IconPencil, IconTrash } from "@tabler/icons-react";
-import type { MemoryProps } from "@ai-ui/core";
+import type { MemoryProps } from "@patternbase/core";
 
 export function Memory({
   memories,

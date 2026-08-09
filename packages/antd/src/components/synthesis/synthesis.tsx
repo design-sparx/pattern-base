@@ -10,7 +10,7 @@ import {
   Typography,
 } from "antd";
 
-import type { SynthesisProps } from "@ai-ui/core";
+import type { SynthesisProps } from "@patternbase/core";
 
 const { Text, Paragraph } = Typography;
 

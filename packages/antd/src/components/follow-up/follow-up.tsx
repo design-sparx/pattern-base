@@ -1,6 +1,6 @@
 import { Button, List, Space, Tag, Typography } from "antd";
 
-import type { FollowUpProps } from "@ai-ui/core";
+import type { FollowUpProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

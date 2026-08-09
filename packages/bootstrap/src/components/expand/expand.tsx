@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
 
-import type { ExpandProps } from "@ai-ui/core";
+import type { ExpandProps } from "@patternbase/core";
 
 export function Expand({
   content,

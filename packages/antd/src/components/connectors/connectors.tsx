@@ -1,6 +1,6 @@
 import { Button, Card, List, Space, Tag, Typography } from "antd";
 
-import type { ConnectorsProps } from "@ai-ui/core";
+import type { ConnectorsProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

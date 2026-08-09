@@ -11,7 +11,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 
-import type { PatternMeta } from "@ai-ui/core";
+import type { PatternMeta } from "@patternbase/core";
 
 const categoryIcons: Record<string, React.ElementType> = {
   "prompt-actions": IconKeyboard,

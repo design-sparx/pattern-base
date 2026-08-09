@@ -1,6 +1,6 @@
 import { Badge, Button, Group, Stack, Text } from "@mantine/core";
 import { IconDroplet, IconShieldCheck } from "@tabler/icons-react";
-import type { WatermarkProps } from "@ai-ui/core";
+import type { WatermarkProps } from "@patternbase/core";
 
 export function Watermark({
   label = "AI Generated",

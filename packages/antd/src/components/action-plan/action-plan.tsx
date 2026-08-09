@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Space, Steps, theme, Typography } from "antd";
 
-import type { ActionPlanProps, ActionPlanStep } from "@ai-ui/core";
+import type { ActionPlanProps, ActionPlanStep } from "@patternbase/core";
 
 const { Text } = Typography;
 

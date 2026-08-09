@@ -1,7 +1,7 @@
 import { Button, Card, Group, Stack, Text } from "@mantine/core";
 import { IconWand } from "@tabler/icons-react";
 
-import type { TransformProps } from "@ai-ui/core";
+import type { TransformProps } from "@patternbase/core";
 
 export function Transform({
   content,

@@ -8,7 +8,7 @@ import {
   Timeline,
 } from "@mantine/core";
 import { IconActivity } from "@tabler/icons-react";
-import type { FootprintsProps } from "@ai-ui/core";
+import type { FootprintsProps } from "@patternbase/core";
 
 export function Footprints({
   entries,

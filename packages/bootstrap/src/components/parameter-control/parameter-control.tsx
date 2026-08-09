@@ -1,6 +1,6 @@
 import { Form, OverlayTrigger, Stack, Tooltip } from "react-bootstrap";
 
-import type { ParameterControlProps } from "@ai-ui/core";
+import type { ParameterControlProps } from "@patternbase/core";
 
 export function ParameterControl({
   parameters,

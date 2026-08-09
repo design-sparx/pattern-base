@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Badge, Button, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
-import type { MemoryProps } from "@ai-ui/core";
+import type { MemoryProps } from "@patternbase/core";
 
 export function Memory({
   memories,

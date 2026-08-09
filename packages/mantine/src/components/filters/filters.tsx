@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import type { FiltersProps } from "@ai-ui/core";
+import type { FiltersProps } from "@patternbase/core";
 
 export function Filters({
   groups,

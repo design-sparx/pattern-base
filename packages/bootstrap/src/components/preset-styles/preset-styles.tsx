@@ -1,6 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 
-import type { PresetStylesProps } from "@ai-ui/core";
+import type { PresetStylesProps } from "@patternbase/core";
 
 export function PresetStyles({
   presets,

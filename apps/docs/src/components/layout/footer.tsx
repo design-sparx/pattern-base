@@ -8,7 +8,7 @@ export function Footer() {
     <Box component="footer">
       <Group justify="space-between" align="center">
         <Text fz="sm" c="dimmed">
-          AI Vory — AI UX Pattern Library
+          PatternBase — AI UX Pattern Library
         </Text>
         <Group gap="lg">
           <Anchor

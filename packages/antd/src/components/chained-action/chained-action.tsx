@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Steps, theme, Typography } from "antd";
 
-import type { ChainedActionProps } from "@ai-ui/core";
+import type { ChainedActionProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

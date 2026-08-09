@@ -1,12 +1,12 @@
 import { defineConfig, mergeConfig } from "vitest/config";
-import baseConfig from "@ai-ui/vitest-config";
+import baseConfig from "@patternbase/vitest-config";
 
 export default mergeConfig(
   baseConfig,
   defineConfig({
     test: {
       environment: "jsdom",
-      setupFiles: [require.resolve("@ai-ui/vitest-config/setup")],
+      setupFiles: [require.resolve("@patternbase/vitest-config/setup")],
       passWithNoTests: true,
     },
   }),

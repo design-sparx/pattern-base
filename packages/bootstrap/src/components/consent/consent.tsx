@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
-import type { ConsentProps } from "@ai-ui/core";
+import type { ConsentProps } from "@patternbase/core";
 
 export function Consent({
   items,

@@ -1,7 +1,7 @@
 import { SafetyCertificateOutlined } from "@ant-design/icons";
 import { Button, Card, List, Progress, Space, Tag, Typography } from "antd";
 
-import type { VerificationProps } from "@ai-ui/core";
+import type { VerificationProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

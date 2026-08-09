@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconCopy } from "@tabler/icons-react";
-import type { DescribeProps } from "@ai-ui/core";
+import type { DescribeProps } from "@patternbase/core";
 
 export function Describe({
   output,

@@ -1,6 +1,6 @@
 import { Button, Card, List, Space, Tag, Typography } from "antd";
 
-import type { BranchesProps } from "@ai-ui/core";
+import type { BranchesProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

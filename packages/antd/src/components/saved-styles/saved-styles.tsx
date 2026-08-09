@@ -1,7 +1,7 @@
 import { Button, Card, Input, List, Space, Tag, Typography } from "antd";
 import { useMemo, useState } from "react";
 
-import type { SavedStylesProps } from "@ai-ui/core";
+import type { SavedStylesProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

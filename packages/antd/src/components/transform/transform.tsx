@@ -1,6 +1,6 @@
 import { Button, Card, Dropdown, Space, Spin, theme, Typography } from "antd";
 
-import type { TransformProps } from "@ai-ui/core";
+import type { TransformProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

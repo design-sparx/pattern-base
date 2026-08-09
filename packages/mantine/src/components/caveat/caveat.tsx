@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert, Anchor, Text } from "@mantine/core";
 import { IconAlertTriangle, IconInfoCircle, IconX } from "@tabler/icons-react";
-import type { CaveatProps } from "@ai-ui/core";
+import type { CaveatProps } from "@patternbase/core";
 
 export function Caveat({
   message,

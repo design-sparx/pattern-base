@@ -9,7 +9,7 @@ import {
   Typography,
 } from "antd";
 
-import type { MadlibsProps } from "@ai-ui/core";
+import type { MadlibsProps } from "@patternbase/core";
 
 const { Text, Paragraph } = Typography;
 const { TextArea } = Input;

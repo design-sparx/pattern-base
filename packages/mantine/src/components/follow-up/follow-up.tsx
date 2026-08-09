@@ -7,7 +7,7 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
-import type { FollowUpProps } from "@ai-ui/core";
+import type { FollowUpProps } from "@patternbase/core";
 
 export function FollowUp({
   followUps,

@@ -1,6 +1,6 @@
 import { Alert, Typography } from "antd";
 
-import type { CaveatProps } from "@ai-ui/core";
+import type { CaveatProps } from "@patternbase/core";
 
 const { Text, Link } = Typography;
 

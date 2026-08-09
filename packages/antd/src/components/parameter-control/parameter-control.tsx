@@ -9,7 +9,7 @@ import {
   Typography,
 } from "antd";
 
-import type { ParameterControlProps } from "@ai-ui/core";
+import type { ParameterControlProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

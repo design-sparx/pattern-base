@@ -1,6 +1,6 @@
 import { Badge, Card, ProgressBar, Table } from "react-bootstrap";
 
-import type { CostEstimateProps } from "@ai-ui/core";
+import type { CostEstimateProps } from "@patternbase/core";
 
 export function CostEstimate({
   breakdown,

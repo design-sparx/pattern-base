@@ -9,7 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconEyeOff } from "@tabler/icons-react";
-import type { IncognitoModeProps } from "@ai-ui/core";
+import type { IncognitoModeProps } from "@patternbase/core";
 
 export function IncognitoMode({
   enabled,

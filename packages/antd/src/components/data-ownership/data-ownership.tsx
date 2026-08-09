@@ -1,7 +1,7 @@
 import { DeleteOutlined, ExportOutlined } from "@ant-design/icons";
 import { Button, Card, List, Space, Tag, Typography } from "antd";
 
-import type { DataOwnershipProps } from "@ai-ui/core";
+import type { DataOwnershipProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

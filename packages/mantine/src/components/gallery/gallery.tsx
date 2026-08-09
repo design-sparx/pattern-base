@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import type { GalleryProps } from "@ai-ui/core";
+import type { GalleryProps } from "@patternbase/core";
 
 export function Gallery({
   items,

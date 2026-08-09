@@ -41,18 +41,6 @@ importers:
 
   apps/docs:
     dependencies:
-      '@ai-ui/antd':
-        specifier: workspace:*
-        version: link:../../packages/antd
-      '@ai-ui/bootstrap':
-        specifier: workspace:*
-        version: link:../../packages/bootstrap
-      '@ai-ui/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@ai-ui/mantine':
-        specifier: workspace:*
-        version: link:../../packages/mantine
       '@ant-design/icons':
         specifier: ^5.5.0
         version: 5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -71,6 +59,18 @@ importers:
       '@mantine/spotlight':
         specifier: ^7.17.8
         version: 7.17.8(@mantine/core@7.17.8(@mantine/hooks@7.17.8(react@18.3.1))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.17.8(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@patternbase/antd':
+        specifier: workspace:*
+        version: link:../../packages/antd
+      '@patternbase/bootstrap':
+        specifier: workspace:*
+        version: link:../../packages/bootstrap
+      '@patternbase/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@patternbase/mantine':
+        specifier: workspace:*
+        version: link:../../packages/mantine
       '@tabler/icons-react':
         specifier: ^3.36.1
         version: 3.36.1(react@18.3.1)
@@ -96,12 +96,12 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@ai-ui/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@next/eslint-plugin-next':
         specifier: ^16.1.6
         version: 16.1.6
+      '@patternbase/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@types/node':
         specifier: ^20.10.0
         version: 20.19.30
@@ -129,22 +129,22 @@ importers:
 
   packages/antd:
     dependencies:
-      '@ai-ui/core':
+      '@patternbase/core':
         specifier: workspace:*
         version: link:../core
       react:
         specifier: ^18.2.0
         version: 18.3.1
     devDependencies:
-      '@ai-ui/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@ai-ui/vitest-config':
-        specifier: workspace:*
-        version: link:../vitest-config
       '@ant-design/icons':
         specifier: ^5.5.0
         version: 5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@patternbase/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@patternbase/vitest-config':
+        specifier: workspace:*
+        version: link:../vitest-config
       '@testing-library/jest-dom':
         specifier: ^6.0.0
         version: 6.9.1
@@ -178,17 +178,17 @@ importers:
 
   packages/bootstrap:
     dependencies:
-      '@ai-ui/core':
+      '@patternbase/core':
         specifier: workspace:*
         version: link:../core
       react:
         specifier: ^18.2.0
         version: 18.3.1
     devDependencies:
-      '@ai-ui/eslint-config':
+      '@patternbase/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@ai-ui/vitest-config':
+      '@patternbase/vitest-config':
         specifier: workspace:*
         version: link:../vitest-config
       '@testing-library/jest-dom':
@@ -231,10 +231,10 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1
     devDependencies:
-      '@ai-ui/eslint-config':
+      '@patternbase/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@ai-ui/vitest-config':
+      '@patternbase/vitest-config':
         specifier: workspace:*
         version: link:../vitest-config
       '@types/react':
@@ -279,16 +279,10 @@ importers:
 
   packages/mantine:
     dependencies:
-      '@ai-ui/core':
+      '@patternbase/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
-      '@ai-ui/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@ai-ui/vitest-config':
-        specifier: workspace:*
-        version: link:../vitest-config
       '@mantine/core':
         specifier: ^7.17.0
         version: 7.17.8(@mantine/hooks@7.17.8(react@18.3.1))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -298,6 +292,12 @@ importers:
       '@mantine/hooks':
         specifier: ^7.17.0
         version: 7.17.8(react@18.3.1)
+      '@patternbase/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@patternbase/vitest-config':
+        specifier: workspace:*
+        version: link:../vitest-config
       '@tabler/icons-react':
         specifier: ^3.36.1
         version: 3.36.1(react@18.3.1)

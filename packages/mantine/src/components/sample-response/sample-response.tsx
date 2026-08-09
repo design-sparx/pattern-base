@@ -8,7 +8,7 @@ import {
   Textarea,
 } from "@mantine/core";
 import { IconCheck, IconRefresh, IconWand } from "@tabler/icons-react";
-import type { SampleResponseProps } from "@ai-ui/core";
+import type { SampleResponseProps } from "@patternbase/core";
 
 export function SampleResponse({
   sample,

@@ -11,7 +11,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import type { SharedVisionProps } from "@ai-ui/core";
+import type { SharedVisionProps } from "@patternbase/core";
 
 export function SharedVision({
   participants,

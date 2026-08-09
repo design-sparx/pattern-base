@@ -10,7 +10,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
-import type { ReferencesProps } from "@ai-ui/core";
+import type { ReferencesProps } from "@patternbase/core";
 
 export function References({
   references,

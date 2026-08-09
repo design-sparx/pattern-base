@@ -1,6 +1,6 @@
 import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core";
 
-import type { SuggestionsProps } from "@ai-ui/core";
+import type { SuggestionsProps } from "@patternbase/core";
 
 export function Suggestions({
   suggestions,

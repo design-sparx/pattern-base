@@ -7,7 +7,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import type { InitialCtaProps } from "@ai-ui/core";
+import type { InitialCtaProps } from "@patternbase/core";
 
 export function InitialCta({
   title,

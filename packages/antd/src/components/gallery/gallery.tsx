@@ -1,6 +1,6 @@
 import { Button, Card, Col, Empty, Row, Spin, theme, Typography } from "antd";
 
-import type { GalleryProps } from "@ai-ui/core";
+import type { GalleryProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

@@ -1,5 +1,5 @@
 {
-  "name": "@ai-ui/docs",
+  "name": "@patternbase/docs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,10 +10,10 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@ai-ui/antd": "workspace:*",
-    "@ai-ui/bootstrap": "workspace:*",
-    "@ai-ui/core": "workspace:*",
-    "@ai-ui/mantine": "workspace:*",
+    "@patternbase/antd": "workspace:*",
+    "@patternbase/bootstrap": "workspace:*",
+    "@patternbase/core": "workspace:*",
+    "@patternbase/mantine": "workspace:*",
     "@mantine/dropzone": "^7.17.0",
     "@ant-design/icons": "^5.5.0",
     "@fontsource/inter": "^5.2.8",
@@ -30,7 +30,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@ai-ui/eslint-config": "workspace:*",
+    "@patternbase/eslint-config": "workspace:*",
     "@next/eslint-plugin-next": "^16.1.6",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.45",

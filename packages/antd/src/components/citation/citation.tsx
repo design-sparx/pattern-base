@@ -6,7 +6,7 @@ import type {
   CitationProps,
   CitationsListProps,
   InlineCitationProps,
-} from "@ai-ui/core";
+} from "@patternbase/core";
 
 const { Text, Paragraph } = Typography;
 

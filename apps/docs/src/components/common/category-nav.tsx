@@ -3,7 +3,7 @@
 import { Button, Group } from "@mantine/core";
 import Link from "next/link";
 
-import type { CategoryInfo } from "@ai-ui/core";
+import type { CategoryInfo } from "@patternbase/core";
 
 interface CategoryNavProps {
   categories: CategoryInfo[];

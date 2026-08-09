@@ -1,6 +1,6 @@
 import { Badge, Card, Col, Nav, Row, Tab } from "react-bootstrap";
 
-import type { VariationsProps } from "@ai-ui/core";
+import type { VariationsProps } from "@patternbase/core";
 
 export function Variations({
   variations,

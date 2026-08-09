@@ -1,6 +1,6 @@
 import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 
-import type { BranchesProps } from "@ai-ui/core";
+import type { BranchesProps } from "@patternbase/core";
 
 export function Branches({
   branches,

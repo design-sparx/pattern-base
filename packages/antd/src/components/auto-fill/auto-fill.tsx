@@ -1,7 +1,7 @@
 import { AutoComplete, Spin, Typography } from "antd";
 import { useState } from "react";
 
-import type { AutoFillProps } from "@ai-ui/core";
+import type { AutoFillProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

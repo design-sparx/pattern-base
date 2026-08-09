@@ -1,6 +1,6 @@
 import { Button, Form, InputGroup, Spinner } from "react-bootstrap";
 
-import type { RandomizeProps } from "@ai-ui/core";
+import type { RandomizeProps } from "@patternbase/core";
 
 export function Randomize({
   onRandomize,

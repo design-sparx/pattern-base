@@ -1,10 +1,10 @@
-# AI Vory
+# PatternBase
 
 A multi-framework React component library for AI user experience patterns.
 
 ## Overview
 
-AI Vory provides 10 ready-to-use AI UX pattern components implemented in both **Bootstrap** and **Ant Design**, sharing a common set of types and hooks from a framework-agnostic core package.
+PatternBase provides 10 ready-to-use AI UX pattern components implemented in both **Bootstrap** and **Ant Design**, sharing a common set of types and hooks from a framework-agnostic core package.
 
 ### AI UX Patterns
 
@@ -25,13 +25,13 @@ AI Vory provides 10 ready-to-use AI UX pattern components implemented in both **
 
 ```
 packages/
-  core/           @ai-ui/core        — Types, hooks, utilities (framework-agnostic)
-  antd/           @ai-ui/antd        — Ant Design implementations
-  bootstrap/      @ai-ui/bootstrap   — React Bootstrap implementations
-  eslint-config/  @ai-ui/eslint-config — Shared ESLint configs
-  vitest-config/  @ai-ui/vitest-config — Shared Vitest configuration
+  core/           @patternbase/core        — Types, hooks, utilities (framework-agnostic)
+  antd/           @patternbase/antd        — Ant Design implementations
+  bootstrap/      @patternbase/bootstrap   — React Bootstrap implementations
+  eslint-config/  @patternbase/eslint-config — Shared ESLint configs
+  vitest-config/  @patternbase/vitest-config — Shared Vitest configuration
 apps/
-  docs/           @ai-ui/docs        — Next.js documentation site with live previews
+  docs/           @patternbase/docs        — Next.js documentation site with live previews
 ```
 
 ## Getting Started
@@ -45,7 +45,7 @@ pnpm dev            # Dev mode for all packages
 ### Run the docs site
 
 ```bash
-pnpm dev --filter=@ai-ui/docs
+pnpm dev --filter=@patternbase/docs
 ```
 
 Then open [http://localhost:3000](http://localhost:3000).
@@ -54,13 +54,13 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 ```tsx
 // Bootstrap
-import { OpenInput, Suggestions } from "@ai-ui/bootstrap";
+import { OpenInput, Suggestions } from "@patternbase/bootstrap";
 
 // Ant Design
-import { OpenInput, Suggestions } from "@ai-ui/antd";
+import { OpenInput, Suggestions } from "@patternbase/antd";
 
 // Core hooks (framework-agnostic)
-import { useAIGeneration, useStreamingResponse } from "@ai-ui/core";
+import { useAIGeneration, useStreamingResponse } from "@patternbase/core";
 ```
 
 Both framework packages expose identical prop interfaces — swap between Bootstrap and Ant Design without changing component props.
@@ -100,7 +100,7 @@ The `ComponentPreview` component ties these together with a tabbed UI (Preview /
 ```bash
 pnpm build                            # Build all packages
 pnpm dev                              # Dev mode for all packages
-pnpm dev --filter=@ai-ui/docs         # Run docs site
+pnpm dev --filter=@patternbase/docs         # Run docs site
 pnpm type-check                       # TypeScript validation
 pnpm lint                             # ESLint
 pnpm test                             # Run tests (Vitest)

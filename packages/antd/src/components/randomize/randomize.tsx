@@ -1,6 +1,6 @@
 import { Button, Input, Space, Spin } from "antd";
 
-import type { RandomizeProps } from "@ai-ui/core";
+import type { RandomizeProps } from "@patternbase/core";
 
 export function Randomize({
   onRandomize,

@@ -1,7 +1,7 @@
 import { RobotOutlined } from "@ant-design/icons";
 import { Alert, Space, Tag, Typography } from "antd";
 
-import type { DisclosureProps } from "@ai-ui/core";
+import type { DisclosureProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

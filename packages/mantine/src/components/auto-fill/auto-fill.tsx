@@ -8,7 +8,7 @@ import {
   TextInput,
 } from "@mantine/core";
 
-import type { AutoFillProps } from "@ai-ui/core";
+import type { AutoFillProps } from "@patternbase/core";
 
 export function AutoFill({
   suggestions,

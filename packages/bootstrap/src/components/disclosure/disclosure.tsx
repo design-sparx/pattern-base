@@ -1,6 +1,6 @@
 import { Alert, Badge } from "react-bootstrap";
 
-import type { DisclosureProps } from "@ai-ui/core";
+import type { DisclosureProps } from "@patternbase/core";
 
 const TYPE_LABELS: Record<DisclosureProps["type"], string> = {
   "ai-generated": "AI Generated",

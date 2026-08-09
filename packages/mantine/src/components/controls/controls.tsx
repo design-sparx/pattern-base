@@ -7,7 +7,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
-import type { ControlsProps } from "@ai-ui/core";
+import type { ControlsProps } from "@patternbase/core";
 
 export function Controls({
   controls,

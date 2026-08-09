@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
-import type { TemplatesProps } from "@ai-ui/core";
+import type { TemplatesProps } from "@patternbase/core";
 
 export function Templates({
   templates,

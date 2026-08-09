@@ -1,6 +1,6 @@
 import { Card, List, Space, Switch, Tag, theme, Typography } from "antd";
 
-import type { ControlsProps } from "@ai-ui/core";
+import type { ControlsProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

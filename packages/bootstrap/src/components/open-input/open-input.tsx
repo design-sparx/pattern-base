@@ -1,7 +1,7 @@
 import { type KeyboardEvent, useRef, useState } from "react";
 import { Badge, Button, Form, InputGroup, Stack } from "react-bootstrap";
 
-import type { OpenInputProps } from "@ai-ui/core";
+import type { OpenInputProps } from "@patternbase/core";
 
 export function OpenInput({
   placeholder = "Ask anything...",

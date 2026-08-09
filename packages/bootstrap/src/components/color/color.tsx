@@ -1,6 +1,6 @@
 import { Badge, Card, Stack } from "react-bootstrap";
 
-import type { ColorProps } from "@ai-ui/core";
+import type { ColorProps } from "@patternbase/core";
 
 export function Color({
   options,

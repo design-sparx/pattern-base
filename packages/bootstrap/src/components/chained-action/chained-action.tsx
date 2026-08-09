@@ -1,6 +1,6 @@
 import { Badge, Button, Card, Spinner } from "react-bootstrap";
 
-import type { ChainedActionProps } from "@ai-ui/core";
+import type { ChainedActionProps } from "@patternbase/core";
 
 const statusColors: Record<string, string> = {
   idle: "secondary",

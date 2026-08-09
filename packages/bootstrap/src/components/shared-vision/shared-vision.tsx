@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Badge, Button, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
-import type { SharedVisionProps } from "@ai-ui/core";
+import type { SharedVisionProps } from "@patternbase/core";
 
 const priorityBadgeMap = {
   high: "danger",

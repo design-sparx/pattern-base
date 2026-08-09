@@ -1,5 +1,5 @@
 {
-  "name": "@ai-ui/mantine",
+  "name": "@patternbase/mantine",
   "version": "0.1.0",
   "description": "Mantine implementation of AI UI components",
   "main": "./dist/index.js",
@@ -23,7 +23,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@ai-ui/core": "workspace:*"
+    "@patternbase/core": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -33,8 +33,8 @@
     "@tabler/icons-react": "^3.0.0"
   },
   "devDependencies": {
-    "@ai-ui/eslint-config": "workspace:*",
-    "@ai-ui/vitest-config": "workspace:*",
+    "@patternbase/eslint-config": "workspace:*",
+    "@patternbase/vitest-config": "workspace:*",
     "@mantine/core": "^7.17.0",
     "@mantine/hooks": "^7.17.0",
     "@mantine/dropzone": "^7.17.0",

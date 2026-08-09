@@ -1,6 +1,6 @@
 import { Button, Card, Form } from "react-bootstrap";
 
-import type { PromptEnhancerProps } from "@ai-ui/core";
+import type { PromptEnhancerProps } from "@patternbase/core";
 
 export function PromptEnhancer({
   prompt,

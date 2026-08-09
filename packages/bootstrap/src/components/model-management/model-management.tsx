@@ -1,6 +1,6 @@
 import { Badge, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
-import type { ModelInfo, ModelManagementProps } from "@ai-ui/core";
+import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
 
 export function ModelManagement({
   models,

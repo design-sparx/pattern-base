@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconDice, IconArrowsShuffle } from "@tabler/icons-react";
-import type { RandomizeProps } from "@ai-ui/core";
+import type { RandomizeProps } from "@patternbase/core";
 
 export function Randomize({
   onRandomize,

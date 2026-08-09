@@ -1,7 +1,7 @@
 import { EyeInvisibleOutlined } from "@ant-design/icons";
 import { Alert, Button, Card, Space, Switch, Tag, Typography } from "antd";
 
-import type { IncognitoModeProps } from "@ai-ui/core";
+import type { IncognitoModeProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

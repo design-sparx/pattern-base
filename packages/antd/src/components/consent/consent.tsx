@@ -1,7 +1,7 @@
 import { Button, Card, Checkbox, Space, Typography } from "antd";
 import { useState } from "react";
 
-import type { ConsentProps } from "@ai-ui/core";
+import type { ConsentProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

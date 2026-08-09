@@ -49,7 +49,7 @@ const pillars = [
     icon: IconLock,
     title: "Fully Typed",
     description:
-      "Strict TypeScript throughout. Shared prop interfaces live in @ai-ui/core so all three framework packages stay in sync.",
+      "Strict TypeScript throughout. Shared prop interfaces live in @patternbase/core so all three framework packages stay in sync.",
   },
   {
     icon: IconRocket,
@@ -93,11 +93,11 @@ export default function AboutPage() {
     <Box p="xl">
       {/* Hero */}
       <Title order={1} mb="sm">
-        About AI Vory
+        About PatternBase
       </Title>
       <Text c="dimmed" fz="lg" mb="xl">
-        AI Vory is an open-source React component library for building AI user
-        interfaces. It codifies the UX patterns that make AI products feel
+        PatternBase is an open-source React component library for building AI
+        user interfaces. It codifies the UX patterns that make AI products feel
         intuitive, trustworthy, and genuinely useful.
       </Text>
 
@@ -106,7 +106,7 @@ export default function AboutPage() {
         Where it comes from
       </Title>
       <Text c="dimmed" mb="xl">
-        The patterns in AI Vory are derived from{" "}
+        The patterns in PatternBase are derived from{" "}
         <Anchor href="https://www.shapeof.ai" target="_blank" c="violet">
           shapeof.ai
         </Anchor>
@@ -190,7 +190,7 @@ export default function AboutPage() {
       </Title>
       <Group gap="md">
         <Anchor
-          href="https://github.com/design-sparx/ai-vory"
+          href="https://github.com/design-sparx/patternbase"
           target="_blank"
           c="violet"
         >
@@ -200,7 +200,7 @@ export default function AboutPage() {
           </Group>
         </Anchor>
         <Anchor
-          href="https://www.npmjs.com/search?q=%40ai-ui"
+          href="https://www.npmjs.com/search?q=%40patternbase"
           target="_blank"
           c="violet"
         >

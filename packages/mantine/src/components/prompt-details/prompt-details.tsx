@@ -1,5 +1,5 @@
 import { Anchor, Badge, Card, Group, Stack, Text } from "@mantine/core";
-import type { PromptDetailsProps } from "@ai-ui/core";
+import type { PromptDetailsProps } from "@patternbase/core";
 
 export function PromptDetails({
   prompt,

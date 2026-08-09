@@ -1,6 +1,6 @@
 import { Alert, Badge, Button, Stack } from "react-bootstrap";
 
-import type { WatermarkProps } from "@ai-ui/core";
+import type { WatermarkProps } from "@patternbase/core";
 
 const DEFAULT_LABEL = "AI Provenance";
 

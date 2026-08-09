@@ -8,7 +8,7 @@ import {
   Timeline,
 } from "@mantine/core";
 import { IconArrowBack, IconGitBranch } from "@tabler/icons-react";
-import type { DraftModeProps } from "@ai-ui/core";
+import type { DraftModeProps } from "@patternbase/core";
 
 export function DraftMode({
   drafts,

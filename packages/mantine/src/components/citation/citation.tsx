@@ -5,7 +5,7 @@ import type {
   CitationProps,
   CitationsListProps,
   InlineCitationProps,
-} from "@ai-ui/core";
+} from "@patternbase/core";
 
 function getRelevanceColor(score: number) {
   if (score >= 0.8) return "green";

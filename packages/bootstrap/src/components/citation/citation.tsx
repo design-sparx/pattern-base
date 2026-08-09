@@ -5,7 +5,7 @@ import type {
   CitationProps,
   CitationsListProps,
   InlineCitationProps,
-} from "@ai-ui/core";
+} from "@patternbase/core";
 
 export function Citation({ citation }: CitationProps) {
   const [expanded, setExpanded] = useState(false);

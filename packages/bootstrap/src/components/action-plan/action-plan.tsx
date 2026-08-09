@@ -1,6 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 
-import type { ActionPlanProps, ActionPlanStep } from "@ai-ui/core";
+import type { ActionPlanProps, ActionPlanStep } from "@patternbase/core";
 
 const statusIcons: Record<ActionPlanStep["status"], string> = {
   pending: "\u25CB",

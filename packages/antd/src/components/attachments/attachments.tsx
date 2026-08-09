@@ -1,7 +1,7 @@
 import { DeleteOutlined, InboxOutlined } from "@ant-design/icons";
 import { Button, Progress, Tag, theme, Typography, Upload } from "antd";
 
-import type { AttachmentsProps } from "@ai-ui/core";
+import type { AttachmentsProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

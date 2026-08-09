@@ -1,6 +1,6 @@
 import { Button, Card, List, Space, Tag, Typography } from "antd";
 
-import type { DraftModeProps } from "@ai-ui/core";
+import type { DraftModeProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

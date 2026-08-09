@@ -2,7 +2,7 @@ import { LoadingOutlined, SendOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Tag } from "antd";
 import { type KeyboardEvent, useRef, useState } from "react";
 
-import type { OpenInputProps } from "@ai-ui/core";
+import type { OpenInputProps } from "@patternbase/core";
 
 const { TextArea } = Input;
 

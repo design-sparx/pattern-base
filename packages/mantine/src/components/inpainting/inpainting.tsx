@@ -10,7 +10,7 @@ import {
   Textarea,
 } from "@mantine/core";
 import { IconBrush } from "@tabler/icons-react";
-import type { InpaintingProps } from "@ai-ui/core";
+import type { InpaintingProps } from "@patternbase/core";
 
 export function Inpainting({
   content,

@@ -1,4 +1,8 @@
-import type { CategoryInfo, PatternCategory, PatternMeta } from "@ai-ui/core";
+import type {
+  CategoryInfo,
+  PatternCategory,
+  PatternMeta,
+} from "@patternbase/core";
 
 export const categories: CategoryInfo[] = [
   {

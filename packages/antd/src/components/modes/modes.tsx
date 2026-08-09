@@ -1,6 +1,6 @@
 import { Card, Segmented, Space, Tabs, Typography } from "antd";
 
-import type { ModesProps } from "@ai-ui/core";
+import type { ModesProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

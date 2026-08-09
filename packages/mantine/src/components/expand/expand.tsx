@@ -1,7 +1,7 @@
 import { Accordion, Button, Stack, Text } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 
-import type { ExpandProps } from "@ai-ui/core";
+import type { ExpandProps } from "@patternbase/core";
 
 export function Expand({
   content,

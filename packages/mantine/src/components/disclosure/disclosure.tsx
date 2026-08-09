@@ -1,7 +1,7 @@
 import { Alert, Badge, Text } from "@mantine/core";
 import { IconRobot } from "@tabler/icons-react";
 
-import type { DisclosureProps } from "@ai-ui/core";
+import type { DisclosureProps } from "@patternbase/core";
 
 const TYPE_LABELS: Record<DisclosureProps["type"], string> = {
   "ai-generated": "AI Generated",

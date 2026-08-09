@@ -1,6 +1,6 @@
 import { Button, Card, Group, Stack, Stepper, Text } from "@mantine/core";
 
-import type { ActionPlanProps } from "@ai-ui/core";
+import type { ActionPlanProps } from "@patternbase/core";
 
 export function ActionPlan({
   steps,

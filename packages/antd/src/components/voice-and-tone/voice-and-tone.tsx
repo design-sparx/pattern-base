@@ -1,6 +1,6 @@
 import { Card, Slider, Space, Typography } from "antd";
 
-import type { VoiceAndToneProps } from "@ai-ui/core";
+import type { VoiceAndToneProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

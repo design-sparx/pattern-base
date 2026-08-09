@@ -1,6 +1,6 @@
 import { Alert, Button, Space } from "antd";
 
-import type { NudgesProps } from "@ai-ui/core";
+import type { NudgesProps } from "@patternbase/core";
 
 const typeMap: Record<string, "info" | "warning" | "success" | "error"> = {
   tip: "info",

@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import type { RestructureProps } from "@ai-ui/core";
+import type { RestructureProps } from "@patternbase/core";
 
 export function Restructure({
   content,

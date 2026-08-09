@@ -33,7 +33,7 @@ const spaceGrotesk = spaceGroteskFont({
 });
 
 export const metadata: Metadata = {
-  title: "AI Vory - AI UX Pattern Library",
+  title: "PatternBase - AI UX Pattern Library",
   description:
     "A multi-framework component library for AI user experience patterns",
 };
@@ -64,7 +64,7 @@ export default function RootLayout({
           sizes="180x180"
           href="/apple-touch-icon.png"
         />
-        <meta name="apple-mobile-web-app-title" content="AI Vory" />
+        <meta name="apple-mobile-web-app-title" content="PatternBase" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>

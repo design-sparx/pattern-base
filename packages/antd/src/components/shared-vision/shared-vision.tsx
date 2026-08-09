@@ -2,7 +2,7 @@ import { PlusOutlined, TeamOutlined } from "@ant-design/icons";
 import { Button, Card, Input, List, Space, Tag, Typography } from "antd";
 import { useState } from "react";
 
-import type { SharedVisionProps } from "@ai-ui/core";
+import type { SharedVisionProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

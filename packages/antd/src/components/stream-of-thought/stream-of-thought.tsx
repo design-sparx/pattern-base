@@ -1,6 +1,6 @@
 import { Badge, Collapse, Space, Spin, Tag, theme, Typography } from "antd";
 
-import type { StreamOfThoughtProps } from "@ai-ui/core";
+import type { StreamOfThoughtProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

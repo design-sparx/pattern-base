@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Badge, Button, Card, Form, ListGroup } from "react-bootstrap";
 
-import type { SavedStylesProps } from "@ai-ui/core";
+import type { SavedStylesProps } from "@patternbase/core";
 
 export function SavedStyles({
   styles,

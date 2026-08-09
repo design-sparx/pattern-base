@@ -10,7 +10,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import type { SynthesisProps } from "@ai-ui/core";
+import type { SynthesisProps } from "@patternbase/core";
 
 export function Synthesis({
   sources,

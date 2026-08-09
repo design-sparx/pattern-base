@@ -8,7 +8,7 @@ import {
   Typography,
 } from "antd";
 
-import type { AvatarProps } from "@ai-ui/core";
+import type { AvatarProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

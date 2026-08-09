@@ -1,6 +1,6 @@
 import { Accordion, Badge, Group, Loader, Stack, Text } from "@mantine/core";
 
-import type { StreamOfThoughtProps } from "@ai-ui/core";
+import type { StreamOfThoughtProps } from "@patternbase/core";
 
 const STEP_CONFIG: Record<string, { icon: string; color: string }> = {
   thinking: { icon: "💭", color: "violet" },

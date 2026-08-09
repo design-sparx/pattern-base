@@ -1,6 +1,6 @@
 import { Button, Card, List, Tag, Typography } from "antd";
 
-import type { FootprintsProps } from "@ai-ui/core";
+import type { FootprintsProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

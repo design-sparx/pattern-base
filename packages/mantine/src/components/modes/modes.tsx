@@ -6,7 +6,7 @@ import {
   Tabs,
   Text,
 } from "@mantine/core";
-import type { ModesProps } from "@ai-ui/core";
+import type { ModesProps } from "@patternbase/core";
 
 export function Modes({
   modes,

@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row, Space, Typography } from "antd";
 
-import type { InitialCtaProps } from "@ai-ui/core";
+import type { InitialCtaProps } from "@patternbase/core";
 
 const { Title, Text } = Typography;
 

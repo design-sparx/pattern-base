@@ -1,6 +1,6 @@
 import { Badge, Button, Card, Form, Spinner } from "react-bootstrap";
 
-import type { InpaintingProps } from "@ai-ui/core";
+import type { InpaintingProps } from "@patternbase/core";
 
 export function Inpainting({
   content,

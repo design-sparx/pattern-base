@@ -8,7 +8,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
-import type { ColorProps } from "@ai-ui/core";
+import type { ColorProps } from "@patternbase/core";
 
 export function Color({
   options,

@@ -1,6 +1,6 @@
 import { Alert, Button } from "react-bootstrap";
 
-import type { NudgesProps } from "@ai-ui/core";
+import type { NudgesProps } from "@patternbase/core";
 
 const typeVariant: Record<string, string> = {
   tip: "info",

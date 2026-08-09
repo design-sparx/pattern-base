@@ -7,7 +7,7 @@ type Framework = "bootstrap" | "antd" | "mantine";
 type SnippetTemplate = (fw: Framework) => string;
 
 const snippetTemplates: Record<string, SnippetTemplate> = {
-  "open-input": (fw) => `import { OpenInput } from '@ai-ui/${fw}';
+  "open-input": (fw) => `import { OpenInput } from '@patternbase/${fw}';
 
 function MyChat() {
   const handleSubmit = (prompt: string) => {
@@ -24,7 +24,7 @@ function MyChat() {
   );
 }`,
 
-  suggestions: (fw) => `import { Suggestions } from '@ai-ui/${fw}';
+  suggestions: (fw) => `import { Suggestions } from '@patternbase/${fw}';
 
 const starters = [
   { id: '1', title: 'Write a story', prompt: 'Write a short story about...', icon: '\u270D\uFE0F' },
@@ -40,7 +40,9 @@ const starters = [
   columns={2}
 />`,
 
-  "parameter-control": (fw) => `import { ParameterControl } from '@ai-ui/${fw}';
+  "parameter-control": (
+    fw,
+  ) => `import { ParameterControl } from '@patternbase/${fw}';
 
 const [params, setParams] = useState({
   temperature: 0.7,
@@ -64,7 +66,7 @@ const [params, setParams] = useState({
   onChange={(id, value) => setParams(prev => ({ ...prev, [id]: value }))}
 />`,
 
-  "preset-styles": (fw) => `import { PresetStyles } from '@ai-ui/${fw}';
+  "preset-styles": (fw) => `import { PresetStyles } from '@patternbase/${fw}';
 
 const presets = [
   {
@@ -93,7 +95,9 @@ const presets = [
   variant="cards"
 />`,
 
-  "prompt-enhancer": (fw) => `import { PromptEnhancer } from '@ai-ui/${fw}';
+  "prompt-enhancer": (
+    fw,
+  ) => `import { PromptEnhancer } from '@patternbase/${fw}';
 
 const originalPrompt = 'write a launch email for our new ai feature';
 const enhancedPrompt =
@@ -109,7 +113,7 @@ const enhancedPrompt =
   showDiff
 />`,
 
-  "saved-styles": (fw) => `import { SavedStyles } from '@ai-ui/${fw}';
+  "saved-styles": (fw) => `import { SavedStyles } from '@patternbase/${fw}';
 
 const styles = [
   {
@@ -137,7 +141,7 @@ const styles = [
   variant="list"
 />`,
 
-  "voice-and-tone": (fw) => `import { VoiceAndTone } from '@ai-ui/${fw}';
+  "voice-and-tone": (fw) => `import { VoiceAndTone } from '@patternbase/${fw}';
 
 const axes = [
   { id: 'formality', label: 'Formality', leftLabel: 'Casual', rightLabel: 'Formal', value: 35, min: -100, max: 100 },
@@ -153,7 +157,9 @@ const axes = [
   variant="sliders"
 />`,
 
-  "stream-of-thought": (fw) => `import { StreamOfThought } from '@ai-ui/${fw}';
+  "stream-of-thought": (
+    fw,
+  ) => `import { StreamOfThought } from '@patternbase/${fw}';
 
 const steps = [
   { id: '1', type: 'thinking', content: 'Analyzing the user query...', timestamp: new Date() },
@@ -164,7 +170,7 @@ const steps = [
 
 <StreamOfThought steps={steps} isStreaming={false} collapsible />`,
 
-  citation: (fw) => `import { CitationsList } from '@ai-ui/${fw}';
+  citation: (fw) => `import { CitationsList } from '@patternbase/${fw}';
 
 const citations = [
   { id: '1', source: 'React Documentation', url: 'https://react.dev', snippet: 'React lets you build user interfaces out of individual pieces called components.', relevance: 0.95 },
@@ -174,7 +180,7 @@ const citations = [
 
 <CitationsList citations={citations} title="Sources" maxVisible={3} />`,
 
-  regenerate: (fw) => `import { Regenerate } from '@ai-ui/${fw}';
+  regenerate: (fw) => `import { Regenerate } from '@patternbase/${fw}';
 
 <Regenerate
   onRegenerate={() => console.log('Regenerating...')}
@@ -187,7 +193,7 @@ const citations = [
   ]}
 />`,
 
-  disclosure: (fw) => `import { Disclosure } from '@ai-ui/${fw}';
+  disclosure: (fw) => `import { Disclosure } from '@patternbase/${fw}';
 
 {/* Badge variant */}
 <Disclosure variant="badge" type="ai-generated" model="GPT-4" />
@@ -198,7 +204,7 @@ const citations = [
 {/* Inline variant */}
 <p>This content was <Disclosure variant="inline" type="ai-suggested" /></p>`,
 
-  variations: (fw) => `import { Variations } from '@ai-ui/${fw}';
+  variations: (fw) => `import { Variations } from '@patternbase/${fw}';
 
 const variations = [
   { id: '1', label: 'Formal', content: 'Dear Sir/Madam, I am writing to express my interest in the position...' },
@@ -214,7 +220,7 @@ const variations = [
   columns={3}
 />`,
 
-  "cost-estimate": (fw) => `import { CostEstimate } from '@ai-ui/${fw}';
+  "cost-estimate": (fw) => `import { CostEstimate } from '@patternbase/${fw}';
 
 <CostEstimate
   breakdown={{
@@ -230,7 +236,9 @@ const variations = [
   showTokens
 />`,
 
-  "model-management": (fw) => `import { ModelManagement } from '@ai-ui/${fw}';
+  "model-management": (
+    fw,
+  ) => `import { ModelManagement } from '@patternbase/${fw}';
 
 const models = [
   { id: 'gpt4', name: 'GPT-4 Turbo', provider: 'OpenAI', contextWindow: 128000, costPer1kInput: 0.01, capabilities: ['chat', 'code', 'vision'] },
@@ -247,7 +255,7 @@ const models = [
   groupByProvider
 />`,
 
-  modes: (fw) => `import { Modes } from '@ai-ui/${fw}';
+  modes: (fw) => `import { Modes } from '@patternbase/${fw}';
 
 const modes = [
   { id: 'creative', label: 'Creative', icon: '\uD83C\uDFA8', description: 'High-divergence brainstorming mode' },
@@ -264,7 +272,7 @@ const modes = [
   variant="segmented"
 />`,
 
-  "follow-up": (fw) => `import { FollowUp } from '@ai-ui/${fw}';
+  "follow-up": (fw) => `import { FollowUp } from '@patternbase/${fw}';
 
 const followUps = [
   { id: '1', text: 'Tell me more about this topic', icon: '\u27A1\uFE0F' },
@@ -279,7 +287,7 @@ const followUps = [
   title="Suggested follow-ups"
 />`,
 
-  templates: (fw) => `import { Templates } from '@ai-ui/${fw}';
+  templates: (fw) => `import { Templates } from '@patternbase/${fw}';
 
 const templates = [
   { id: '1', name: 'Blog Post', description: 'Generate a structured blog post', icon: '\uD83D\uDCDD', category: 'Writing', template: 'Write a blog post about {{topic}}' },
@@ -295,7 +303,7 @@ const templates = [
   searchable
 />`,
 
-  gallery: (fw) => `import { Gallery } from '@ai-ui/${fw}';
+  gallery: (fw) => `import { Gallery } from '@patternbase/${fw}';
 
 const items = [
   { id: '1', type: 'card', title: 'Abstract Design', content: 'A modern geometric pattern' },
@@ -310,7 +318,7 @@ const items = [
   selectable
 />`,
 
-  attachments: (fw) => `import { Attachments } from '@ai-ui/${fw}';
+  attachments: (fw) => `import { Attachments } from '@patternbase/${fw}';
 
 const [files, setFiles] = useState([
   { id: '1', name: 'report.pdf', type: 'application/pdf', size: 245000, status: 'complete' },
@@ -324,7 +332,7 @@ const [files, setFiles] = useState([
   acceptedTypes={['application/pdf', 'text/csv', 'image/*']}
 />`,
 
-  filters: (fw) => `import { Filters } from '@ai-ui/${fw}';
+  filters: (fw) => `import { Filters } from '@patternbase/${fw}';
 
 const groups = [
   { id: 'type', label: 'Content Type', type: 'checkbox', options: [
@@ -345,7 +353,7 @@ const groups = [
   title="Filter Results"
 />`,
 
-  connectors: (fw) => `import { Connectors } from '@ai-ui/${fw}';
+  connectors: (fw) => `import { Connectors } from '@patternbase/${fw}';
 
 const sources = [
   { id: 'notion', name: 'Notion Workspace', type: 'knowledge-base', status: 'connected', description: 'Project docs and requirements' },
@@ -361,7 +369,7 @@ const sources = [
   title="Connected Sources"
 />`,
 
-  "action-plan": (fw) => `import { ActionPlan } from '@ai-ui/${fw}';
+  "action-plan": (fw) => `import { ActionPlan } from '@patternbase/${fw}';
 
 const steps = [
   { id: '1', title: 'Analyze input data', status: 'completed', description: 'Parse and validate the dataset', tool: 'DataParser' },
@@ -378,7 +386,7 @@ const steps = [
   showEstimates
 />`,
 
-  branches: (fw) => `import { Branches } from '@ai-ui/${fw}';
+  branches: (fw) => `import { Branches } from '@patternbase/${fw}';
 
 const branches = [
   { id: 'main', label: 'Main Thread', preview: 'Baseline plan and assumptions', depth: 0 },
@@ -395,7 +403,7 @@ const branches = [
   variant="tree"
 />`,
 
-  controls: (fw) => `import { Controls } from '@ai-ui/${fw}';
+  controls: (fw) => `import { Controls } from '@patternbase/${fw}';
 
 const controls = [
   { id: 'web-search', label: 'Web Search', description: 'Allow live browsing for up-to-date facts', enabled: true, status: 'active' },
@@ -411,7 +419,7 @@ const controls = [
   showStatus
 />`,
 
-  "draft-mode": (fw) => `import { DraftMode } from '@ai-ui/${fw}';
+  "draft-mode": (fw) => `import { DraftMode } from '@patternbase/${fw}';
 
 const drafts = [
   { id: 'draft-1', number: 1, label: 'Initial Draft', preview: 'High-level architecture with baseline assumptions.' },
@@ -429,7 +437,7 @@ const drafts = [
   variant="timeline"
 />`,
 
-  memory: (fw) => `import { Memory } from '@ai-ui/${fw}';
+  memory: (fw) => `import { Memory } from '@patternbase/${fw}';
 
 const memories = [
   { id: 'pref-tone', label: 'Preferred Tone', value: 'Keep responses concise and professional.', category: 'Preference' },
@@ -446,7 +454,7 @@ const memories = [
   showTimestamps
 />`,
 
-  references: (fw) => `import { References } from '@ai-ui/${fw}';
+  references: (fw) => `import { References } from '@patternbase/${fw}';
 
 const references = [
   { id: 'ref-prd', title: 'Product Requirements Doc', type: 'document', location: 'https://docs.acme.dev/prd/ai-assistant', excerpt: 'Scope, acceptance criteria, and rollout constraints.', selected: true, relevance: 0.92 },
@@ -463,7 +471,9 @@ const references = [
   showRelevance
 />`,
 
-  "sample-response": (fw) => `import { SampleResponse } from '@ai-ui/${fw}';
+  "sample-response": (
+    fw,
+  ) => `import { SampleResponse } from '@patternbase/${fw}';
 
 <SampleResponse
   prompt="Create a rollout plan for migrating our analytics pipeline to a streaming architecture."
@@ -475,7 +485,7 @@ const references = [
   variant="card"
 />`,
 
-  "shared-vision": (fw) => `import { SharedVision } from '@ai-ui/${fw}';
+  "shared-vision": (fw) => `import { SharedVision } from '@patternbase/${fw}';
 
 const participants = [
   { id: 'p1', name: 'Maya', role: 'PM', isActive: true },
@@ -503,7 +513,7 @@ const context = [
   variant="board"
 />`,
 
-  verification: (fw) => `import { Verification } from '@ai-ui/${fw}';
+  verification: (fw) => `import { Verification } from '@patternbase/${fw}';
 
 const claims = [
   { id: 'v1', text: 'Enterprise AI adoption exceeded 70% in 2025.', confidence: 0.91, status: 'verified', source: 'McKinsey AI Report 2025', url: 'https://mckinsey.com/ai-report' },
@@ -520,7 +530,7 @@ const claims = [
   variant="list"
 />`,
 
-  caveat: (fw) => `import { Caveat } from '@ai-ui/${fw}';
+  caveat: (fw) => `import { Caveat } from '@patternbase/${fw}';
 
 {/* Banner variant */}
 <Caveat
@@ -534,7 +544,7 @@ const claims = [
 {/* Inline variant */}
 <p>This response was generated by AI. <Caveat message="Results may vary." variant="inline" severity="info" /></p>`,
 
-  consent: (fw) => `import { Consent } from '@ai-ui/${fw}';
+  consent: (fw) => `import { Consent } from '@patternbase/${fw}';
 
 const items = [
   { id: '1', label: 'Process my data with AI', description: 'Allow AI models to analyze your input', required: true },
@@ -550,7 +560,7 @@ const items = [
   description="Please review and accept the following."
 />`,
 
-  "incognito-mode": (fw) => `import { IncognitoMode } from '@ai-ui/${fw}';
+  "incognito-mode": (fw) => `import { IncognitoMode } from '@patternbase/${fw}';
 
 const [incognitoEnabled, setIncognitoEnabled] = useState(true);
 
@@ -564,7 +574,7 @@ const [incognitoEnabled, setIncognitoEnabled] = useState(true);
   variant="card"
 />`,
 
-  watermark: (fw) => `import { Watermark } from '@ai-ui/${fw}';
+  watermark: (fw) => `import { Watermark } from '@patternbase/${fw}';
 
 <Watermark
   label="AI Provenance Mark"
@@ -575,7 +585,7 @@ const [incognitoEnabled, setIncognitoEnabled] = useState(true);
   variant="banner"
 />`,
 
-  avatar: (fw) => `import { Avatar } from '@ai-ui/${fw}';
+  avatar: (fw) => `import { Avatar } from '@patternbase/${fw}';
 
 <Avatar
   name="Avery"
@@ -587,7 +597,7 @@ const [incognitoEnabled, setIncognitoEnabled] = useState(true);
   onSelect={() => console.log('Open AI profile')}
 />`,
 
-  color: (fw) => `import { Color } from '@ai-ui/${fw}';
+  color: (fw) => `import { Color } from '@patternbase/${fw}';
 
 const palette = [
   { id: 'c1', label: 'Signal Blue', value: '#2563EB' },
@@ -605,7 +615,7 @@ const palette = [
   variant="card"
 />`,
 
-  "auto-fill": (fw) => `import { AutoFill } from '@ai-ui/${fw}';
+  "auto-fill": (fw) => `import { AutoFill } from '@patternbase/${fw}';
 
 const suggestions = [
   { id: '1', text: 'How do I implement authentication?', source: 'Recent searches' },
@@ -621,7 +631,7 @@ const suggestions = [
   maxSuggestions={5}
 />`,
 
-  summary: (fw) => `import { Summary } from '@ai-ui/${fw}';
+  summary: (fw) => `import { Summary } from '@patternbase/${fw}';
 
 <Summary
   content="The research paper presents a novel approach to transformer architectures..."
@@ -633,7 +643,7 @@ const suggestions = [
   variant="card"
 />`,
 
-  "initial-cta": (fw) => `import { InitialCta } from '@ai-ui/${fw}';
+  "initial-cta": (fw) => `import { InitialCta } from '@patternbase/${fw}';
 
 const actions = [
   { id: '1', label: 'Write something', description: 'Generate text or documents', icon: '\u270D\uFE0F' },
@@ -649,7 +659,7 @@ const actions = [
   variant="cards"
 />`,
 
-  nudges: (fw) => `import { Nudges } from '@ai-ui/${fw}';
+  nudges: (fw) => `import { Nudges } from '@patternbase/${fw}';
 
 const nudges = [
   { id: '1', message: 'Try using more specific prompts for better results', type: 'tip', icon: '\uD83D\uDCA1', actionLabel: 'Show examples' },
@@ -662,7 +672,7 @@ const nudges = [
   variant="inline"
 />`,
 
-  "prompt-details": (fw) => `import { PromptDetails } from '@ai-ui/${fw}';
+  "prompt-details": (fw) => `import { PromptDetails } from '@patternbase/${fw}';
 
 const details = [
   { id: '1', label: 'Language', value: 'English', type: 'badge' },
@@ -678,7 +688,7 @@ const details = [
   variant="card"
 />`,
 
-  randomize: (fw) => `import { Randomize } from '@ai-ui/${fw}';
+  randomize: (fw) => `import { Randomize } from '@patternbase/${fw}';
 
 <Randomize
   onRandomize={() => console.log('Randomizing...')}
@@ -687,7 +697,7 @@ const details = [
   onSeedChange={(seed) => console.log('Seed:', seed)}
 />`,
 
-  expand: (fw) => `import { Expand } from '@ai-ui/${fw}';
+  expand: (fw) => `import { Expand } from '@patternbase/${fw}';
 
 <Expand
   content="React Server Components allow you to render components on the server..."
@@ -697,7 +707,7 @@ const details = [
   variant="accordion"
 />`,
 
-  transform: (fw) => `import { Transform } from '@ai-ui/${fw}';
+  transform: (fw) => `import { Transform } from '@patternbase/${fw}';
 
 const options = [
   { id: 'formal', label: 'Make formal', icon: '\uD83C\uDF93' },
@@ -713,7 +723,7 @@ const options = [
   variant="buttons"
 />`,
 
-  "inline-action": (fw) => `import { InlineAction } from '@ai-ui/${fw}';
+  "inline-action": (fw) => `import { InlineAction } from '@patternbase/${fw}';
 
 const actions = [
   { id: 'copy', label: 'Copy', icon: '\uD83D\uDCCB', type: 'secondary' },
@@ -727,7 +737,7 @@ const actions = [
   variant="toolbar"
 />`,
 
-  "chained-action": (fw) => `import { ChainedAction } from '@ai-ui/${fw}';
+  "chained-action": (fw) => `import { ChainedAction } from '@patternbase/${fw}';
 
 const steps = [
   { id: '1', label: 'Fetch latest data', status: 'completed', result: 'Retrieved 142 records' },
@@ -741,7 +751,7 @@ const steps = [
   title="Data Pipeline"
 />`,
 
-  "data-ownership": (fw) => `import { DataOwnership } from '@ai-ui/${fw}';
+  "data-ownership": (fw) => `import { DataOwnership } from '@patternbase/${fw}';
 
 const items = [
   { id: '1', dataType: 'Conversation History', description: 'All chat messages', retention: '90 days', deletable: true },
@@ -756,7 +766,7 @@ const items = [
   title="Your Data"
 />`,
 
-  footprints: (fw) => `import { Footprints } from '@ai-ui/${fw}';
+  footprints: (fw) => `import { Footprints } from '@patternbase/${fw}';
 
 const entries = [
   { id: '1', action: 'Generated blog post', timestamp: new Date(), model: 'GPT-4', inputPreview: 'Write a blog post...' },
@@ -771,7 +781,7 @@ const entries = [
   showTimestamps
 />`,
 
-  describe: (fw) => `import { Describe } from '@ai-ui/${fw}';
+  describe: (fw) => `import { Describe } from '@patternbase/${fw}';
 
 const details = [
   { id: '1', label: 'Model', value: 'Midjourney v6', type: 'badge' },
@@ -789,7 +799,7 @@ const details = [
   onCopy={() => navigator.clipboard.writeText(output)}
 />`,
 
-  inpainting: (fw) => `import { Inpainting } from '@ai-ui/${fw}';
+  inpainting: (fw) => `import { Inpainting } from '@patternbase/${fw}';
 
 const regions = [
   { id: 'intro', label: 'Introduction' },
@@ -807,7 +817,7 @@ const regions = [
   title="Edit Content Region"
 />`,
 
-  madlibs: (fw) => `import { Madlibs } from '@ai-ui/${fw}';
+  madlibs: (fw) => `import { Madlibs } from '@patternbase/${fw}';
 
 const variables = [
   { id: 'topic', label: 'Topic', placeholder: 'e.g. AI trends', required: true },
@@ -828,7 +838,7 @@ const variables = [
   showPreview
 />`,
 
-  restructure: (fw) => `import { Restructure } from '@ai-ui/${fw}';
+  restructure: (fw) => `import { Restructure } from '@patternbase/${fw}';
 
 const options = [
   { id: 'condense', label: 'Make Shorter', icon: '\uD83D\uDCDD' },
@@ -845,7 +855,7 @@ const options = [
   showDiff
 />`,
 
-  restyle: (fw) => `import { Restyle } from '@ai-ui/${fw}';
+  restyle: (fw) => `import { Restyle } from '@patternbase/${fw}';
 
 const options = [
   { id: 'formal', label: 'Formal', icon: '\uD83C\uDF93', description: 'Professional business tone' },
@@ -861,7 +871,7 @@ const options = [
   variant="presets"
 />`,
 
-  synthesis: (fw) => `import { Synthesis } from '@ai-ui/${fw}';
+  synthesis: (fw) => `import { Synthesis } from '@patternbase/${fw}';
 
 const sources = [
   { id: 's1', title: 'McKinsey AI Report', content: 'AI adoption reached 72%...', relevance: 0.95 },

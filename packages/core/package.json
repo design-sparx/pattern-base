@@ -1,5 +1,5 @@
 {
-  "name": "@ai-ui/core",
+  "name": "@patternbase/core",
   "version": "0.3.0",
   "description": "Shared types, hooks, and utilities for AI UI components",
   "main": "./dist/index.js",
@@ -26,8 +26,8 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@ai-ui/eslint-config": "workspace:*",
-    "@ai-ui/vitest-config": "workspace:*",
+    "@patternbase/eslint-config": "workspace:*",
+    "@patternbase/vitest-config": "workspace:*",
     "@types/react": "^18.2.45",
     "eslint": "^8.57.0",
     "tsup": "^8.0.1",

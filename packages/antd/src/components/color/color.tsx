@@ -1,6 +1,6 @@
 import { Card, Space, Tag, theme, Typography } from "antd";
 
-import type { ColorProps } from "@ai-ui/core";
+import type { ColorProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

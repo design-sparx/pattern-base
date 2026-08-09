@@ -1,7 +1,7 @@
 import { Button, Card, Spin, Typography } from "antd";
 import { useState } from "react";
 
-import type { ExpandProps } from "@ai-ui/core";
+import type { ExpandProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

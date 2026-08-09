@@ -1,6 +1,6 @@
 import { Card, Col, Row, Spinner } from "react-bootstrap";
 
-import type { GalleryProps } from "@ai-ui/core";
+import type { GalleryProps } from "@patternbase/core";
 
 export function Gallery({
   items,

@@ -11,7 +11,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
-import type { MadlibsProps } from "@ai-ui/core";
+import type { MadlibsProps } from "@patternbase/core";
 
 export function Madlibs({
   template,

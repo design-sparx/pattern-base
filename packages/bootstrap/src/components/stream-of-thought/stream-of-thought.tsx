@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Accordion, Badge, Spinner, Stack } from "react-bootstrap";
 
-import type { StreamOfThoughtProps } from "@ai-ui/core";
+import type { StreamOfThoughtProps } from "@patternbase/core";
 
 const STEP_CONFIG: Record<string, { icon: string; color: string }> = {
   thinking: { icon: "\uD83D\uDCAD", color: "var(--bs-purple)" },

@@ -1,7 +1,7 @@
 import { CheckOutlined, EyeOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Button, Card, Space, Spin, Typography } from "antd";
 
-import type { SampleResponseProps } from "@ai-ui/core";
+import type { SampleResponseProps } from "@patternbase/core";
 
 const { Text, Paragraph } = Typography;
 

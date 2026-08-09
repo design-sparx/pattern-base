@@ -1,6 +1,6 @@
 import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 
-import type { FootprintsProps } from "@ai-ui/core";
+import type { FootprintsProps } from "@patternbase/core";
 
 export function Footprints({
   entries,

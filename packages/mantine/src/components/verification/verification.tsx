@@ -14,7 +14,7 @@ import {
   IconHelp,
   IconX,
 } from "@tabler/icons-react";
-import type { VerificationProps } from "@ai-ui/core";
+import type { VerificationProps } from "@patternbase/core";
 
 export function Verification({
   claims,

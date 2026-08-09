@@ -1,6 +1,6 @@
 import { Button, Card, Slider, Space, Spin, Typography } from "antd";
 
-import type { RestyleProps } from "@ai-ui/core";
+import type { RestyleProps } from "@patternbase/core";
 
 const { Text, Paragraph } = Typography;
 

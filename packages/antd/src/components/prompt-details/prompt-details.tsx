@@ -1,6 +1,6 @@
 import { Card, Space, Tag, Typography } from "antd";
 
-import type { PromptDetailsProps } from "@ai-ui/core";
+import type { PromptDetailsProps } from "@patternbase/core";
 
 const { Text, Link } = Typography;
 

@@ -41,7 +41,7 @@ export function Header() {
             style={{ color: "var(--mantine-color-violet-6)" }}
           />
           <Text fw={700} fz="lg" style={{ color: "var(--mantine-color-text)" }}>
-            AI Vory
+            PatternBase
           </Text>
           <Badge
             size="xs"

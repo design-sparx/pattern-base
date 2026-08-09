@@ -1,6 +1,6 @@
 import { Badge, Button, Card, Image, Stack } from "react-bootstrap";
 
-import type { AvatarProps } from "@ai-ui/core";
+import type { AvatarProps } from "@patternbase/core";
 
 const statusClassMap = {
   online: "success",

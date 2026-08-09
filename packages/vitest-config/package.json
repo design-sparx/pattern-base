@@ -1,5 +1,5 @@
 {
-  "name": "@ai-ui/vitest-config",
+  "name": "@patternbase/vitest-config",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",

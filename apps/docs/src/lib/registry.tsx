@@ -58,7 +58,7 @@ import {
   Verification as AntVerification,
   VoiceAndTone as AntVoiceAndTone,
   Watermark as AntWatermark,
-} from "@ai-ui/antd";
+} from "@patternbase/antd";
 // Bootstrap components
 import {
   ActionPlan as BsActionPlan,
@@ -115,7 +115,7 @@ import {
   Verification as BsVerification,
   VoiceAndTone as BsVoiceAndTone,
   Watermark as BsWatermark,
-} from "@ai-ui/bootstrap";
+} from "@patternbase/bootstrap";
 // Mantine components
 import {
   ActionPlan as MnActionPlan,
@@ -172,7 +172,7 @@ import {
   Verification as MnVerification,
   VoiceAndTone as MnVoiceAndTone,
   Watermark as MnWatermark,
-} from "@ai-ui/mantine";
+} from "@patternbase/mantine";
 
 import {
   demoActionPlanSteps,

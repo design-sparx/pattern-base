@@ -1,6 +1,6 @@
 import { Alert, Badge, Button, Card, Stack } from "react-bootstrap";
 
-import type { IncognitoModeProps } from "@ai-ui/core";
+import type { IncognitoModeProps } from "@patternbase/core";
 
 const DEFAULT_DESCRIPTION_ON =
   "This private session is excluded from history and account memory.";

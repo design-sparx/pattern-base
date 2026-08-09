@@ -1,6 +1,6 @@
 import { Button, Card, Input, Space, Typography } from "antd";
 
-import type { PromptEnhancerProps } from "@ai-ui/core";
+import type { PromptEnhancerProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

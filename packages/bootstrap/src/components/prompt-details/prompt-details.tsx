@@ -1,6 +1,6 @@
 import { Badge, Card } from "react-bootstrap";
 
-import type { PromptDetailsProps } from "@ai-ui/core";
+import type { PromptDetailsProps } from "@patternbase/core";
 
 export function PromptDetails({
   prompt,

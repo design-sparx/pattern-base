@@ -1,6 +1,6 @@
 import { Button, Card, Space, Typography } from "antd";
 
-import type { PresetStylesProps } from "@ai-ui/core";
+import type { PresetStylesProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

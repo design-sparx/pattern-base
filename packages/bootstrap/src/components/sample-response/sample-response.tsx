@@ -1,6 +1,6 @@
 import { Button, Card, Spinner, Stack } from "react-bootstrap";
 
-import type { SampleResponseProps } from "@ai-ui/core";
+import type { SampleResponseProps } from "@patternbase/core";
 
 export function SampleResponse({
   sample,

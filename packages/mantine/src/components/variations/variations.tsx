@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 
-import type { VariationsProps } from "@ai-ui/core";
+import type { VariationsProps } from "@patternbase/core";
 
 export function Variations({
   variations,

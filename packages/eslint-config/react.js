@@ -36,7 +36,7 @@ module.exports = {
         groups: [
           ["^node:"],
           ["^@?\\w"],
-          ["^@ai-ui/"],
+          ["^@patternbase/"],
           ["^\\."],
           ["^.+\\.s?css$"],
         ],

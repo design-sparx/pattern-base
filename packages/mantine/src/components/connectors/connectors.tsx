@@ -8,7 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import type { ConnectorsProps } from "@ai-ui/core";
+import type { ConnectorsProps } from "@patternbase/core";
 
 export function Connectors({
   sources,

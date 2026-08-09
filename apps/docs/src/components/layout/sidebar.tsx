@@ -106,7 +106,7 @@ export function Sidebar() {
             ta="center"
             style={{ opacity: 0.6, letterSpacing: "0.03em" }}
           >
-            AI Vory v0.1.0
+            PatternBase v0.1.0
           </Text>
         </Box>
       </AppShell.Section>

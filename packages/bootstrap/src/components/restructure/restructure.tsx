@@ -1,6 +1,6 @@
 import { Button, Card, Spinner } from "react-bootstrap";
 
-import type { RestructureProps } from "@ai-ui/core";
+import type { RestructureProps } from "@patternbase/core";
 
 export function Restructure({
   content,

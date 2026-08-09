@@ -7,7 +7,7 @@ import {
   Stack,
 } from "react-bootstrap";
 
-import type { ReferencesProps } from "@ai-ui/core";
+import type { ReferencesProps } from "@patternbase/core";
 
 export function References({
   references,

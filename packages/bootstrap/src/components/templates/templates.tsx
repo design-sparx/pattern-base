@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, Col, Form, ListGroup, Row } from "react-bootstrap";
 
-import type { TemplatesProps } from "@ai-ui/core";
+import type { TemplatesProps } from "@patternbase/core";
 
 export function Templates({
   templates,

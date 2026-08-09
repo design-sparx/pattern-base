@@ -1,7 +1,7 @@
 import { CheckOutlined } from "@ant-design/icons";
 import { Button, Card, Input, Space, Spin, Tag, Typography } from "antd";
 
-import type { InpaintingProps } from "@ai-ui/core";
+import type { InpaintingProps } from "@patternbase/core";
 
 const { Text, Paragraph } = Typography;
 const { TextArea } = Input;

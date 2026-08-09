@@ -65,7 +65,7 @@ export function Hero() {
             </Button>
             <Button
               component="a"
-              href="https://github.com/design-sparx/ai-vory"
+              href="https://github.com/design-sparx/patternbase"
               target="_blank"
               rel="noopener noreferrer"
               variant="default"

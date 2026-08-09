@@ -1,6 +1,6 @@
 import { Badge, Card, Col, Row } from "react-bootstrap";
 
-import type { SuggestionsProps } from "@ai-ui/core";
+import type { SuggestionsProps } from "@patternbase/core";
 
 export function Suggestions({
   suggestions,

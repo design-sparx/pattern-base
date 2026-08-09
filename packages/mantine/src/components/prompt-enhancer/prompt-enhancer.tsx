@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { IconSparkles } from "@tabler/icons-react";
 
-import type { PromptEnhancerProps } from "@ai-ui/core";
+import type { PromptEnhancerProps } from "@patternbase/core";
 
 export function PromptEnhancer({
   prompt,

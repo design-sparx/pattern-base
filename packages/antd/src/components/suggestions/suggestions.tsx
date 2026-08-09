@@ -1,6 +1,6 @@
 import { Card, Col, Row, Space, Tag, Typography } from "antd";
 
-import type { SuggestionsProps } from "@ai-ui/core";
+import type { SuggestionsProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

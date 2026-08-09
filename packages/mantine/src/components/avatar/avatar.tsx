@@ -6,7 +6,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import type { AvatarProps } from "@ai-ui/core";
+import type { AvatarProps } from "@patternbase/core";
 
 export function Avatar({
   name,

@@ -1,6 +1,6 @@
 import { Card, List, Radio, Space, Tag, Typography } from "antd";
 
-import type { ModelInfo, ModelManagementProps } from "@ai-ui/core";
+import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

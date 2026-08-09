@@ -7,7 +7,7 @@ import {
   Stack,
 } from "react-bootstrap";
 
-import type { VerificationProps } from "@ai-ui/core";
+import type { VerificationProps } from "@patternbase/core";
 
 const statusBadgeMap = {
   verified: "success",

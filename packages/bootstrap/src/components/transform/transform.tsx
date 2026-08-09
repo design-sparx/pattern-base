@@ -1,6 +1,6 @@
 import { Button, Card, Dropdown, Spinner } from "react-bootstrap";
 
-import type { TransformProps } from "@ai-ui/core";
+import type { TransformProps } from "@patternbase/core";
 
 export function Transform({
   content,

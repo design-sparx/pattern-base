@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 
-import type { InlineActionProps } from "@ai-ui/core";
+import type { InlineActionProps } from "@patternbase/core";
 
 const typeVariantMap: Record<string, string> = {
   primary: "primary",

@@ -1,7 +1,7 @@
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Button, Dropdown } from "antd";
 
-import type { RegenerateProps } from "@ai-ui/core";
+import type { RegenerateProps } from "@patternbase/core";
 
 export function Regenerate({
   onRegenerate,

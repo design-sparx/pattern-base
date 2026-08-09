@@ -2,7 +2,7 @@ import { ActionIcon, Badge, Group, Progress, Stack, Text } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { IconTrash, IconUpload } from "@tabler/icons-react";
 
-import type { AttachmentsProps } from "@ai-ui/core";
+import type { AttachmentsProps } from "@patternbase/core";
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;

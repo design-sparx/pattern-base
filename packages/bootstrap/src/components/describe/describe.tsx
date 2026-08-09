@@ -1,6 +1,6 @@
 import { Badge, Button, Card } from "react-bootstrap";
 
-import type { DescribeProps } from "@ai-ui/core";
+import type { DescribeProps } from "@patternbase/core";
 
 export function Describe({
   output,

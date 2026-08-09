@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dropdown, Form, Spinner } from "react-bootstrap";
 
-import type { AutoFillProps } from "@ai-ui/core";
+import type { AutoFillProps } from "@patternbase/core";
 
 export function AutoFill({
   suggestions,

@@ -16,7 +16,7 @@ import {
   IconRefresh,
   IconZoomIn,
 } from "@tabler/icons-react";
-import type { SummaryProps } from "@ai-ui/core";
+import type { SummaryProps } from "@patternbase/core";
 
 export function Summary({
   content,

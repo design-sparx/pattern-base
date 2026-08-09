@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Card, Checkbox, Divider, Stack, Text } from "@mantine/core";
-import type { ConsentProps } from "@ai-ui/core";
+import type { ConsentProps } from "@patternbase/core";
 
 export function Consent({
   items,

@@ -1,7 +1,7 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Card, Col, Row, Space, Tabs, Tag, theme, Typography } from "antd";
 
-import type { VariationsProps } from "@ai-ui/core";
+import type { VariationsProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

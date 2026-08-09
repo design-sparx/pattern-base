@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconDeviceFloppy, IconStar, IconTrash } from "@tabler/icons-react";
-import type { SavedStylesProps } from "@ai-ui/core";
+import type { SavedStylesProps } from "@patternbase/core";
 
 export function SavedStyles({
   styles,

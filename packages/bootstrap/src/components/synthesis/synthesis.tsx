@@ -7,7 +7,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-import type { SynthesisProps } from "@ai-ui/core";
+import type { SynthesisProps } from "@patternbase/core";
 
 const insightTypeBg: Record<string, string> = {
   fact: "success",

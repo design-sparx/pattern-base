@@ -5,7 +5,7 @@ import {
   IconInfoCircle,
   IconAlertTriangle,
 } from "@tabler/icons-react";
-import type { NudgesProps } from "@ai-ui/core";
+import type { NudgesProps } from "@patternbase/core";
 
 export function Nudges({
   nudges,

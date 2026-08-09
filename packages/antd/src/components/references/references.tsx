@@ -10,7 +10,7 @@ import {
   Typography,
 } from "antd";
 
-import type { ReferencesProps } from "@ai-ui/core";
+import type { ReferencesProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

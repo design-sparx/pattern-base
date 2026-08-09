@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import type { PresetStylesProps } from "@ai-ui/core";
+import type { PresetStylesProps } from "@patternbase/core";
 
 export function PresetStyles({
   presets,

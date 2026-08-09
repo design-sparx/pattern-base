@@ -1,6 +1,6 @@
 import { Button, Card, Form, Spinner } from "react-bootstrap";
 
-import type { RestyleProps } from "@ai-ui/core";
+import type { RestyleProps } from "@patternbase/core";
 
 export function Restyle({
   content,

@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";
 import { Button, Card, Input, List, Space, Tag, theme, Typography } from "antd";
 import { useState } from "react";
 
-import type { MemoryProps } from "@ai-ui/core";
+import type { MemoryProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

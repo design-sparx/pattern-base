@@ -1,6 +1,6 @@
 import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 
-import type { DraftModeProps } from "@ai-ui/core";
+import type { DraftModeProps } from "@patternbase/core";
 
 export function DraftMode({
   drafts,

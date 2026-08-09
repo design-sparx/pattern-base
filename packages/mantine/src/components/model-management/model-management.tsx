@@ -1,6 +1,6 @@
 import { Badge, Card, Group, Radio, Stack, Text } from "@mantine/core";
 
-import type { ModelInfo, ModelManagementProps } from "@ai-ui/core";
+import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
 
 export function ModelManagement({
   models,

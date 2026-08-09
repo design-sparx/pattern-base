@@ -6,7 +6,7 @@ import {
 import { Button, Card, Spin, Typography } from "antd";
 import { useState } from "react";
 
-import type { SummaryProps } from "@ai-ui/core";
+import type { SummaryProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

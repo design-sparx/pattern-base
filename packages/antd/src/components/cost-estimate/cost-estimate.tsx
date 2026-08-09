@@ -1,6 +1,6 @@
 import { Card, Progress, Space, Table, Tag, Typography } from "antd";
 
-import type { CostEstimateProps } from "@ai-ui/core";
+import type { CostEstimateProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

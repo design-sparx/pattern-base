@@ -1,7 +1,7 @@
 import { CopyOutlined, SendOutlined } from "@ant-design/icons";
 import { Button, Card, Space, Tag, theme, Typography } from "antd";
 
-import type { DescribeProps } from "@ai-ui/core";
+import type { DescribeProps } from "@patternbase/core";
 
 const { Text, Paragraph } = Typography;
 

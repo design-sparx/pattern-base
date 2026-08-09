@@ -1,6 +1,6 @@
 import { Button, Card, Form, Spinner } from "react-bootstrap";
 
-import type { MadlibsProps } from "@ai-ui/core";
+import type { MadlibsProps } from "@patternbase/core";
 
 export function Madlibs({
   template,

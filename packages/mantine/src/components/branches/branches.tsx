@@ -8,7 +8,7 @@ import {
   Timeline,
 } from "@mantine/core";
 import { IconGitBranch } from "@tabler/icons-react";
-import type { BranchesProps } from "@ai-ui/core";
+import type { BranchesProps } from "@patternbase/core";
 
 export function Branches({
   branches,

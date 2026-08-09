@@ -1,7 +1,7 @@
 import { ActionIcon, Button, Menu, Tooltip } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 
-import type { RegenerateProps } from "@ai-ui/core";
+import type { RegenerateProps } from "@patternbase/core";
 
 export function Regenerate({
   onRegenerate,

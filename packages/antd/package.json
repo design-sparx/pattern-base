@@ -1,5 +1,5 @@
 {
-  "name": "@ai-ui/antd",
+  "name": "@patternbase/antd",
   "version": "0.3.0",
   "description": "Ant Design implementation of AI UI components",
   "main": "./dist/index.js",
@@ -23,7 +23,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@ai-ui/core": "workspace:*"
+    "@patternbase/core": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -31,8 +31,8 @@
     "@ant-design/icons": "^5.0.0"
   },
   "devDependencies": {
-    "@ai-ui/eslint-config": "workspace:*",
-    "@ai-ui/vitest-config": "workspace:*",
+    "@patternbase/eslint-config": "workspace:*",
+    "@patternbase/vitest-config": "workspace:*",
     "@ant-design/icons": "^5.5.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",

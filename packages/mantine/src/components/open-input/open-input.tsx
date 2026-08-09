@@ -9,7 +9,7 @@ import {
 import { IconSend } from "@tabler/icons-react";
 import { type KeyboardEvent, useRef, useState } from "react";
 
-import type { OpenInputProps } from "@ai-ui/core";
+import type { OpenInputProps } from "@patternbase/core";
 
 export function OpenInput({
   placeholder = "Ask anything...",

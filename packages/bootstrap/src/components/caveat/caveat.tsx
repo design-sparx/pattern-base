@@ -1,6 +1,6 @@
 import { Alert } from "react-bootstrap";
 
-import type { CaveatProps } from "@ai-ui/core";
+import type { CaveatProps } from "@patternbase/core";
 
 const severityVariant: Record<string, string> = {
   info: "info",

@@ -9,7 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconDownload, IconTrash } from "@tabler/icons-react";
-import type { DataOwnershipProps } from "@ai-ui/core";
+import type { DataOwnershipProps } from "@patternbase/core";
 
 export function DataOwnership({
   items,

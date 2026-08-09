@@ -1,6 +1,6 @@
 import { Badge, Button, ListGroup } from "react-bootstrap";
 
-import type { FollowUpProps } from "@ai-ui/core";
+import type { FollowUpProps } from "@patternbase/core";
 
 export function FollowUp({
   followUps,

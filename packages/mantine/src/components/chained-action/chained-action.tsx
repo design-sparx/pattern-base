@@ -1,6 +1,6 @@
 import { Button, Stack, Stepper, Text } from "@mantine/core";
 
-import type { ChainedActionProps } from "@ai-ui/core";
+import type { ChainedActionProps } from "@patternbase/core";
 
 export function ChainedAction({
   steps,

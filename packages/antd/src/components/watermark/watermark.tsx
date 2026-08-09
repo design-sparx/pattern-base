@@ -1,7 +1,7 @@
 import { SafetyCertificateOutlined } from "@ant-design/icons";
 import { Alert, Button, Space, Tag, Typography } from "antd";
 
-import type { WatermarkProps } from "@ai-ui/core";
+import type { WatermarkProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

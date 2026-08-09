@@ -1,6 +1,6 @@
 import { Badge, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
-import type { ControlsProps } from "@ai-ui/core";
+import type { ControlsProps } from "@patternbase/core";
 
 const statusBadgeMap = {
   active: "success",

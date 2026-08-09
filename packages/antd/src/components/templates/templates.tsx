@@ -1,7 +1,7 @@
 import { Card, Col, Input, List, Row, Space, Typography } from "antd";
 import { useState } from "react";
 
-import type { TemplatesProps } from "@ai-ui/core";
+import type { TemplatesProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

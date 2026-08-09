@@ -1,6 +1,6 @@
 import { Button, Dropdown, Spinner } from "react-bootstrap";
 
-import type { RegenerateProps } from "@ai-ui/core";
+import type { RegenerateProps } from "@patternbase/core";
 
 export function Regenerate({
   onRegenerate,

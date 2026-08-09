@@ -1,6 +1,6 @@
 import { ActionIcon, Group, Tooltip } from "@mantine/core";
 
-import type { InlineActionProps } from "@ai-ui/core";
+import type { InlineActionProps } from "@patternbase/core";
 
 export function InlineAction({
   actions,

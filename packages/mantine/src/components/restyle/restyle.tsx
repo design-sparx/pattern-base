@@ -9,7 +9,7 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core";
-import type { RestyleProps } from "@ai-ui/core";
+import type { RestyleProps } from "@patternbase/core";
 
 export function Restyle({
   content,

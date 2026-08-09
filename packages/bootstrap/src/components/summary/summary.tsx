@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
 
-import type { SummaryProps } from "@ai-ui/core";
+import type { SummaryProps } from "@patternbase/core";
 
 export function Summary({
   content,

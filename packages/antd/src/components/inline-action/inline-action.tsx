@@ -1,6 +1,6 @@
 import { Button, Space, theme, Typography } from "antd";
 
-import type { InlineActionProps } from "@ai-ui/core";
+import type { InlineActionProps } from "@patternbase/core";
 
 const { Text } = Typography;
 

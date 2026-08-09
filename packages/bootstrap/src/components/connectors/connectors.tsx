@@ -1,6 +1,6 @@
 import { Badge, Button, Card, ListGroup, Stack } from "react-bootstrap";
 
-import type { ConnectorsProps } from "@ai-ui/core";
+import type { ConnectorsProps } from "@patternbase/core";
 
 const statusBadgeMap = {
   connected: "success",

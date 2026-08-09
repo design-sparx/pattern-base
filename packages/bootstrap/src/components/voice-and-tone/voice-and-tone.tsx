@@ -1,6 +1,6 @@
 import { Card, Form } from "react-bootstrap";
 
-import type { VoiceAndToneProps } from "@ai-ui/core";
+import type { VoiceAndToneProps } from "@patternbase/core";
 
 export function VoiceAndTone({
   axes,

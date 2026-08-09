@@ -1,7 +1,7 @@
 import { Select, Slider, Stack, Switch, Text, Tooltip } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
 
-import type { ParameterControlProps } from "@ai-ui/core";
+import type { ParameterControlProps } from "@patternbase/core";
 
 export function ParameterControl({
   parameters,
