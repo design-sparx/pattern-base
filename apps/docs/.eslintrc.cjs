@@ -1,5 +1,5 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   root: true,
-  extends: [require.resolve("@ai-ui/eslint-config/next")],
+  extends: [require.resolve("@patternbase/eslint-config/next")],
 };

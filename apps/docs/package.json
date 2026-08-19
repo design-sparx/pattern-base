@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm generate-snippets && next build",
     "start": "next start",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "generate-snippets": "tsx scripts/generate-snippets.ts"
   },
   "dependencies": {
     "@patternbase/antd": "workspace:*",
@@ -39,6 +40,7 @@
     "postcss": "^8.4.32",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
+    "tsx": "^4.23.12",
     "typescript": "^5.3.3"
   }
 }
