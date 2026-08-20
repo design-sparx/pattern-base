@@ -32,10 +32,50 @@ const spaceGrotesk = spaceGroteskFont({
   display: "swap",
 });
 
+const BASE_URL = "https://patternbase.dev";
+
 export const metadata: Metadata = {
-  title: "PatternBase - AI UX Pattern Library",
+  title: {
+    template: "%s | PatternBase",
+    default: "PatternBase - AI UX Pattern Library",
+  },
   description:
-    "A multi-framework component library for AI user experience patterns",
+    "A multi-framework component library for AI user experience patterns. 54 battle-tested patterns for Bootstrap, Ant Design, and Mantine.",
+  metadataBase: new URL(BASE_URL),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "PatternBase",
+    title: "PatternBase - AI UX Pattern Library",
+    description:
+      "54 battle-tested AI UX patterns for React — implemented in Bootstrap, Ant Design, and Mantine.",
+    images: [
+      {
+        url: "/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "PatternBase — AI UX Pattern Library",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PatternBase - AI UX Pattern Library",
+    description:
+      "54 battle-tested AI UX patterns for React — implemented in Bootstrap, Ant Design, and Mantine.",
+    images: ["/og-default.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

@@ -27,6 +27,7 @@ import { ConfigProvider, theme as antdTheme } from "antd";
 import { useState } from "react";
 
 import { CodeBlock } from "./code-block";
+import { PreviewErrorBoundary } from "./error-boundary";
 
 import { codeSnippets } from "@/data/snippet-templates";
 import { componentRegistry } from "@/lib/registry";
@@ -222,7 +223,9 @@ export function ComponentPreview({
                 transition: "max-width 200ms ease",
               }}
             >
-              {previewContent}
+              <PreviewErrorBoundary patternId={patternId}>
+                {previewContent}
+              </PreviewErrorBoundary>
             </Box>
           </Box>
         </Box>

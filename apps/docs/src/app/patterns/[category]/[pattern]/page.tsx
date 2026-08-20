@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Badge,
   Box,
@@ -80,6 +81,24 @@ function buildTocItems(
 
 interface PatternPageParams {
   params: Promise<{ category: string; pattern: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PatternPageParams): Promise<Metadata> {
+  const { category: categorySlug, pattern: patternSlug } = await params;
+  const pattern = getPatternBySlug(patternSlug);
+  const category = getCategoryById(categorySlug);
+  if (!pattern || !category) return {};
+
+  return {
+    title: pattern.name,
+    description: pattern.description,
+    openGraph: {
+      title: `${pattern.name} | PatternBase`,
+      description: pattern.description,
+    },
+  };
 }
 
 export function generateStaticParams() {
