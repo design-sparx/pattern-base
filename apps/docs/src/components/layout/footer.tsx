@@ -12,7 +12,7 @@ export function Footer() {
         </Text>
         <Group gap="lg">
           <Anchor
-            href="https://github.com"
+            href="https://github.com/kelvink96/pattern-base"
             target="_blank"
             rel="noopener noreferrer"
             fz="sm"

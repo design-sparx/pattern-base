@@ -35,6 +35,7 @@ export function Sidebar() {
           label="All Patterns"
           leftSection={<IconLayoutGrid size={16} stroke={1.5} />}
           active={pathname === "/patterns"}
+          aria-current={pathname === "/patterns" ? "page" : undefined}
           variant="light"
           color="violet"
           fw={500}
@@ -73,6 +74,11 @@ export function Sidebar() {
                     href={`/patterns/${cat.id}/${p.slug}`}
                     label={p.name}
                     active={pathname === `/patterns/${cat.id}/${p.slug}`}
+                    aria-current={
+                      pathname === `/patterns/${cat.id}/${p.slug}`
+                        ? "page"
+                        : undefined
+                    }
                     variant="light"
                     color="violet"
                   />

@@ -43,7 +43,7 @@ export function StreamOfThought({
                     </Badge>
                     <span>{config.icon}</span>
                     <Text size="sm" fw={500} tt="capitalize">
-                      {step.type.replace("_", " ")}
+                      {step.type.replace(/_/g, " ")}
                     </Text>
                     <Text
                       size="xs"
@@ -109,7 +109,7 @@ export function StreamOfThought({
               </Badge>
               <span>{config.icon}</span>
               <Text size="sm" fw={500} tt="capitalize">
-                {step.type.replace("_", " ")}
+                {step.type.replace(/_/g, " ")}
               </Text>
             </Group>
             <Text size="sm">{step.content}</Text>

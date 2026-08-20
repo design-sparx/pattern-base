@@ -131,6 +131,8 @@ export function ComponentPreview({
                   variant={viewport === vp.value ? "light" : "default"}
                   color={viewport === vp.value ? "violet" : "gray"}
                   size="sm"
+                  aria-label={vp.label}
+                  aria-pressed={viewport === vp.value}
                   onClick={() => {
                     setViewport(vp.value);
                   }}
@@ -167,6 +169,9 @@ export function ComponentPreview({
                           variant="subtle"
                           color={copied ? "green" : "gray"}
                           size="sm"
+                          aria-label={
+                            copied ? "Copied!" : "Copy install command"
+                          }
                           onClick={copy}
                         >
                           {copied ? (
@@ -188,6 +193,7 @@ export function ComponentPreview({
               color={codeOpen ? "violet" : "gray"}
               size="compact-xs"
               leftSection={<IconCode size={14} />}
+              aria-expanded={codeOpen}
               onClick={() => {
                 setCodeOpen((o) => !o);
               }}

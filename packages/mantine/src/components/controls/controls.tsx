@@ -14,7 +14,7 @@ export function Controls({
   onToggleControl,
   title,
   variant = "list",
-  showStatus = false,
+  showStatus = true,
 }: ControlsProps) {
   const statusColor = (status?: string) => {
     if (status === "active") return "green";
@@ -83,7 +83,15 @@ export function Controls({
         </Text>
       )}
       {variant === "cards" ? (
-        <Stack gap="xs">{controls.map(renderControl)}</Stack>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "var(--mantine-spacing-xs)",
+          }}
+        >
+          {controls.map(renderControl)}
+        </div>
       ) : (
         <Stack gap="xs">{controls.map(renderControl)}</Stack>
       )}

@@ -69,6 +69,9 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="auto">
+          <a href="#main-content" className="skip-link">
+            Skip to content
+          </a>
           <SpotlightProvider />
           <AppShellLayout>{children}</AppShellLayout>
         </MantineProvider>

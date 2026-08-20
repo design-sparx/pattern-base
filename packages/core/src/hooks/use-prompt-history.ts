@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { type PromptHistoryEntry } from "../types/common";
 
@@ -7,7 +7,8 @@ import { type PromptHistoryEntry } from "../types/common";
  */
 export function usePromptHistory(maxEntries = 50) {
   const [history, setHistory] = useState<PromptHistoryEntry[]>([]);
-  const [index, setIndex] = useState(-1);
+  const indexRef = useRef(-1);
+  const [, forceRender] = useState(0);
 
   const addEntry = useCallback(
     (prompt: string, response?: string) => {
@@ -21,29 +22,39 @@ export function usePromptHistory(maxEntries = 50) {
         const next = [entry, ...prev];
         return next.slice(0, maxEntries);
       });
-      setIndex(-1);
+      indexRef.current = -1;
+      forceRender((n) => n + 1);
     },
     [maxEntries],
   );
 
   const navigateUp = useCallback(() => {
-    setIndex((prev) => Math.min(prev + 1, history.length - 1));
-    return history[Math.min(index + 1, history.length - 1)];
-  }, [history, index]);
+    setHistory((prev) => {
+      const newIndex = Math.min(indexRef.current + 1, prev.length - 1);
+      indexRef.current = newIndex;
+      return prev;
+    });
+    forceRender((n) => n + 1);
+  }, []);
 
   const navigateDown = useCallback(() => {
-    setIndex((prev) => Math.max(prev - 1, -1));
-    return index - 1 >= 0 ? history[index - 1] : undefined;
-  }, [history, index]);
+    setHistory((prev) => {
+      const newIndex = Math.max(indexRef.current - 1, -1);
+      indexRef.current = newIndex;
+      return prev;
+    });
+    forceRender((n) => n + 1);
+  }, []);
 
   const clear = useCallback(() => {
     setHistory([]);
-    setIndex(-1);
+    indexRef.current = -1;
+    forceRender((n) => n + 1);
   }, []);
 
   return {
     history,
-    currentEntry: index >= 0 ? history[index] : undefined,
+    currentEntry: indexRef.current >= 0 ? history[indexRef.current] : undefined,
     addEntry,
     navigateUp,
     navigateDown,

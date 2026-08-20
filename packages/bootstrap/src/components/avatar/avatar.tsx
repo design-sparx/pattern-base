@@ -121,7 +121,10 @@ export function Avatar({
   return (
     <Stack direction="horizontal" className="align-items-center gap-2">
       {avatarNode}
-      <span className="small">{name}</span>
+      <div>
+        <div className="small fw-semibold">{name}</div>
+        {persona ? <small className="text-muted">{persona}</small> : null}
+      </div>
       {badgeLabel ? <Badge bg="secondary">{badgeLabel}</Badge> : null}
     </Stack>
   );

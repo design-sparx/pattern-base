@@ -38,6 +38,7 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
       ) : null}
 
       <AppShell.Main
+        id="main-content"
         style={{
           display: "flex",
           flexDirection: "column",

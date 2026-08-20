@@ -30,7 +30,7 @@ export function StreamOfThought({
           <Badge count={index + 1} style={{ backgroundColor: "#6b7280" }} />
           <span>{config.icon}</span>
           <Text strong style={{ textTransform: "capitalize" as const }}>
-            {step.type.replace("_", " ")}
+            {step.type.replace(/_/g, " ")}
           </Text>
           <Text type="secondary" ellipsis style={{ maxWidth: 300 }}>
             {step.content.substring(0, 80)}
@@ -100,7 +100,7 @@ export function StreamOfThought({
                   />
                   <span>{config.icon}</span>
                   <Text strong style={{ textTransform: "capitalize" as const }}>
-                    {step.type.replace("_", " ")}
+                    {step.type.replace(/_/g, " ")}
                   </Text>
                 </Space>
                 <p style={{ margin: 0, fontSize: 13 }}>{step.content}</p>

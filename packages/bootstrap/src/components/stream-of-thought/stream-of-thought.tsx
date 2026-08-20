@@ -48,7 +48,7 @@ export function StreamOfThought({
                     </Badge>
                     <span style={{ color: config.color }}>{config.icon}</span>
                     <span className="text-capitalize small fw-semibold">
-                      {step.type.replace("_", " ")}
+                      {step.type.replace(/_/g, " ")}
                     </span>
                     <span
                       className="text-muted small text-truncate"
@@ -96,7 +96,7 @@ export function StreamOfThought({
                   </Badge>
                   <span style={{ color: config.color }}>{config.icon}</span>
                   <span className="text-capitalize small fw-semibold">
-                    {step.type.replace("_", " ")}
+                    {step.type.replace(/_/g, " ")}
                   </span>
                 </div>
                 <p className="small mb-0">{step.content}</p>

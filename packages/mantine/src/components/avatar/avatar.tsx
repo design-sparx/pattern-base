@@ -13,7 +13,7 @@ export function Avatar({
   persona,
   imageUrl,
   badgeLabel,
-  status,
+  status = "online",
   size = "medium",
   variant = "inline",
   onSelect,

@@ -9,8 +9,10 @@
   --header-height: 60px;
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -25,14 +27,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.15s ease;
+/* ── Skip link ────────────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 10000;
+  padding: 8px 16px;
+  background: var(--mantine-color-violet-6);
+  color: white;
+  border-radius: var(--mantine-radius-md);
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 0.15s ease;
 }
 
-/* Thin scrollbar */
+.skip-link:focus {
+  top: 16px;
+}
+
+/* ── Thin scrollbar ──────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -90,10 +104,19 @@ body {
     box-shadow 0.2s ease !important;
 }
 
-.feature-card:hover,
-.category-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+@media (prefers-reduced-motion: no-preference) {
+  .feature-card:hover,
+  .category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-card:hover,
+  .category-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  }
 }
 
 [data-mantine-color-scheme="dark"] .feature-card:hover,
@@ -107,9 +130,17 @@ body {
   transition: opacity 0.2s, transform 0.2s;
 }
 
-.category-card:hover .category-arrow {
-  opacity: 1;
-  transform: translate(2px, -2px);
+@media (prefers-reduced-motion: no-preference) {
+  .category-card:hover .category-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-card:hover .category-arrow {
+    opacity: 1;
+  }
 }
 
 /* Reset Bootstrap's opinionated HTML tag styles that bleed into Ant Design previews.
