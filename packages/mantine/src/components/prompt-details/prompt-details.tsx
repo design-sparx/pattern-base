@@ -1,4 +1,5 @@
 import { Anchor, Badge, Card, Group, Stack, Text } from "@mantine/core";
+
 import type { PromptDetailsProps } from "@patternbase/core";
 
 export function PromptDetails({
@@ -16,11 +17,9 @@ export function PromptDetails({
           Prompt Details
         </Text>
         <Group gap="xs">
-          {model && (
-            <Badge variant="light" size="sm">
+          {model ? <Badge variant="light" size="sm">
               {model}
-            </Badge>
-          )}
+            </Badge> : null}
           {tokenCount !== undefined && (
             <Badge variant="light" size="sm" color="gray">
               {tokenCount} tokens
@@ -33,11 +32,9 @@ export function PromptDetails({
         &ldquo;{prompt}&rdquo;
       </Text>
 
-      {timestamp && (
-        <Text size="xs" c="dimmed">
+      {timestamp ? <Text size="xs" c="dimmed">
           {timestamp.toLocaleString()}
-        </Text>
-      )}
+        </Text> : null}
 
       {details.length > 0 && (
         <Stack gap={4}>

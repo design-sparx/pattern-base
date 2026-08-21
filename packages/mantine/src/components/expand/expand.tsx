@@ -32,11 +32,9 @@ export function Expand({
     return (
       <Stack gap="xs">
         <Text size="sm">{content}</Text>
-        {expandedContent && (
-          <Text size="sm" c="dimmed">
+        {expandedContent ? <Text size="sm" c="dimmed">
             {expandedContent}
-          </Text>
-        )}
+          </Text> : null}
         <Button
           variant="subtle"
           size="compact-sm"
@@ -53,17 +51,13 @@ export function Expand({
 
   return (
     <Stack gap="xs">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
       <Text size="sm">{content}</Text>
-      {expandedContent && (
-        <Text size="sm" c="dimmed">
+      {expandedContent ? <Text size="sm" c="dimmed">
           {expandedContent}
-        </Text>
-      )}
+        </Text> : null}
       <Button
         variant="default"
         size="sm"

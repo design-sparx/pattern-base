@@ -26,11 +26,9 @@ export function ModelManagement({
           <Stack gap="sm">
             {Object.entries(grouped).map(([provider, providerModels]) => (
               <div key={provider}>
-                {groupByProvider && (
-                  <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb="xs">
+                {groupByProvider ? <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb="xs">
                     {provider}
-                  </Text>
-                )}
+                  </Text> : null}
                 <Stack gap="xs">
                   {providerModels.map((model) => (
                     <Card
@@ -44,7 +42,7 @@ export function ModelManagement({
                             ? "var(--mantine-color-violet-light)"
                             : undefined,
                       }}
-                      onClick={() => onSelectModel(model.id)}
+                      onClick={() => { onSelectModel(model.id); }}
                     >
                       <Group justify="space-between" align="flex-start">
                         <Group gap="xs" align="flex-start">
@@ -53,37 +51,29 @@ export function ModelManagement({
                             <Text size="sm" fw={600}>
                               {model.name}
                             </Text>
-                            {showDetails && model.description && (
-                              <Text size="xs" c="dimmed">
+                            {showDetails && model.description ? <Text size="xs" c="dimmed">
                                 {model.description}
-                              </Text>
-                            )}
-                            {showDetails && (
-                              <Group gap="xs">
-                                {model.contextWindow && (
-                                  <Text size="xs" c="dimmed">
+                              </Text> : null}
+                            {showDetails ? <Group gap="xs">
+                                {model.contextWindow ? <Text size="xs" c="dimmed">
                                     {(model.contextWindow / 1000).toFixed(0)}k
                                     ctx
-                                  </Text>
-                                )}
+                                  </Text> : null}
                                 {model.costPer1kInput !== undefined && (
                                   <Text size="xs" c="dimmed">
                                     ${model.costPer1kInput}/1k in
                                   </Text>
                                 )}
-                              </Group>
-                            )}
+                              </Group> : null}
                           </Stack>
                         </Group>
-                        {model.capabilities && (
-                          <Group gap={4}>
+                        {model.capabilities ? <Group gap={4}>
                             {model.capabilities.slice(0, 2).map((c) => (
                               <Badge key={c} size="xs" variant="light">
                                 {c}
                               </Badge>
                             ))}
-                          </Group>
-                        )}
+                          </Group> : null}
                       </Group>
                     </Card>
                   ))}

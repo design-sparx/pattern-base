@@ -9,6 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconEyeOff } from "@tabler/icons-react";
+
 import type { IncognitoModeProps } from "@patternbase/core";
 
 export function IncognitoMode({
@@ -30,17 +31,13 @@ export function IncognitoMode({
               <Text fw={600} size="sm">
                 {title}
               </Text>
-              {enabled && (
-                <Badge size="xs" color="green" variant="light">
+              {enabled ? <Badge size="xs" color="green" variant="light">
                   Active
-                </Badge>
-              )}
+                </Badge> : null}
             </Group>
-            {description && (
-              <Text size="xs" c="dimmed">
+            {description ? <Text size="xs" c="dimmed">
                 {description}
-              </Text>
-            )}
+              </Text> : null}
           </Stack>
         </Group>
         <Switch
@@ -50,17 +47,13 @@ export function IncognitoMode({
         />
       </Group>
 
-      {enabled && retentionNotice && (
-        <Alert icon={<IconEyeOff size={14} />} color="gray" variant="light">
+      {enabled && retentionNotice ? <Alert icon={<IconEyeOff size={14} />} color="gray" variant="light">
           <Text size="xs">{retentionNotice}</Text>
-        </Alert>
-      )}
+        </Alert> : null}
 
-      {enabled && onEndSession && (
-        <Button variant="subtle" color="gray" size="sm" onClick={onEndSession}>
+      {enabled && onEndSession ? <Button variant="subtle" color="gray" size="sm" onClick={onEndSession}>
           End Session
-        </Button>
-      )}
+        </Button> : null}
     </Stack>
   );
 

@@ -59,7 +59,7 @@ export function OpenInput({
         <Textarea
           ref={textareaRef}
           value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
+          onChange={(e) => { setValue(e.currentTarget.value); }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={isLoading}

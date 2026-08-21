@@ -6,6 +6,7 @@ import {
   Tabs,
   Text,
 } from "@mantine/core";
+
 import type { ModesProps } from "@patternbase/core";
 
 export function Modes({
@@ -19,14 +20,21 @@ export function Modes({
 
   return (
     <Stack gap="sm">
-      {title && (
+      {title ? (
         <Text fw={600} size="sm">
           {title}
         </Text>
-      )}
+      ) : null}
 
       {variant === "tabs" ? (
-        <Tabs value={selectedModeId} onChange={(id) => id && onModeChange(id)}>
+        <Tabs
+          value={selectedModeId}
+          onChange={(id) => {
+            if (id) {
+              onModeChange(id);
+            }
+          }}
+        >
           <Tabs.List>
             {modes.map((mode) => (
               <Tabs.Tab
@@ -39,7 +47,7 @@ export function Modes({
               </Tabs.Tab>
             ))}
           </Tabs.List>
-          {selectedMode?.description && (
+          {selectedMode?.description ? (
             <Tabs.Panel value={selectedModeId} pt="sm">
               <Card padding="xs" withBorder>
                 <Text size="xs" c="dimmed">
@@ -47,7 +55,7 @@ export function Modes({
                 </Text>
               </Card>
             </Tabs.Panel>
-          )}
+          ) : null}
         </Tabs>
       ) : (
         <>
@@ -66,13 +74,13 @@ export function Modes({
             onChange={onModeChange}
             fullWidth
           />
-          {selectedMode?.description && (
+          {selectedMode?.description ? (
             <Card padding="xs" withBorder>
               <Text size="xs" c="dimmed">
                 {selectedMode.description}
               </Text>
             </Card>
-          )}
+          ) : null}
         </>
       )}
     </Stack>

@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { GalleryProps } from "@patternbase/core";
 
 export function Gallery({
@@ -37,7 +38,7 @@ export function Gallery({
             padding="xs"
             withBorder
             style={{
-              cursor: onSelect || selectable ? "pointer" : "default",
+              cursor: (onSelect ?? selectable) ? "pointer" : "default",
               outline: item.selected
                 ? "2px solid var(--mantine-color-violet-6)"
                 : undefined,
@@ -45,7 +46,7 @@ export function Gallery({
             onClick={() => onSelect?.(item)}
           >
             <Stack gap="xs">
-              {item.type === "image" && item.src && (
+              {item.type === "image" && item.src ? (
                 <Image
                   src={item.src}
                   alt={item.alt ?? item.title ?? ""}
@@ -53,42 +54,42 @@ export function Gallery({
                   h={120}
                   fit="cover"
                 />
-              )}
-              {item.type === "text" && item.content && (
+              ) : null}
+              {item.type === "text" && item.content ? (
                 <Text size="xs" lineClamp={4}>
                   {item.content}
                 </Text>
-              )}
+              ) : null}
               <Group justify="space-between" align="center">
-                {item.title && (
+                {item.title ? (
                   <Text size="xs" fw={500}>
                     {item.title}
                   </Text>
-                )}
-                {item.selected && (
+                ) : null}
+                {item.selected ? (
                   <Badge size="xs" variant="filled" color="violet">
                     Selected
                   </Badge>
-                )}
+                ) : null}
               </Group>
             </Stack>
           </Card>
         ))}
       </SimpleGrid>
 
-      {loading && (
+      {loading ? (
         <Group justify="center">
           <Loader size="sm" />
         </Group>
-      )}
+      ) : null}
 
-      {onLoadMore && !loading && (
+      {onLoadMore && !loading ? (
         <Group justify="center">
           <Button variant="subtle" size="sm" onClick={onLoadMore}>
             Load more
           </Button>
         </Group>
-      )}
+      ) : null}
     </Stack>
   );
 }

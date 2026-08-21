@@ -1,5 +1,6 @@
 import { Badge, Button, Group, Stack, Text } from "@mantine/core";
 import { IconDroplet, IconShieldCheck } from "@tabler/icons-react";
+
 import type { WatermarkProps } from "@patternbase/core";
 
 export function Watermark({
@@ -26,11 +27,9 @@ export function Watermark({
             ({Math.round(confidence * 100)}%)
           </Text>
         )}
-        {onVerify && (
-          <Button variant="subtle" size="compact-xs" onClick={onVerify}>
+        {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
             Verify
-          </Button>
-        )}
+          </Button> : null}
       </Group>
     );
   }
@@ -53,21 +52,17 @@ export function Watermark({
             </Badge>
           )}
         </Group>
-        {algorithm && (
-          <Text size="xs" c="dimmed">
+        {algorithm ? <Text size="xs" c="dimmed">
             Algorithm: {algorithm}
-          </Text>
-        )}
-        {onVerify && (
-          <Button
+          </Text> : null}
+        {onVerify ? <Button
             variant="light"
             size="compact-sm"
             leftSection={<IconShieldCheck size={12} />}
             onClick={onVerify}
           >
             Verify
-          </Button>
-        )}
+          </Button> : null}
       </Stack>
     );
   }
@@ -81,13 +76,11 @@ export function Watermark({
         leftSection={<IconDroplet size={10} />}
       >
         {label}
-        {confidence !== undefined && ` · ${Math.round(confidence * 100)}%`}
+        {confidence !== undefined && ` · ${String(Math.round(confidence * 100))}%`}
       </Badge>
-      {onVerify && (
-        <Button variant="subtle" size="compact-xs" onClick={onVerify}>
+      {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
           Verify
-        </Button>
-      )}
+        </Button> : null}
     </Group>
   );
 }

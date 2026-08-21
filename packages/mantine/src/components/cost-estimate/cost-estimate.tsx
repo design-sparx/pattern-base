@@ -41,14 +41,11 @@ export function CostEstimate({
           <Badge variant="light">{formatCost(breakdown.totalCost)}</Badge>
         </Group>
 
-        {breakdown.model && (
-          <Text size="xs" c="dimmed">
+        {breakdown.model ? <Text size="xs" c="dimmed">
             Model: {breakdown.model}
-          </Text>
-        )}
+          </Text> : null}
 
-        {showTokens && (
-          <>
+        {showTokens ? <>
             <Progress value={inputPct} size="sm" color="violet" />
 
             <Table fz="xs" withRowBorders={false}>
@@ -82,8 +79,7 @@ export function CostEstimate({
                 </Table.Tr>
               </Table.Tbody>
             </Table>
-          </>
-        )}
+          </> : null}
       </Stack>
     </Card>
   );

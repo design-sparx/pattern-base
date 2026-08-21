@@ -59,6 +59,7 @@ export function Gallery({
       {onLoadMore && !loading ? (
         <div className="mt-3 text-center">
           <button
+            type="button"
             className="btn btn-outline-secondary btn-sm"
             onClick={onLoadMore}
           >

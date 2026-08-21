@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { Alert, Button, Stack } from "@mantine/core";
 import {
+  IconAlertTriangle,
   IconBulb,
   IconInfoCircle,
-  IconAlertTriangle,
 } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { NudgesProps } from "@patternbase/core";
 
 export function Nudges({
@@ -47,16 +48,14 @@ export function Nudges({
           }}
         >
           {nudge.message}
-          {nudge.actionLabel && nudge.onAction && (
-            <Button
+          {nudge.actionLabel && nudge.onAction ? <Button
               variant="subtle"
               size="compact-xs"
               mt="xs"
               onClick={nudge.onAction}
             >
               {nudge.actionLabel}
-            </Button>
-          )}
+            </Button> : null}
         </Alert>
       ))}
     </Stack>

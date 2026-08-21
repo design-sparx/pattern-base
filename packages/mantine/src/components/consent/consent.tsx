@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { Button, Card, Checkbox, Divider, Stack, Text } from "@mantine/core";
+import { useState } from "react";
+
 import type { ConsentProps } from "@patternbase/core";
 
 export function Consent({
@@ -34,12 +35,12 @@ export function Consent({
 
   const inner = (
     <Stack gap="sm">
-      {title && <Text fw={600}>{title}</Text>}
-      {description && (
+      {title ? <Text fw={600}>{title}</Text> : null}
+      {description ? (
         <Text size="sm" c="dimmed">
           {description}
         </Text>
-      )}
+      ) : null}
 
       <Stack gap="xs">
         {items.map((item) => (
@@ -49,22 +50,24 @@ export function Consent({
               <Stack gap={2}>
                 <Text size="sm">
                   {item.label}
-                  {item.required && (
+                  {item.required ? (
                     <Text component="span" c="red" ml={4}>
                       *
                     </Text>
-                  )}
+                  ) : null}
                 </Text>
-                {item.description && (
+                {item.description ? (
                   <Text size="xs" c="dimmed">
                     {item.description}
                   </Text>
-                )}
+                ) : null}
               </Stack>
             }
-            checked={!!checked[item.id]}
-            onChange={() => toggle(item.id)}
-            disabled={item.required && !item.defaultChecked}
+            checked={Boolean(checked[item.id])}
+            onChange={() => {
+              toggle(item.id);
+            }}
+            disabled={item.required ? !item.defaultChecked : undefined}
           />
         ))}
       </Stack>
@@ -75,11 +78,11 @@ export function Consent({
         <Button onClick={handleAccept} disabled={!allRequiredChecked}>
           {acceptLabel}
         </Button>
-        {onDecline && (
+        {onDecline ? (
           <Button variant="subtle" color="gray" onClick={onDecline}>
             {declineLabel}
           </Button>
-        )}
+        ) : null}
       </Stack>
     </Stack>
   );

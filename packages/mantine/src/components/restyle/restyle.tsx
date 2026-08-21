@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Card,
   Group,
@@ -9,6 +8,8 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core";
+import { useState } from "react";
+
 import type { RestyleProps } from "@patternbase/core";
 
 export function Restyle({
@@ -29,25 +30,14 @@ export function Restyle({
     onRestyle(id);
   };
 
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {isProcessing && <Loader size="xs" />}
-      </Group>
-
-      <Card padding="sm" withBorder>
-        <Text size="sm">{content}</Text>
-      </Card>
-
-      {variant === "gallery" ? (
+  const renderOptions = () => {
+    if (variant === "gallery") {
+      return (
         <SimpleGrid cols={2} spacing="xs">
           {options.map((option) => (
             <UnstyledButton
               key={option.id}
-              onClick={() => handleSelect(option.id)}
+              onClick={() => { handleSelect(option.id); }}
             >
               <Card
                 padding="sm"
@@ -60,30 +50,30 @@ export function Restyle({
                 }}
               >
                 <Stack gap={4}>
-                  {option.preview && (
-                    <Text
+                  {option.preview ? <Text
                       size="xs"
                       c="dimmed"
                       style={{ fontStyle: "italic" }}
                       lineClamp={2}
                     >
                       {option.preview}
-                    </Text>
-                  )}
+                    </Text> : null}
                   <Text size="xs" fw={500}>
                     {option.label}
                   </Text>
-                  {option.description && (
-                    <Text size="xs" c="dimmed">
+                  {option.description ? <Text size="xs" c="dimmed">
                       {option.description}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
               </Card>
             </UnstyledButton>
           ))}
         </SimpleGrid>
-      ) : variant === "slider" ? (
+      );
+    }
+
+    if (variant === "slider") {
+      return (
         <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed">
             Style
@@ -92,7 +82,7 @@ export function Restyle({
             {options.map((option) => (
               <UnstyledButton
                 key={option.id}
-                onClick={() => handleSelect(option.id)}
+                onClick={() => { handleSelect(option.id); }}
               >
                 <Text
                   size="sm"
@@ -105,36 +95,54 @@ export function Restyle({
             ))}
           </Group>
         </Stack>
-      ) : (
-        <Group gap="xs" wrap="wrap">
-          {options.map((option) => (
-            <UnstyledButton
-              key={option.id}
-              onClick={() => handleSelect(option.id)}
-            >
-              <Card
-                padding="xs"
-                withBorder
-                style={{
-                  cursor: "pointer",
-                  outline:
-                    selectedId === option.id
-                      ? "2px solid var(--mantine-color-violet-6)"
-                      : undefined,
-                }}
-              >
-                <Group gap="xs">
-                  {option.icon && <span>{option.icon}</span>}
-                  <Text size="sm">{option.label}</Text>
-                </Group>
-              </Card>
-            </UnstyledButton>
-          ))}
-        </Group>
-      )}
+      );
+    }
 
-      {intensity !== undefined && onIntensityChange && (
-        <Stack gap={4}>
+    return (
+      <Group gap="xs" wrap="wrap">
+        {options.map((option) => (
+          <UnstyledButton
+            key={option.id}
+            onClick={() => { handleSelect(option.id); }}
+          >
+            <Card
+              padding="xs"
+              withBorder
+              style={{
+                cursor: "pointer",
+                outline:
+                  selectedId === option.id
+                    ? "2px solid var(--mantine-color-violet-6)"
+                    : undefined,
+              }}
+            >
+              <Group gap="xs">
+                {option.icon ? <span>{option.icon}</span> : null}
+                <Text size="sm">{option.label}</Text>
+              </Group>
+            </Card>
+          </UnstyledButton>
+        ))}
+      </Group>
+    );
+  };
+
+  return (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {isProcessing ? <Loader size="xs" /> : null}
+      </Group>
+
+      <Card padding="sm" withBorder>
+        <Text size="sm">{content}</Text>
+      </Card>
+
+      {renderOptions()}
+
+      {intensity !== undefined && onIntensityChange ? <Stack gap={4}>
           <Group justify="space-between">
             <Text size="xs" fw={500}>
               Intensity
@@ -150,19 +158,16 @@ export function Restyle({
             max={100}
             step={1}
           />
-        </Stack>
-      )}
+        </Stack> : null}
 
-      {restyledContent && (
-        <Stack gap="xs">
+      {restyledContent ? <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             Result
           </Text>
           <Card padding="sm" withBorder>
             <Text size="sm">{restyledContent}</Text>
           </Card>
-        </Stack>
-      )}
+        </Stack> : null}
     </Stack>
   );
 }

@@ -23,11 +23,9 @@ export function PromptEnhancer({
 }: PromptEnhancerProps) {
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Stack gap="xs">
         <Text size="xs" c="dimmed" fw={500}>
@@ -40,7 +38,7 @@ export function PromptEnhancer({
 
       <Button
         leftSection={<IconSparkles size={14} />}
-        onClick={() => onEnhance(prompt)}
+        onClick={() => { onEnhance(prompt); }}
         loading={isEnhancing}
         variant="default"
         size="sm"
@@ -48,8 +46,7 @@ export function PromptEnhancer({
         Enhance Prompt
       </Button>
 
-      {enhancedPrompt && (
-        <Stack gap="xs">
+      {enhancedPrompt ? <Stack gap="xs">
           <Group justify="space-between" align="center">
             <Text size="xs" c="dimmed" fw={500}>
               Enhanced
@@ -65,18 +62,13 @@ export function PromptEnhancer({
             autosize
             readOnly={!onEnhancedPromptChange}
           />
-          {showDiff && (
-            <Text size="xs" c="dimmed">
+          {showDiff ? <Text size="xs" c="dimmed">
               {prompt.length} → {enhancedPrompt.length} chars
-            </Text>
-          )}
-          {onApply && (
-            <Button size="compact-sm" onClick={() => onApply(enhancedPrompt)}>
+            </Text> : null}
+          {onApply ? <Button size="compact-sm" onClick={() => { onApply(enhancedPrompt); }}>
               Apply
-            </Button>
-          )}
-        </Stack>
-      )}
+            </Button> : null}
+        </Stack> : null}
     </Stack>
   );
 }

@@ -6,6 +6,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { AvatarProps } from "@patternbase/core";
 
 export function Avatar({
@@ -35,8 +36,7 @@ export function Avatar({
         radius="xl"
         color="violet"
       />
-      {status && (
-        <div
+      <div
           style={{
             position: "absolute",
             bottom: 0,
@@ -48,7 +48,6 @@ export function Avatar({
             border: "2px solid var(--mantine-color-body)",
           }}
         />
-      )}
     </div>
   );
 
@@ -63,11 +62,9 @@ export function Avatar({
         <Text size="sm" fw={500}>
           {name}
         </Text>
-        {badgeLabel && (
-          <Badge size="xs" variant="light">
+        {badgeLabel ? <Badge size="xs" variant="light">
             {badgeLabel}
-          </Badge>
-        )}
+          </Badge> : null}
       </Group>
     );
   }
@@ -84,16 +81,12 @@ export function Avatar({
           {avatarEl}
           <Stack gap={4}>
             <Text fw={600}>{name}</Text>
-            {persona && (
-              <Text size="sm" c="dimmed">
+            {persona ? <Text size="sm" c="dimmed">
                 {persona}
-              </Text>
-            )}
-            {badgeLabel && (
-              <Badge size="sm" variant="light">
+              </Text> : null}
+            {badgeLabel ? <Badge size="sm" variant="light">
                 {badgeLabel}
-              </Badge>
-            )}
+              </Badge> : null}
           </Stack>
         </Stack>
       </Card>
@@ -112,16 +105,12 @@ export function Avatar({
         <Text size="sm" fw={500}>
           {name}
         </Text>
-        {persona && (
-          <Text size="xs" c="dimmed">
+        {persona ? <Text size="xs" c="dimmed">
             {persona}
-          </Text>
-        )}
-        {badgeLabel && (
-          <Badge size="xs" variant="light">
+          </Text> : null}
+        {badgeLabel ? <Badge size="xs" variant="light">
             {badgeLabel}
-          </Badge>
-        )}
+          </Badge> : null}
       </Stack>
     </Group>
   );

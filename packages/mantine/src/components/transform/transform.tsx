@@ -13,11 +13,9 @@ export function Transform({
 }: TransformProps) {
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Card padding="sm" withBorder>
         <Text size="sm">{transformedContent ?? content}</Text>
@@ -32,7 +30,7 @@ export function Transform({
             leftSection={
               opt.icon ? <span>{opt.icon}</span> : <IconWand size={12} />
             }
-            onClick={() => onTransform(opt.id)}
+            onClick={() => { onTransform(opt.id); }}
             loading={isTransforming}
           >
             {opt.label}

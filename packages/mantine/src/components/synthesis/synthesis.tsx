@@ -10,6 +10,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
+
 import type { SynthesisProps } from "@patternbase/core";
 
 export function Synthesis({
@@ -37,15 +38,14 @@ export function Synthesis({
           <Text fw={600} size="sm">
             {title}
           </Text>
-          {isProcessing && <Loader size="xs" />}
+          {isProcessing ? <Loader size="xs" /> : null}
           {sources.length > 0 && (
             <Badge size="xs" variant="light">
               {sources.length} sources
             </Badge>
           )}
         </Group>
-        {onRegenerate && (
-          <Button
+        {onRegenerate ? <Button
             variant="subtle"
             size="compact-sm"
             leftSection={<IconRefresh size={14} />}
@@ -53,8 +53,7 @@ export function Synthesis({
             disabled={isProcessing}
           >
             Regenerate
-          </Button>
-        )}
+          </Button> : null}
       </Group>
 
       {insights.length > 0 && (
@@ -66,19 +65,16 @@ export function Synthesis({
             <Card key={insight.id} padding="sm" withBorder>
               <Stack gap="xs">
                 <Group gap="xs">
-                  {insight.type && (
-                    <Badge
+                  {insight.type ? <Badge
                       size="xs"
                       color={insightTypeColor(insight.type)}
                       variant="light"
                     >
                       {insight.type}
-                    </Badge>
-                  )}
+                    </Badge> : null}
                   <Text size="sm">{insight.text}</Text>
                 </Group>
-                {showConfidence && insight.confidence !== undefined && (
-                  <Group gap="xs" align="center">
+                {showConfidence && insight.confidence !== undefined ? <Group gap="xs" align="center">
                     <Text size="xs" c="dimmed">
                       Confidence:
                     </Text>
@@ -90,8 +86,7 @@ export function Synthesis({
                     <Text size="xs" c="dimmed">
                       {Math.round(insight.confidence * 100)}%
                     </Text>
-                  </Group>
-                )}
+                  </Group> : null}
                 {insight.sourceIds.length > 0 && (
                   <Group gap={4} wrap="wrap">
                     {insight.sourceIds.map((id) => {
@@ -118,8 +113,7 @@ export function Synthesis({
         </Stack>
       )}
 
-      {showSources && sources.length > 0 && (
-        <Stack gap="xs">
+      {showSources && sources.length > 0 ? <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             Sources
           </Text>
@@ -136,24 +130,20 @@ export function Synthesis({
                   <Text size="xs" fw={500}>
                     {source.title}
                   </Text>
-                  {source.content && (
-                    <Text size="xs" c="dimmed" lineClamp={2}>
+                  {source.content ? <Text size="xs" c="dimmed" lineClamp={2}>
                       {source.content}
-                    </Text>
-                  )}
-                  {source.url && (
-                    <Anchor
+                    </Text> : null}
+                  {source.url ? <Anchor
                       href={source.url}
                       target="_blank"
                       size="xs"
                       rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => { e.stopPropagation(); }}
                     >
                       {source.url.length > 50
                         ? `${source.url.substring(0, 50)}...`
                         : source.url}
-                    </Anchor>
-                  )}
+                    </Anchor> : null}
                 </Stack>
                 {source.relevance !== undefined && (
                   <Badge size="xs" variant="light" color="gray">
@@ -163,8 +153,7 @@ export function Synthesis({
               </Group>
             </Card>
           ))}
-        </Stack>
-      )}
+        </Stack> : null}
     </Stack>
   );
 }

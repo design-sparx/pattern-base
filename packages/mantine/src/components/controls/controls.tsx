@@ -7,6 +7,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
+
 import type { ControlsProps } from "@patternbase/core";
 
 export function Controls({
@@ -23,65 +24,67 @@ export function Controls({
     return "gray";
   };
 
-  const renderControl = (control: (typeof controls)[0]) => (
-    <Card key={control.id} padding="sm" withBorder>
-      <Group justify="space-between" align="center">
-        <Stack gap={2} style={{ flex: 1 }}>
-          <Group gap="xs">
-            <Text size="sm" fw={500}>
-              {control.label}
-            </Text>
-            {showStatus && control.status && (
-              <Badge
-                size="xs"
-                color={statusColor(control.status)}
-                variant="light"
-              >
-                {control.status}
-              </Badge>
-            )}
-            {control.locked && (
-              <Badge size="xs" variant="light" color="gray">
-                Locked
-              </Badge>
-            )}
-          </Group>
-          {control.description && (
-            <Text size="xs" c="dimmed">
-              {control.description}
-            </Text>
-          )}
-        </Stack>
-        <Tooltip
-          label={
-            control.locked
-              ? "This control is locked"
-              : control.enabled
-                ? "Disable"
-                : "Enable"
-          }
-        >
-          <Switch
-            checked={control.enabled}
-            onChange={(e) =>
-              !control.locked &&
-              onToggleControl(control.id, e.currentTarget.checked)
-            }
-            disabled={control.locked}
-            size="sm"
-          />
-        </Tooltip>
-      </Group>
-    </Card>
-  );
+  const renderControl = (control: (typeof controls)[0]) => {
+    let switchLabel = "Enable";
+    if (control.locked) {
+      switchLabel = "This control is locked";
+    } else if (control.enabled) {
+      switchLabel = "Disable";
+    }
+
+    return (
+      <Card key={control.id} padding="sm" withBorder>
+        <Group justify="space-between" align="center">
+          <Stack gap={2} style={{ flex: 1 }}>
+            <Group gap="xs">
+              <Text size="sm" fw={500}>
+                {control.label}
+              </Text>
+              {showStatus && control.status ? (
+                <Badge
+                  size="xs"
+                  color={statusColor(control.status)}
+                  variant="light"
+                >
+                  {control.status}
+                </Badge>
+              ) : null}
+              {control.locked ? (
+                <Badge size="xs" variant="light" color="gray">
+                  Locked
+                </Badge>
+              ) : null}
+            </Group>
+            {control.description ? (
+              <Text size="xs" c="dimmed">
+                {control.description}
+              </Text>
+            ) : null}
+          </Stack>
+          <Tooltip label={switchLabel}>
+            <Switch
+              checked={control.enabled}
+              onChange={(e) => {
+                if (!control.locked) {
+                  onToggleControl(control.id, e.currentTarget.checked);
+                }
+              }}
+              disabled={control.locked}
+              size="sm"
+            />
+          </Tooltip>
+        </Group>
+      </Card>
+    );
+  };
 
   return (
     <Stack gap="sm">
-      {title && (
+      {title ? (
         <Text fw={600} size="sm">
           {title}
         </Text>
-      )}
+      ) : null}
       {variant === "cards" ? (
         <div
           style={{

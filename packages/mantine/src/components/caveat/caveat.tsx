@@ -1,5 +1,6 @@
 import { Alert, Anchor, Text } from "@mantine/core";
 import { IconAlertTriangle, IconInfoCircle, IconX } from "@tabler/icons-react";
+
 import type { CaveatProps } from "@patternbase/core";
 
 export function Caveat({
@@ -35,8 +36,7 @@ export function Caveat({
       variant={variant === "banner" ? "filled" : "light"}
     >
       <Text size="sm">{message}</Text>
-      {learnMoreUrl && (
-        <Anchor
+      {learnMoreUrl ? <Anchor
           href={learnMoreUrl}
           target="_blank"
           size="xs"
@@ -45,8 +45,7 @@ export function Caveat({
           display="block"
         >
           Learn more
-        </Anchor>
-      )}
+        </Anchor> : null}
     </Alert>
   );
 }

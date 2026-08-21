@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ActionIcon,
   Badge,
@@ -10,6 +9,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconDeviceFloppy, IconStar, IconTrash } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { SavedStylesProps } from "@patternbase/core";
 
 export function SavedStyles({
@@ -28,17 +29,15 @@ export function SavedStyles({
 
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Group gap="xs">
         <TextInput
           placeholder="Style name..."
           value={saveName}
-          onChange={(e) => setSaveName(e.currentTarget.value)}
+          onChange={(e) => { setSaveName(e.currentTarget.value); }}
           size="sm"
           style={{ flex: 1 }}
         />
@@ -72,7 +71,7 @@ export function SavedStyles({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onSelectStyle(style.id)}
+              onClick={() => { onSelectStyle(style.id); }}
             >
               <Group justify="space-between" align="center">
                 <Stack gap={2}>
@@ -80,30 +79,25 @@ export function SavedStyles({
                     <Text size="sm" fw={600}>
                       {style.name}
                     </Text>
-                    {style.isDefault && (
-                      <Badge
+                    {style.isDefault ? <Badge
                         size="xs"
                         variant="light"
                         color="yellow"
                         leftSection={<IconStar size={10} />}
                       >
                         Default
-                      </Badge>
-                    )}
+                      </Badge> : null}
                     {selectedStyleId === style.id && (
                       <Badge size="xs" variant="filled" color="violet">
                         Active
                       </Badge>
                     )}
                   </Group>
-                  {style.description && (
-                    <Text size="xs" c="dimmed">
+                  {style.description ? <Text size="xs" c="dimmed">
                       {style.description}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
-                {onDeleteStyle && (
-                  <ActionIcon
+                {onDeleteStyle ? <ActionIcon
                     variant="subtle"
                     color="red"
                     size="sm"
@@ -113,8 +107,7 @@ export function SavedStyles({
                     }}
                   >
                     <IconTrash size={14} />
-                  </ActionIcon>
-                )}
+                  </ActionIcon> : null}
               </Group>
             </Card>
           ))}
@@ -126,32 +119,28 @@ export function SavedStyles({
               <Group
                 gap="xs"
                 style={{ cursor: "pointer", flex: 1 }}
-                onClick={() => onSelectStyle(style.id)}
+                onClick={() => { onSelectStyle(style.id); }}
               >
                 <Text size="sm" fw={selectedStyleId === style.id ? 600 : 400}>
                   {style.name}
                 </Text>
-                {style.isDefault && (
-                  <Badge size="xs" variant="light" color="yellow">
+                {style.isDefault ? <Badge size="xs" variant="light" color="yellow">
                     Default
-                  </Badge>
-                )}
+                  </Badge> : null}
                 {selectedStyleId === style.id && (
                   <Badge size="xs" variant="filled" color="violet">
                     Active
                   </Badge>
                 )}
               </Group>
-              {onDeleteStyle && (
-                <ActionIcon
+              {onDeleteStyle ? <ActionIcon
                   variant="subtle"
                   color="red"
                   size="sm"
-                  onClick={() => onDeleteStyle(style.id)}
+                  onClick={() => { onDeleteStyle(style.id); }}
                 >
                   <IconTrash size={14} />
-                </ActionIcon>
-              )}
+                </ActionIcon> : null}
             </Group>
           ))}
         </Stack>

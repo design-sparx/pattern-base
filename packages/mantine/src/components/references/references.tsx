@@ -10,6 +10,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
+
 import type { ReferencesProps } from "@patternbase/core";
 
 export function References({
@@ -39,24 +40,17 @@ export function References({
             <Text size="sm" fw={500}>
               {ref.title}
             </Text>
-            {ref.type && (
-              <Badge size="xs" variant="light">
+            {ref.type ? <Badge size="xs" variant="light">
                 {ref.type}
-              </Badge>
-            )}
-            {ref.selected && (
-              <Badge size="xs" variant="filled" color="violet">
+              </Badge> : null}
+            {ref.selected ? <Badge size="xs" variant="filled" color="violet">
                 Selected
-              </Badge>
-            )}
+              </Badge> : null}
           </Group>
-          {ref.excerpt && (
-            <Text size="xs" c="dimmed" lineClamp={2}>
+          {ref.excerpt ? <Text size="xs" c="dimmed" lineClamp={2}>
               {ref.excerpt}
-            </Text>
-          )}
-          {ref.location && (
-            <Anchor
+            </Text> : null}
+          {ref.location ? <Anchor
               href={ref.location}
               target="_blank"
               size="xs"
@@ -65,10 +59,8 @@ export function References({
               {ref.location.length > 50
                 ? `${ref.location.substring(0, 50)}...`
                 : ref.location}
-            </Anchor>
-          )}
-          {showRelevance && ref.relevance !== undefined && (
-            <Group gap="xs" align="center">
+            </Anchor> : null}
+          {showRelevance && ref.relevance !== undefined ? <Group gap="xs" align="center">
               <Progress
                 value={ref.relevance * 100}
                 size="xs"
@@ -77,11 +69,9 @@ export function References({
               <Text size="xs" c="dimmed">
                 {Math.round(ref.relevance * 100)}%
               </Text>
-            </Group>
-          )}
+            </Group> : null}
         </Stack>
-        {onRemoveReference && (
-          <ActionIcon
+        {onRemoveReference ? <ActionIcon
             variant="subtle"
             color="gray"
             size="sm"
@@ -91,8 +81,7 @@ export function References({
             }}
           >
             <IconX size={12} />
-          </ActionIcon>
-        )}
+          </ActionIcon> : null}
       </Group>
     </Card>
   );

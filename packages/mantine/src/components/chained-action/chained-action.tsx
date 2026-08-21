@@ -17,11 +17,9 @@ export function ChainedAction({
 
   return (
     <Stack gap="md">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Stepper active={active} size="sm">
         {steps.map((step) => (
@@ -39,19 +37,15 @@ export function ChainedAction({
             }
             description={step.description}
             color={
-              step.status === "error"
-                ? "red"
-                : step.status === "completed"
-                  ? "green"
-                  : undefined
+              step.status === "error" ? "red"
+              : step.status === "completed" ? "green"
+              : undefined
             }
             loading={step.status === "active" && isExecuting}
           >
-            {step.result && (
-              <Text size="xs" c="dimmed" mt="xs">
+            {step.result ? <Text size="xs" c="dimmed" mt="xs">
                 {step.result}
-              </Text>
-            )}
+              </Text> : null}
           </Stepper.Step>
         ))}
       </Stepper>

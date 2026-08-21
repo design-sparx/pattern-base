@@ -7,8 +7,9 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { TemplatesProps } from "@patternbase/core";
 
 export function Templates({
@@ -35,27 +36,29 @@ export function Templates({
       padding="sm"
       withBorder
       style={{ cursor: "pointer" }}
-      onClick={() => onSelect(t)}
+      onClick={() => {
+        onSelect(t);
+      }}
     >
       <Stack gap="xs">
         <Group justify="space-between" align="flex-start">
           <Group gap="xs">
-            {t.icon && <span>{t.icon}</span>}
+            {t.icon ? <span>{t.icon}</span> : null}
             <Text fw={600} size="sm">
               {t.name}
             </Text>
           </Group>
-          {t.category && (
+          {t.category ? (
             <Badge variant="light" size="xs">
               {t.category}
             </Badge>
-          )}
+          ) : null}
         </Group>
-        {t.description && (
+        {t.description ? (
           <Text size="xs" c="dimmed">
             {t.description}
           </Text>
-        )}
+        ) : null}
       </Stack>
     </Card>
   );
@@ -68,19 +71,9 @@ export function Templates({
       }, {})
     : null;
 
-  return (
-    <Stack gap="sm">
-      {searchable && (
-        <TextInput
-          placeholder="Search templates..."
-          leftSection={<IconSearch size={14} />}
-          value={query}
-          onChange={(e) => setQuery(e.currentTarget.value)}
-          size="sm"
-        />
-      )}
-
-      {grouped ? (
+  const renderTemplates = () => {
+    if (grouped) {
+      return (
         <Stack gap="md">
           {Object.entries(grouped).map(([category, items]) => (
             <Stack key={category} gap="xs">
@@ -97,13 +90,35 @@ export function Templates({
             </Stack>
           ))}
         </Stack>
-      ) : layout === "grid" ? (
+      );
+    }
+
+    if (layout === "grid") {
+      return (
         <SimpleGrid cols={columns} spacing="sm">
           {filtered.map(renderItem)}
         </SimpleGrid>
-      ) : (
-        <Stack gap="xs">{filtered.map(renderItem)}</Stack>
-      )}
+      );
+    }
+
+    return <Stack gap="xs">{filtered.map(renderItem)}</Stack>;
+  };
+
+  return (
+    <Stack gap="sm">
+      {searchable ? (
+        <TextInput
+          placeholder="Search templates..."
+          leftSection={<IconSearch size={14} />}
+          value={query}
+          onChange={(e) => {
+            setQuery(e.currentTarget.value);
+          }}
+          size="sm"
+        />
+      ) : null}
+
+      {renderTemplates()}
     </Stack>
   );
 }

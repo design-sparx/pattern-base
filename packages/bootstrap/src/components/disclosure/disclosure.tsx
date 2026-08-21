@@ -27,7 +27,7 @@ export function Disclosure({
   if (variant === "badge") {
     return (
       <Badge bg={color} className="d-inline-flex align-items-center gap-1">
-        <span>{"\u2728"}</span>
+        <span>{"\uD83E\uDD16"}</span>
         {label}
         {model ? <span className="fw-normal opacity-75">({model})</span> : null}
       </Badge>
@@ -40,7 +40,7 @@ export function Disclosure({
         variant={color}
         className="d-flex align-items-center small mb-2 gap-2 px-3 py-2"
       >
-        <span>{"\u2728"}</span>
+        <span>{"\uD83E\uDD16"}</span>
         <span>{label}</span>
         {model ? <span className="text-muted">- {model}</span> : null}
         {timestamp ? (
@@ -55,7 +55,7 @@ export function Disclosure({
   // inline
   return (
     <span className={`text-${color} small`}>
-      {"\u2728"} {label}
+      {"\uD83E\uDD16"} {label}
       {model ? <span className="text-muted"> ({model})</span> : null}
     </span>
   );

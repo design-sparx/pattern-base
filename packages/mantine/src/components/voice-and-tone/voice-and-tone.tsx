@@ -1,4 +1,5 @@
 import { Group, Slider, Stack, Text } from "@mantine/core";
+
 import type { VoiceAndToneProps } from "@patternbase/core";
 
 export function VoiceAndTone({
@@ -10,11 +11,9 @@ export function VoiceAndTone({
 }: VoiceAndToneProps) {
   return (
     <Stack gap="md">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       {axes.map((axis) => (
         <Stack key={axis.id} gap="xs">
@@ -22,11 +21,9 @@ export function VoiceAndTone({
             <Text size="sm" fw={500}>
               {axis.label}
             </Text>
-            {showValues && (
-              <Text size="xs" c="dimmed">
+            {showValues ? <Text size="xs" c="dimmed">
                 {axis.value}
-              </Text>
-            )}
+              </Text> : null}
           </Group>
           {variant === "compact" ? (
             <Group gap="xs" align="center">
@@ -38,7 +35,7 @@ export function VoiceAndTone({
                 max={axis.max ?? 100}
                 step={axis.step ?? 1}
                 value={axis.value}
-                onChange={(v) => onChange(axis.id, v)}
+                onChange={(v) => { onChange(axis.id, v); }}
                 style={{ flex: 1 }}
                 size="xs"
               />
@@ -57,7 +54,7 @@ export function VoiceAndTone({
                 max={axis.max ?? 100}
                 step={axis.step ?? 1}
                 value={axis.value}
-                onChange={(v) => onChange(axis.id, v)}
+                onChange={(v) => { onChange(axis.id, v); }}
                 marks={[
                   { value: axis.min ?? 0, label: axis.leftLabel },
                   { value: axis.max ?? 100, label: axis.rightLabel },
