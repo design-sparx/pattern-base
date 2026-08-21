@@ -8,6 +8,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
+
 import type { ColorProps } from "@patternbase/core";
 
 export function Color({
@@ -21,11 +22,9 @@ export function Color({
   if (variant === "chips") {
     return (
       <Stack gap="xs">
-        {title && (
-          <Text size="sm" fw={500}>
+        {title ? <Text size="sm" fw={500}>
             {title}
-          </Text>
-        )}
+          </Text> : null}
         <Group gap="xs" wrap="wrap">
           {options.map((option) => (
             <Badge
@@ -53,11 +52,9 @@ export function Color({
     return (
       <Card withBorder padding="md">
         <Stack gap="sm">
-          {title && (
-            <Text fw={600} size="sm">
+          {title ? <Text fw={600} size="sm">
               {title}
-            </Text>
-          )}
+            </Text> : null}
           <SimpleGrid cols={4} spacing="xs">
             {options.map((option) => (
               <Stack key={option.id} gap={4} align="center">
@@ -79,11 +76,9 @@ export function Color({
                 <Text size="xs" c="dimmed" ta="center">
                   {option.label}
                 </Text>
-                {option.description && (
-                  <Text size="xs" c="dimmed" ta="center" lineClamp={1}>
+                {option.description ? <Text size="xs" c="dimmed" ta="center" lineClamp={1}>
                     {option.description}
-                  </Text>
-                )}
+                  </Text> : null}
               </Stack>
             ))}
           </SimpleGrid>
@@ -94,11 +89,9 @@ export function Color({
 
   return (
     <Stack gap="xs">
-      {title && (
-        <Text size="sm" fw={500}>
+      {title ? <Text size="sm" fw={500}>
           {title}
-        </Text>
-      )}
+        </Text> : null}
       <Group gap="xs" wrap="wrap">
         {options.map((option) => (
           <Tooltip key={option.id} label={option.label} withArrow>
@@ -116,17 +109,14 @@ export function Color({
                   outlineOffset: 2,
                 }}
               />
-              {showLabels && (
-                <Text size="xs" c="dimmed">
+              {showLabels ? <Text size="xs" c="dimmed">
                   {option.label}
-                </Text>
-              )}
+                </Text> : null}
             </Stack>
           </Tooltip>
         ))}
       </Group>
-      {selectedColorId && (
-        <Group gap="xs">
+      {selectedColorId ? <Group gap="xs">
           <ColorSwatch
             color={
               options.find((o) => o.id === selectedColorId)?.value ?? "#000"
@@ -136,8 +126,7 @@ export function Color({
           <Text size="xs" c="dimmed">
             {options.find((o) => o.id === selectedColorId)?.label}
           </Text>
-        </Group>
-      )}
+        </Group> : null}
     </Stack>
   );
 }

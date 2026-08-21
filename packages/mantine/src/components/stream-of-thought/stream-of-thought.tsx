@@ -22,7 +22,7 @@ export function StreamOfThought({
           <Text fw={600} size="sm">
             Reasoning Process
           </Text>
-          {isStreaming && <Loader size="xs" />}
+          {isStreaming ? <Loader size="xs" /> : null}
           <Badge size="xs" variant="light">
             {steps.length} steps
           </Badge>
@@ -43,7 +43,7 @@ export function StreamOfThought({
                     </Badge>
                     <span>{config.icon}</span>
                     <Text size="sm" fw={500} tt="capitalize">
-                      {step.type.replace("_", " ")}
+                      {step.type.replace(/_/g, " ")}
                     </Text>
                     <Text
                       size="xs"
@@ -60,15 +60,13 @@ export function StreamOfThought({
                     <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
                       {step.content}
                     </Text>
-                    {step.metadata && Object.keys(step.metadata).length > 0 && (
-                      <Text
+                    {step.metadata && Object.keys(step.metadata).length > 0 ? <Text
                         size="xs"
                         c="dimmed"
                         style={{ fontFamily: "monospace" }}
                       >
                         {JSON.stringify(step.metadata, null, 2)}
-                      </Text>
-                    )}
+                      </Text> : null}
                     <Text size="xs" c="dimmed">
                       {new Date(step.timestamp).toLocaleString()}
                     </Text>
@@ -89,7 +87,7 @@ export function StreamOfThought({
         <Text fw={600} size="sm">
           Reasoning Process
         </Text>
-        {isStreaming && <Loader size="xs" />}
+        {isStreaming ? <Loader size="xs" /> : null}
       </Group>
       {steps.map((step, index) => {
         const config = STEP_CONFIG[step.type] ?? { icon: "•", color: "gray" };
@@ -109,7 +107,7 @@ export function StreamOfThought({
               </Badge>
               <span>{config.icon}</span>
               <Text size="sm" fw={500} tt="capitalize">
-                {step.type.replace("_", " ")}
+                {step.type.replace(/_/g, " ")}
               </Text>
             </Group>
             <Text size="sm">{step.content}</Text>

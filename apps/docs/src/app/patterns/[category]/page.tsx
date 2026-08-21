@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Box, Group, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core";
 import {
   IconAdjustments,
@@ -39,6 +40,19 @@ interface CategoryPageParams {
 
 export function generateStaticParams() {
   return categories.map((c) => ({ category: c.id }));
+}
+
+export async function generateMetadata({
+  params,
+}: CategoryPageParams): Promise<Metadata> {
+  const { category: categorySlug } = await params;
+  const category = getCategoryById(categorySlug);
+  if (!category) return {};
+
+  return {
+    title: category.name,
+    description: category.description,
+  };
 }
 
 export default async function CategoryPage({ params }: CategoryPageParams) {

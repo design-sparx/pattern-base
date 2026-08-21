@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Avatar,
   Badge,
@@ -11,6 +10,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { SharedVisionProps } from "@patternbase/core";
 
 export function SharedVision({
@@ -91,17 +92,13 @@ export function SharedVision({
                   <Text size="sm" fw={500}>
                     {p.name}
                   </Text>
-                  {p.role && (
-                    <Text size="xs" c="dimmed">
+                  {p.role ? <Text size="xs" c="dimmed">
                       {p.role}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
-                {p.isActive && (
-                  <Badge size="xs" color="green" variant="dot">
+                {p.isActive ? <Badge size="xs" color="green" variant="dot">
                     active
-                  </Badge>
-                )}
+                  </Badge> : null}
               </Group>
             ))}
           </Stack>
@@ -126,12 +123,11 @@ export function SharedVision({
                 </Text>
               </Group>
             ))}
-            {onAddGoal && (
-              <Group gap="xs">
+            {onAddGoal ? <Group gap="xs">
                 <TextInput
                   placeholder="Add goal..."
                   value={newGoal}
-                  onChange={(e) => setNewGoal(e.currentTarget.value)}
+                  onChange={(e) => { setNewGoal(e.currentTarget.value); }}
                   size="xs"
                   style={{ flex: 1 }}
                   onKeyDown={(e) => {
@@ -153,8 +149,7 @@ export function SharedVision({
                 >
                   <IconPlus size={12} />
                 </Button>
-              </Group>
-            )}
+              </Group> : null}
           </Stack>
         </Card>
 

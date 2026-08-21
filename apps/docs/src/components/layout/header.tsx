@@ -39,6 +39,7 @@ export function Header() {
           <IconSparkles
             size={24}
             style={{ color: "var(--mantine-color-violet-6)" }}
+            aria-hidden="true"
           />
           <Text fw={700} fz="lg" style={{ color: "var(--mantine-color-text)" }}>
             PatternBase
@@ -65,6 +66,7 @@ export function Header() {
         <UnstyledButton
           onClick={spotlight.open}
           className="header-search"
+          aria-label="Search patterns"
           style={{
             display: "flex",
             alignItems: "center",
@@ -112,7 +114,7 @@ export function Header() {
 
         <ActionIcon
           component="a"
-          href="https://github.com"
+          href="https://github.com/kelvink96/pattern-base"
           target="_blank"
           rel="noopener noreferrer"
           variant="subtle"

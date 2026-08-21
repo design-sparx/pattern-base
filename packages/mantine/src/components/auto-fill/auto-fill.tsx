@@ -61,7 +61,7 @@ export function AutoFill({
               padding="xs"
               withBorder
               style={{ cursor: "pointer" }}
-              onClick={() => onSelect(s)}
+              onClick={() => { onSelect(s); }}
             >
               <Group justify="space-between" align="center">
                 <Text size="sm">{highlight(s.text)}</Text>
@@ -71,11 +71,9 @@ export function AutoFill({
                   </Badge>
                 )}
               </Group>
-              {s.source && (
-                <Text size="xs" c="dimmed">
+              {s.source ? <Text size="xs" c="dimmed">
                   {s.source}
-                </Text>
-              )}
+                </Text> : null}
             </Card>
           ))}
         </Stack>

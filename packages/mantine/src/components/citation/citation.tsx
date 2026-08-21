@@ -40,28 +40,25 @@ export function Citation({ citation }: CitationProps) {
                 {getRelevanceLabel(relevance)} Relevance
               </Badge>
             </Group>
-            {url && (
-              <Anchor
+            {url ? <Anchor
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 size="xs"
               >
                 {url.length > 60 ? `${url.substring(0, 60)}...` : url}
-              </Anchor>
-            )}
+              </Anchor> : null}
           </Stack>
           <Button
             variant="subtle"
             size="compact-xs"
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => { setExpanded(!expanded); }}
           >
             {expanded ? "Hide" : "View"} excerpt
           </Button>
         </Group>
 
-        {expanded && snippet && (
-          <Text
+        {expanded && snippet ? <Text
             size="sm"
             style={{
               fontStyle: "italic",
@@ -70,8 +67,7 @@ export function Citation({ citation }: CitationProps) {
             }}
           >
             &ldquo;{snippet}&rdquo;
-          </Text>
-        )}
+          </Text> : null}
       </Stack>
     </Card>
   );
@@ -105,7 +101,7 @@ export function CitationsList({
           variant="default"
           size="compact-sm"
           fullWidth
-          onClick={() => setShowAll(!showAll)}
+          onClick={() => { setShowAll(!showAll); }}
         >
           {showAll
             ? "Show fewer"

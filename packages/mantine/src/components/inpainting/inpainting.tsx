@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Badge,
   Button,
@@ -10,6 +9,8 @@ import {
   Textarea,
 } from "@mantine/core";
 import { IconBrush } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { InpaintingProps } from "@patternbase/core";
 
 export function Inpainting({
@@ -39,7 +40,7 @@ export function Inpainting({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {isProcessing && <Loader size="xs" />}
+        {isProcessing ? <Loader size="xs" /> : null}
       </Group>
 
       <Card padding="sm" withBorder>
@@ -59,7 +60,7 @@ export function Inpainting({
                 key={region.id}
                 variant={selectedRegionId === region.id ? "filled" : "light"}
                 style={{ cursor: "pointer" }}
-                onClick={() => onRegionSelect(region.id)}
+                onClick={() => { onRegionSelect(region.id); }}
               >
                 {region.label ?? region.id}
               </Badge>
@@ -68,16 +69,14 @@ export function Inpainting({
         </Stack>
       )}
 
-      {selectedRegion && (
-        <Text size="xs" c="dimmed">
+      {selectedRegion ? <Text size="xs" c="dimmed">
           Selected: <strong>{selectedRegion.label ?? selectedRegion.id}</strong>
-        </Text>
-      )}
+        </Text> : null}
 
       <Textarea
         placeholder="Describe what to replace in the selected region..."
         value={localPrompt}
-        onChange={(e) => handlePromptChange(e.currentTarget.value)}
+        onChange={(e) => { handlePromptChange(e.currentTarget.value); }}
         minRows={2}
         autosize
         disabled={!selectedRegionId}

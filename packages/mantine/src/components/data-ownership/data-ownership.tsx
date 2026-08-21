@@ -9,6 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconDownload, IconTrash } from "@tabler/icons-react";
+
 import type { DataOwnershipProps } from "@patternbase/core";
 
 export function DataOwnership({
@@ -27,18 +28,15 @@ export function DataOwnership({
             {title}
           </Text>
           <Group gap="xs">
-            {onExport && (
-              <Button
+            {onExport ? <Button
                 variant="default"
                 size="compact-sm"
                 leftSection={<IconDownload size={14} />}
                 onClick={onExport}
               >
                 Export
-              </Button>
-            )}
-            {onDeleteAll && (
-              <Button
+              </Button> : null}
+            {onDeleteAll ? <Button
                 variant="subtle"
                 color="red"
                 size="compact-sm"
@@ -46,8 +44,7 @@ export function DataOwnership({
                 onClick={onDeleteAll}
               >
                 Delete All
-              </Button>
-            )}
+              </Button> : null}
           </Group>
         </Group>
         <Table>
@@ -55,7 +52,7 @@ export function DataOwnership({
             <Table.Tr>
               <Table.Th>Data Type</Table.Th>
               <Table.Th>Retention</Table.Th>
-              <Table.Th></Table.Th>
+              <Table.Th />
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
@@ -66,31 +63,25 @@ export function DataOwnership({
                     <Text size="sm" fw={500}>
                       {item.dataType}
                     </Text>
-                    {item.description && (
-                      <Text size="xs" c="dimmed">
+                    {item.description ? <Text size="xs" c="dimmed">
                         {item.description}
-                      </Text>
-                    )}
+                      </Text> : null}
                   </Stack>
                 </Table.Td>
                 <Table.Td>
-                  {item.retention && (
-                    <Badge size="xs" variant="light">
+                  {item.retention ? <Badge size="xs" variant="light">
                       {item.retention}
-                    </Badge>
-                  )}
+                    </Badge> : null}
                 </Table.Td>
                 <Table.Td>
-                  {item.deletable && onDelete && (
-                    <ActionIcon
+                  {item.deletable && onDelete ? <ActionIcon
                       variant="subtle"
                       color="red"
                       size="sm"
-                      onClick={() => onDelete(item.id)}
+                      onClick={() => { onDelete(item.id); }}
                     >
                       <IconTrash size={14} />
-                    </ActionIcon>
-                  )}
+                    </ActionIcon> : null}
                 </Table.Td>
               </Table.Tr>
             ))}
@@ -107,26 +98,22 @@ export function DataOwnership({
           {title}
         </Text>
         <Group gap="xs">
-          {onExport && (
-            <Button
+          {onExport ? <Button
               variant="default"
               size="compact-sm"
               leftSection={<IconDownload size={14} />}
               onClick={onExport}
             >
               Export
-            </Button>
-          )}
-          {onDeleteAll && (
-            <Button
+            </Button> : null}
+          {onDeleteAll ? <Button
               variant="subtle"
               color="red"
               size="compact-sm"
               onClick={onDeleteAll}
             >
               Delete All
-            </Button>
-          )}
+            </Button> : null}
         </Group>
       </Group>
 
@@ -138,27 +125,21 @@ export function DataOwnership({
                 <Text size="sm" fw={500}>
                   {item.dataType}
                 </Text>
-                {item.description && (
-                  <Text size="xs" c="dimmed">
+                {item.description ? <Text size="xs" c="dimmed">
                     {item.description}
-                  </Text>
-                )}
-                {item.retention && (
-                  <Badge size="xs" variant="light" color="gray">
+                  </Text> : null}
+                {item.retention ? <Badge size="xs" variant="light" color="gray">
                     Retention: {item.retention}
-                  </Badge>
-                )}
+                  </Badge> : null}
               </Stack>
-              {item.deletable && onDelete && (
-                <ActionIcon
+              {item.deletable && onDelete ? <ActionIcon
                   variant="subtle"
                   color="red"
                   size="sm"
-                  onClick={() => onDelete(item.id)}
+                  onClick={() => { onDelete(item.id); }}
                 >
                   <IconTrash size={14} />
-                </ActionIcon>
-              )}
+                </ActionIcon> : null}
             </Group>
           </Card>
         ))}

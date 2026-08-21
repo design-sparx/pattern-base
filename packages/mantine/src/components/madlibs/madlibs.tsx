@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Button,
   Card,
@@ -11,6 +10,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { MadlibsProps } from "@patternbase/core";
 
 export function Madlibs({
@@ -55,20 +56,16 @@ export function Madlibs({
 
   return (
     <Stack gap="sm">
-      {title && <Text fw={600}>{title}</Text>}
-      {description && (
-        <Text size="sm" c="dimmed">
+      {title ? <Text fw={600}>{title}</Text> : null}
+      {description ? <Text size="sm" c="dimmed">
           {description}
-        </Text>
-      )}
+        </Text> : null}
 
-      {showPreview && (
-        <Card padding="sm" withBorder>
+      {showPreview ? <Card padding="sm" withBorder>
           <Text size="sm" style={{ fontStyle: "italic" }}>
             {renderTemplate()}
           </Text>
-        </Card>
-      )}
+        </Card> : null}
 
       {variables.map((variable) => {
         const commonProps = {
@@ -88,7 +85,7 @@ export function Madlibs({
                 label: o.label,
               }))}
               value={values[variable.id] ?? ""}
-              onChange={(val) => handleChange(variable.id, val ?? "")}
+              onChange={(val) => { handleChange(variable.id, val ?? ""); }}
             />
           );
         }
@@ -98,7 +95,7 @@ export function Madlibs({
             <NumberInput
               {...commonProps}
               value={values[variable.id] ? Number(values[variable.id]) : ""}
-              onChange={(val) => handleChange(variable.id, String(val))}
+              onChange={(val) => { handleChange(variable.id, String(val)); }}
             />
           );
         }
@@ -108,7 +105,7 @@ export function Madlibs({
             <Textarea
               {...commonProps}
               value={values[variable.id] ?? ""}
-              onChange={(e) => handleChange(variable.id, e.currentTarget.value)}
+              onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
               minRows={2}
               autosize
             />
@@ -119,7 +116,7 @@ export function Madlibs({
           <TextInput
             {...commonProps}
             value={values[variable.id] ?? ""}
-            onChange={(e) => handleChange(variable.id, e.currentTarget.value)}
+            onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
           />
         );
       })}
@@ -127,7 +124,7 @@ export function Madlibs({
       <Group justify="flex-end">
         <Button
           leftSection={<IconSend size={14} />}
-          onClick={() => onSubmit(values)}
+          onClick={() => { onSubmit(values); }}
           disabled={!allFilled || isGenerating}
           loading={isGenerating}
           size="sm"

@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { PresetStylesProps } from "@patternbase/core";
 
 export function PresetStyles({
@@ -18,11 +19,9 @@ export function PresetStyles({
 }: PresetStylesProps) {
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       {variant === "cards" ? (
         <SimpleGrid cols={2} spacing="sm">
@@ -38,12 +37,12 @@ export function PresetStyles({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onApplyPreset(preset.id, preset.values)}
+              onClick={() => { onApplyPreset(preset.id, preset.values); }}
             >
               <Stack gap="xs">
                 <Group justify="space-between" align="flex-start">
                   <Group gap="xs">
-                    {preset.icon && <span>{preset.icon}</span>}
+                    {preset.icon ? <span>{preset.icon}</span> : null}
                     <Text fw={600} size="sm">
                       {preset.label}
                     </Text>
@@ -54,11 +53,9 @@ export function PresetStyles({
                     </Badge>
                   )}
                 </Group>
-                {preset.description && (
-                  <Text size="xs" c="dimmed">
+                {preset.description ? <Text size="xs" c="dimmed">
                     {preset.description}
-                  </Text>
-                )}
+                  </Text> : null}
               </Stack>
             </Card>
           ))}
@@ -71,7 +68,7 @@ export function PresetStyles({
               variant={selectedPresetId === preset.id ? "filled" : "default"}
               size="sm"
               leftSection={preset.icon ? <span>{preset.icon}</span> : undefined}
-              onClick={() => onApplyPreset(preset.id, preset.values)}
+              onClick={() => { onApplyPreset(preset.id, preset.values); }}
             >
               {preset.label}
             </Button>

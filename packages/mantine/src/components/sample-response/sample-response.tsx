@@ -8,6 +8,7 @@ import {
   Textarea,
 } from "@mantine/core";
 import { IconCheck, IconRefresh, IconWand } from "@tabler/icons-react";
+
 import type { SampleResponseProps } from "@patternbase/core";
 
 export function SampleResponse({
@@ -26,21 +27,18 @@ export function SampleResponse({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {isGenerating && <Loader size="xs" />}
+        {isGenerating ? <Loader size="xs" /> : null}
       </Group>
 
-      {prompt && (
-        <Text size="xs" c="dimmed" style={{ fontStyle: "italic" }}>
+      {prompt ? <Text size="xs" c="dimmed" style={{ fontStyle: "italic" }}>
           &ldquo;{prompt}&rdquo;
-        </Text>
-      )}
+        </Text> : null}
 
       {sample ? (
         <>
           <Textarea value={sample} readOnly minRows={3} autosize />
           <Group gap="xs">
-            {onRegenerateSample && (
-              <Button
+            {onRegenerateSample ? <Button
                 variant="default"
                 size="sm"
                 leftSection={<IconRefresh size={14} />}
@@ -48,18 +46,15 @@ export function SampleResponse({
                 disabled={isGenerating}
               >
                 Regenerate
-              </Button>
-            )}
-            {onAcceptSample && (
-              <Button
+              </Button> : null}
+            {onAcceptSample ? <Button
                 size="sm"
                 leftSection={<IconCheck size={14} />}
                 onClick={onAcceptSample}
                 disabled={isGenerating}
               >
                 Accept
-              </Button>
-            )}
+              </Button> : null}
           </Group>
         </>
       ) : (

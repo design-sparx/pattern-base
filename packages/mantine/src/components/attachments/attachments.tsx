@@ -5,7 +5,7 @@ import { IconTrash, IconUpload } from "@tabler/icons-react";
 import type { AttachmentsProps } from "@patternbase/core";
 
 function formatSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024) return `${String(bytes)} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
@@ -30,9 +30,8 @@ export function Attachments({
 
   return (
     <Stack gap="sm">
-      {canAdd && (
-        <Dropzone
-          onDrop={(files) => onAdd(files as unknown as File[])}
+      {canAdd ? <Dropzone
+          onDrop={(files) => { onAdd(files as unknown as File[]); }}
           accept={mimeTypes}
           multiple
         >
@@ -51,13 +50,11 @@ export function Attachments({
               Drop files here or click to upload
             </Text>
           </Group>
-        </Dropzone>
-      )}
+        </Dropzone> : null}
 
       {attachments.map((a) => (
         <Group key={a.id} gap="sm" align="flex-start">
-          {showPreview && a.previewUrl && (
-            <img
+          {showPreview && a.previewUrl ? <img
               src={a.previewUrl}
               alt={a.name}
               style={{
@@ -66,8 +63,7 @@ export function Attachments({
                 objectFit: "cover",
                 borderRadius: 4,
               }}
-            />
-          )}
+            /> : null}
           <Stack gap={2} style={{ flex: 1 }}>
             <Group justify="space-between" align="center">
               <Text size="sm" fw={500}>
@@ -77,7 +73,7 @@ export function Attachments({
                 variant="subtle"
                 color="red"
                 size="sm"
-                onClick={() => onRemove(a.id)}
+                onClick={() => { onRemove(a.id); }}
               >
                 <IconTrash size={14} />
               </ActionIcon>
@@ -92,7 +88,7 @@ export function Attachments({
                 </Badge>
               )}
             </Group>
-            {a.status === "uploading" && a.progress != null && (
+            {a.status === "uploading" && a.progress !== undefined && (
               <Progress value={a.progress} size="xs" mt={2} />
             )}
           </Stack>

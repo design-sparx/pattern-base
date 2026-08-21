@@ -9,7 +9,22 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconCopy } from "@tabler/icons-react";
-import type { DescribeProps } from "@patternbase/core";
+
+import type { DescribeDetail, DescribeProps } from "@patternbase/core";
+
+function renderDetailValue(detail: DescribeDetail) {
+  if (detail.type === "badge") {
+    return (
+      <Badge size="xs" variant="light">
+        {detail.value}
+      </Badge>
+    );
+  }
+  if (detail.type === "code" || detail.type === "json") {
+    return <Code fz="xs">{detail.value}</Code>;
+  }
+  return <Text size="xs">{detail.value}</Text>;
+}
 
 export function Describe({
   output,
@@ -29,30 +44,23 @@ export function Describe({
           {title}
         </Text>
         <Group gap={4}>
-          {model && (
-            <Badge size="xs" variant="light">
+          {model ? <Badge size="xs" variant="light">
               {model}
-            </Badge>
-          )}
-          {seed && (
-            <Badge size="xs" variant="light" color="gray">
+            </Badge> : null}
+          {seed ? <Badge size="xs" variant="light" color="gray">
               seed: {seed}
-            </Badge>
-          )}
-          {onCopy && (
-            <Tooltip label="Copy">
+            </Badge> : null}
+          {onCopy ? <Tooltip label="Copy">
               <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
                 <IconCopy size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
+            </Tooltip> : null}
         </Group>
       </Group>
 
       <Text size="sm">{output}</Text>
 
-      {inferredPrompt && (
-        <Stack gap={4}>
+      {inferredPrompt ? <Stack gap={4}>
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             Inferred Prompt
           </Text>
@@ -61,21 +69,18 @@ export function Describe({
               <Text size="xs" style={{ fontStyle: "italic", flex: 1 }}>
                 &ldquo;{inferredPrompt}&rdquo;
               </Text>
-              {onReuse && (
-                <Badge
+              {onReuse ? <Badge
                   size="xs"
                   variant="light"
                   color="violet"
                   style={{ cursor: "pointer" }}
-                  onClick={() => onReuse(inferredPrompt)}
+                  onClick={() => { onReuse(inferredPrompt); }}
                 >
                   Reuse
-                </Badge>
-              )}
+                </Badge> : null}
             </Group>
           </Card>
-        </Stack>
-      )}
+        </Stack> : null}
 
       {details.length > 0 && (
         <Stack gap={4}>
@@ -84,15 +89,7 @@ export function Describe({
               <Text size="xs" c="dimmed">
                 {detail.label}
               </Text>
-              {detail.type === "badge" ? (
-                <Badge size="xs" variant="light">
-                  {detail.value}
-                </Badge>
-              ) : detail.type === "code" || detail.type === "json" ? (
-                <Code fz="xs">{detail.value}</Code>
-              ) : (
-                <Text size="xs">{detail.value}</Text>
-              )}
+              {renderDetailValue(detail)}
             </Group>
           ))}
         </Stack>

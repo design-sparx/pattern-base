@@ -27,6 +27,7 @@ import { ConfigProvider, theme as antdTheme } from "antd";
 import { useState } from "react";
 
 import { CodeBlock } from "./code-block";
+import { PreviewErrorBoundary } from "./error-boundary";
 
 import { codeSnippets } from "@/data/snippet-templates";
 import { componentRegistry } from "@/lib/registry";
@@ -131,6 +132,8 @@ export function ComponentPreview({
                   variant={viewport === vp.value ? "light" : "default"}
                   color={viewport === vp.value ? "violet" : "gray"}
                   size="sm"
+                  aria-label={vp.label}
+                  aria-pressed={viewport === vp.value}
                   onClick={() => {
                     setViewport(vp.value);
                   }}
@@ -167,6 +170,9 @@ export function ComponentPreview({
                           variant="subtle"
                           color={copied ? "green" : "gray"}
                           size="sm"
+                          aria-label={
+                            copied ? "Copied!" : "Copy install command"
+                          }
                           onClick={copy}
                         >
                           {copied ? (
@@ -188,6 +194,7 @@ export function ComponentPreview({
               color={codeOpen ? "violet" : "gray"}
               size="compact-xs"
               leftSection={<IconCode size={14} />}
+              aria-expanded={codeOpen}
               onClick={() => {
                 setCodeOpen((o) => !o);
               }}
@@ -216,7 +223,9 @@ export function ComponentPreview({
                 transition: "max-width 200ms ease",
               }}
             >
-              {previewContent}
+              <PreviewErrorBoundary patternId={patternId}>
+                {previewContent}
+              </PreviewErrorBoundary>
             </Box>
           </Box>
         </Box>

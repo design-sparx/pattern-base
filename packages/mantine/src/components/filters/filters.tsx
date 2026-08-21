@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { FiltersProps } from "@patternbase/core";
 
 export function Filters({
@@ -28,8 +29,7 @@ export function Filters({
         {group.label}
       </Text>
 
-      {group.type === "checkbox" && group.options && (
-        <Stack gap={4}>
+      {group.type === "checkbox" && group.options ? <Stack gap={4}>
           {group.options.map((opt) => {
             const currentVal = values[group.id];
             const checked = Array.isArray(currentVal)
@@ -48,7 +48,7 @@ export function Filters({
                     )}
                   </Group>
                 }
-                checked={!!checked}
+                checked={Boolean(checked)}
                 onChange={(e) => {
                   const current = (values[group.id] as string[]) ?? [];
                   if (e.currentTarget.checked) {
@@ -64,13 +64,11 @@ export function Filters({
               />
             );
           })}
-        </Stack>
-      )}
+        </Stack> : null}
 
-      {group.type === "radio" && group.options && (
-        <Radio.Group
+      {group.type === "radio" && group.options ? <Radio.Group
           value={(values[group.id] as string) ?? ""}
-          onChange={(val) => onChange(group.id, val)}
+          onChange={(val) => { onChange(group.id, val); }}
         >
           <Stack gap={4}>
             {group.options.map((opt) => (
@@ -82,8 +80,7 @@ export function Filters({
               />
             ))}
           </Stack>
-        </Radio.Group>
-      )}
+        </Radio.Group> : null}
 
       {group.type === "range" && (
         <Stack gap="xs">
@@ -92,7 +89,7 @@ export function Filters({
             max={group.max ?? 100}
             step={group.step ?? 1}
             value={(values[group.id] as number) ?? group.min ?? 0}
-            onChange={(val) => onChange(group.id, val)}
+            onChange={(val) => { onChange(group.id, val); }}
           />
           <Group justify="space-between">
             <Text size="xs" c="dimmed">
@@ -105,37 +102,31 @@ export function Filters({
         </Stack>
       )}
 
-      {group.type === "select" && group.options && (
-        <Select
+      {group.type === "select" && group.options ? <Select
           data={group.options.map((o) => ({ value: o.value, label: o.label }))}
           value={(values[group.id] as string) ?? null}
-          onChange={(val) => onChange(group.id, val ?? "")}
+          onChange={(val) => { onChange(group.id, val ?? ""); }}
           placeholder="Select..."
           size="sm"
           clearable
-        />
-      )}
+        /> : null}
     </Stack>
   );
 
   return (
     <Stack gap="sm">
       <Group justify="space-between" align="center">
-        {title && (
-          <Text fw={500} size="sm">
+        {title ? <Text fw={500} size="sm">
             {title}
-          </Text>
-        )}
-        {onClear && hasValues && (
-          <Button
+          </Text> : null}
+        {onClear && hasValues ? <Button
             variant="subtle"
             size="compact-xs"
             color="gray"
             onClick={onClear}
           >
             Clear all
-          </Button>
-        )}
+          </Button> : null}
       </Group>
 
       {layout === "horizontal" ? (

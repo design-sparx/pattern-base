@@ -35,7 +35,7 @@ export function PresetStyles({
               >
                 <Card.Body className="px-3 py-2">
                   <div className="small fw-semibold">
-                    {preset.icon ? `${preset.icon} ` : ""}
+                    {preset.icon ? <span style={{ marginRight: 4 }}>{preset.icon}</span> : null}
                     {preset.label}
                   </div>
                   {preset.description ? (

@@ -8,6 +8,7 @@ import {
   Timeline,
 } from "@mantine/core";
 import { IconArrowBack, IconGitBranch } from "@tabler/icons-react";
+
 import type { DraftModeProps } from "@patternbase/core";
 
 export function DraftMode({
@@ -36,9 +37,9 @@ export function DraftMode({
                     size="sm"
                     fw={activeDraftId === draft.id ? 600 : 400}
                     style={{ cursor: "pointer" }}
-                    onClick={() => onSelectDraft(draft.id)}
+                    onClick={() => { onSelectDraft(draft.id); }}
                   >
-                    {draft.label ?? `Draft ${draft.number}`}
+                    {draft.label ?? `Draft ${String(draft.number)}`}
                   </Text>
                   {activeDraftId === draft.id && (
                     <Badge size="xs" variant="filled" color="violet">
@@ -48,35 +49,29 @@ export function DraftMode({
                 </Group>
               }
             >
-              {draft.preview && (
-                <Text size="xs" c="dimmed" lineClamp={1}>
+              {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                   {draft.preview}
-                </Text>
-              )}
-              {draft.createdAt && (
-                <Text size="xs" c="dimmed">
+                </Text> : null}
+              {draft.createdAt ? <Text size="xs" c="dimmed">
                   {draft.createdAt.toLocaleString()}
-                </Text>
-              )}
+                </Text> : null}
               <Group gap="xs" mt={4}>
                 <Button
                   variant="subtle"
                   size="compact-xs"
                   leftSection={<IconArrowBack size={12} />}
-                  onClick={() => onRevertToDraft(draft.id)}
+                  onClick={() => { onRevertToDraft(draft.id); }}
                 >
                   Revert
                 </Button>
-                {onBranchFromDraft && (
-                  <Button
+                {onBranchFromDraft ? <Button
                     variant="subtle"
                     size="compact-xs"
                     leftSection={<IconGitBranch size={12} />}
-                    onClick={() => onBranchFromDraft(draft.id)}
+                    onClick={() => { onBranchFromDraft(draft.id); }}
                   >
                     Branch
-                  </Button>
-                )}
+                  </Button> : null}
               </Group>
             </Timeline.Item>
           ))}
@@ -95,13 +90,13 @@ export function DraftMode({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onSelectDraft(draft.id)}
+              onClick={() => { onSelectDraft(draft.id); }}
             >
               <Group justify="space-between" align="flex-start">
                 <Stack gap={2} style={{ flex: 1 }}>
                   <Group gap="xs">
                     <Text size="sm" fw={500}>
-                      {draft.label ?? `Draft ${draft.number}`}
+                      {draft.label ?? `Draft ${String(draft.number)}`}
                     </Text>
                     {activeDraftId === draft.id && (
                       <Badge size="xs" variant="filled" color="violet">
@@ -109,16 +104,12 @@ export function DraftMode({
                       </Badge>
                     )}
                   </Group>
-                  {draft.preview && (
-                    <Text size="xs" c="dimmed" lineClamp={1}>
+                  {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                       {draft.preview}
-                    </Text>
-                  )}
-                  {draft.createdAt && (
-                    <Text size="xs" c="dimmed">
+                    </Text> : null}
+                  {draft.createdAt ? <Text size="xs" c="dimmed">
                       {draft.createdAt.toLocaleString()}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
                 <Group gap="xs">
                   <Button
@@ -132,8 +123,7 @@ export function DraftMode({
                   >
                     Revert
                   </Button>
-                  {onBranchFromDraft && (
-                    <Button
+                  {onBranchFromDraft ? <Button
                       variant="subtle"
                       size="compact-xs"
                       leftSection={<IconGitBranch size={12} />}
@@ -143,8 +133,7 @@ export function DraftMode({
                       }}
                     >
                       Branch
-                    </Button>
-                  )}
+                    </Button> : null}
                 </Group>
               </Group>
             </Card>

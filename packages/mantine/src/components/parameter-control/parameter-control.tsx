@@ -11,11 +11,9 @@ export function ParameterControl({
 }: ParameterControlProps) {
   return (
     <Stack gap="md">
-      {title && (
-        <Text fw={600} size="md">
+      {title ? <Text fw={600} size="md">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <div
         style={
@@ -39,11 +37,9 @@ export function ParameterControl({
               style={{ display: "flex", alignItems: "center", gap: 4 }}
             >
               {param.label}
-              {param.description && (
-                <Tooltip label={param.description} withArrow>
+              {param.description ? <Tooltip label={param.description} withArrow>
                   <IconInfoCircle size={14} style={{ opacity: 0.5 }} />
-                </Tooltip>
-              )}
+                </Tooltip> : null}
             </Text>
 
             {param.type === "slider" && (
@@ -53,7 +49,7 @@ export function ParameterControl({
                   max={param.max ?? 100}
                   step={param.step ?? 1}
                   value={param.value as number}
-                  onChange={(v) => onChange(param.id, v)}
+                  onChange={(v) => { onChange(param.id, v); }}
                 />
                 <Text size="xs" c="dimmed">
                   Current: {String(param.value)}
@@ -64,7 +60,7 @@ export function ParameterControl({
             {param.type === "toggle" && (
               <Switch
                 checked={param.value as boolean}
-                onChange={(e) => onChange(param.id, e.currentTarget.checked)}
+                onChange={(e) => { onChange(param.id, e.currentTarget.checked); }}
                 onLabel="On"
                 offLabel="Off"
               />
@@ -73,7 +69,7 @@ export function ParameterControl({
             {param.type === "select" && (
               <Select
                 value={param.value as string}
-                onChange={(v) => onChange(param.id, v ?? "")}
+                onChange={(v) => { onChange(param.id, v ?? ""); }}
                 data={param.options?.map((opt) => ({
                   label: opt.label,
                   value: opt.value as string,
@@ -101,7 +97,7 @@ export function ParameterControl({
                       <Slider
                         value={matrixValue?.x ?? 50}
                         onChange={(x) =>
-                          onChange(param.id, { ...matrixValue, x })
+                          { onChange(param.id, { ...matrixValue, x }); }
                         }
                       />
                     </div>
@@ -112,7 +108,7 @@ export function ParameterControl({
                       <Slider
                         value={matrixValue?.y ?? 50}
                         onChange={(y) =>
-                          onChange(param.id, { ...matrixValue, y })
+                          { onChange(param.id, { ...matrixValue, y }); }
                         }
                       />
                     </div>

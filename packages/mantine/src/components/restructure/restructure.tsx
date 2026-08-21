@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { RestructureProps } from "@patternbase/core";
 
 export function Restructure({
@@ -25,7 +26,7 @@ export function Restructure({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {isProcessing && <Loader size="xs" />}
+        {isProcessing ? <Loader size="xs" /> : null}
       </Group>
 
       <Card padding="sm" withBorder>
@@ -40,19 +41,17 @@ export function Restructure({
               padding="sm"
               withBorder
               style={{ cursor: "pointer" }}
-              onClick={() => onRestructure(option.id)}
+              onClick={() => { onRestructure(option.id); }}
             >
               <Group gap="xs">
-                {option.icon && <span>{option.icon}</span>}
+                {option.icon ? <span>{option.icon}</span> : null}
                 <Stack gap={2}>
                   <Text size="sm" fw={500}>
                     {option.label}
                   </Text>
-                  {option.description && (
-                    <Text size="xs" c="dimmed">
+                  {option.description ? <Text size="xs" c="dimmed">
                       {option.description}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
               </Group>
             </Card>
@@ -66,7 +65,7 @@ export function Restructure({
               variant="default"
               size="sm"
               leftSection={option.icon ? <span>{option.icon}</span> : undefined}
-              onClick={() => onRestructure(option.id)}
+              onClick={() => { onRestructure(option.id); }}
               disabled={isProcessing}
             >
               {option.label}
@@ -75,16 +74,14 @@ export function Restructure({
         </Group>
       )}
 
-      {restructuredContent && (
-        <Stack gap="xs">
+      {restructuredContent ? <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             {showDiff ? "Changes" : "Result"}
           </Text>
           <Card padding="sm" withBorder>
             <Text size="sm">{restructuredContent}</Text>
           </Card>
-        </Stack>
-      )}
+        </Stack> : null}
     </Stack>
   );
 }

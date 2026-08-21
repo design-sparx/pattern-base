@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ActionIcon,
   Card,
@@ -16,6 +15,8 @@ import {
   IconRefresh,
   IconZoomIn,
 } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { SummaryProps } from "@patternbase/core";
 
 export function Summary({
@@ -36,7 +37,7 @@ export function Summary({
       <Group justify="space-between" align="center">
         <Group gap="xs">
           <Text fw={600}>{title}</Text>
-          {isGenerating && <Loader size="xs" />}
+          {isGenerating ? <Loader size="xs" /> : null}
         </Group>
         <Group gap={4}>
           {originalLength !== undefined && summaryLength !== undefined && (
@@ -44,15 +45,12 @@ export function Summary({
               {summaryLength}/{originalLength} chars
             </Text>
           )}
-          {onCopy && (
-            <Tooltip label="Copy">
+          {onCopy ? <Tooltip label="Copy">
               <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
                 <IconCopy size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
-          {onRegenerate && (
-            <Tooltip label="Regenerate">
+            </Tooltip> : null}
+          {onRegenerate ? <Tooltip label="Regenerate">
               <ActionIcon
                 variant="subtle"
                 size="sm"
@@ -61,20 +59,17 @@ export function Summary({
               >
                 <IconRefresh size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
-          {onExpand && (
-            <Tooltip label="Expand">
+            </Tooltip> : null}
+          {onExpand ? <Tooltip label="Expand">
               <ActionIcon variant="subtle" size="sm" onClick={onExpand}>
                 <IconZoomIn size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
+            </Tooltip> : null}
           {variant === "collapsible" && (
             <ActionIcon
               variant="subtle"
               size="sm"
-              onClick={() => setCollapsed((c) => !c)}
+              onClick={() => { setCollapsed((c) => !c); }}
             >
               {collapsed ? (
                 <IconChevronDown size={14} />

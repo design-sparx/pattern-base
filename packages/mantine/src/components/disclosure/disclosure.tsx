@@ -44,11 +44,9 @@ export function Disclosure({
         <Text size="sm">
           {label}
           {model ? ` — ${model}` : ""}
-          {timestamp && (
-            <Text component="span" size="xs" c="dimmed" ml="xs">
+          {timestamp ? <Text component="span" size="xs" c="dimmed" ml="xs">
               {new Date(timestamp).toLocaleDateString()}
-            </Text>
-          )}
+            </Text> : null}
         </Text>
       </Alert>
     );

@@ -8,6 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
+
 import type { ConnectorsProps } from "@patternbase/core";
 
 export function Connectors({
@@ -36,39 +37,31 @@ export function Connectors({
             <Badge size="xs" color={statusColor(source.status)} variant="light">
               {source.status}
             </Badge>
-            {source.type && (
-              <Badge size="xs" variant="light" color="gray">
+            {source.type ? <Badge size="xs" variant="light" color="gray">
                 {source.type}
-              </Badge>
-            )}
+              </Badge> : null}
           </Group>
-          {source.description && (
-            <Text size="xs" c="dimmed">
+          {source.description ? <Text size="xs" c="dimmed">
               {source.description}
-            </Text>
-          )}
-          {source.lastSyncedAt && (
-            <Text size="xs" c="dimmed">
+            </Text> : null}
+          {source.lastSyncedAt ? <Text size="xs" c="dimmed">
               Last synced: {source.lastSyncedAt.toLocaleString()}
-            </Text>
-          )}
+            </Text> : null}
         </Stack>
         <Group gap="xs">
-          {onSync && source.status === "connected" && (
-            <Button
+          {onSync && source.status === "connected" ? <Button
               variant="subtle"
               size="compact-xs"
               leftSection={<IconRefresh size={12} />}
-              onClick={() => onSync(source.id)}
+              onClick={() => { onSync(source.id); }}
             >
               Sync
-            </Button>
-          )}
+            </Button> : null}
           {source.status === "disconnected" || source.status === "error" ? (
             <Button
               variant="light"
               size="compact-xs"
-              onClick={() => onConnect(source.id)}
+              onClick={() => { onConnect(source.id); }}
             >
               Connect
             </Button>
@@ -77,7 +70,7 @@ export function Connectors({
               variant="subtle"
               color="gray"
               size="compact-xs"
-              onClick={() => onDisconnect(source.id)}
+              onClick={() => { onDisconnect(source.id); }}
             >
               Disconnect
             </Button>
@@ -89,11 +82,9 @@ export function Connectors({
 
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
       {variant === "cards" ? (
         <SimpleGrid cols={2} spacing="sm">
           {sources.map(renderSource)}

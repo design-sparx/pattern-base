@@ -8,6 +8,7 @@ import {
   Timeline,
 } from "@mantine/core";
 import { IconGitBranch } from "@tabler/icons-react";
+
 import type { BranchesProps } from "@patternbase/core";
 
 export function Branches({
@@ -21,11 +22,9 @@ export function Branches({
   return (
     <Stack gap="sm">
       <Group justify="space-between" align="center">
-        {title && (
-          <Text fw={600} size="sm">
+        {title ? <Text fw={600} size="sm">
             {title}
-          </Text>
-        )}
+          </Text> : null}
       </Group>
 
       {variant === "tree" ? (
@@ -43,7 +42,7 @@ export function Branches({
                     size="sm"
                     fw={activeBranchId === branch.id ? 600 : 400}
                     style={{ cursor: "pointer" }}
-                    onClick={() => onSelectBranch(branch.id)}
+                    onClick={() => { onSelectBranch(branch.id); }}
                   >
                     {branch.label}
                   </Text>
@@ -55,21 +54,17 @@ export function Branches({
                 </Group>
               }
             >
-              {branch.preview && (
-                <Text size="xs" c="dimmed" lineClamp={1}>
+              {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                   {branch.preview}
-                </Text>
-              )}
-              {branch.createdAt && (
-                <Text size="xs" c="dimmed">
+                </Text> : null}
+              {branch.createdAt ? <Text size="xs" c="dimmed">
                   {branch.createdAt.toLocaleDateString()}
-                </Text>
-              )}
+                </Text> : null}
               <Button
                 variant="subtle"
                 size="compact-xs"
                 mt={4}
-                onClick={() => onCreateBranch(branch.id)}
+                onClick={() => { onCreateBranch(branch.id); }}
               >
                 Branch from here
               </Button>
@@ -90,7 +85,7 @@ export function Branches({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onSelectBranch(branch.id)}
+              onClick={() => { onSelectBranch(branch.id); }}
             >
               <Group justify="space-between" align="flex-start">
                 <Stack gap={2} style={{ flex: 1 }}>
@@ -103,22 +98,16 @@ export function Branches({
                         Active
                       </Badge>
                     )}
-                    {branch.parentId && (
-                      <Badge size="xs" variant="light" color="gray">
+                    {branch.parentId ? <Badge size="xs" variant="light" color="gray">
                         branch
-                      </Badge>
-                    )}
+                      </Badge> : null}
                   </Group>
-                  {branch.preview && (
-                    <Text size="xs" c="dimmed" lineClamp={1}>
+                  {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                       {branch.preview}
-                    </Text>
-                  )}
-                  {branch.createdAt && (
-                    <Text size="xs" c="dimmed">
+                    </Text> : null}
+                  {branch.createdAt ? <Text size="xs" c="dimmed">
                       {branch.createdAt.toLocaleDateString()}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
                 <Button
                   variant="subtle"

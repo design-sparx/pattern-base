@@ -40,8 +40,8 @@ export function Regenerate({
         <Menu.Dropdown>
           <Menu.Item onClick={onRegenerate}>Regenerate</Menu.Item>
           <Menu.Divider />
-          {options.map((opt, i) => (
-            <Menu.Item key={i} onClick={opt.onSelect}>
+          {options.map((opt) => (
+            <Menu.Item key={opt.label} onClick={opt.onSelect}>
               {opt.label}
             </Menu.Item>
           ))}

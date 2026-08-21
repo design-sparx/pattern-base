@@ -17,7 +17,7 @@ export function Suggestions({
             variant="light"
             size="lg"
             style={{ cursor: "pointer" }}
-            onClick={() => onSelect(s)}
+            onClick={() => { onSelect(s); }}
           >
             {s.icon ? <span style={{ marginRight: 4 }}>{s.icon}</span> : null}
             {s.title}
@@ -35,7 +35,7 @@ export function Suggestions({
           padding="sm"
           withBorder
           style={{ cursor: "pointer" }}
-          onClick={() => onSelect(s)}
+          onClick={() => { onSelect(s); }}
         >
           <Stack gap={4}>
             <Text fw={600} size="sm">

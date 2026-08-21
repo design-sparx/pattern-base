@@ -17,14 +17,12 @@ export function InlineAction({
           <ActionIcon
             variant={action.type === "primary" ? "light" : "subtle"}
             color={
-              action.type === "danger"
-                ? "red"
-                : action.type === "primary"
-                  ? "violet"
-                  : "gray"
+              action.type === "danger" ? "red"
+              : action.type === "primary" ? "violet"
+              : "gray"
             }
             size={actionIconSize}
-            onClick={() => onAction(action.id)}
+            onClick={() => { onAction(action.id); }}
           >
             {typeof action.icon === "string" ? (
               <span style={{ fontSize: iconSize }}>{action.icon}</span>

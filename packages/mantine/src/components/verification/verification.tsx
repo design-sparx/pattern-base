@@ -14,6 +14,7 @@ import {
   IconHelp,
   IconX,
 } from "@tabler/icons-react";
+
 import type { VerificationProps } from "@patternbase/core";
 
 export function Verification({
@@ -43,11 +44,9 @@ export function Verification({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {onRunVerification && (
-          <Button variant="light" size="compact-sm" onClick={onRunVerification}>
+        {onRunVerification ? <Button variant="light" size="compact-sm" onClick={onRunVerification}>
             Run Verification
-          </Button>
-        )}
+          </Button> : null}
       </Group>
 
       <Stack gap="xs">
@@ -88,8 +87,7 @@ export function Verification({
                 </Text>
               </Group>
 
-              {showSources && claim.url && (
-                <Anchor
+              {showSources && claim.url ? <Anchor
                   href={claim.url}
                   target="_blank"
                   size="xs"
@@ -99,13 +97,10 @@ export function Verification({
                     <IconExternalLink size={10} />
                     {claim.source ?? "Source"}
                   </Group>
-                </Anchor>
-              )}
-              {showSources && claim.source && !claim.url && (
-                <Text size="xs" c="dimmed">
+                </Anchor> : null}
+              {showSources && claim.source && !claim.url ? <Text size="xs" c="dimmed">
                   {claim.source}
-                </Text>
-              )}
+                </Text> : null}
             </Stack>
           </Card>
         ))}

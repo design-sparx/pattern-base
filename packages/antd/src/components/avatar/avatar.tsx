@@ -98,7 +98,14 @@ export function Avatar({
   return (
     <Space size={8}>
       {avatarNode}
-      <Text>{name}</Text>
+      <Space direction="vertical" size={0}>
+        <Text>{name}</Text>
+        {persona ? (
+          <Text type="secondary" style={{ fontSize: 12 }}>
+            {persona}
+          </Text>
+        ) : null}
+      </Space>
       {badgeLabel ? <Tag>{badgeLabel}</Tag> : null}
     </Space>
   );

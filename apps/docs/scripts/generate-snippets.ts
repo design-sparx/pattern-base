@@ -2,12 +2,12 @@
  * Script to generate snippet-templates.ts from actual component implementations.
  * Run: pnpm generate-snippets (from apps/docs)
  *
- * Reads source files from packages/{bootstrap,antd,mantine}/src/components/
+ * Reads source files from packages/\{bootstrap,antd,mantine\}/src/components/
  * and generates apps/docs/src/data/snippet-templates.ts with embedded implementations.
  */
 
-import { readFileSync, writeFileSync, readdirSync } from "fs";
-import { join } from "path";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 
 type Framework = "bootstrap" | "antd" | "mantine";
 
@@ -94,8 +94,11 @@ ${entries.join(",\n")}
 `;
 
   writeFileSync(OUTPUT_FILE, content, "utf-8");
+  // eslint-disable-next-line no-console
   console.log(`Generated ${OUTPUT_FILE}`);
-  console.log(`Patterns: ${patterns.length}`);
+  // eslint-disable-next-line no-console
+  console.log(`Patterns: ${String(patterns.length)}`);
+  // eslint-disable-next-line no-console
   console.log(`Frameworks: bootstrap, antd, mantine`);
 }
 

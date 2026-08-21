@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Anchor,
   Box,
@@ -87,6 +88,12 @@ const patternCategories = [
     description: "Consent, disclosure, watermarking, and data ownership.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "PatternBase is an open-source React component library codifying 54 AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, and Mantine.",
+};
 
 export default function AboutPage() {
   return (

@@ -7,6 +7,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+
 import type { InitialCtaProps } from "@patternbase/core";
 
 export function InitialCta({
@@ -22,11 +23,9 @@ export function InitialCta({
         <Title order={3} ta="center">
           {title}
         </Title>
-        {subtitle && (
-          <Text size="sm" c="dimmed" ta="center" maw={480}>
+        {subtitle ? <Text size="sm" c="dimmed" ta="center" maw={480}>
             {subtitle}
-          </Text>
-        )}
+          </Text> : null}
         <SimpleGrid cols={Math.min(actions.length, 3)} spacing="sm">
           {actions.map((action) => (
             <Card
@@ -34,20 +33,16 @@ export function InitialCta({
               padding="md"
               withBorder
               style={{ cursor: "pointer", textAlign: "center" }}
-              onClick={() => onAction(action)}
+              onClick={() => { onAction(action); }}
             >
               <Stack gap="xs" align="center">
-                {action.icon && (
-                  <span style={{ fontSize: 24 }}>{action.icon}</span>
-                )}
+                {action.icon ? <span style={{ fontSize: 24 }}>{action.icon}</span> : null}
                 <Text fw={600} size="sm">
                   {action.label}
                 </Text>
-                {action.description && (
-                  <Text size="xs" c="dimmed">
+                {action.description ? <Text size="xs" c="dimmed">
                     {action.description}
-                  </Text>
-                )}
+                  </Text> : null}
               </Stack>
             </Card>
           ))}
@@ -68,7 +63,7 @@ export function InitialCta({
             variant="subtle"
             size="compact-sm"
             leftSection={action.icon ? <span>{action.icon}</span> : undefined}
-            onClick={() => onAction(action)}
+            onClick={() => { onAction(action); }}
           >
             {action.label}
           </Button>
@@ -80,18 +75,16 @@ export function InitialCta({
   return (
     <Stack gap="md" align="center" ta="center" py="lg">
       <Title order={3}>{title}</Title>
-      {subtitle && (
-        <Text size="sm" c="dimmed" maw={480}>
+      {subtitle ? <Text size="sm" c="dimmed" maw={480}>
           {subtitle}
-        </Text>
-      )}
+        </Text> : null}
       <Group gap="sm" justify="center" wrap="wrap">
         {actions.map((action, i) => (
           <Button
             key={action.id}
             variant={i === 0 ? "filled" : "default"}
             leftSection={action.icon ? <span>{action.icon}</span> : undefined}
-            onClick={() => onAction(action)}
+            onClick={() => { onAction(action); }}
           >
             {action.label}
           </Button>

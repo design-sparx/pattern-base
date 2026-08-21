@@ -7,7 +7,8 @@ import {
   TextInput,
   Tooltip,
 } from "@mantine/core";
-import { IconDice, IconArrowsShuffle } from "@tabler/icons-react";
+import { IconArrowsShuffle,IconDice } from "@tabler/icons-react";
+
 import type { RandomizeProps } from "@patternbase/core";
 
 export function Randomize({
@@ -61,8 +62,7 @@ export function Randomize({
           {label}
         </Button>
       </Group>
-      {showSeed && (
-        <TextInput
+      {showSeed ? <TextInput
           label="Seed"
           placeholder="Random seed..."
           value={currentSeed ?? ""}
@@ -75,13 +75,10 @@ export function Randomize({
               </ActionIcon>
             </Tooltip>
           }
-        />
-      )}
-      {currentSeed && !showSeed && (
-        <Text size="xs" c="dimmed">
+        /> : null}
+      {currentSeed && !showSeed ? <Text size="xs" c="dimmed">
           Seed: {currentSeed}
-        </Text>
-      )}
+        </Text> : null}
     </Stack>
   );
 }
