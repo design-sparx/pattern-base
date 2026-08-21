@@ -36,7 +36,7 @@ export function PresetStyles({
             >
               <Space direction="vertical" size={2}>
                 <Text strong>
-                  {preset.icon ? `${preset.icon} ` : ""}
+                  {preset.icon ? <span style={{ marginRight: 4 }}>{preset.icon}</span> : null}
                   {preset.label}
                 </Text>
                 {preset.description ? (

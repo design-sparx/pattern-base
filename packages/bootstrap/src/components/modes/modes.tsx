@@ -38,7 +38,7 @@ export function Modes({
                 eventKey={mode.id}
                 title={
                   <span>
-                    {mode.icon ? `${mode.icon} ` : ""}
+                    {mode.icon ? <span style={{ marginRight: 4 }}>{mode.icon}</span> : null}
                     {mode.label}
                   </span>
                 }
@@ -75,7 +75,7 @@ export function Modes({
                   onModeChange(e.currentTarget.value);
                 }}
               >
-                {mode.icon ? `${mode.icon} ` : ""}
+                {mode.icon ? <span style={{ marginRight: 4 }}>{mode.icon}</span> : null}
                 {mode.label}
               </ToggleButton>
             ))}
