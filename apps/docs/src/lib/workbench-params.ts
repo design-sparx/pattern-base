@@ -18,7 +18,7 @@ export interface WorkbenchState {
 }
 
 interface SearchParamsLike {
-  get(key: string): string | null;
+  get: (key: string) => string | null;
 }
 
 function pick<T extends string>(

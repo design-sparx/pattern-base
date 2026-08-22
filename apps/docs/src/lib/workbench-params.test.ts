@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  buildWorkbenchQuery,
   DEFAULT_FRAMEWORK,
   DEFAULT_TAB,
   DEFAULT_VIEWPORT,
-  buildWorkbenchQuery,
   parseWorkbenchParams,
 } from "./workbench-params";
 
@@ -28,6 +28,9 @@ describe("parseWorkbenchParams", () => {
       tab: "props",
       viewport: "tablet",
     });
+    expect(parseWorkbenchParams(sp("fw=Mantine")).framework).toBe(
+      DEFAULT_FRAMEWORK,
+    );
   });
 
   it("falls back per-key on invalid values", () => {
