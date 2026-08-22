@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "type-check": "tsc --noEmit",
-    "generate-snippets": "tsx scripts/generate-snippets.ts"
+    "generate-snippets": "tsx scripts/generate-snippets.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@patternbase/antd": "workspace:*",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@patternbase/eslint-config": "workspace:*",
+    "@patternbase/vitest-config": "workspace:*",
     "@next/eslint-plugin-next": "^16.1.6",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.45",
@@ -42,6 +44,7 @@
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
     "tsx": "^4.23.12",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^2.0.0"
   }
 }
