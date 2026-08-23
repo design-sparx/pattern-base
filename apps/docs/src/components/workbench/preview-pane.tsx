@@ -50,7 +50,7 @@ const viewportWidths: Record<Viewport, number | undefined> = {
   desktop: undefined,
 };
 
-const INSTALL_COMMANDS: Record<string, string> = {
+const INSTALL_COMMANDS: Record<Framework, string> = {
   bootstrap: "pnpm add react-bootstrap bootstrap",
   antd: "pnpm add antd @ant-design/icons",
   mantine:
@@ -90,7 +90,12 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
             const Icon = viewportIcons[vp];
             const label = vp.charAt(0).toUpperCase() + vp.slice(1);
             return (
-              <Tooltip key={vp} label={label} withArrow>
+              <Tooltip
+                key={vp}
+                label={label}
+                withArrow
+                events={{ hover: true, focus: true, touch: false }}
+              >
                 <ActionIcon
                   variant={viewport === vp ? "light" : "default"}
                   color={viewport === vp ? "violet" : "gray"}
@@ -183,7 +188,10 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
             maw={viewportWidths[viewport]}
             style={{ transition: "max-width 200ms ease" }}
           >
-            <PreviewErrorBoundary patternId={patternId}>
+            <PreviewErrorBoundary
+              key={`${patternId}-${framework}`}
+              patternId={patternId}
+            >
               <ActiveSlot patternId={patternId} />
             </PreviewErrorBoundary>
           </Box>
