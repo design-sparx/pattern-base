@@ -21,18 +21,19 @@ export const LazyMantineSlot = dynamic(
 
 /** Fetches the inactive framework chunks during browser idle time. */
 export function preloadInactiveSlots(active: "bootstrap" | "antd" | "mantine") {
+  if (typeof window === "undefined") return;
   const targets = [
     { name: "bootstrap", load: () => import("./bootstrap-slot") },
     { name: "antd", load: () => import("./antd-slot") },
     { name: "mantine", load: () => import("./mantine-slot") },
   ];
   const schedule =
-    typeof window !== "undefined" && "requestIdleCallback" in window
+    "requestIdleCallback" in window
       ? window.requestIdleCallback.bind(window)
       : (cb: () => void) => window.setTimeout(cb, 200);
 
   targets.forEach(({ name, load }) => {
     if (name === active) return;
-    schedule(() => void load());
+    schedule(() => void load().catch(() => undefined));
   });
 }

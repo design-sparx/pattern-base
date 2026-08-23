@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Skeleton } from "@mantine/core";
 
 export function PreviewSkeleton() {

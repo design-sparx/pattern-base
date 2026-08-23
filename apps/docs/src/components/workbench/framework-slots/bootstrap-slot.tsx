@@ -1,6 +1,6 @@
 "use client";
 
-import { useMantineColorScheme } from "@mantine/core";
+import { useComputedColorScheme } from "@mantine/core";
 
 import { bootstrapRegistry } from "@/lib/registry/bootstrap";
 
@@ -9,7 +9,7 @@ interface SlotProps {
 }
 
 export function BootstrapSlot({ patternId }: SlotProps) {
-  const { colorScheme } = useMantineColorScheme();
+  const colorScheme = useComputedColorScheme("light");
   const Component = bootstrapRegistry[patternId];
   if (!Component) return null;
   return (
