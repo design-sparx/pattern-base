@@ -17,6 +17,7 @@ import {
   IconCircleCheck,
   IconTargetArrow,
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 import { useWorkbench } from "./workbench-context";
 
@@ -26,23 +27,31 @@ import type { PatternExplanation } from "@/data/pattern-explanations";
 import type { PropDefinition } from "@/data/props-data";
 import { INSPECTOR_TABS, type InspectorTab } from "@/lib/workbench-params";
 
+/** A related pattern resolved to a route; `href` is absent when unresolved. */
+export interface RelatedPatternLink {
+  label: string;
+  href?: string;
+}
+
 interface InspectorPaneProps {
   patternId: string;
   snippets: { bootstrap: string; antd: string; mantine: string };
-  propsDefinitions?: PropDefinition[];
+  propDefinitions?: PropDefinition[];
   explanation?: PatternExplanation | null;
+  relatedLinks?: readonly RelatedPatternLink[];
 }
 
 export function InspectorPane({
   patternId,
   snippets,
-  propsDefinitions,
+  propDefinitions,
   explanation,
+  relatedLinks,
 }: Readonly<InspectorPaneProps>) {
   const { framework, tab, setTab } = useWorkbench();
 
   const isTabAvailable = (candidate: InspectorTab) => {
-    if (candidate === "props") return Boolean(propsDefinitions?.length);
+    if (candidate === "props") return Boolean(propDefinitions?.length);
     if (candidate === "docs") return Boolean(explanation);
     return true;
   };
@@ -67,7 +76,7 @@ export function InspectorPane({
       >
         <Tabs.List grow>
           <Tabs.Tab value="code">Code</Tabs.Tab>
-          {propsDefinitions?.length ? (
+          {propDefinitions?.length ? (
             <Tabs.Tab value="props">Props</Tabs.Tab>
           ) : null}
           {explanation ? <Tabs.Tab value="docs">Docs</Tabs.Tab> : null}
@@ -79,15 +88,18 @@ export function InspectorPane({
           <CodeBlock code={snippets[framework]} filename={`${patternId}.tsx`} />
         </Tabs.Panel>
 
-        {propsDefinitions?.length ? (
+        {propDefinitions?.length ? (
           <Tabs.Panel value="props" p="md" keepMounted>
-            <PropsTable props={propsDefinitions} />
+            <PropsTable props={propDefinitions} />
           </Tabs.Panel>
         ) : null}
 
         {explanation ? (
           <Tabs.Panel value="docs" p="md" keepMounted>
-            <InspectorDocs explanation={explanation} />
+            <InspectorDocs
+              explanation={explanation}
+              relatedLinks={relatedLinks ?? []}
+            />
           </Tabs.Panel>
         ) : null}
       </Tabs>
@@ -95,7 +107,13 @@ export function InspectorPane({
   );
 }
 
-function InspectorDocs({ explanation }: { explanation: PatternExplanation }) {
+function InspectorDocs({
+  explanation,
+  relatedLinks,
+}: {
+  explanation: PatternExplanation;
+  relatedLinks: readonly RelatedPatternLink[];
+}) {
   return (
     <Box>
       <Text fz="sm" lh={1.7} mb="lg">
@@ -160,17 +178,34 @@ function InspectorDocs({ explanation }: { explanation: PatternExplanation }) {
         </Box>
       ) : null}
 
-      {explanation.relatedPatterns.length ? (
+      {relatedLinks.length ? (
         <Box>
           <Title order={4} fz="sm" mb="sm">
             Related Patterns
           </Title>
           <Group gap="xs">
-            {explanation.relatedPatterns.map((rp) => (
-              <Badge key={rp} size="sm" variant="light" color="gray">
-                {rp}
-              </Badge>
-            ))}
+            {relatedLinks.map((link) =>
+              link.href ? (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Badge
+                    size="lg"
+                    variant="light"
+                    color="violet"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {link.label}
+                  </Badge>
+                </Link>
+              ) : (
+                <Badge key={link.label} size="lg" variant="light" color="gray">
+                  {link.label}
+                </Badge>
+              ),
+            )}
           </Group>
         </Box>
       ) : null}

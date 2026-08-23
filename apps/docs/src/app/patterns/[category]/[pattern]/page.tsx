@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import type { RelatedPatternLink } from "@/components/workbench/inspector-pane";
 import { Workbench } from "@/components/workbench/workbench";
 import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
@@ -94,6 +95,18 @@ export default async function PatternPage({
 
   const snippets = getRecordEntry(codeSnippets, pattern.id);
   const explanation = getRecordEntry(patternExplanations, pattern.id);
+  const propDefinitions = getRecordEntry(propsData, pattern.id);
+
+  // Resolve related-pattern names to routes server-side (mirrors the old
+  // detail page); unresolved names fall back to inert badges in the inspector.
+  const relatedLinks: readonly RelatedPatternLink[] = explanation
+    ? explanation.relatedPatterns.map((rp) => {
+        const related = patterns.find((p) => p.name === rp);
+        return related
+          ? { label: rp, href: `/patterns/${related.category}/${related.slug}` }
+          : { label: rp };
+      })
+    : [];
 
   return (
     <Box p="xl">
@@ -128,7 +141,8 @@ export default async function PatternPage({
           patternId={pattern.id}
           snippets={snippets}
           explanation={explanation}
-          propDefinitions={propsData[pattern.id]}
+          propDefinitions={propDefinitions}
+          relatedLinks={relatedLinks}
         />
       )}
 

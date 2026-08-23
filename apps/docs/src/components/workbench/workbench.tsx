@@ -2,22 +2,22 @@
 
 import { Suspense } from "react";
 
-import { InspectorPane } from "./inspector-pane";
+import { InspectorPane, type RelatedPatternLink } from "./inspector-pane";
 import { PreviewPane } from "./preview-pane";
 import { PreviewSkeleton } from "./preview-skeleton";
 import { WorkbenchProvider } from "./workbench-context";
 
 import styles from "./workbench.module.css";
 
+import type { PatternExplanation } from "@/data/pattern-explanations";
 import type { PropDefinition } from "@/data/props-data";
-
-type Explanation = Parameters<typeof InspectorPane>[0]["explanation"];
 
 interface WorkbenchProps {
   patternId: string;
   snippets: { bootstrap: string; antd: string; mantine: string };
-  explanation: Explanation;
+  explanation?: PatternExplanation | null;
   propDefinitions?: PropDefinition[];
+  relatedLinks?: readonly RelatedPatternLink[];
 }
 
 export function Workbench({
@@ -25,6 +25,7 @@ export function Workbench({
   snippets,
   explanation,
   propDefinitions,
+  relatedLinks,
 }: Readonly<WorkbenchProps>) {
   return (
     // The fallback mirrors the real grid so layout dimensions do not jump
@@ -48,8 +49,9 @@ export function Workbench({
             <InspectorPane
               patternId={patternId}
               snippets={snippets}
-              propsDefinitions={propDefinitions}
+              propDefinitions={propDefinitions}
               explanation={explanation}
+              relatedLinks={relatedLinks}
             />
           </div>
         </div>
