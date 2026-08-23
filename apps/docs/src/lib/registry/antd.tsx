@@ -126,7 +126,7 @@ const noop = () => {
   /* no-op for demo callbacks */
 };
 
-export const antdRegistry: Record<string, React.ComponentType> = {
+export const antdRegistry: Record<string, React.ComponentType | undefined> = {
   "open-input": () => (
     <AntOpenInput
       placeholder="Ask me anything..."

@@ -23,11 +23,9 @@ const ids = [
 export const componentRegistry: Record<string, RegistryEntry> =
   Object.fromEntries(
     ids.flatMap((id) => {
-      const bootstrap = bootstrapRegistry[id] as
-        | React.ComponentType
-        | undefined;
-      const antd = antdRegistry[id] as React.ComponentType | undefined;
-      const mantine = mantineRegistry[id] as React.ComponentType | undefined;
+      const bootstrap = bootstrapRegistry[id];
+      const antd = antdRegistry[id];
+      const mantine = mantineRegistry[id];
       return bootstrap && antd && mantine
         ? [[id, { bootstrap, antd, mantine }]]
         : [];

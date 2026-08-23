@@ -126,7 +126,10 @@ const noop = () => {
   /* no-op for demo callbacks */
 };
 
-export const bootstrapRegistry: Record<string, React.ComponentType> = {
+export const bootstrapRegistry: Record<
+  string,
+  React.ComponentType | undefined
+> = {
   "open-input": () => (
     <BsOpenInput
       placeholder="Ask me anything..."
