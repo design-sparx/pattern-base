@@ -24,6 +24,7 @@ import { CodeBlock } from "@/components/preview/code-block";
 import { PropsTable } from "@/components/preview/props-table";
 import type { PatternExplanation } from "@/data/pattern-explanations";
 import type { PropDefinition } from "@/data/props-data";
+import { INSPECTOR_TABS, type InspectorTab } from "@/lib/workbench-params";
 
 interface InspectorPaneProps {
   patternId: string;
@@ -31,8 +32,6 @@ interface InspectorPaneProps {
   propsDefinitions?: PropDefinition[];
   explanation?: PatternExplanation | null;
 }
-
-type TabValue = "code" | "props" | "docs";
 
 export function InspectorPane({
   patternId,
@@ -42,19 +41,27 @@ export function InspectorPane({
 }: Readonly<InspectorPaneProps>) {
   const { framework, tab, setTab } = useWorkbench();
 
+  const isTabAvailable = (candidate: InspectorTab) => {
+    if (candidate === "props") return Boolean(propsDefinitions?.length);
+    if (candidate === "docs") return Boolean(explanation);
+    return true;
+  };
+
+  const activeTab: InspectorTab = isTabAvailable(tab) ? tab : "code";
+
   return (
     <Paper withBorder style={{ overflow: "hidden" }} h="100%">
       <Tabs
-        value={tab}
-        onChange={(value) => {
-          if (value === "code" || value === "props" || value === "docs") {
-            setTab(value as TabValue);
+        value={activeTab}
+        onChange={(raw) => {
+          const value = INSPECTOR_TABS.find((candidate) => candidate === raw);
+          if (value && isTabAvailable(value)) {
+            setTab(value);
           }
         }}
         variant="outline"
         radius={0}
         styles={{
-          tab: { flex: 1 },
           tabLabel: { fontWeight: 500 },
         }}
       >
