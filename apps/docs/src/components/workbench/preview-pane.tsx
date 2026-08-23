@@ -21,7 +21,7 @@ import {
   IconDeviceTablet,
   IconDownload,
 } from "@tabler/icons-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   LazyAntdSlot,
@@ -66,6 +66,7 @@ const FRAMEWORK_SLOTS: Record<Framework, React.ElementType> = {
 export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
   const { framework, viewport, setFramework, setViewport } = useWorkbench();
   const ActiveSlot = FRAMEWORK_SLOTS[framework];
+  const [installOpened, setInstallOpened] = useState(false);
 
   // Warm the other framework chunks once, after first paint.
   useEffect(() => {
@@ -113,13 +114,29 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
           })}
         </ActionIcon.Group>
 
-        <Popover width={360} position="bottom-end" shadow="md" withArrow>
+        <Popover
+          width={360}
+          position="bottom-end"
+          shadow="md"
+          withArrow
+          opened={installOpened}
+          onChange={setInstallOpened}
+        >
           <Popover.Target>
             <Button
               variant="subtle"
               color="gray"
               size="compact-xs"
               leftSection={<IconDownload size={14} />}
+              aria-expanded={installOpened}
+              onClick={() => {
+                setInstallOpened((open) => !open);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Escape" && installOpened) {
+                  setInstallOpened(false);
+                }
+              }}
             >
               Install
             </Button>
