@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   createContext,
   useCallback,
@@ -15,12 +15,27 @@ import { preloadInactiveSlots } from "./framework-slots";
 
 import {
   buildWorkbenchQuery,
+  DEFAULT_FRAMEWORK,
+  DEFAULT_TAB,
+  DEFAULT_VIEWPORT,
   type Framework,
   type InspectorTab,
   parseWorkbenchParams,
   type Viewport,
   type WorkbenchState,
 } from "@/lib/workbench-params";
+
+/**
+ * The island must prerender static HTML, so it cannot read search params
+ * during render (useSearchParams forces a CSR bailout that removes the whole
+ * subtree from the server output). We render these documented defaults on the
+ * server, then apply the real URL state post-hydration in a mount effect.
+ */
+const DEFAULT_STATE: WorkbenchState = {
+  framework: DEFAULT_FRAMEWORK,
+  tab: DEFAULT_TAB,
+  viewport: DEFAULT_VIEWPORT,
+};
 
 interface WorkbenchContextValue extends WorkbenchState {
   isPending: boolean;
@@ -39,24 +54,27 @@ export function WorkbenchProvider({
     category: string;
     pattern: string;
   }>();
-  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const [state, setState] = useState<WorkbenchState>(() =>
-    parseWorkbenchParams(searchParams),
-  );
+  const [state, setState] = useState<WorkbenchState>(DEFAULT_STATE);
 
-  // Stay truthful when the user navigates back/forward or edits the URL.
+  // Apply the URL once after hydration; plain setState so no history churn.
   useEffect(() => {
-    const parsed = parseWorkbenchParams(searchParams);
-    if (
-      parsed.framework !== state.framework ||
-      parsed.tab !== state.tab ||
-      parsed.viewport !== state.viewport
-    ) {
-      setState(parsed);
-    }
-  }, [searchParams, state]);
+    setState(parseWorkbenchParams(new URLSearchParams(window.location.search)));
+  }, []);
+
+  // Stay truthful when the user navigates back/forward.
+  useEffect(() => {
+    const onPopState = () => {
+      setState(
+        parseWorkbenchParams(new URLSearchParams(window.location.search)),
+      );
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, []);
 
   const update = useCallback(
     (patch: Partial<WorkbenchState>) => {

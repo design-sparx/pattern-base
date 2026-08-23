@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { InspectorPane } from "./inspector-pane";
 import { PreviewPane } from "./preview-pane";
+import { PreviewSkeleton } from "./preview-skeleton";
 import { WorkbenchProvider } from "./workbench-context";
 
 import styles from "./workbench.module.css";
@@ -26,9 +27,18 @@ export function Workbench({
   propDefinitions,
 }: Readonly<WorkbenchProps>) {
   return (
-    // Suspense must wrap the provider itself: WorkbenchProvider calls
-    // useSearchParams(), which needs a boundary for static prerender.
-    <Suspense fallback={null}>
+    // The fallback mirrors the real grid so layout dimensions do not jump
+    // when the boundary resolves.
+    <Suspense
+      fallback={
+        <div className={styles.grid} aria-hidden>
+          <div className={styles.previewCell}>
+            <PreviewSkeleton />
+          </div>
+          <div className={styles.inspectorCell} />
+        </div>
+      }
+    >
       <WorkbenchProvider>
         <div className={styles.grid}>
           <div className={styles.previewCell}>

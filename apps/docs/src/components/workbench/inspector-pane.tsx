@@ -73,18 +73,20 @@ export function InspectorPane({
           {explanation ? <Tabs.Tab value="docs">Docs</Tabs.Tab> : null}
         </Tabs.List>
 
-        <Tabs.Panel value="code" p="md">
+        {/* keepMounted keeps prose/tables in the prerendered HTML (SEO);
+            Mantine hides inactive panels via display:none. */}
+        <Tabs.Panel value="code" p="md" keepMounted>
           <CodeBlock code={snippets[framework]} filename={`${patternId}.tsx`} />
         </Tabs.Panel>
 
         {propsDefinitions?.length ? (
-          <Tabs.Panel value="props" p="md">
+          <Tabs.Panel value="props" p="md" keepMounted>
             <PropsTable props={propsDefinitions} />
           </Tabs.Panel>
         ) : null}
 
         {explanation ? (
-          <Tabs.Panel value="docs" p="md">
+          <Tabs.Panel value="docs" p="md" keepMounted>
             <InspectorDocs explanation={explanation} />
           </Tabs.Panel>
         ) : null}
