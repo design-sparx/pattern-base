@@ -1,0 +1,24 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--mantine-spacing-md);
+  align-items: start;
+}
+
+@media (min-width: 75em) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) clamp(320px, 34vw, 440px);
+  }
+
+  .previewCell {
+    position: sticky;
+    top: calc(60px + var(--mantine-spacing-md));
+  }
+
+  .inspectorCell {
+    position: sticky;
+    top: calc(60px + var(--mantine-spacing-md));
+    max-height: calc(100vh - 60px - var(--mantine-spacing-xl) * 2);
+    overflow-y: auto;
+  }
+}
