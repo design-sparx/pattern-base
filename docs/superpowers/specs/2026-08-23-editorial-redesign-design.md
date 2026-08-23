@@ -22,19 +22,27 @@ Blend a marketing/landing feel with discoverability across the four non-workbenc
 
 ## Locked Decisions
 
-| Decision                        | Choice                                                                                 |
-| ------------------------------- | -------------------------------------------------------------------------------------- |
-| Goal                            | Marketing/landing feel + discoverability                                               |
-| Scope                           | All routes except the workbench                                                        |
-| Live previews on landing/browse | None — text-only, lightest possible pages                                              |
-| Aesthetic                       | Editorial minimal                                                                      |
-| Type                            | Fraunces (display) + Inter (body), `next/font/google`, self-hosted                     |
-| Accent                          | Violet only; near-monochrome ink/paper elsewhere                                       |
-| Homepage                        | Full landing: hero → stats → featured 6 → category index → origin/principles → install |
-| Browse pages                    | Numbered editorial index rows grouped by category                                      |
-| `/about`                        | Merged into home; route deleted + redirect                                             |
-| Sidebar                         | Off on home only; kept on browse/workbench routes                                      |
-| Architecture                    | Approach A: Next.js route groups `(home)` / `(shell)`                                  |
+| Decision                        | Choice                                                                                                                                          |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Goal                            | Marketing/landing feel + discoverability                                                                                                        |
+| Scope                           | All routes except the workbench                                                                                                                 |
+| Live previews on landing/browse | None — text-only, lightest possible pages                                                                                                       |
+| Aesthetic                       | Editorial minimal                                                                                                                               |
+| Type                            | Fraunces (display) + Inter (body), `next/font/google`, self-hosted                                                                              |
+| Accent                          | Violet only; near-monochrome ink/paper elsewhere                                                                                                |
+| Homepage                        | Full landing: hero → stats → featured 6 → category index → origin/principles → install                                                          |
+| Browse pages                    | Numbered editorial index rows grouped by category                                                                                               |
+| `/about`                        | Merged into home; route deleted + redirect                                                                                                      |
+| Sidebar                         | Off on home only; kept on browse/workbench routes                                                                                               |
+| Architecture                    | Approach A: Next.js route groups `(home)` / `(shell)`                                                                                           |
+| Implementation                  | **Mantine-native**: every surface composed from `@mantine/core` primitives; static styles live in CSS Modules / theme, not inline `style` props |
+
+## Implementation Constraints
+
+- **Components only from Mantine**: layouts via `Container`/`Stack`/`Group`/`Grid`/`SimpleGrid`; type via `Title`/`Text`; interactive rows/cells via `UnstyledButton` or `Anchor component="span"`; pills/badges via `Pill`/`Badge`; search via `TextInput`; copy affordance via Mantine's `CopyButton`; code block via `Code`; dividers via `Divider`. No raw `<div>` layouts when a Mantine primitive fits, no hand-rolled buttons/inputs.
+- **Styling mechanism precedence**: (1) component props (`c=`, `fz=`, `fw=`, `lh=`, `bg=`, `bd=`…), (2) theme-level config in `theme.ts` (defaultProps, `extend` component styles if needed), (3) co-located CSS Modules (e.g. `editorial.module.css`) for anything structural (index-row grid columns, hover wash, hairline grids), referenced via `classNames`/`styles` props. Inline `style={{} }` reserved for truly dynamic values (e.g. none expected).
+- **Colors via Mantine tokens**: use `var(--mantine-color-text)`, `var(--mantine-color-dimmed)`, `var(--mantine-color-default-border)`, `var(--mantine-color-violet-filled)`/`violet.0–9` scale, and Mantine's `light-dark()` for scheme-dependent values. Do not hardcode hex in components; the ink/paper/hairline trio maps onto existing Mantine semantics (text / body background / default border) plus at most 1–2 custom vars defined once in `globals.css` under `[data-mantine-color-scheme]`.
+- **Dark mode comes free** by using these tokens — no manual inversion logic anywhere.
 
 ## Route Architecture (Approach A)
 
@@ -52,6 +60,8 @@ Route groups don't affect URLs, so all public paths stay identical.
 - Home's origin section gets `id="about"` as the redirect target.
 
 ## Page Designs (as approved in mockups)
+
+All sections are built from Mantine primitives per **Implementation Constraints** (Container/Stack/Group/SimpleGrid scaffolding, Title/Text typography, UnstyledButton/Anchor rows, TextInput search, CopyButton install pill, Code block). Structural styling (row grid columns, hairline grids, hover washes) lives in one co-located CSS Module per surface.
 
 ### 1. Home `/` — full landing (new editorial layout, no sidebar)
 
@@ -88,18 +98,18 @@ No visual or behavioral change.
 
 ## Design Tokens
 
-**Palette** (CSS variables on editorial surfaces; map onto existing Mantine tokens):
+**Palette** (Mantine tokens, not raw CSS):
 
-- `--ink #17171b` / `--paper #fbfbf9` (warm white) / hairline borders `#e7e6e2`
-- Accent = violet only → use theme's `violet[8] #5f3dc4` for light-mode accents (matches mockups exactly); `violet[4]`-ish for dark mode
-- Violet wash for hovers: light `#f1edfc` ≈ violet[0]
-- Dark mode: invert ink↔paper roles, keep violet accent; must pass existing color-scheme toggle
+- Ink/paper/hairline map to `--mantine-color-text`, body background (`--mantine-color-body`), and `--mantine-color-default-border`. The warm-white paper tint (#fbfbf9) is optional; if kept, set it as a light-mode-only body/background override in the theme (one place), never inline.
+- Accent = violet only → theme's `violet.8 #5f3dc4` in light mode, `violet.4–5` in dark via `light-dark()` or Mantine's auto shade handling (`primaryShade` already handles this).
+- Hover wash: `violet.0` light / `violet.9` dark (`light-dark()`), applied in a CSS Module class.
+- No custom inversion logic — scheme switching stays entirely with Mantine's color-scheme system.
 
 **Type:**
 
 - Load `Fraunces` (opsz axis, weights 350–550, italic) and `Inter` (400/500/600) via `next/font/google` as `--font-display` / `--font-body`, replacing `--font-geist` in the root-layout font variables.
 - **Inter becomes the global body font**: point `theme.fontFamily` at `var(--font-body)` so shell/workbench body text also renders Inter. Geist stops being loaded. Geist Mono stays (`theme.fontFamilyMonospace` untouched).
-- Fraunces (display) applies to: hero display, page h1/h2 section heads, featured/category/index-row names, pull-quote — i.e. editorial headings only. Do NOT change `theme.headings.fontFamily` globally (workbench/shell headings would shift); instead scope with an `.editorial-display` utility class applied per-heading. Shell headings keep Space Grotesk this iteration.
+- Fraunces (display) applies to: hero display, page h1/h2 section heads, featured/category/index-row names, pull-quote — i.e. editorial headings only. Do NOT change `theme.headings.fontFamily` globally; scope via an `.editorial-display` class defined in the CSS Module and applied to Mantine `Title`/`Text` `className` props. Shell headings keep Space Grotesk this iteration.
 - Mono numerals (index numbers, counts, install pill): existing `--font-geist-mono`.
 - All fonts self-hosted by `next/font` → zero layout shift, works offline.
 - Swap risk: Geist→Inter metric differences may cause minor reflow across shell UI; both are similar grotesques, but spot-check workbench panes after the swap.
