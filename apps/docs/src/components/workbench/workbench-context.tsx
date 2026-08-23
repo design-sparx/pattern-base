@@ -42,32 +42,35 @@ export function WorkbenchProvider({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const initial = useMemo(
-    () => parseWorkbenchParams(searchParams),
-    [searchParams],
+  const [state, setState] = useState<WorkbenchState>(() =>
+    parseWorkbenchParams(searchParams),
   );
-  const [state, setState] = useState<WorkbenchState>(initial);
 
   // Stay truthful when the user navigates back/forward or edits the URL.
   useEffect(() => {
-    setState(parseWorkbenchParams(searchParams));
-  }, [searchParams]);
+    const parsed = parseWorkbenchParams(searchParams);
+    if (
+      parsed.framework !== state.framework ||
+      parsed.tab !== state.tab ||
+      parsed.viewport !== state.viewport
+    ) {
+      setState(parsed);
+    }
+  }, [searchParams, state]);
 
   const update = useCallback(
     (patch: Partial<WorkbenchState>) => {
-      setState((prev) => {
-        const next = { ...prev, ...patch };
-        const query = buildWorkbenchQuery(next);
-        const href = `/patterns/${params.category}/${params.pattern}${
-          query ? `?${query}` : ""
-        }`;
-        startTransition(() => {
-          router.replace(href, { scroll: false });
-        });
-        return next;
+      const next = { ...state, ...patch };
+      setState(next);
+      const query = buildWorkbenchQuery(next);
+      const href = `/patterns/${params.category}/${params.pattern}${
+        query ? `?${query}` : ""
+      }`;
+      startTransition(() => {
+        router.replace(href, { scroll: false });
       });
     },
-    [params.category, params.pattern, router],
+    [state, params.category, params.pattern, router],
   );
 
   const setFramework = useCallback(

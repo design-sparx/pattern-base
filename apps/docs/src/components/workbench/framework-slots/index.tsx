@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 
 import { PreviewSkeleton } from "../preview-skeleton";
 
+import { type Framework } from "@/lib/workbench-params";
+
 export const LazyBootstrapSlot = dynamic(
   () => import("./bootstrap-slot").then((m) => ({ default: m.BootstrapSlot })),
   { loading: () => <PreviewSkeleton /> },
@@ -20,7 +22,7 @@ export const LazyMantineSlot = dynamic(
 );
 
 /** Fetches the inactive framework chunks during browser idle time. */
-export function preloadInactiveSlots(active: "bootstrap" | "antd" | "mantine") {
+export function preloadInactiveSlots(active: Framework) {
   if (typeof window === "undefined") return;
   const targets = [
     { name: "bootstrap", load: () => import("./bootstrap-slot") },
