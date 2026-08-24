@@ -1,7 +1,7 @@
-import { AppShellLayout } from "@/components/layout/app-shell-layout";
+import { PublicShellLayout } from "@/components/layout/public-shell-layout";
 
 export default function HomeLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return <AppShellLayout>{children}</AppShellLayout>;
+  return <PublicShellLayout>{children}</PublicShellLayout>;
 }
