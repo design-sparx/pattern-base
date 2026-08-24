@@ -4,7 +4,7 @@ import { AppShell, Box } from "@mantine/core";
 import type { ReactNode } from "react";
 
 import { AsideProvider, useAside } from "./aside-context";
-import { Header } from "./header";
+import { PublicHeader } from "./public-header";
 
 function PublicShellContent({ children }: Readonly<{ children: ReactNode }>) {
   const { content: asideContent } = useAside();
@@ -20,7 +20,7 @@ function PublicShellContent({ children }: Readonly<{ children: ReactNode }>) {
       padding={0}
     >
       <AppShell.Header>
-        <Header />
+        <PublicHeader />
       </AppShell.Header>
 
       {asideContent ? (
