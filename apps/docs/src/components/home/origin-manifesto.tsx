@@ -1,6 +1,14 @@
 "use client";
 
-import { Anchor, Box, Container, Grid, Text, Title } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Container,
+  Grid,
+  Text,
+  Title,
+  useMantineColorScheme,
+} from "@mantine/core";
 
 const principles = [
   {
@@ -21,10 +29,22 @@ const principles = [
 ];
 
 export function OriginManifesto() {
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === "dark";
+
   return (
-    <Box id="about" bg="dark.7" c="gray.2" py={{ base: "xl", md: 72 }}>
+    <Box
+      id="about"
+      bg={isDark ? "dark.7" : "gray.0"}
+      c={isDark ? "gray.2" : "gray.9"}
+      py={{ base: "xl", md: 72 }}
+    >
       <Container size="md">
-        <Text fz="xs" c="violet.3" className="editorial-kicker">
+        <Text
+          fz="xs"
+          c={isDark ? "violet.3" : "violet.6"}
+          className="editorial-kicker"
+        >
           Where it comes from
         </Text>
         <Title
@@ -38,10 +58,14 @@ export function OriginManifesto() {
           We took shapeof.ai&apos;s taxonomy of AI product UX and turned it into
           production-ready React components.
         </Title>
-        <Text c="gray.4" mt="md" lh={1.75}>
+        <Text c={isDark ? "gray.4" : "gray.7"} mt="md" lh={1.75}>
           Every pattern is derived from research across leading AI products,
           then built{" "}
-          <Anchor href="https://www.shapeof.ai" target="_blank" c="violet.3">
+          <Anchor
+            href="https://www.shapeof.ai"
+            target="_blank"
+            c={isDark ? "violet.3" : "violet.6"}
+          >
             shapeof.ai
           </Anchor>{" "}
           style on top of your UI library&apos;s primitives — so patterns
@@ -53,13 +77,13 @@ export function OriginManifesto() {
         <Grid columns={3} gutter="xl">
           {principles.map((principle) => (
             <Grid.Col key={principle.label} span={{ base: 12, sm: 4 }}>
-              <Text ff="mono" fz="xs" c="violet.3">
+              <Text ff="mono" fz="xs" c={isDark ? "violet.3" : "violet.6"}>
                 {principle.label}
               </Text>
-              <Title order={4} mt={6}>
+              <Title order={4} mt={6} c={isDark ? "inherit" : "gray.9"}>
                 {principle.title}
               </Title>
-              <Text fz="sm" c="gray.5" mt={6} lh={1.6}>
+              <Text fz="sm" c={isDark ? "gray.5" : "gray.7"} mt={6} lh={1.6}>
                 {principle.body}
               </Text>
             </Grid.Col>
