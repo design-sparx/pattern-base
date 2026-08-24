@@ -46,17 +46,39 @@ export const theme = createTheme({
         radius: "sm",
       },
     },
-    Tabs: {
-      styles: {
-        tab: {
-          fontWeight: 500,
-          fontSize: rem(14),
-        },
-      },
-    },
     ActionIcon: {
       defaultProps: {
         radius: "md",
+      },
+    },
+    Container: {
+      defaultProps: {
+        size: "lg",
+      },
+    },
+    Grid: {
+      defaultProps: {
+        gutter: "md",
+      },
+    },
+    Text: {
+      defaultProps: {
+        fz: "md",
+      },
+    },
+    Title: {
+      defaultProps: {
+        fw: 600,
+      },
+    },
+    Group: {
+      defaultProps: {
+        gap: "md",
+      },
+    },
+    Anchor: {
+      defaultProps: {
+        underline: "hover",
       },
     },
   },
