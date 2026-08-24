@@ -1,3 +1,5 @@
+"use client";
+
 import { Grid, Paper, Text, Title } from "@mantine/core";
 
 import { patterns } from "@/data/patterns";

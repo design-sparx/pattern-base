@@ -8,7 +8,6 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
@@ -49,7 +48,7 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
   return (
     <Container size="lg" py="xl">
       <Text fz="sm" c="dimmed">
-        <Anchor component={Link} href="/patterns" c="dimmed" underline="never">
+        <Anchor href="/patterns" c="dimmed" underline="never">
           Patterns
         </Anchor>
         {" / "}
@@ -77,7 +76,6 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
           return (
             <Anchor
               key={c.id}
-              component={Link}
               href={`/patterns/${c.id}`}
               fz="sm"
               underline="never"

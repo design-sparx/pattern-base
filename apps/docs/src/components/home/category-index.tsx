@@ -1,12 +1,6 @@
-import {
-  Divider,
-  Grid,
-  Stack,
-  Text,
-  Title,
-  UnstyledButton,
-} from "@mantine/core";
-import Link from "next/link";
+"use client";
+
+import { Divider, Grid, Paper, Stack, Text, Title } from "@mantine/core";
 
 import { categories, getPatternsByCategory } from "@/data/patterns";
 
@@ -15,8 +9,8 @@ export function CategoryIndex() {
     <Stack gap={0}>
       {categories.map((category, i) => (
         <Stack key={category.id} gap={0}>
-          <UnstyledButton
-            component={Link}
+          <Paper
+            component="a"
             href={`/patterns/${category.id}`}
             py="lg"
             px="md"
@@ -60,7 +54,7 @@ export function CategoryIndex() {
                 </Text>
               </Grid.Col>
             </Grid>
-          </UnstyledButton>
+          </Paper>
           {i < categories.length - 1 && <Divider />}
         </Stack>
       ))}

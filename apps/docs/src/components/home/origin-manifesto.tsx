@@ -1,4 +1,6 @@
-import { Anchor, Box, Container, SimpleGrid, Text, Title } from "@mantine/core";
+"use client";
+
+import { Anchor, Box, Container, Grid, Text, Title } from "@mantine/core";
 
 const principles = [
   {
@@ -48,9 +50,9 @@ export function OriginManifesto() {
         </Text>
       </Container>
       <Container size="lg" mt="xl">
-        <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
+        <Grid columns={3} gutter="xl">
           {principles.map((principle) => (
-            <Box key={principle.label}>
+            <Grid.Col key={principle.label} span={{ base: 12, sm: 4 }}>
               <Text ff="mono" fz="xs" c="violet.3">
                 {principle.label}
               </Text>
@@ -60,9 +62,9 @@ export function OriginManifesto() {
               <Text fz="sm" c="gray.5" mt={6} lh={1.6}>
                 {principle.body}
               </Text>
-            </Box>
+            </Grid.Col>
           ))}
-        </SimpleGrid>
+        </Grid>
       </Container>
     </Box>
   );
