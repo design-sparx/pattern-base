@@ -519,3 +519,18 @@ export const FEATURED_SLUGS = [
   "regenerate",
   "data-ownership",
 ] as const;
+
+export function getFilteredPatterns(
+  patternsToFilter: PatternMeta[],
+  query: string,
+  tag: string,
+): PatternMeta[] {
+  const q = query.toLowerCase();
+  return patternsToFilter.filter(
+    (p) =>
+      (tag === "all" || p.tags.includes(tag)) &&
+      (p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.tags.some((t) => t.toLowerCase().includes(q))),
+  );
+}
