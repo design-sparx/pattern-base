@@ -12,7 +12,6 @@ import { theme } from "./theme";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 
-import { AppShellLayout } from "@/components/layout/app-shell-layout";
 import { SpotlightProvider } from "@/components/layout/spotlight-provider";
 
 const fraunces = Fraunces({
@@ -121,7 +120,7 @@ export default function RootLayout({
             Skip to content
           </a>
           <SpotlightProvider />
-          <AppShellLayout>{children}</AppShellLayout>
+          {children}
         </MantineProvider>
       </body>
     </html>
