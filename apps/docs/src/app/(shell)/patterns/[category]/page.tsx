@@ -1,38 +1,22 @@
 import type { Metadata } from "next";
-import { Box, Group, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core";
 import {
-  IconAdjustments,
-  IconCompass,
-  IconEye,
-  IconKeyboard,
-  IconLayoutGrid,
-  IconShield,
-} from "@tabler/icons-react";
+  Anchor,
+  Box,
+  Container,
+  Divider,
+  Group,
+  Text,
+  Title,
+} from "@mantine/core";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { CategoryNav } from "@/components/common/category-nav";
-import { PatternCard } from "@/components/common/pattern-card";
+import { PatternIndexRow } from "@/components/common/pattern-index-row";
 import {
   categories,
   getCategoryById,
   getPatternsByCategory,
 } from "@/data/patterns";
-
-const categoryIcons: Record<string, React.ElementType> = {
-  "prompt-actions": IconKeyboard,
-  wayfinders: IconCompass,
-  tuners: IconAdjustments,
-  governors: IconEye,
-  "trust-builders": IconShield,
-};
-
-const categoryColors: Record<string, string> = {
-  "prompt-actions": "violet",
-  wayfinders: "teal",
-  tuners: "orange",
-  governors: "blue",
-  "trust-builders": "pink",
-};
 
 interface CategoryPageParams {
   params: Promise<{ category: string }>;
@@ -61,29 +45,63 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
   if (!category) notFound();
 
   const categoryPatterns = getPatternsByCategory(category.id);
-  const Icon = categoryIcons[category.id] ?? IconLayoutGrid;
-  const color = categoryColors[category.id] ?? "violet";
 
   return (
-    <Box p="xl">
-      <Group gap="sm" mb="xs">
-        <ThemeIcon variant="light" color={color} size="lg">
-          <Icon size={20} />
-        </ThemeIcon>
-        <Title order={1}>{category.name}</Title>
-      </Group>
-      <Text c="dimmed" mb="lg">
-        {category.description} &mdash; {categoryPatterns.length} pattern
-        {categoryPatterns.length !== 1 ? "s" : ""}
+    <Container size="lg" py="xl">
+      <Text fz="sm" c="dimmed">
+        <Anchor component={Link} href="/patterns" c="dimmed" underline="never">
+          Patterns
+        </Anchor>
+        {" / "}
+        <Text span c="var(--mantine-color-violet-filled)" fw={500}>
+          {category.name}
+        </Text>
       </Text>
 
-      <CategoryNav categories={categories} activeCategoryId={category.id} />
+      <Title
+        order={1}
+        className="editorial-display"
+        fw={380}
+        fz={{ base: 34, md: 46 }}
+        mt="sm"
+      >
+        {category.name}
+      </Title>
+      <Text c="dimmed" fz="md" mt="xs">
+        {category.description} — {categoryPatterns.length} patterns.
+      </Text>
 
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing="md">
-        {categoryPatterns.map((p) => (
-          <PatternCard key={p.id} pattern={p} />
+      <Group gap="xl" mt="lg" mb={-1} wrap="nowrap" visibleFrom="sm">
+        {categories.map((c) => {
+          const active = c.id === category.id;
+          return (
+            <Anchor
+              key={c.id}
+              component={Link}
+              href={`/patterns/${c.id}`}
+              fz="sm"
+              underline="never"
+              c={active ? "inherit" : "dimmed"}
+              fw={active ? 600 : 400}
+              pb={8}
+              bd={
+                active
+                  ? "2px solid var(--mantine-color-violet-filled)"
+                  : "2px solid transparent"
+              }
+            >
+              {c.name} · {getPatternsByCategory(c.id).length}
+            </Anchor>
+          );
+        })}
+      </Group>
+      <Divider />
+
+      <Box mt="md">
+        {categoryPatterns.map((pattern, i) => (
+          <PatternIndexRow key={pattern.id} pattern={pattern} index={i} />
         ))}
-      </SimpleGrid>
-    </Box>
+      </Box>
+    </Container>
   );
 }

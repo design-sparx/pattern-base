@@ -1,5 +1,4 @@
-import { Grid, Group, Pill, Text, UnstyledButton } from "@mantine/core";
-import Link from "next/link";
+import { Grid, Group, Paper, Pill, Text } from "@mantine/core";
 
 import type { PatternMeta } from "@patternbase/core";
 
@@ -10,8 +9,8 @@ interface PatternIndexRowProps {
 
 export function PatternIndexRow({ pattern, index }: PatternIndexRowProps) {
   return (
-    <UnstyledButton
-      component={Link}
+    <Paper
+      component="a"
       href={`/patterns/${pattern.category}/${pattern.slug}`}
       w="100%"
       px="md"
@@ -64,6 +63,6 @@ export function PatternIndexRow({ pattern, index }: PatternIndexRowProps) {
           </Group>
         </Grid.Col>
       </Grid>
-    </UnstyledButton>
+    </Paper>
   );
 }
