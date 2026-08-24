@@ -11,6 +11,7 @@ import {
 import { notFound } from "next/navigation";
 
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
+import styles from "@/components/common/editorial.module.css";
 import {
   categories,
   getCategoryById,
@@ -59,7 +60,7 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
 
       <Title
         order={1}
-        className="editorial-display"
+        className={styles.editorialDisplay}
         fw={380}
         fz={{ base: 34, md: 46 }}
         mt="sm"

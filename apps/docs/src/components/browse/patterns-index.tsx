@@ -12,6 +12,7 @@ import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
+import styles from "@/components/common/editorial.module.css";
 import { categories, getFilteredPatterns, patterns } from "@/data/patterns";
 
 const TAG_FILTERS = [
@@ -33,7 +34,7 @@ export function PatternsIndex() {
     <>
       <Title
         order={1}
-        className="editorial-display"
+        className={styles.editorialDisplay}
         fw={380}
         fz={{ base: 34, md: 46 }}
       >

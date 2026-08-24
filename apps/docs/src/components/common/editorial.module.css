@@ -1,0 +1,10 @@
+.editorialDisplay {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+.editorialKicker {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}

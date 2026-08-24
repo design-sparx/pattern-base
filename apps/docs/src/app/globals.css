@@ -23,18 +23,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Editorial typography utilities (editorial redesign) ─────────────────── */
-.editorial-display {
-  font-family: var(--font-display), Georgia, serif;
-  letter-spacing: -0.01em;
-}
-
-.editorial-kicker {
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
 /* ── Skip link ────────────────────────────────────────────────────────────── */
 .skip-link {
   position: absolute;

@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
-import { Anchor, Button, Container, Group, Text, Title } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Button,
+  Container,
+  Group,
+  Text,
+  Title,
+} from "@mantine/core";
 
+import styles from "@/components/common/editorial.module.css";
 import { CategoryIndex } from "@/components/home/category-index";
 import { FeaturedPatterns } from "@/components/home/featured-patterns";
 import { OriginManifesto } from "@/components/home/origin-manifesto";
@@ -20,13 +29,13 @@ export default function HomePage() {
         <Text
           fz="xs"
           c="var(--mantine-color-violet-filled)"
-          className="editorial-kicker"
+          className={styles.editorialKicker}
         >
           An open-source component library
         </Text>
         <Title
           order={1}
-          className="editorial-display"
+          className={styles.editorialDisplay}
           fw={350}
           fz={{ base: 38, md: 62 }}
           lh={1.05}
@@ -39,7 +48,7 @@ export default function HomePage() {
           </Text>{" "}
           ready to ship.
         </Title>
-        <Text c="dimmed" fz="lg" mt="md" maw={520} lh={1.65}>
+        <Text fz="lg" mt="md" maw={520} lh={1.65}>
           Fifty-four interaction patterns distilled from shapeof.ai — each
           implemented for Bootstrap, Ant Design, and Mantine. Study them here,
           copy them into your product.
@@ -56,8 +65,10 @@ export default function HomePage() {
         </Group>
       </Container>
 
-      {/* Stats */}
-      <StatsStrip />
+      <Container size="lg" pt="xl">
+        {/* Stats */}
+        <StatsStrip />
+      </Container>
 
       {/* Featured */}
       <Container size="lg" pt="xl">

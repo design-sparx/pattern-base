@@ -2,6 +2,7 @@
 
 import { Divider, Grid, Paper, Stack, Text, Title } from "@mantine/core";
 
+import styles from "@/components/common/editorial.module.css";
 import { categories, getPatternsByCategory } from "@/data/patterns";
 
 export function CategoryIndex() {
@@ -33,7 +34,7 @@ export function CategoryIndex() {
               <Grid.Col span={{ base: 10, sm: 4 }}>
                 <Title
                   order={3}
-                  className="editorial-display pbCatName"
+                  className={`${styles.editorialDisplay} pbCatName`}
                   fw={500}
                 >
                   {category.name}

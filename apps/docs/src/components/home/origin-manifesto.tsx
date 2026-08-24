@@ -10,6 +10,8 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 
+import styles from "@/components/common/editorial.module.css";
+
 const principles = [
   {
     label: "P—01",
@@ -39,17 +41,17 @@ export function OriginManifesto() {
       c={isDark ? "gray.2" : "gray.9"}
       py={{ base: "xl", md: 72 }}
     >
-      <Container size="md">
+      <Container size="lg">
         <Text
           fz="xs"
           c={isDark ? "violet.3" : "violet.6"}
-          className="editorial-kicker"
+          className={styles.editorialKicker}
         >
           Where it comes from
         </Text>
         <Title
           order={2}
-          className="editorial-display"
+          className={styles.editorialDisplay}
           fw={350}
           fs="italic"
           mt="md"
@@ -74,7 +76,7 @@ export function OriginManifesto() {
         </Text>
       </Container>
       <Container size="lg" mt="xl">
-        <Grid columns={3} gutter="xl">
+        <Grid columns={12} gutter="xl">
           {principles.map((principle) => (
             <Grid.Col key={principle.label} span={{ base: 12, sm: 4 }}>
               <Text ff="mono" fz="xs" c={isDark ? "violet.3" : "violet.6"}>

@@ -2,6 +2,7 @@
 
 import { Grid, Paper, Text, Title } from "@mantine/core";
 
+import styles from "@/components/common/editorial.module.css";
 import {
   FEATURED_SLUGS,
   getCategoryById,
@@ -25,6 +26,7 @@ export function FeaturedPatterns() {
               p="xl"
               h="100%"
               withBorder
+              radius={0}
               styles={{
                 root: {
                   "& .pbFeatureGo": {
@@ -39,10 +41,15 @@ export function FeaturedPatterns() {
                 },
               }}
             >
-              <Text fz="xs" c="dimmed" className="editorial-kicker">
+              <Text fz="xs" c="dimmed" className={styles.editorialKicker}>
                 {category?.name ?? pattern.category}
               </Text>
-              <Title order={3} className="editorial-display" fw={500} mt={8}>
+              <Title
+                order={3}
+                className={styles.editorialDisplay}
+                fw={500}
+                mt={8}
+              >
                 {pattern.name}
               </Title>
               <Text fz="sm" c="dimmed" mt={6} lh={1.55}>
