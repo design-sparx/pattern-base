@@ -24,12 +24,12 @@ export function PatternIndexRow({ pattern, index }: PatternIndexRowProps) {
           "&:hover": {
             backgroundColor:
               "light-dark(var(--mantine-color-violet-0), var(--mantine-color-violet-9))",
-            "& .pb-row-name": {
+            "& .pbRowName": {
               color: "var(--mantine-color-violet-filled)",
             },
-            "& .pb-row-arrow": { opacity: 1 },
+            "& .pbRowArrow": { opacity: 1 },
           },
-          "& .pb-row-arrow": { opacity: 0, transition: "opacity 120ms ease" },
+          "& .pbRowArrow": { opacity: 0, transition: "opacity 120ms ease" },
         },
       }}
     >
@@ -40,7 +40,7 @@ export function PatternIndexRow({ pattern, index }: PatternIndexRowProps) {
           </Text>
         </Grid.Col>
         <Grid.Col span={{ base: 10, lg: 4 }}>
-          <Text className="pb-row-name" fw={600} fz="md">
+          <Text className="pbRowName" fw={600} fz="md">
             {pattern.name}
           </Text>
         </Grid.Col>
@@ -57,7 +57,7 @@ export function PatternIndexRow({ pattern, index }: PatternIndexRowProps) {
               </Pill>
             ))}
             <Text
-              className="pb-row-arrow"
+              className="pbRowArrow"
               c="var(--mantine-color-violet-filled)"
               fw={700}
             >

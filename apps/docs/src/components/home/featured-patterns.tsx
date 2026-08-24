@@ -27,14 +27,14 @@ export function FeaturedPatterns() {
               withBorder
               styles={{
                 root: {
-                  "& .pb-feature-go": {
+                  "& .pbFeatureGo": {
                     opacity: 0,
                     transition: "opacity 120ms ease",
                   },
                   "&:hover": {
                     backgroundColor:
                       "light-dark(var(--mantine-color-violet-0), var(--mantine-color-violet-9))",
-                    "& .pb-feature-go": { opacity: 1 },
+                    "& .pbFeatureGo": { opacity: 1 },
                   },
                 },
               }}
@@ -49,7 +49,7 @@ export function FeaturedPatterns() {
                 {pattern.description}
               </Text>
               <Text
-                className="pb-feature-go"
+                className="pbFeatureGo"
                 fz="sm"
                 fw={600}
                 c="var(--mantine-color-violet-filled)"

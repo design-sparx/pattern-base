@@ -17,7 +17,7 @@ export function CategoryIndex() {
             styles={{
               root: {
                 "&:hover": {
-                  "& .pb-cat-name": {
+                  "& .pbCatName": {
                     color: "var(--mantine-color-violet-filled)",
                   },
                 },
@@ -33,7 +33,7 @@ export function CategoryIndex() {
               <Grid.Col span={{ base: 10, sm: 4 }}>
                 <Title
                   order={3}
-                  className="editorial-display pb-cat-name"
+                  className="editorial-display pbCatName"
                   fw={500}
                 >
                   {category.name}
