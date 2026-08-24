@@ -6,7 +6,7 @@ export const theme = createTheme({
   primaryColor: "violet",
   primaryShade: { light: 6, dark: 5 },
   fontFamily:
-    'var(--font-geist), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    'var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   fontFamilyMonospace:
     "var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace",
   headings: {
