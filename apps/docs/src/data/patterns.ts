@@ -510,3 +510,17 @@ export function getPatternBySlug(slug: string): PatternMeta | undefined {
 export function getCategoryById(id: string): CategoryInfo | undefined {
   return categories.find((c) => c.id === id);
 }
+
+const FEATURED_SLUGS = [
+  "stream-of-thought",
+  "suggestions",
+  "draft-mode",
+  "caveat",
+  "verification",
+];
+
+export function getFeaturedPatterns(): PatternMeta[] {
+  return FEATURED_SLUGS.map((slug) => getPatternBySlug(slug)).filter(
+    (p): p is PatternMeta => p !== undefined,
+  );
+}
