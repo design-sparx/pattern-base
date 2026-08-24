@@ -3,16 +3,17 @@
 import { Grid, Paper, Text, Title } from "@mantine/core";
 
 import styles from "@/components/common/editorial.module.css";
+import type { StatsStripProps } from "@/components/common/home-props";
 import { patterns } from "@/data/patterns";
 
-const items = [
+const DEFAULT_ITEMS = [
   { value: String(patterns.length), label: "AI UX Patterns" },
   { value: "3", label: "UI Frameworks" },
   { value: "100%", label: "TypeScript" },
   { value: "MIT", label: "Open Source" },
 ];
 
-export function StatsStrip() {
+export function StatsStrip({ items = DEFAULT_ITEMS }: StatsStripProps) {
   return (
     <Grid columns={12} gutter={0}>
       {items.map((item) => (

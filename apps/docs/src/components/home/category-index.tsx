@@ -4,15 +4,28 @@ import { Divider, Grid, Paper, Stack, Text, Title } from "@mantine/core";
 
 import styles from "@/components/common/editorial.module.css";
 import { categories, getPatternsByCategory } from "@/data/patterns";
+import type { CategoryIndexProps } from "@/components/common/home-props";
 
-export function CategoryIndex() {
+const DEFAULT_CATEGORIES = categories.map((category) => ({
+  id: category.id,
+  name: category.name,
+  description: category.description,
+  count: getPatternsByCategory(category.id).length,
+}));
+
+const DEFAULT_GET_HREF = (id: string) => `/patterns/${id}`;
+
+export function CategoryIndex({
+  categories: categoriesProp = DEFAULT_CATEGORIES,
+  getHref = DEFAULT_GET_HREF,
+}: CategoryIndexProps) {
   return (
     <Stack gap={0}>
-      {categories.map((category, i) => (
+      {categoriesProp.map((category, i) => (
         <Stack key={category.id} gap={0}>
           <Paper
             component="a"
-            href={`/patterns/${category.id}`}
+            href={getHref(category.id)}
             py="lg"
             px="md"
             styles={{
@@ -36,6 +49,7 @@ export function CategoryIndex() {
                   order={3}
                   className={`${styles.editorialDisplay} pbCatName`}
                   fw={500}
+                  c="violet"
                 >
                   {category.name}
                 </Title>
@@ -51,12 +65,12 @@ export function CategoryIndex() {
                 ta={{ base: "left", sm: "right" }}
               >
                 <Text ff="mono" fz="sm" c="dimmed">
-                  {getPatternsByCategory(category.id).length} patterns
+                  {category.count} patterns
                 </Text>
               </Grid.Col>
             </Grid>
           </Paper>
-          {i < categories.length - 1 && <Divider />}
+          {i < categoriesProp.length - 1 && <Divider />}
         </Stack>
       ))}
     </Stack>

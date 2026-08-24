@@ -11,8 +11,9 @@ import {
 } from "@mantine/core";
 
 import styles from "@/components/common/editorial.module.css";
+import type { OriginManifestoProps } from "@/components/common/home-props";
 
-const principles = [
+const DEFAULT_PRINCIPLES = [
   {
     label: "P—01",
     title: "Multi-framework",
@@ -30,13 +31,21 @@ const principles = [
   },
 ];
 
-export function OriginManifesto() {
+export function OriginManifesto({
+  id = "about",
+  kicker = "Where it comes from",
+  title = "We took shapeof.ai's taxonomy of AI product UX and turned it into production-ready React components.",
+  description = "Every pattern is derived from research across leading AI products, then built",
+  shapeofHref = "https://www.shapeof.ai",
+  shapeofLabel = "shapeof.ai",
+  principles = DEFAULT_PRINCIPLES,
+}: OriginManifestoProps) {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === "dark";
 
   return (
     <Box
-      id="about"
+      id={id}
       bg={isDark ? "dark.7" : "gray.0"}
       c={isDark ? "gray.2" : "gray.9"}
       py={{ base: "xl", md: 72 }}
@@ -47,7 +56,7 @@ export function OriginManifesto() {
           c={isDark ? "violet.3" : "violet.6"}
           className={styles.editorialKicker}
         >
-          Where it comes from
+          {kicker}
         </Text>
         <Title
           order={2}
@@ -57,18 +66,16 @@ export function OriginManifesto() {
           mt="md"
           lh={1.25}
         >
-          We took shapeof.ai&apos;s taxonomy of AI product UX and turned it into
-          production-ready React components.
+          {title}
         </Title>
         <Text c={isDark ? "gray.4" : "gray.7"} mt="md" lh={1.75}>
-          Every pattern is derived from research across leading AI products,
-          then built{" "}
+          {description}{" "}
           <Anchor
-            href="https://www.shapeof.ai"
+            href={shapeofHref}
             target="_blank"
             c={isDark ? "violet.3" : "violet.6"}
           >
-            shapeof.ai
+            {shapeofLabel}
           </Anchor>{" "}
           style on top of your UI library&apos;s primitives — so patterns
           inherit your theme, tokens, and design system instead of fighting

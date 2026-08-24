@@ -8,21 +8,25 @@ import {
   getCategoryById,
   getPatternBySlug,
 } from "@/data/patterns";
+import type { FeaturedPatternsProps } from "@/components/common/home-props";
 
-export function FeaturedPatterns() {
-  const featured = FEATURED_SLUGS.map(getPatternBySlug).filter(
-    (p): p is NonNullable<typeof p> => p !== undefined,
-  );
+const DEFAULT_PATTERNS = FEATURED_SLUGS.map(getPatternBySlug).filter(
+  (p): p is NonNullable<typeof p> => p !== undefined,
+);
 
+export function FeaturedPatterns({
+  patterns: patternsProp = DEFAULT_PATTERNS,
+  getHref = (slug, category) => `/patterns/${category}/${slug}`,
+}: FeaturedPatternsProps) {
   return (
     <Grid columns={12} gutter={0}>
-      {featured.map((pattern) => {
+      {patternsProp.map((pattern) => {
         const category = getCategoryById(pattern.category);
         return (
           <Grid.Col key={pattern.id} span={{ base: 12, xs: 6, md: 4 }}>
             <Paper
               component="a"
-              href={`/patterns/${pattern.category}/${pattern.slug}`}
+              href={getHref(pattern.slug, pattern.category)}
               p="xl"
               h="100%"
               withBorder
@@ -49,6 +53,7 @@ export function FeaturedPatterns() {
                 className={styles.editorialDisplay}
                 fw={500}
                 mt={8}
+                c="violet"
               >
                 {pattern.name}
               </Title>

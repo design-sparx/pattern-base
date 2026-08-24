@@ -73,7 +73,7 @@ export default function HomePage() {
       {/* Featured */}
       <Container size="lg" pt="xl">
         <Group justify="space-between" align="baseline" mb="md">
-          <Title order={2} className="editorial-display" fw={450} fz={28}>
+          <Title order={2} className={styles.editorialDisplay} fw={450} fz={28}>
             Featured patterns
           </Title>
           <Anchor
@@ -90,7 +90,13 @@ export default function HomePage() {
 
       {/* Category index */}
       <Container size="lg" pt="xl" pb="xl">
-        <Title order={2} className="editorial-display" fw={450} fz={28} mb="md">
+        <Title
+          order={2}
+          className={styles.editorialDisplay}
+          fw={450}
+          fz={28}
+          mb="md"
+        >
           Browse by intent
         </Title>
         <CategoryIndex />

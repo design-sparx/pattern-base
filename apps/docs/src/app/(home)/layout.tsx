@@ -1,4 +1,4 @@
-import { PublicShellLayout } from "@/components/layout/public-shell-layout";
+import { PublicShellLayout } from "@/components/layout/public-shell/public-shell-layout";
 
 export default function HomeLayout({
   children,
