@@ -39,7 +39,7 @@ Blend a marketing/landing feel with discoverability across the four non-workbenc
 
 ## Implementation Constraints
 
-- **Components only from Mantine**: layouts via `Container`/`Stack`/`Group`/`Grid`/`SimpleGrid`; type via `Title`/`Text`; interactive rows/cells via `UnstyledButton` or `Anchor component="span"`; pills/badges via `Pill`/`Badge`; search via `TextInput`; copy affordance via Mantine's `CopyButton`; code block via `Code`; dividers via `Divider`. No raw `<div>` layouts when a Mantine primitive fits, no hand-rolled buttons/inputs.
+- **Components only from Mantine**: layouts via `Container`/`Stack`/`Group`/`Grid` + `Grid.Col` (proportional columns — stats strip, index rows, install section)/`SimpleGrid`/`Flex`; type via `Title`/`Text`; interactive rows/cells via `UnstyledButton` or `Anchor component="span"`; pills/badges via `Pill`/`Badge`; search via `TextInput`; copy affordance via Mantine's `CopyButton`; code block via `Code`; dividers via `Divider`. No raw `<div>` layouts when a Mantine primitive fits, no hand-rolled buttons/inputs.
 - **Styling mechanism precedence**: (1) component props (`c=`, `fz=`, `fw=`, `lh=`, `bg=`, `bd=`…), (2) theme-level config in `theme.ts` (defaultProps, `extend` component styles if needed), (3) co-located CSS Modules (e.g. `editorial.module.css`) for anything structural (index-row grid columns, hover wash, hairline grids), referenced via `classNames`/`styles` props. Inline `style={{} }` reserved for truly dynamic values (e.g. none expected).
 - **Colors via Mantine tokens**: use `var(--mantine-color-text)`, `var(--mantine-color-dimmed)`, `var(--mantine-color-default-border)`, `var(--mantine-color-violet-filled)`/`violet.0–9` scale, and Mantine's `light-dark()` for scheme-dependent values. Do not hardcode hex in components; the ink/paper/hairline trio maps onto existing Mantine semantics (text / body background / default border) plus at most 1–2 custom vars defined once in `globals.css` under `[data-mantine-color-scheme]`.
 - **Dark mode comes free** by using these tokens — no manual inversion logic anywhere.
@@ -59,9 +59,58 @@ Route groups don't affect URLs, so all public paths stay identical.
 - Add to `next.config.mjs`: `async redirects() { return [{ source: "/about", destination: "/#about", permanent: true }] }` (308).
 - Home's origin section gets `id="about"` as the redirect target.
 
+## Planned Files & Component Mapping
+
+### New files
+
+| File                                          | Role                                                                                    | Mantine components                                                                    |
+| --------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `src/app/(shell)/layout.tsx`                  | Wraps children in existing `<AppShellLayout>`                                           | none (1-line re-export)                                                               |
+| `src/app/(home)/layout.tsx`                   | Editorial chrome: top nav + slim footer, no AppShell                                    | `Group`, `Anchor`, `UnstyledButton`, `Button` (Get-started pill), `Text`, `Container` |
+| `src/app/(home)/page.tsx`                     | Landing composition + absorbed About metadata (server component)                        | composes the section components below                                                 |
+| `src/components/home/stats-strip.tsx`         | 54 / 3 / 100% / MIT strip                                                               | `Grid` + `Grid.Col`, `Title`, `Text`                                                  |
+| `src/components/home/featured-patterns.tsx`   | Curated 6-cell hairline grid (client-free; hover is pure CSS)                           | `SimpleGrid`, `UnstyledButton`, `Text`, `Box`                                         |
+| `src/components/home/category-index.tsx`      | Numbered 5-row intent index                                                             | `Stack`, `UnstyledButton`, `Grid` + `Grid.Col`, `Title`, `Text`                       |
+| `src/components/home/origin-manifesto.tsx`    | Dark band absorbing /about origin + principles (`id="about"`)                           | `Box`, `Title`, `Text`, `Anchor`                                                      |
+| `src/components/home/install-section.tsx`     | Two-column getting-started + code block                                                 | `Grid` + `Grid.Col`, `Title`, `Code`                                                  |
+| `src/components/common/install-pill.tsx`      | Small client island (CopyButton needs state)                                            | `CopyButton`, `Group`, `Code`                                                         |
+| `src/components/common/pattern-index-row.tsx` | Shared numbered index row for both browse pages                                         | `UnstyledButton`, `Grid` + `Grid.Col`, `Pill`, `Text`                                 |
+| `src/components/browse/patterns-index.tsx`    | Client island: search + tag pills + grouped rows (logic moved from current `/patterns`) | `TextInput`, `Pills.Group` + `Pill`, `Title`, `Text`                                  |
+
+### Modified files
+
+| File                                           | Change                                                                            |
+| ---------------------------------------------- | --------------------------------------------------------------------------------- |
+| `src/app/layout.tsx`                           | Remove `AppShellLayout`; add Fraunces/Inter `next/font` vars, drop Geist var      |
+| `src/app/theme.ts`                             | `theme.fontFamily` → `var(--font-body)`                                           |
+| `next.config.mjs`                              | Add `redirects()` for `/about` → `/#about`                                        |
+| `src/data/patterns.ts`                         | Add `FEATURED_SLUGS` export                                                       |
+| `src/app/(shell)/patterns/page.tsx`            | Rewritten as thin server wrapper around `PatternsIndex` island + editorial header |
+| `src/app/(shell)/patterns/[category]/page.tsx` | Editorial header + category switcher replacing icon header + card grid            |
+
+### Moved files (git mv, content untouched)
+
+- `src/app/patterns/**` → `src/app/(shell)/patterns/**` — includes `page.tsx`, `[category]/page.tsx`, `[category]/[pattern]/page.tsx`, both `layout.tsx` files, and `patterns/error.tsx`.
+
+### Deleted files
+
+- `src/app/about/page.tsx` — content merged into home sections.
+- `src/components/common/pattern-card.tsx` — retired by the index rows; verify zero remaining imports before deleting (related links were rebuilt server-side in `af41eec`, so expected clean).
+- `src/components/home/hero.tsx` — replaced by new hero markup inside `(home)/page.tsx`.
+
+### CSS Modules (which components need one, and why)
+
+| Module file                                          | Applied by                                                     | Why a module is needed                                                                                                                                                                                                                                                                                                                                            |
+| ---------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/app/(home)/editorial.module.css`                | Hero, stats strip, featured grid, origin band, install section | Structural static styles beyond props: Fraunces display type rules, hairline-divider grids (borders between `Grid.Col` cells), `:hover` wash on featured cells, dark-band background via `light-dark()`, media-query collapse of the two-column install layout. Pseudo-classes/media queries can't be expressed with Mantine props, and inline `style` is banned. |
+| `src/components/common/pattern-index-row.module.css` | `PatternIndexRow`                                              | The 5-column responsive row template (`grid-template-columns` with breakpoint collapses at ~900px/~600px) plus row hover states (name → violet, arrow slide-in) and bottom hairline — pure structural/hover CSS.                                                                                                                                                  |
+| `src/components/browse/category-switcher.module.css` | Category tabs on `[category]/page.tsx`                         | Active-tab underline (border-bottom offset trick) and muted/inactive link states driven by a `data-active` attribute.                                                                                                                                                                                                                                             |
+
+Shared type utilities: `.editorial-display` (Fraunces family, −0.01em tracking) and `.editorial-kicker` go in `src/app/globals.css` (already the site-wide stylesheet) so every surface references identical rules instead of duplicating them per-module.
+
 ## Page Designs (as approved in mockups)
 
-All sections are built from Mantine primitives per **Implementation Constraints** (Container/Stack/Group/SimpleGrid scaffolding, Title/Text typography, UnstyledButton/Anchor rows, TextInput search, CopyButton install pill, Code block). Structural styling (row grid columns, hairline grids, hover washes) lives in one co-located CSS Module per surface.
+All sections are built from Mantine primitives per **Implementation Constraints** (Container/Stack/Group/Grid scaffolding, Title/Text typography, UnstyledButton/Anchor rows, TextInput search, CopyButton install pill, Code block). Structural styling (row grid columns, hairline grids, hover washes) lives in one co-located CSS Module per surface.
 
 ### 1. Home `/` — full landing (new editorial layout, no sidebar)
 
