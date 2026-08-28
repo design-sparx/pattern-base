@@ -64,9 +64,11 @@ export function CodeBlock({
           {copied ? "Copied!" : "Copy"}
         </Button>
       </Group>
+      {/* eslint-disable jsx-a11y/no-noninteractive-tabindex -- a horizontally scrollable code region must be keyboard-focusable (axe scrollable-region-focusable) */}
       <Highlight theme={themes.vsDark} code={code.trim()} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
+            tabIndex={0}
             style={{
               ...style,
               margin: 0,
@@ -112,6 +114,7 @@ export function CodeBlock({
           </pre>
         )}
       </Highlight>
+      {/* eslint-enable jsx-a11y/no-noninteractive-tabindex -- re-enable after the scrollable code region */}
     </Paper>
   );
 }

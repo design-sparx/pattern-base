@@ -6,7 +6,7 @@ export const theme = createTheme({
   primaryColor: "violet",
   primaryShade: { light: 6, dark: 5 },
   fontFamily:
-    'var(--font-geist), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    'var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   fontFamilyMonospace:
     "var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace",
   headings: {
@@ -46,17 +46,39 @@ export const theme = createTheme({
         radius: "sm",
       },
     },
-    Tabs: {
-      styles: {
-        tab: {
-          fontWeight: 500,
-          fontSize: rem(14),
-        },
-      },
-    },
     ActionIcon: {
       defaultProps: {
         radius: "md",
+      },
+    },
+    Container: {
+      defaultProps: {
+        size: "lg",
+      },
+    },
+    Grid: {
+      defaultProps: {
+        gutter: "md",
+      },
+    },
+    Text: {
+      defaultProps: {
+        fz: "md",
+      },
+    },
+    Title: {
+      defaultProps: {
+        fw: 600,
+      },
+    },
+    Group: {
+      defaultProps: {
+        gap: "md",
+      },
+    },
+    Anchor: {
+      defaultProps: {
+        underline: "hover",
       },
     },
   },

@@ -1,8 +1,9 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 import {
-  Geist,
+  Fraunces,
   Geist_Mono as geistMonoFont,
+  Inter,
   Space_Grotesk as spaceGroteskFont,
 } from "next/font/google";
 
@@ -11,12 +12,18 @@ import { theme } from "./theme";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 
-import { AppShellLayout } from "@/components/layout/app-shell-layout";
 import { SpotlightProvider } from "@/components/layout/spotlight-provider";
 
-const geist = Geist({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-geist",
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
   display: "swap",
 });
 
@@ -87,7 +94,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}
+      className={`${fraunces.variable} ${inter.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}
     >
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
@@ -113,7 +120,7 @@ export default function RootLayout({
             Skip to content
           </a>
           <SpotlightProvider />
-          <AppShellLayout>{children}</AppShellLayout>
+          {children}
         </MantineProvider>
       </body>
     </html>

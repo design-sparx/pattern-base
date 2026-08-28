@@ -244,7 +244,7 @@ export function ActionPlan({
   return (
     <Card padding="sm" withBorder>
       <Stack gap="sm">
-        {title && <Text fw={600}>{title}</Text>}
+        {title ? <Text fw={600}>{title}</Text> : null}
 
         <Stepper active={active} orientation="vertical" size="sm">
           {steps.map((step) => (
@@ -258,60 +258,45 @@ export function ActionPlan({
                   onClick={() => onStepClick?.(step.id)}
                 >
                   {step.title}
-                  {step.tool && (
-                    <Text component="span" size="xs" c="dimmed" ml="xs">
+                  {step.tool ? <Text component="span" size="xs" c="dimmed" ml="xs">
                       ({step.tool})
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Text>
               }
               description={
                 <Stack gap={2}>
-                  {step.description && (
-                    <Text size="xs" c="dimmed">
+                  {step.description ? <Text size="xs" c="dimmed">
                       {step.description}
-                    </Text>
-                  )}
-                  {showEstimates && step.estimatedDuration && (
-                    <Text size="xs" c="dimmed">
+                    </Text> : null}
+                  {showEstimates && step.estimatedDuration ? <Text size="xs" c="dimmed">
                       Est: {step.estimatedDuration}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
               }
               color={
-                step.status === "failed"
-                  ? "red"
-                  : step.status === "completed"
-                    ? "green"
-                    : step.status === "skipped"
-                      ? "gray"
-                      : undefined
+                step.status === "failed" ? "red"
+                : step.status === "completed" ? "green"
+                : step.status === "skipped" ? "gray"
+                : undefined
               }
               loading={step.status === "in-progress"}
             />
           ))}
         </Stepper>
 
-        {(onApprove ?? onReject) && (
-          <Group gap="sm" mt="xs">
-            {onApprove && (
-              <Button size="sm" onClick={onApprove}>
+        {(onApprove ?? onReject) ? <Group gap="sm" mt="xs">
+            {onApprove ? <Button size="sm" onClick={onApprove}>
                 Approve
-              </Button>
-            )}
-            {onReject && (
-              <Button
+              </Button> : null}
+            {onReject ? <Button
                 size="sm"
                 color="red"
                 variant="outline"
                 onClick={onReject}
               >
                 Reject
-              </Button>
-            )}
-          </Group>
-        )}
+              </Button> : null}
+          </Group> : null}
       </Stack>
     </Card>
   );
@@ -530,7 +515,7 @@ import { IconTrash, IconUpload } from "@tabler/icons-react";
 import type { AttachmentsProps } from "@patternbase/core";
 
 function formatSize(bytes: number): string {
-  if (bytes < 1024) return \`\${bytes} B\`;
+  if (bytes < 1024) return \`\${String(bytes)} B\`;
   if (bytes < 1024 * 1024) return \`\${(bytes / 1024).toFixed(1)} KB\`;
   return \`\${(bytes / (1024 * 1024)).toFixed(1)} MB\`;
 }
@@ -555,9 +540,8 @@ export function Attachments({
 
   return (
     <Stack gap="sm">
-      {canAdd && (
-        <Dropzone
-          onDrop={(files) => onAdd(files as unknown as File[])}
+      {canAdd ? <Dropzone
+          onDrop={(files) => { onAdd(files as unknown as File[]); }}
           accept={mimeTypes}
           multiple
         >
@@ -576,13 +560,11 @@ export function Attachments({
               Drop files here or click to upload
             </Text>
           </Group>
-        </Dropzone>
-      )}
+        </Dropzone> : null}
 
       {attachments.map((a) => (
         <Group key={a.id} gap="sm" align="flex-start">
-          {showPreview && a.previewUrl && (
-            <img
+          {showPreview && a.previewUrl ? <img
               src={a.previewUrl}
               alt={a.name}
               style={{
@@ -591,8 +573,7 @@ export function Attachments({
                 objectFit: "cover",
                 borderRadius: 4,
               }}
-            />
-          )}
+            /> : null}
           <Stack gap={2} style={{ flex: 1 }}>
             <Group justify="space-between" align="center">
               <Text size="sm" fw={500}>
@@ -602,7 +583,7 @@ export function Attachments({
                 variant="subtle"
                 color="red"
                 size="sm"
-                onClick={() => onRemove(a.id)}
+                onClick={() => { onRemove(a.id); }}
               >
                 <IconTrash size={14} />
               </ActionIcon>
@@ -617,7 +598,7 @@ export function Attachments({
                 </Badge>
               )}
             </Group>
-            {a.status === "uploading" && a.progress != null && (
+            {a.status === "uploading" && a.progress !== undefined && (
               <Progress value={a.progress} size="xs" mt={2} />
             )}
           </Stack>
@@ -832,7 +813,7 @@ export function AutoFill({
               padding="xs"
               withBorder
               style={{ cursor: "pointer" }}
-              onClick={() => onSelect(s)}
+              onClick={() => { onSelect(s); }}
             >
               <Group justify="space-between" align="center">
                 <Text size="sm">{highlight(s.text)}</Text>
@@ -842,11 +823,9 @@ export function AutoFill({
                   </Badge>
                 )}
               </Group>
-              {s.source && (
-                <Text size="xs" c="dimmed">
+              {s.source ? <Text size="xs" c="dimmed">
                   {s.source}
-                </Text>
-              )}
+                </Text> : null}
             </Card>
           ))}
         </Stack>
@@ -980,7 +959,10 @@ export function Avatar({
   return (
     <Stack direction="horizontal" className="align-items-center gap-2">
       {avatarNode}
-      <span className="small">{name}</span>
+      <div>
+        <div className="small fw-semibold">{name}</div>
+        {persona ? <small className="text-muted">{persona}</small> : null}
+      </div>
       {badgeLabel ? <Badge bg="secondary">{badgeLabel}</Badge> : null}
     </Stack>
   );
@@ -1086,7 +1068,14 @@ export function Avatar({
   return (
     <Space size={8}>
       {avatarNode}
-      <Text>{name}</Text>
+      <Space direction="vertical" size={0}>
+        <Text>{name}</Text>
+        {persona ? (
+          <Text type="secondary" style={{ fontSize: 12 }}>
+            {persona}
+          </Text>
+        ) : null}
+      </Space>
       {badgeLabel ? <Tag>{badgeLabel}</Tag> : null}
     </Space>
   );
@@ -1100,6 +1089,7 @@ export function Avatar({
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { AvatarProps } from "@patternbase/core";
 
 export function Avatar({
@@ -1107,7 +1097,7 @@ export function Avatar({
   persona,
   imageUrl,
   badgeLabel,
-  status,
+  status = "online",
   size = "medium",
   variant = "inline",
   onSelect,
@@ -1129,8 +1119,7 @@ export function Avatar({
         radius="xl"
         color="violet"
       />
-      {status && (
-        <div
+      <div
           style={{
             position: "absolute",
             bottom: 0,
@@ -1142,7 +1131,6 @@ export function Avatar({
             border: "2px solid var(--mantine-color-body)",
           }}
         />
-      )}
     </div>
   );
 
@@ -1157,11 +1145,9 @@ export function Avatar({
         <Text size="sm" fw={500}>
           {name}
         </Text>
-        {badgeLabel && (
-          <Badge size="xs" variant="light">
+        {badgeLabel ? <Badge size="xs" variant="light">
             {badgeLabel}
-          </Badge>
-        )}
+          </Badge> : null}
       </Group>
     );
   }
@@ -1178,16 +1164,12 @@ export function Avatar({
           {avatarEl}
           <Stack gap={4}>
             <Text fw={600}>{name}</Text>
-            {persona && (
-              <Text size="sm" c="dimmed">
+            {persona ? <Text size="sm" c="dimmed">
                 {persona}
-              </Text>
-            )}
-            {badgeLabel && (
-              <Badge size="sm" variant="light">
+              </Text> : null}
+            {badgeLabel ? <Badge size="sm" variant="light">
                 {badgeLabel}
-              </Badge>
-            )}
+              </Badge> : null}
           </Stack>
         </Stack>
       </Card>
@@ -1206,16 +1188,12 @@ export function Avatar({
         <Text size="sm" fw={500}>
           {name}
         </Text>
-        {persona && (
-          <Text size="xs" c="dimmed">
+        {persona ? <Text size="xs" c="dimmed">
             {persona}
-          </Text>
-        )}
-        {badgeLabel && (
-          <Badge size="xs" variant="light">
+          </Text> : null}
+        {badgeLabel ? <Badge size="xs" variant="light">
             {badgeLabel}
-          </Badge>
-        )}
+          </Badge> : null}
       </Stack>
     </Group>
   );
@@ -1361,6 +1339,7 @@ export function Branches({
   Timeline,
 } from "@mantine/core";
 import { IconGitBranch } from "@tabler/icons-react";
+
 import type { BranchesProps } from "@patternbase/core";
 
 export function Branches({
@@ -1374,11 +1353,9 @@ export function Branches({
   return (
     <Stack gap="sm">
       <Group justify="space-between" align="center">
-        {title && (
-          <Text fw={600} size="sm">
+        {title ? <Text fw={600} size="sm">
             {title}
-          </Text>
-        )}
+          </Text> : null}
       </Group>
 
       {variant === "tree" ? (
@@ -1396,7 +1373,7 @@ export function Branches({
                     size="sm"
                     fw={activeBranchId === branch.id ? 600 : 400}
                     style={{ cursor: "pointer" }}
-                    onClick={() => onSelectBranch(branch.id)}
+                    onClick={() => { onSelectBranch(branch.id); }}
                   >
                     {branch.label}
                   </Text>
@@ -1408,21 +1385,17 @@ export function Branches({
                 </Group>
               }
             >
-              {branch.preview && (
-                <Text size="xs" c="dimmed" lineClamp={1}>
+              {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                   {branch.preview}
-                </Text>
-              )}
-              {branch.createdAt && (
-                <Text size="xs" c="dimmed">
+                </Text> : null}
+              {branch.createdAt ? <Text size="xs" c="dimmed">
                   {branch.createdAt.toLocaleDateString()}
-                </Text>
-              )}
+                </Text> : null}
               <Button
                 variant="subtle"
                 size="compact-xs"
                 mt={4}
-                onClick={() => onCreateBranch(branch.id)}
+                onClick={() => { onCreateBranch(branch.id); }}
               >
                 Branch from here
               </Button>
@@ -1443,7 +1416,7 @@ export function Branches({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onSelectBranch(branch.id)}
+              onClick={() => { onSelectBranch(branch.id); }}
             >
               <Group justify="space-between" align="flex-start">
                 <Stack gap={2} style={{ flex: 1 }}>
@@ -1456,22 +1429,16 @@ export function Branches({
                         Active
                       </Badge>
                     )}
-                    {branch.parentId && (
-                      <Badge size="xs" variant="light" color="gray">
+                    {branch.parentId ? <Badge size="xs" variant="light" color="gray">
                         branch
-                      </Badge>
-                    )}
+                      </Badge> : null}
                   </Group>
-                  {branch.preview && (
-                    <Text size="xs" c="dimmed" lineClamp={1}>
+                  {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                       {branch.preview}
-                    </Text>
-                  )}
-                  {branch.createdAt && (
-                    <Text size="xs" c="dimmed">
+                    </Text> : null}
+                  {branch.createdAt ? <Text size="xs" c="dimmed">
                       {branch.createdAt.toLocaleDateString()}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
                 <Button
                   variant="subtle"
@@ -1629,24 +1596,20 @@ export function Caveat({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import { Alert, Anchor, Text } from "@mantine/core";
+    mantine: `import { Alert, Anchor, Text } from "@mantine/core";
 import { IconAlertTriangle, IconInfoCircle, IconX } from "@tabler/icons-react";
+
 import type { CaveatProps } from "@patternbase/core";
 
 export function Caveat({
   message,
-  variant = "inline",
+  variant = "banner",
   severity = "info",
   title,
   learnMoreUrl,
   dismissible = false,
   onDismiss,
 }: CaveatProps) {
-  const [dismissed, setDismissed] = useState(false);
-
-  if (dismissed) return null;
-
   const iconMap = {
     info: <IconInfoCircle size={16} />,
     warning: <IconAlertTriangle size={16} />,
@@ -1666,14 +1629,12 @@ export function Caveat({
       title={title}
       withCloseButton={dismissible}
       onClose={() => {
-        setDismissed(true);
         onDismiss?.();
       }}
       variant={variant === "banner" ? "filled" : "light"}
     >
       <Text size="sm">{message}</Text>
-      {learnMoreUrl && (
-        <Anchor
+      {learnMoreUrl ? <Anchor
           href={learnMoreUrl}
           target="_blank"
           size="xs"
@@ -1682,8 +1643,7 @@ export function Caveat({
           display="block"
         >
           Learn more
-        </Anchor>
-      )}
+        </Anchor> : null}
     </Alert>
   );
 }
@@ -1874,11 +1834,9 @@ export function ChainedAction({
 
   return (
     <Stack gap="md">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Stepper active={active} size="sm">
         {steps.map((step) => (
@@ -1896,19 +1854,15 @@ export function ChainedAction({
             }
             description={step.description}
             color={
-              step.status === "error"
-                ? "red"
-                : step.status === "completed"
-                  ? "green"
-                  : undefined
+              step.status === "error" ? "red"
+              : step.status === "completed" ? "green"
+              : undefined
             }
             loading={step.status === "active" && isExecuting}
           >
-            {step.result && (
-              <Text size="xs" c="dimmed" mt="xs">
+            {step.result ? <Text size="xs" c="dimmed" mt="xs">
                 {step.result}
-              </Text>
-            )}
+              </Text> : null}
           </Stepper.Step>
         ))}
       </Stepper>
@@ -2254,28 +2208,25 @@ export function Citation({ citation }: CitationProps) {
                 {getRelevanceLabel(relevance)} Relevance
               </Badge>
             </Group>
-            {url && (
-              <Anchor
+            {url ? <Anchor
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 size="xs"
               >
                 {url.length > 60 ? \`\${url.substring(0, 60)}...\` : url}
-              </Anchor>
-            )}
+              </Anchor> : null}
           </Stack>
           <Button
             variant="subtle"
             size="compact-xs"
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => { setExpanded(!expanded); }}
           >
             {expanded ? "Hide" : "View"} excerpt
           </Button>
         </Group>
 
-        {expanded && snippet && (
-          <Text
+        {expanded && snippet ? <Text
             size="sm"
             style={{
               fontStyle: "italic",
@@ -2284,8 +2235,7 @@ export function Citation({ citation }: CitationProps) {
             }}
           >
             &ldquo;{snippet}&rdquo;
-          </Text>
-        )}
+          </Text> : null}
       </Stack>
     </Card>
   );
@@ -2319,7 +2269,7 @@ export function CitationsList({
           variant="default"
           size="compact-sm"
           fullWidth
-          onClick={() => setShowAll(!showAll)}
+          onClick={() => { setShowAll(!showAll); }}
         >
           {showAll
             ? "Show fewer"
@@ -2579,6 +2529,7 @@ export function Color({
   Text,
   Tooltip,
 } from "@mantine/core";
+
 import type { ColorProps } from "@patternbase/core";
 
 export function Color({
@@ -2592,11 +2543,9 @@ export function Color({
   if (variant === "chips") {
     return (
       <Stack gap="xs">
-        {title && (
-          <Text size="sm" fw={500}>
+        {title ? <Text size="sm" fw={500}>
             {title}
-          </Text>
-        )}
+          </Text> : null}
         <Group gap="xs" wrap="wrap">
           {options.map((option) => (
             <Badge
@@ -2624,11 +2573,9 @@ export function Color({
     return (
       <Card withBorder padding="md">
         <Stack gap="sm">
-          {title && (
-            <Text fw={600} size="sm">
+          {title ? <Text fw={600} size="sm">
               {title}
-            </Text>
-          )}
+            </Text> : null}
           <SimpleGrid cols={4} spacing="xs">
             {options.map((option) => (
               <Stack key={option.id} gap={4} align="center">
@@ -2650,11 +2597,9 @@ export function Color({
                 <Text size="xs" c="dimmed" ta="center">
                   {option.label}
                 </Text>
-                {option.description && (
-                  <Text size="xs" c="dimmed" ta="center" lineClamp={1}>
+                {option.description ? <Text size="xs" c="dimmed" ta="center" lineClamp={1}>
                     {option.description}
-                  </Text>
-                )}
+                  </Text> : null}
               </Stack>
             ))}
           </SimpleGrid>
@@ -2665,11 +2610,9 @@ export function Color({
 
   return (
     <Stack gap="xs">
-      {title && (
-        <Text size="sm" fw={500}>
+      {title ? <Text size="sm" fw={500}>
           {title}
-        </Text>
-      )}
+        </Text> : null}
       <Group gap="xs" wrap="wrap">
         {options.map((option) => (
           <Tooltip key={option.id} label={option.label} withArrow>
@@ -2687,17 +2630,14 @@ export function Color({
                   outlineOffset: 2,
                 }}
               />
-              {showLabels && (
-                <Text size="xs" c="dimmed">
+              {showLabels ? <Text size="xs" c="dimmed">
                   {option.label}
-                </Text>
-              )}
+                </Text> : null}
             </Stack>
           </Tooltip>
         ))}
       </Group>
-      {selectedColorId && (
-        <Group gap="xs">
+      {selectedColorId ? <Group gap="xs">
           <ColorSwatch
             color={
               options.find((o) => o.id === selectedColorId)?.value ?? "#000"
@@ -2707,8 +2647,7 @@ export function Color({
           <Text size="xs" c="dimmed">
             {options.find((o) => o.id === selectedColorId)?.label}
           </Text>
-        </Group>
-      )}
+        </Group> : null}
     </Stack>
   );
 }
@@ -2911,6 +2850,7 @@ export function Connectors({
   Text,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
+
 import type { ConnectorsProps } from "@patternbase/core";
 
 export function Connectors({
@@ -2939,39 +2879,31 @@ export function Connectors({
             <Badge size="xs" color={statusColor(source.status)} variant="light">
               {source.status}
             </Badge>
-            {source.type && (
-              <Badge size="xs" variant="light" color="gray">
+            {source.type ? <Badge size="xs" variant="light" color="gray">
                 {source.type}
-              </Badge>
-            )}
+              </Badge> : null}
           </Group>
-          {source.description && (
-            <Text size="xs" c="dimmed">
+          {source.description ? <Text size="xs" c="dimmed">
               {source.description}
-            </Text>
-          )}
-          {source.lastSyncedAt && (
-            <Text size="xs" c="dimmed">
+            </Text> : null}
+          {source.lastSyncedAt ? <Text size="xs" c="dimmed">
               Last synced: {source.lastSyncedAt.toLocaleString()}
-            </Text>
-          )}
+            </Text> : null}
         </Stack>
         <Group gap="xs">
-          {onSync && source.status === "connected" && (
-            <Button
+          {onSync && source.status === "connected" ? <Button
               variant="subtle"
               size="compact-xs"
               leftSection={<IconRefresh size={12} />}
-              onClick={() => onSync(source.id)}
+              onClick={() => { onSync(source.id); }}
             >
               Sync
-            </Button>
-          )}
+            </Button> : null}
           {source.status === "disconnected" || source.status === "error" ? (
             <Button
               variant="light"
               size="compact-xs"
-              onClick={() => onConnect(source.id)}
+              onClick={() => { onConnect(source.id); }}
             >
               Connect
             </Button>
@@ -2980,7 +2912,7 @@ export function Connectors({
               variant="subtle"
               color="gray"
               size="compact-xs"
-              onClick={() => onDisconnect(source.id)}
+              onClick={() => { onDisconnect(source.id); }}
             >
               Disconnect
             </Button>
@@ -2992,11 +2924,9 @@ export function Connectors({
 
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
       {variant === "cards" ? (
         <SimpleGrid cols={2} spacing="sm">
           {sources.map(renderSource)}
@@ -3198,8 +3128,9 @@ export function Consent({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import { Button, Card, Checkbox, Divider, Stack, Text } from "@mantine/core";
+    mantine: `import { Button, Card, Checkbox, Divider, Stack, Text } from "@mantine/core";
+import { useState } from "react";
+
 import type { ConsentProps } from "@patternbase/core";
 
 export function Consent({
@@ -3234,12 +3165,12 @@ export function Consent({
 
   const inner = (
     <Stack gap="sm">
-      {title && <Text fw={600}>{title}</Text>}
-      {description && (
+      {title ? <Text fw={600}>{title}</Text> : null}
+      {description ? (
         <Text size="sm" c="dimmed">
           {description}
         </Text>
-      )}
+      ) : null}
 
       <Stack gap="xs">
         {items.map((item) => (
@@ -3249,22 +3180,24 @@ export function Consent({
               <Stack gap={2}>
                 <Text size="sm">
                   {item.label}
-                  {item.required && (
+                  {item.required ? (
                     <Text component="span" c="red" ml={4}>
                       *
                     </Text>
-                  )}
+                  ) : null}
                 </Text>
-                {item.description && (
+                {item.description ? (
                   <Text size="xs" c="dimmed">
                     {item.description}
                   </Text>
-                )}
+                ) : null}
               </Stack>
             }
-            checked={!!checked[item.id]}
-            onChange={() => toggle(item.id)}
-            disabled={item.required && !item.defaultChecked}
+            checked={Boolean(checked[item.id])}
+            onChange={() => {
+              toggle(item.id);
+            }}
+            disabled={item.required ? !item.defaultChecked : undefined}
           />
         ))}
       </Stack>
@@ -3275,11 +3208,11 @@ export function Consent({
         <Button onClick={handleAccept} disabled={!allRequiredChecked}>
           {acceptLabel}
         </Button>
-        {onDecline && (
+        {onDecline ? (
           <Button variant="subtle" color="gray" onClick={onDecline}>
             {declineLabel}
           </Button>
-        )}
+        ) : null}
       </Stack>
     </Stack>
   );
@@ -3441,6 +3374,7 @@ export function Controls({
   Text,
   Tooltip,
 } from "@mantine/core";
+
 import type { ControlsProps } from "@patternbase/core";
 
 export function Controls({
@@ -3448,7 +3382,7 @@ export function Controls({
   onToggleControl,
   title,
   variant = "list",
-  showStatus = false,
+  showStatus = true,
 }: ControlsProps) {
   const statusColor = (status?: string) => {
     if (status === "active") return "green";
@@ -3457,67 +3391,77 @@ export function Controls({
     return "gray";
   };
 
-  const renderControl = (control: (typeof controls)[0]) => (
-    <Card key={control.id} padding="sm" withBorder>
-      <Group justify="space-between" align="center">
-        <Stack gap={2} style={{ flex: 1 }}>
-          <Group gap="xs">
-            <Text size="sm" fw={500}>
-              {control.label}
-            </Text>
-            {showStatus && control.status && (
-              <Badge
-                size="xs"
-                color={statusColor(control.status)}
-                variant="light"
-              >
-                {control.status}
-              </Badge>
-            )}
-            {control.locked && (
-              <Badge size="xs" variant="light" color="gray">
-                Locked
-              </Badge>
-            )}
-          </Group>
-          {control.description && (
-            <Text size="xs" c="dimmed">
-              {control.description}
-            </Text>
-          )}
-        </Stack>
-        <Tooltip
-          label={
-            control.locked
-              ? "This control is locked"
-              : control.enabled
-                ? "Disable"
-                : "Enable"
-          }
-        >
-          <Switch
-            checked={control.enabled}
-            onChange={(e) =>
-              !control.locked &&
-              onToggleControl(control.id, e.currentTarget.checked)
-            }
-            disabled={control.locked}
-            size="sm"
-          />
-        </Tooltip>
-      </Group>
-    </Card>
-  );
+  const renderControl = (control: (typeof controls)[0]) => {
+    let switchLabel = "Enable";
+    if (control.locked) {
+      switchLabel = "This control is locked";
+    } else if (control.enabled) {
+      switchLabel = "Disable";
+    }
+
+    return (
+      <Card key={control.id} padding="sm" withBorder>
+        <Group justify="space-between" align="center">
+          <Stack gap={2} style={{ flex: 1 }}>
+            <Group gap="xs">
+              <Text size="sm" fw={500}>
+                {control.label}
+              </Text>
+              {showStatus && control.status ? (
+                <Badge
+                  size="xs"
+                  color={statusColor(control.status)}
+                  variant="light"
+                >
+                  {control.status}
+                </Badge>
+              ) : null}
+              {control.locked ? (
+                <Badge size="xs" variant="light" color="gray">
+                  Locked
+                </Badge>
+              ) : null}
+            </Group>
+            {control.description ? (
+              <Text size="xs" c="dimmed">
+                {control.description}
+              </Text>
+            ) : null}
+          </Stack>
+          <Tooltip label={switchLabel}>
+            <Switch
+              checked={control.enabled}
+              onChange={(e) => {
+                if (!control.locked) {
+                  onToggleControl(control.id, e.currentTarget.checked);
+                }
+              }}
+              disabled={control.locked}
+              size="sm"
+            />
+          </Tooltip>
+        </Group>
+      </Card>
+    );
+  };
 
   return (
     <Stack gap="sm">
-      {title && (
+      {title ? (
         <Text fw={600} size="sm">
           {title}
         </Text>
-      )}
+      ) : null}
       {variant === "cards" ? (
-        <Stack gap="xs">{controls.map(renderControl)}</Stack>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "var(--mantine-spacing-xs)",
+          }}
+        >
+          {controls.map(renderControl)}
+        </div>
       ) : (
         <Stack gap="xs">{controls.map(renderControl)}</Stack>
       )}
@@ -3759,14 +3703,11 @@ export function CostEstimate({
           <Badge variant="light">{formatCost(breakdown.totalCost)}</Badge>
         </Group>
 
-        {breakdown.model && (
-          <Text size="xs" c="dimmed">
+        {breakdown.model ? <Text size="xs" c="dimmed">
             Model: {breakdown.model}
-          </Text>
-        )}
+          </Text> : null}
 
-        {showTokens && (
-          <>
+        {showTokens ? <>
             <Progress value={inputPct} size="sm" color="violet" />
 
             <Table fz="xs" withRowBorders={false}>
@@ -3800,8 +3741,7 @@ export function CostEstimate({
                 </Table.Tr>
               </Table.Tbody>
             </Table>
-          </>
-        )}
+          </> : null}
       </Stack>
     </Card>
   );
@@ -3974,6 +3914,7 @@ export function DataOwnership({
   Text,
 } from "@mantine/core";
 import { IconDownload, IconTrash } from "@tabler/icons-react";
+
 import type { DataOwnershipProps } from "@patternbase/core";
 
 export function DataOwnership({
@@ -3992,18 +3933,15 @@ export function DataOwnership({
             {title}
           </Text>
           <Group gap="xs">
-            {onExport && (
-              <Button
+            {onExport ? <Button
                 variant="default"
                 size="compact-sm"
                 leftSection={<IconDownload size={14} />}
                 onClick={onExport}
               >
                 Export
-              </Button>
-            )}
-            {onDeleteAll && (
-              <Button
+              </Button> : null}
+            {onDeleteAll ? <Button
                 variant="subtle"
                 color="red"
                 size="compact-sm"
@@ -4011,8 +3949,7 @@ export function DataOwnership({
                 onClick={onDeleteAll}
               >
                 Delete All
-              </Button>
-            )}
+              </Button> : null}
           </Group>
         </Group>
         <Table>
@@ -4020,7 +3957,7 @@ export function DataOwnership({
             <Table.Tr>
               <Table.Th>Data Type</Table.Th>
               <Table.Th>Retention</Table.Th>
-              <Table.Th></Table.Th>
+              <Table.Th />
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
@@ -4031,31 +3968,25 @@ export function DataOwnership({
                     <Text size="sm" fw={500}>
                       {item.dataType}
                     </Text>
-                    {item.description && (
-                      <Text size="xs" c="dimmed">
+                    {item.description ? <Text size="xs" c="dimmed">
                         {item.description}
-                      </Text>
-                    )}
+                      </Text> : null}
                   </Stack>
                 </Table.Td>
                 <Table.Td>
-                  {item.retention && (
-                    <Badge size="xs" variant="light">
+                  {item.retention ? <Badge size="xs" variant="light">
                       {item.retention}
-                    </Badge>
-                  )}
+                    </Badge> : null}
                 </Table.Td>
                 <Table.Td>
-                  {item.deletable && onDelete && (
-                    <ActionIcon
+                  {item.deletable && onDelete ? <ActionIcon
                       variant="subtle"
                       color="red"
                       size="sm"
-                      onClick={() => onDelete(item.id)}
+                      onClick={() => { onDelete(item.id); }}
                     >
                       <IconTrash size={14} />
-                    </ActionIcon>
-                  )}
+                    </ActionIcon> : null}
                 </Table.Td>
               </Table.Tr>
             ))}
@@ -4072,26 +4003,22 @@ export function DataOwnership({
           {title}
         </Text>
         <Group gap="xs">
-          {onExport && (
-            <Button
+          {onExport ? <Button
               variant="default"
               size="compact-sm"
               leftSection={<IconDownload size={14} />}
               onClick={onExport}
             >
               Export
-            </Button>
-          )}
-          {onDeleteAll && (
-            <Button
+            </Button> : null}
+          {onDeleteAll ? <Button
               variant="subtle"
               color="red"
               size="compact-sm"
               onClick={onDeleteAll}
             >
               Delete All
-            </Button>
-          )}
+            </Button> : null}
         </Group>
       </Group>
 
@@ -4103,27 +4030,21 @@ export function DataOwnership({
                 <Text size="sm" fw={500}>
                   {item.dataType}
                 </Text>
-                {item.description && (
-                  <Text size="xs" c="dimmed">
+                {item.description ? <Text size="xs" c="dimmed">
                     {item.description}
-                  </Text>
-                )}
-                {item.retention && (
-                  <Badge size="xs" variant="light" color="gray">
+                  </Text> : null}
+                {item.retention ? <Badge size="xs" variant="light" color="gray">
                     Retention: {item.retention}
-                  </Badge>
-                )}
+                  </Badge> : null}
               </Stack>
-              {item.deletable && onDelete && (
-                <ActionIcon
+              {item.deletable && onDelete ? <ActionIcon
                   variant="subtle"
                   color="red"
                   size="sm"
-                  onClick={() => onDelete(item.id)}
+                  onClick={() => { onDelete(item.id); }}
                 >
                   <IconTrash size={14} />
-                </ActionIcon>
-              )}
+                </ActionIcon> : null}
             </Group>
           </Card>
         ))}
@@ -4382,7 +4303,22 @@ export function Describe({
   Tooltip,
 } from "@mantine/core";
 import { IconCopy } from "@tabler/icons-react";
-import type { DescribeProps } from "@patternbase/core";
+
+import type { DescribeDetail, DescribeProps } from "@patternbase/core";
+
+function renderDetailValue(detail: DescribeDetail) {
+  if (detail.type === "badge") {
+    return (
+      <Badge size="xs" variant="light">
+        {detail.value}
+      </Badge>
+    );
+  }
+  if (detail.type === "code" || detail.type === "json") {
+    return <Code fz="xs">{detail.value}</Code>;
+  }
+  return <Text size="xs">{detail.value}</Text>;
+}
 
 export function Describe({
   output,
@@ -4402,30 +4338,23 @@ export function Describe({
           {title}
         </Text>
         <Group gap={4}>
-          {model && (
-            <Badge size="xs" variant="light">
+          {model ? <Badge size="xs" variant="light">
               {model}
-            </Badge>
-          )}
-          {seed && (
-            <Badge size="xs" variant="light" color="gray">
+            </Badge> : null}
+          {seed ? <Badge size="xs" variant="light" color="gray">
               seed: {seed}
-            </Badge>
-          )}
-          {onCopy && (
-            <Tooltip label="Copy">
+            </Badge> : null}
+          {onCopy ? <Tooltip label="Copy">
               <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
                 <IconCopy size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
+            </Tooltip> : null}
         </Group>
       </Group>
 
       <Text size="sm">{output}</Text>
 
-      {inferredPrompt && (
-        <Stack gap={4}>
+      {inferredPrompt ? <Stack gap={4}>
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             Inferred Prompt
           </Text>
@@ -4434,21 +4363,18 @@ export function Describe({
               <Text size="xs" style={{ fontStyle: "italic", flex: 1 }}>
                 &ldquo;{inferredPrompt}&rdquo;
               </Text>
-              {onReuse && (
-                <Badge
+              {onReuse ? <Badge
                   size="xs"
                   variant="light"
                   color="violet"
                   style={{ cursor: "pointer" }}
-                  onClick={() => onReuse(inferredPrompt)}
+                  onClick={() => { onReuse(inferredPrompt); }}
                 >
                   Reuse
-                </Badge>
-              )}
+                </Badge> : null}
             </Group>
           </Card>
-        </Stack>
-      )}
+        </Stack> : null}
 
       {details.length > 0 && (
         <Stack gap={4}>
@@ -4457,15 +4383,7 @@ export function Describe({
               <Text size="xs" c="dimmed">
                 {detail.label}
               </Text>
-              {detail.type === "badge" ? (
-                <Badge size="xs" variant="light">
-                  {detail.value}
-                </Badge>
-              ) : detail.type === "code" || detail.type === "json" ? (
-                <Code fz="xs">{detail.value}</Code>
-              ) : (
-                <Text size="xs">{detail.value}</Text>
-              )}
+              {renderDetailValue(detail)}
             </Group>
           ))}
         </Stack>
@@ -4515,7 +4433,7 @@ export function Disclosure({
   if (variant === "badge") {
     return (
       <Badge bg={color} className="d-inline-flex align-items-center gap-1">
-        <span>{"\\u2728"}</span>
+        <span>{"\\uD83E\\uDD16"}</span>
         {label}
         {model ? <span className="fw-normal opacity-75">({model})</span> : null}
       </Badge>
@@ -4528,7 +4446,7 @@ export function Disclosure({
         variant={color}
         className="d-flex align-items-center small mb-2 gap-2 px-3 py-2"
       >
-        <span>{"\\u2728"}</span>
+        <span>{"\\uD83E\\uDD16"}</span>
         <span>{label}</span>
         {model ? <span className="text-muted">- {model}</span> : null}
         {timestamp ? (
@@ -4543,7 +4461,7 @@ export function Disclosure({
   // inline
   return (
     <span className={\`text-\${color} small\`}>
-      {"\\u2728"} {label}
+      {"\\uD83E\\uDD16"} {label}
       {model ? <span className="text-muted"> ({model})</span> : null}
     </span>
   );
@@ -4669,11 +4587,9 @@ export function Disclosure({
         <Text size="sm">
           {label}
           {model ? \` — \${model}\` : ""}
-          {timestamp && (
-            <Text component="span" size="xs" c="dimmed" ml="xs">
+          {timestamp ? <Text component="span" size="xs" c="dimmed" ml="xs">
               {new Date(timestamp).toLocaleDateString()}
-            </Text>
-          )}
+            </Text> : null}
         </Text>
       </Alert>
     );
@@ -4865,6 +4781,7 @@ export function DraftMode({
   Timeline,
 } from "@mantine/core";
 import { IconArrowBack, IconGitBranch } from "@tabler/icons-react";
+
 import type { DraftModeProps } from "@patternbase/core";
 
 export function DraftMode({
@@ -4893,9 +4810,9 @@ export function DraftMode({
                     size="sm"
                     fw={activeDraftId === draft.id ? 600 : 400}
                     style={{ cursor: "pointer" }}
-                    onClick={() => onSelectDraft(draft.id)}
+                    onClick={() => { onSelectDraft(draft.id); }}
                   >
-                    {draft.label ?? \`Draft \${draft.number}\`}
+                    {draft.label ?? \`Draft \${String(draft.number)}\`}
                   </Text>
                   {activeDraftId === draft.id && (
                     <Badge size="xs" variant="filled" color="violet">
@@ -4905,35 +4822,29 @@ export function DraftMode({
                 </Group>
               }
             >
-              {draft.preview && (
-                <Text size="xs" c="dimmed" lineClamp={1}>
+              {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                   {draft.preview}
-                </Text>
-              )}
-              {draft.createdAt && (
-                <Text size="xs" c="dimmed">
+                </Text> : null}
+              {draft.createdAt ? <Text size="xs" c="dimmed">
                   {draft.createdAt.toLocaleString()}
-                </Text>
-              )}
+                </Text> : null}
               <Group gap="xs" mt={4}>
                 <Button
                   variant="subtle"
                   size="compact-xs"
                   leftSection={<IconArrowBack size={12} />}
-                  onClick={() => onRevertToDraft(draft.id)}
+                  onClick={() => { onRevertToDraft(draft.id); }}
                 >
                   Revert
                 </Button>
-                {onBranchFromDraft && (
-                  <Button
+                {onBranchFromDraft ? <Button
                     variant="subtle"
                     size="compact-xs"
                     leftSection={<IconGitBranch size={12} />}
-                    onClick={() => onBranchFromDraft(draft.id)}
+                    onClick={() => { onBranchFromDraft(draft.id); }}
                   >
                     Branch
-                  </Button>
-                )}
+                  </Button> : null}
               </Group>
             </Timeline.Item>
           ))}
@@ -4952,13 +4863,13 @@ export function DraftMode({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onSelectDraft(draft.id)}
+              onClick={() => { onSelectDraft(draft.id); }}
             >
               <Group justify="space-between" align="flex-start">
                 <Stack gap={2} style={{ flex: 1 }}>
                   <Group gap="xs">
                     <Text size="sm" fw={500}>
-                      {draft.label ?? \`Draft \${draft.number}\`}
+                      {draft.label ?? \`Draft \${String(draft.number)}\`}
                     </Text>
                     {activeDraftId === draft.id && (
                       <Badge size="xs" variant="filled" color="violet">
@@ -4966,16 +4877,12 @@ export function DraftMode({
                       </Badge>
                     )}
                   </Group>
-                  {draft.preview && (
-                    <Text size="xs" c="dimmed" lineClamp={1}>
+                  {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
                       {draft.preview}
-                    </Text>
-                  )}
-                  {draft.createdAt && (
-                    <Text size="xs" c="dimmed">
+                    </Text> : null}
+                  {draft.createdAt ? <Text size="xs" c="dimmed">
                       {draft.createdAt.toLocaleString()}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
                 <Group gap="xs">
                   <Button
@@ -4989,8 +4896,7 @@ export function DraftMode({
                   >
                     Revert
                   </Button>
-                  {onBranchFromDraft && (
-                    <Button
+                  {onBranchFromDraft ? <Button
                       variant="subtle"
                       size="compact-xs"
                       leftSection={<IconGitBranch size={12} />}
@@ -5000,8 +4906,7 @@ export function DraftMode({
                       }}
                     >
                       Branch
-                    </Button>
-                  )}
+                    </Button> : null}
                 </Group>
               </Group>
             </Card>
@@ -5232,11 +5137,9 @@ export function Expand({
     return (
       <Stack gap="xs">
         <Text size="sm">{content}</Text>
-        {expandedContent && (
-          <Text size="sm" c="dimmed">
+        {expandedContent ? <Text size="sm" c="dimmed">
             {expandedContent}
-          </Text>
-        )}
+          </Text> : null}
         <Button
           variant="subtle"
           size="compact-sm"
@@ -5253,17 +5156,13 @@ export function Expand({
 
   return (
     <Stack gap="xs">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
       <Text size="sm">{content}</Text>
-      {expandedContent && (
-        <Text size="sm" c="dimmed">
+      {expandedContent ? <Text size="sm" c="dimmed">
           {expandedContent}
-        </Text>
-      )}
+        </Text> : null}
       <Button
         variant="default"
         size="sm"
@@ -5534,6 +5433,7 @@ export function Filters({
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { FiltersProps } from "@patternbase/core";
 
 export function Filters({
@@ -5554,8 +5454,7 @@ export function Filters({
         {group.label}
       </Text>
 
-      {group.type === "checkbox" && group.options && (
-        <Stack gap={4}>
+      {group.type === "checkbox" && group.options ? <Stack gap={4}>
           {group.options.map((opt) => {
             const currentVal = values[group.id];
             const checked = Array.isArray(currentVal)
@@ -5574,7 +5473,7 @@ export function Filters({
                     )}
                   </Group>
                 }
-                checked={!!checked}
+                checked={Boolean(checked)}
                 onChange={(e) => {
                   const current = (values[group.id] as string[]) ?? [];
                   if (e.currentTarget.checked) {
@@ -5590,13 +5489,11 @@ export function Filters({
               />
             );
           })}
-        </Stack>
-      )}
+        </Stack> : null}
 
-      {group.type === "radio" && group.options && (
-        <Radio.Group
+      {group.type === "radio" && group.options ? <Radio.Group
           value={(values[group.id] as string) ?? ""}
-          onChange={(val) => onChange(group.id, val)}
+          onChange={(val) => { onChange(group.id, val); }}
         >
           <Stack gap={4}>
             {group.options.map((opt) => (
@@ -5608,8 +5505,7 @@ export function Filters({
               />
             ))}
           </Stack>
-        </Radio.Group>
-      )}
+        </Radio.Group> : null}
 
       {group.type === "range" && (
         <Stack gap="xs">
@@ -5618,7 +5514,7 @@ export function Filters({
             max={group.max ?? 100}
             step={group.step ?? 1}
             value={(values[group.id] as number) ?? group.min ?? 0}
-            onChange={(val) => onChange(group.id, val)}
+            onChange={(val) => { onChange(group.id, val); }}
           />
           <Group justify="space-between">
             <Text size="xs" c="dimmed">
@@ -5631,37 +5527,31 @@ export function Filters({
         </Stack>
       )}
 
-      {group.type === "select" && group.options && (
-        <Select
+      {group.type === "select" && group.options ? <Select
           data={group.options.map((o) => ({ value: o.value, label: o.label }))}
           value={(values[group.id] as string) ?? null}
-          onChange={(val) => onChange(group.id, val ?? "")}
+          onChange={(val) => { onChange(group.id, val ?? ""); }}
           placeholder="Select..."
           size="sm"
           clearable
-        />
-      )}
+        /> : null}
     </Stack>
   );
 
   return (
     <Stack gap="sm">
       <Group justify="space-between" align="center">
-        {title && (
-          <Text fw={500} size="sm">
+        {title ? <Text fw={500} size="sm">
             {title}
-          </Text>
-        )}
-        {onClear && hasValues && (
-          <Button
+          </Text> : null}
+        {onClear && hasValues ? <Button
             variant="subtle"
             size="compact-xs"
             color="gray"
             onClick={onClear}
           >
             Clear all
-          </Button>
-        )}
+          </Button> : null}
       </Group>
 
       {layout === "horizontal" ? (
@@ -5866,6 +5756,7 @@ export function FollowUp({
   UnstyledButton,
 } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
+
 import type { FollowUpProps } from "@patternbase/core";
 
 export function FollowUp({
@@ -5877,22 +5768,21 @@ export function FollowUp({
 }: FollowUpProps) {
   const displayed = maxVisible ? followUps.slice(0, maxVisible) : followUps;
 
-  return (
-    <Stack gap="xs">
-      {title && (
-        <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-          {title}
-        </Text>
-      )}
-
-      {variant === "list" ? (
+  const renderItems = () => {
+    if (variant === "list") {
+      return (
         <Stack gap={4}>
           {displayed.map((item) => (
-            <UnstyledButton key={item.id} onClick={() => onSelect(item)}>
+            <UnstyledButton
+              key={item.id}
+              onClick={() => {
+                onSelect(item);
+              }}
+            >
               <Card padding="xs" withBorder style={{ cursor: "pointer" }}>
                 <Group gap="xs" justify="space-between">
                   <Group gap="xs">
-                    {item.icon && <span>{item.icon}</span>}
+                    {item.icon ? <span>{item.icon}</span> : null}
                     <Text size="sm">{item.text}</Text>
                   </Group>
                   <IconArrowRight size={14} style={{ opacity: 0.4 }} />
@@ -5901,7 +5791,11 @@ export function FollowUp({
             </UnstyledButton>
           ))}
         </Stack>
-      ) : variant === "button" ? (
+      );
+    }
+
+    if (variant === "button") {
+      return (
         <Stack gap="xs">
           {displayed.map((item) => (
             <Button
@@ -5910,27 +5804,45 @@ export function FollowUp({
               size="sm"
               leftSection={item.icon ? <span>{item.icon}</span> : undefined}
               rightSection={<IconArrowRight size={14} />}
-              onClick={() => onSelect(item)}
+              onClick={() => {
+                onSelect(item);
+              }}
             >
               {item.text}
             </Button>
           ))}
         </Stack>
-      ) : (
-        <Group gap="xs" wrap="wrap">
-          {displayed.map((item) => (
-            <Button
-              key={item.id}
-              variant="light"
-              size="compact-sm"
-              rightSection={<IconArrowRight size={12} />}
-              onClick={() => onSelect(item)}
-            >
-              {item.text}
-            </Button>
-          ))}
-        </Group>
-      )}
+      );
+    }
+
+    return (
+      <Group gap="xs" wrap="wrap">
+        {displayed.map((item) => (
+          <Button
+            key={item.id}
+            variant="light"
+            size="compact-sm"
+            rightSection={<IconArrowRight size={12} />}
+            onClick={() => {
+              onSelect(item);
+            }}
+          >
+            {item.text}
+          </Button>
+        ))}
+      </Group>
+    );
+  };
+
+  return (
+    <Stack gap="xs">
+      {title ? (
+        <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+          {title}
+        </Text>
+      ) : null}
+
+      {renderItems()}
     </Stack>
   );
 }
@@ -6155,6 +6067,7 @@ export function Footprints({
   Timeline,
 } from "@mantine/core";
 import { IconActivity } from "@tabler/icons-react";
+
 import type { FootprintsProps } from "@patternbase/core";
 
 export function Footprints({
@@ -6168,25 +6081,9 @@ export function Footprints({
 }: FootprintsProps) {
   const displayed = maxVisible ? entries.slice(0, maxVisible) : entries;
 
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {onClear && (
-          <Button
-            variant="subtle"
-            color="gray"
-            size="compact-xs"
-            onClick={onClear}
-          >
-            Clear
-          </Button>
-        )}
-      </Group>
-
-      {variant === "compact" ? (
+  const renderEntries = () => {
+    if (variant === "compact") {
+      return (
         <Stack gap={4}>
           {displayed.map((entry) => (
             <Group
@@ -6199,15 +6096,17 @@ export function Footprints({
                 {showTimestamps ? entry.timestamp.toLocaleTimeString() : ""}
               </Text>
               <Text size="xs">{entry.action}</Text>
-              {entry.model && (
-                <Badge size="xs" variant="light">
+              {entry.model ? <Badge size="xs" variant="light">
                   {entry.model}
-                </Badge>
-              )}
+                </Badge> : null}
             </Group>
           ))}
         </Stack>
-      ) : variant === "list" ? (
+      );
+    }
+
+    if (variant === "list") {
+      return (
         <Stack gap="xs">
           {displayed.map((entry) => (
             <Card
@@ -6223,74 +6122,80 @@ export function Footprints({
                     <Text size="sm" fw={500}>
                       {entry.action}
                     </Text>
-                    {entry.model && (
-                      <Badge size="xs" variant="light">
+                    {entry.model ? <Badge size="xs" variant="light">
                         {entry.model}
-                      </Badge>
-                    )}
+                      </Badge> : null}
                   </Group>
-                  {entry.inputPreview && (
-                    <Text size="xs" c="dimmed" lineClamp={1}>
+                  {entry.inputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
                       {entry.inputPreview}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
-                {showTimestamps && (
-                  <Text size="xs" c="dimmed">
+                {showTimestamps ? <Text size="xs" c="dimmed">
                     {entry.timestamp.toLocaleString()}
-                  </Text>
-                )}
+                  </Text> : null}
               </Group>
             </Card>
           ))}
         </Stack>
-      ) : (
-        <Timeline bulletSize={16} lineWidth={2}>
-          {displayed.map((entry) => (
-            <Timeline.Item
-              key={entry.id}
-              bullet={<IconActivity size={10} />}
-              title={
-                <Group
-                  gap="xs"
-                  style={{ cursor: onEntryClick ? "pointer" : "default" }}
-                  onClick={() => onEntryClick?.(entry.id)}
-                >
-                  <Text size="sm" fw={500}>
-                    {entry.action}
-                  </Text>
-                  {entry.model && (
-                    <Badge size="xs" variant="light">
-                      {entry.model}
-                    </Badge>
-                  )}
-                </Group>
-              }
-            >
-              {entry.inputPreview && (
-                <Text size="xs" c="dimmed" lineClamp={1}>
-                  {entry.inputPreview}
+      );
+    }
+
+    return (
+      <Timeline bulletSize={16} lineWidth={2}>
+        {displayed.map((entry) => (
+          <Timeline.Item
+            key={entry.id}
+            bullet={<IconActivity size={10} />}
+            title={
+              <Group
+                gap="xs"
+                style={{ cursor: onEntryClick ? "pointer" : "default" }}
+                onClick={() => onEntryClick?.(entry.id)}
+              >
+                <Text size="sm" fw={500}>
+                  {entry.action}
                 </Text>
-              )}
-              {entry.outputPreview && (
-                <Text size="xs" c="dimmed" lineClamp={1}>
-                  {entry.outputPreview}
-                </Text>
-              )}
-              {showTimestamps && (
-                <Text size="xs" c="dimmed">
-                  {entry.timestamp.toLocaleString()}
-                </Text>
-              )}
-              {entry.metadata && Object.keys(entry.metadata).length > 0 && (
-                <Badge size="xs" variant="light" mt={2}>
-                  {Object.keys(entry.metadata).length} details
-                </Badge>
-              )}
-            </Timeline.Item>
-          ))}
-        </Timeline>
-      )}
+                {entry.model ? <Badge size="xs" variant="light">
+                    {entry.model}
+                  </Badge> : null}
+              </Group>
+            }
+          >
+            {entry.inputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                {entry.inputPreview}
+              </Text> : null}
+            {entry.outputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                {entry.outputPreview}
+              </Text> : null}
+            {showTimestamps ? <Text size="xs" c="dimmed">
+                {entry.timestamp.toLocaleString()}
+              </Text> : null}
+            {entry.metadata && Object.keys(entry.metadata).length > 0 ? <Badge size="xs" variant="light" mt={2}>
+                {Object.keys(entry.metadata).length} details
+              </Badge> : null}
+          </Timeline.Item>
+        ))}
+      </Timeline>
+    );
+  };
+
+  return (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {onClear ? <Button
+            variant="subtle"
+            color="gray"
+            size="compact-xs"
+            onClick={onClear}
+          >
+            Clear
+          </Button> : null}
+      </Group>
+
+      {renderEntries()}
     </Stack>
   );
 }
@@ -6358,6 +6263,7 @@ export function Gallery({
       {onLoadMore && !loading ? (
         <div className="mt-3 text-center">
           <button
+            type="button"
             className="btn btn-outline-secondary btn-sm"
             onClick={onLoadMore}
           >
@@ -6451,6 +6357,7 @@ export function Gallery({
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { GalleryProps } from "@patternbase/core";
 
 export function Gallery({
@@ -6479,7 +6386,7 @@ export function Gallery({
             padding="xs"
             withBorder
             style={{
-              cursor: onSelect || selectable ? "pointer" : "default",
+              cursor: (onSelect ?? selectable) ? "pointer" : "default",
               outline: item.selected
                 ? "2px solid var(--mantine-color-violet-6)"
                 : undefined,
@@ -6487,7 +6394,7 @@ export function Gallery({
             onClick={() => onSelect?.(item)}
           >
             <Stack gap="xs">
-              {item.type === "image" && item.src && (
+              {item.type === "image" && item.src ? (
                 <Image
                   src={item.src}
                   alt={item.alt ?? item.title ?? ""}
@@ -6495,42 +6402,42 @@ export function Gallery({
                   h={120}
                   fit="cover"
                 />
-              )}
-              {item.type === "text" && item.content && (
+              ) : null}
+              {item.type === "text" && item.content ? (
                 <Text size="xs" lineClamp={4}>
                   {item.content}
                 </Text>
-              )}
+              ) : null}
               <Group justify="space-between" align="center">
-                {item.title && (
+                {item.title ? (
                   <Text size="xs" fw={500}>
                     {item.title}
                   </Text>
-                )}
-                {item.selected && (
+                ) : null}
+                {item.selected ? (
                   <Badge size="xs" variant="filled" color="violet">
                     Selected
                   </Badge>
-                )}
+                ) : null}
               </Group>
             </Stack>
           </Card>
         ))}
       </SimpleGrid>
 
-      {loading && (
+      {loading ? (
         <Group justify="center">
           <Loader size="sm" />
         </Group>
-      )}
+      ) : null}
 
-      {onLoadMore && !loading && (
+      {onLoadMore && !loading ? (
         <Group justify="center">
           <Button variant="subtle" size="sm" onClick={onLoadMore}>
             Load more
           </Button>
         </Group>
-      )}
+      ) : null}
     </Stack>
   );
 }
@@ -6791,6 +6698,7 @@ export function IncognitoMode({
   Text,
 } from "@mantine/core";
 import { IconEyeOff } from "@tabler/icons-react";
+
 import type { IncognitoModeProps } from "@patternbase/core";
 
 export function IncognitoMode({
@@ -6812,17 +6720,13 @@ export function IncognitoMode({
               <Text fw={600} size="sm">
                 {title}
               </Text>
-              {enabled && (
-                <Badge size="xs" color="green" variant="light">
+              {enabled ? <Badge size="xs" color="green" variant="light">
                   Active
-                </Badge>
-              )}
+                </Badge> : null}
             </Group>
-            {description && (
-              <Text size="xs" c="dimmed">
+            {description ? <Text size="xs" c="dimmed">
                 {description}
-              </Text>
-            )}
+              </Text> : null}
           </Stack>
         </Group>
         <Switch
@@ -6832,17 +6736,13 @@ export function IncognitoMode({
         />
       </Group>
 
-      {enabled && retentionNotice && (
-        <Alert icon={<IconEyeOff size={14} />} color="gray" variant="light">
+      {enabled && retentionNotice ? <Alert icon={<IconEyeOff size={14} />} color="gray" variant="light">
           <Text size="xs">{retentionNotice}</Text>
-        </Alert>
-      )}
+        </Alert> : null}
 
-      {enabled && onEndSession && (
-        <Button variant="subtle" color="gray" size="sm" onClick={onEndSession}>
+      {enabled && onEndSession ? <Button variant="subtle" color="gray" size="sm" onClick={onEndSession}>
           End Session
-        </Button>
-      )}
+        </Button> : null}
     </Stack>
   );
 
@@ -7071,6 +6971,7 @@ export function InitialCta({
   Text,
   Title,
 } from "@mantine/core";
+
 import type { InitialCtaProps } from "@patternbase/core";
 
 export function InitialCta({
@@ -7086,11 +6987,9 @@ export function InitialCta({
         <Title order={3} ta="center">
           {title}
         </Title>
-        {subtitle && (
-          <Text size="sm" c="dimmed" ta="center" maw={480}>
+        {subtitle ? <Text size="sm" c="dimmed" ta="center" maw={480}>
             {subtitle}
-          </Text>
-        )}
+          </Text> : null}
         <SimpleGrid cols={Math.min(actions.length, 3)} spacing="sm">
           {actions.map((action) => (
             <Card
@@ -7098,20 +6997,16 @@ export function InitialCta({
               padding="md"
               withBorder
               style={{ cursor: "pointer", textAlign: "center" }}
-              onClick={() => onAction(action)}
+              onClick={() => { onAction(action); }}
             >
               <Stack gap="xs" align="center">
-                {action.icon && (
-                  <span style={{ fontSize: 24 }}>{action.icon}</span>
-                )}
+                {action.icon ? <span style={{ fontSize: 24 }}>{action.icon}</span> : null}
                 <Text fw={600} size="sm">
                   {action.label}
                 </Text>
-                {action.description && (
-                  <Text size="xs" c="dimmed">
+                {action.description ? <Text size="xs" c="dimmed">
                     {action.description}
-                  </Text>
-                )}
+                  </Text> : null}
               </Stack>
             </Card>
           ))}
@@ -7132,7 +7027,7 @@ export function InitialCta({
             variant="subtle"
             size="compact-sm"
             leftSection={action.icon ? <span>{action.icon}</span> : undefined}
-            onClick={() => onAction(action)}
+            onClick={() => { onAction(action); }}
           >
             {action.label}
           </Button>
@@ -7144,18 +7039,16 @@ export function InitialCta({
   return (
     <Stack gap="md" align="center" ta="center" py="lg">
       <Title order={3}>{title}</Title>
-      {subtitle && (
-        <Text size="sm" c="dimmed" maw={480}>
+      {subtitle ? <Text size="sm" c="dimmed" maw={480}>
           {subtitle}
-        </Text>
-      )}
+        </Text> : null}
       <Group gap="sm" justify="center" wrap="wrap">
         {actions.map((action, i) => (
           <Button
             key={action.id}
             variant={i === 0 ? "filled" : "default"}
             leftSection={action.icon ? <span>{action.icon}</span> : undefined}
-            onClick={() => onAction(action)}
+            onClick={() => { onAction(action); }}
           >
             {action.label}
           </Button>
@@ -7343,14 +7236,12 @@ export function InlineAction({
           <ActionIcon
             variant={action.type === "primary" ? "light" : "subtle"}
             color={
-              action.type === "danger"
-                ? "red"
-                : action.type === "primary"
-                  ? "violet"
-                  : "gray"
+              action.type === "danger" ? "red"
+              : action.type === "primary" ? "violet"
+              : "gray"
             }
             size={actionIconSize}
-            onClick={() => onAction(action.id)}
+            onClick={() => { onAction(action.id); }}
           >
             {typeof action.icon === "string" ? (
               <span style={{ fontSize: iconSize }}>{action.icon}</span>
@@ -7522,8 +7413,7 @@ export function Inpainting({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import {
+    mantine: `import {
   Badge,
   Button,
   Card,
@@ -7534,6 +7424,8 @@ import {
   Textarea,
 } from "@mantine/core";
 import { IconBrush } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { InpaintingProps } from "@patternbase/core";
 
 export function Inpainting({
@@ -7563,7 +7455,7 @@ export function Inpainting({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {isProcessing && <Loader size="xs" />}
+        {isProcessing ? <Loader size="xs" /> : null}
       </Group>
 
       <Card padding="sm" withBorder>
@@ -7583,7 +7475,7 @@ export function Inpainting({
                 key={region.id}
                 variant={selectedRegionId === region.id ? "filled" : "light"}
                 style={{ cursor: "pointer" }}
-                onClick={() => onRegionSelect(region.id)}
+                onClick={() => { onRegionSelect(region.id); }}
               >
                 {region.label ?? region.id}
               </Badge>
@@ -7592,16 +7484,14 @@ export function Inpainting({
         </Stack>
       )}
 
-      {selectedRegion && (
-        <Text size="xs" c="dimmed">
+      {selectedRegion ? <Text size="xs" c="dimmed">
           Selected: <strong>{selectedRegion.label ?? selectedRegion.id}</strong>
-        </Text>
-      )}
+        </Text> : null}
 
       <Textarea
         placeholder="Describe what to replace in the selected region..."
         value={localPrompt}
-        onChange={(e) => handlePromptChange(e.currentTarget.value)}
+        onChange={(e) => { handlePromptChange(e.currentTarget.value); }}
         minRows={2}
         autosize
         disabled={!selectedRegionId}
@@ -7845,8 +7735,7 @@ export function Madlibs({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import {
+    mantine: `import {
   Button,
   Card,
   Group,
@@ -7858,6 +7747,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { MadlibsProps } from "@patternbase/core";
 
 export function Madlibs({
@@ -7902,20 +7793,16 @@ export function Madlibs({
 
   return (
     <Stack gap="sm">
-      {title && <Text fw={600}>{title}</Text>}
-      {description && (
-        <Text size="sm" c="dimmed">
+      {title ? <Text fw={600}>{title}</Text> : null}
+      {description ? <Text size="sm" c="dimmed">
           {description}
-        </Text>
-      )}
+        </Text> : null}
 
-      {showPreview && (
-        <Card padding="sm" withBorder>
+      {showPreview ? <Card padding="sm" withBorder>
           <Text size="sm" style={{ fontStyle: "italic" }}>
             {renderTemplate()}
           </Text>
-        </Card>
-      )}
+        </Card> : null}
 
       {variables.map((variable) => {
         const commonProps = {
@@ -7935,7 +7822,7 @@ export function Madlibs({
                 label: o.label,
               }))}
               value={values[variable.id] ?? ""}
-              onChange={(val) => handleChange(variable.id, val ?? "")}
+              onChange={(val) => { handleChange(variable.id, val ?? ""); }}
             />
           );
         }
@@ -7945,7 +7832,7 @@ export function Madlibs({
             <NumberInput
               {...commonProps}
               value={values[variable.id] ? Number(values[variable.id]) : ""}
-              onChange={(val) => handleChange(variable.id, String(val))}
+              onChange={(val) => { handleChange(variable.id, String(val)); }}
             />
           );
         }
@@ -7955,7 +7842,7 @@ export function Madlibs({
             <Textarea
               {...commonProps}
               value={values[variable.id] ?? ""}
-              onChange={(e) => handleChange(variable.id, e.currentTarget.value)}
+              onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
               minRows={2}
               autosize
             />
@@ -7966,7 +7853,7 @@ export function Madlibs({
           <TextInput
             {...commonProps}
             value={values[variable.id] ?? ""}
-            onChange={(e) => handleChange(variable.id, e.currentTarget.value)}
+            onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
           />
         );
       })}
@@ -7974,7 +7861,7 @@ export function Madlibs({
       <Group justify="flex-end">
         <Button
           leftSection={<IconSend size={14} />}
-          onClick={() => onSubmit(values)}
+          onClick={() => { onSubmit(values); }}
           disabled={!allFilled || isGenerating}
           loading={isGenerating}
           size="sm"
@@ -8218,6 +8105,7 @@ export function Memory({
 `,
     mantine: `import { ActionIcon, Badge, Card, Group, Stack, Text } from "@mantine/core";
 import { IconLock, IconPencil, IconTrash } from "@tabler/icons-react";
+
 import type { MemoryProps } from "@patternbase/core";
 
 export function Memory({
@@ -8236,35 +8124,29 @@ export function Memory({
             <Text size="xs" fw={500} c="dimmed" tt="uppercase">
               {entry.label}
             </Text>
-            {entry.category && (
-              <Badge size="xs" variant="light">
+            {entry.category ? <Badge size="xs" variant="light">
                 {entry.category}
-              </Badge>
-            )}
-            {entry.locked && (
-              <Badge
+              </Badge> : null}
+            {entry.locked ? <Badge
                 size="xs"
                 variant="light"
                 color="gray"
                 leftSection={<IconLock size={10} />}
               >
                 Locked
-              </Badge>
-            )}
+              </Badge> : null}
           </Group>
           <Text size="sm">{entry.value}</Text>
-          {showTimestamps && entry.updatedAt && (
-            <Text size="xs" c="dimmed">
+          {showTimestamps && entry.updatedAt ? <Text size="xs" c="dimmed">
               {entry.updatedAt.toLocaleString()}
-            </Text>
-          )}
+            </Text> : null}
         </Stack>
         <Group gap="xs">
           {!entry.locked && (
             <ActionIcon
               variant="subtle"
               size="sm"
-              onClick={() => onEditMemory(entry.id, entry.value)}
+              onClick={() => { onEditMemory(entry.id, entry.value); }}
             >
               <IconPencil size={14} />
             </ActionIcon>
@@ -8274,7 +8156,7 @@ export function Memory({
               variant="subtle"
               color="red"
               size="sm"
-              onClick={() => onDeleteMemory(entry.id)}
+              onClick={() => { onDeleteMemory(entry.id); }}
             >
               <IconTrash size={14} />
             </ActionIcon>
@@ -8541,11 +8423,9 @@ export function ModelManagement({
           <Stack gap="sm">
             {Object.entries(grouped).map(([provider, providerModels]) => (
               <div key={provider}>
-                {groupByProvider && (
-                  <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb="xs">
+                {groupByProvider ? <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb="xs">
                     {provider}
-                  </Text>
-                )}
+                  </Text> : null}
                 <Stack gap="xs">
                   {providerModels.map((model) => (
                     <Card
@@ -8559,7 +8439,7 @@ export function ModelManagement({
                             ? "var(--mantine-color-violet-light)"
                             : undefined,
                       }}
-                      onClick={() => onSelectModel(model.id)}
+                      onClick={() => { onSelectModel(model.id); }}
                     >
                       <Group justify="space-between" align="flex-start">
                         <Group gap="xs" align="flex-start">
@@ -8568,37 +8448,29 @@ export function ModelManagement({
                             <Text size="sm" fw={600}>
                               {model.name}
                             </Text>
-                            {showDetails && model.description && (
-                              <Text size="xs" c="dimmed">
+                            {showDetails && model.description ? <Text size="xs" c="dimmed">
                                 {model.description}
-                              </Text>
-                            )}
-                            {showDetails && (
-                              <Group gap="xs">
-                                {model.contextWindow && (
-                                  <Text size="xs" c="dimmed">
+                              </Text> : null}
+                            {showDetails ? <Group gap="xs">
+                                {model.contextWindow ? <Text size="xs" c="dimmed">
                                     {(model.contextWindow / 1000).toFixed(0)}k
                                     ctx
-                                  </Text>
-                                )}
+                                  </Text> : null}
                                 {model.costPer1kInput !== undefined && (
                                   <Text size="xs" c="dimmed">
                                     \${model.costPer1kInput}/1k in
                                   </Text>
                                 )}
-                              </Group>
-                            )}
+                              </Group> : null}
                           </Stack>
                         </Group>
-                        {model.capabilities && (
-                          <Group gap={4}>
+                        {model.capabilities ? <Group gap={4}>
                             {model.capabilities.slice(0, 2).map((c) => (
                               <Badge key={c} size="xs" variant="light">
                                 {c}
                               </Badge>
                             ))}
-                          </Group>
-                        )}
+                          </Group> : null}
                       </Group>
                     </Card>
                   ))}
@@ -8654,7 +8526,7 @@ export function Modes({
                 eventKey={mode.id}
                 title={
                   <span>
-                    {mode.icon ? \`\${mode.icon} \` : ""}
+                    {mode.icon ? <span style={{ marginRight: 4 }}>{mode.icon}</span> : null}
                     {mode.label}
                   </span>
                 }
@@ -8691,7 +8563,7 @@ export function Modes({
                   onModeChange(e.currentTarget.value);
                 }}
               >
-                {mode.icon ? \`\${mode.icon} \` : ""}
+                {mode.icon ? <span style={{ marginRight: 4 }}>{mode.icon}</span> : null}
                 {mode.label}
               </ToggleButton>
             ))}
@@ -8787,6 +8659,7 @@ export function Modes({
   Tabs,
   Text,
 } from "@mantine/core";
+
 import type { ModesProps } from "@patternbase/core";
 
 export function Modes({
@@ -8800,14 +8673,21 @@ export function Modes({
 
   return (
     <Stack gap="sm">
-      {title && (
+      {title ? (
         <Text fw={600} size="sm">
           {title}
         </Text>
-      )}
+      ) : null}
 
       {variant === "tabs" ? (
-        <Tabs value={selectedModeId} onChange={(id) => id && onModeChange(id)}>
+        <Tabs
+          value={selectedModeId}
+          onChange={(id) => {
+            if (id) {
+              onModeChange(id);
+            }
+          }}
+        >
           <Tabs.List>
             {modes.map((mode) => (
               <Tabs.Tab
@@ -8820,7 +8700,7 @@ export function Modes({
               </Tabs.Tab>
             ))}
           </Tabs.List>
-          {selectedMode?.description && (
+          {selectedMode?.description ? (
             <Tabs.Panel value={selectedModeId} pt="sm">
               <Card padding="xs" withBorder>
                 <Text size="xs" c="dimmed">
@@ -8828,7 +8708,7 @@ export function Modes({
                 </Text>
               </Card>
             </Tabs.Panel>
-          )}
+          ) : null}
         </Tabs>
       ) : (
         <>
@@ -8847,13 +8727,13 @@ export function Modes({
             onChange={onModeChange}
             fullWidth
           />
-          {selectedMode?.description && (
+          {selectedMode?.description ? (
             <Card padding="xs" withBorder>
               <Text size="xs" c="dimmed">
                 {selectedMode.description}
               </Text>
             </Card>
-          )}
+          ) : null}
         </>
       )}
     </Stack>
@@ -8977,13 +8857,14 @@ export function Nudges({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import { Alert, Button, Stack } from "@mantine/core";
+    mantine: `import { Alert, Button, Stack } from "@mantine/core";
 import {
+  IconAlertTriangle,
   IconBulb,
   IconInfoCircle,
-  IconAlertTriangle,
 } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { NudgesProps } from "@patternbase/core";
 
 export function Nudges({
@@ -9026,16 +8907,14 @@ export function Nudges({
           }}
         >
           {nudge.message}
-          {nudge.actionLabel && nudge.onAction && (
-            <Button
+          {nudge.actionLabel && nudge.onAction ? <Button
               variant="subtle"
               size="compact-xs"
               mt="xs"
               onClick={nudge.onAction}
             >
               {nudge.actionLabel}
-            </Button>
-          )}
+            </Button> : null}
         </Alert>
       ))}
     </Stack>
@@ -9270,7 +9149,7 @@ export function OpenInput({
         <Textarea
           ref={textareaRef}
           value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
+          onChange={(e) => { setValue(e.currentTarget.value); }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={isLoading}
@@ -9578,11 +9457,9 @@ export function ParameterControl({
 }: ParameterControlProps) {
   return (
     <Stack gap="md">
-      {title && (
-        <Text fw={600} size="md">
+      {title ? <Text fw={600} size="md">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <div
         style={
@@ -9606,11 +9483,9 @@ export function ParameterControl({
               style={{ display: "flex", alignItems: "center", gap: 4 }}
             >
               {param.label}
-              {param.description && (
-                <Tooltip label={param.description} withArrow>
+              {param.description ? <Tooltip label={param.description} withArrow>
                   <IconInfoCircle size={14} style={{ opacity: 0.5 }} />
-                </Tooltip>
-              )}
+                </Tooltip> : null}
             </Text>
 
             {param.type === "slider" && (
@@ -9620,7 +9495,7 @@ export function ParameterControl({
                   max={param.max ?? 100}
                   step={param.step ?? 1}
                   value={param.value as number}
-                  onChange={(v) => onChange(param.id, v)}
+                  onChange={(v) => { onChange(param.id, v); }}
                 />
                 <Text size="xs" c="dimmed">
                   Current: {String(param.value)}
@@ -9631,7 +9506,7 @@ export function ParameterControl({
             {param.type === "toggle" && (
               <Switch
                 checked={param.value as boolean}
-                onChange={(e) => onChange(param.id, e.currentTarget.checked)}
+                onChange={(e) => { onChange(param.id, e.currentTarget.checked); }}
                 onLabel="On"
                 offLabel="Off"
               />
@@ -9640,7 +9515,7 @@ export function ParameterControl({
             {param.type === "select" && (
               <Select
                 value={param.value as string}
-                onChange={(v) => onChange(param.id, v ?? "")}
+                onChange={(v) => { onChange(param.id, v ?? ""); }}
                 data={param.options?.map((opt) => ({
                   label: opt.label,
                   value: opt.value as string,
@@ -9668,7 +9543,7 @@ export function ParameterControl({
                       <Slider
                         value={matrixValue?.x ?? 50}
                         onChange={(x) =>
-                          onChange(param.id, { ...matrixValue, x })
+                          { onChange(param.id, { ...matrixValue, x }); }
                         }
                       />
                     </div>
@@ -9679,7 +9554,7 @@ export function ParameterControl({
                       <Slider
                         value={matrixValue?.y ?? 50}
                         onChange={(y) =>
-                          onChange(param.id, { ...matrixValue, y })
+                          { onChange(param.id, { ...matrixValue, y }); }
                         }
                       />
                     </div>
@@ -9732,7 +9607,7 @@ export function PresetStyles({
               >
                 <Card.Body className="px-3 py-2">
                   <div className="small fw-semibold">
-                    {preset.icon ? \`\${preset.icon} \` : ""}
+                    {preset.icon ? <span style={{ marginRight: 4 }}>{preset.icon}</span> : null}
                     {preset.label}
                   </div>
                   {preset.description ? (
@@ -9813,7 +9688,7 @@ export function PresetStyles({
             >
               <Space direction="vertical" size={2}>
                 <Text strong>
-                  {preset.icon ? \`\${preset.icon} \` : ""}
+                  {preset.icon ? <span style={{ marginRight: 4 }}>{preset.icon}</span> : null}
                   {preset.label}
                 </Text>
                 {preset.description ? (
@@ -9861,6 +9736,7 @@ export function PresetStyles({
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { PresetStylesProps } from "@patternbase/core";
 
 export function PresetStyles({
@@ -9872,11 +9748,9 @@ export function PresetStyles({
 }: PresetStylesProps) {
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       {variant === "cards" ? (
         <SimpleGrid cols={2} spacing="sm">
@@ -9892,12 +9766,12 @@ export function PresetStyles({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onApplyPreset(preset.id, preset.values)}
+              onClick={() => { onApplyPreset(preset.id, preset.values); }}
             >
               <Stack gap="xs">
                 <Group justify="space-between" align="flex-start">
                   <Group gap="xs">
-                    {preset.icon && <span>{preset.icon}</span>}
+                    {preset.icon ? <span>{preset.icon}</span> : null}
                     <Text fw={600} size="sm">
                       {preset.label}
                     </Text>
@@ -9908,11 +9782,9 @@ export function PresetStyles({
                     </Badge>
                   )}
                 </Group>
-                {preset.description && (
-                  <Text size="xs" c="dimmed">
+                {preset.description ? <Text size="xs" c="dimmed">
                     {preset.description}
-                  </Text>
-                )}
+                  </Text> : null}
               </Stack>
             </Card>
           ))}
@@ -9925,7 +9797,7 @@ export function PresetStyles({
               variant={selectedPresetId === preset.id ? "filled" : "default"}
               size="sm"
               leftSection={preset.icon ? <span>{preset.icon}</span> : undefined}
-              onClick={() => onApplyPreset(preset.id, preset.values)}
+              onClick={() => { onApplyPreset(preset.id, preset.values); }}
             >
               {preset.label}
             </Button>
@@ -10076,6 +9948,7 @@ export function PromptDetails({
 }
 `,
     mantine: `import { Anchor, Badge, Card, Group, Stack, Text } from "@mantine/core";
+
 import type { PromptDetailsProps } from "@patternbase/core";
 
 export function PromptDetails({
@@ -10093,11 +9966,9 @@ export function PromptDetails({
           Prompt Details
         </Text>
         <Group gap="xs">
-          {model && (
-            <Badge variant="light" size="sm">
+          {model ? <Badge variant="light" size="sm">
               {model}
-            </Badge>
-          )}
+            </Badge> : null}
           {tokenCount !== undefined && (
             <Badge variant="light" size="sm" color="gray">
               {tokenCount} tokens
@@ -10110,11 +9981,9 @@ export function PromptDetails({
         &ldquo;{prompt}&rdquo;
       </Text>
 
-      {timestamp && (
-        <Text size="xs" c="dimmed">
+      {timestamp ? <Text size="xs" c="dimmed">
           {timestamp.toLocaleString()}
-        </Text>
-      )}
+        </Text> : null}
 
       {details.length > 0 && (
         <Stack gap={4}>
@@ -10447,11 +10316,9 @@ export function PromptEnhancer({
 }: PromptEnhancerProps) {
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Stack gap="xs">
         <Text size="xs" c="dimmed" fw={500}>
@@ -10464,7 +10331,7 @@ export function PromptEnhancer({
 
       <Button
         leftSection={<IconSparkles size={14} />}
-        onClick={() => onEnhance(prompt)}
+        onClick={() => { onEnhance(prompt); }}
         loading={isEnhancing}
         variant="default"
         size="sm"
@@ -10472,8 +10339,7 @@ export function PromptEnhancer({
         Enhance Prompt
       </Button>
 
-      {enhancedPrompt && (
-        <Stack gap="xs">
+      {enhancedPrompt ? <Stack gap="xs">
           <Group justify="space-between" align="center">
             <Text size="xs" c="dimmed" fw={500}>
               Enhanced
@@ -10489,18 +10355,13 @@ export function PromptEnhancer({
             autosize
             readOnly={!onEnhancedPromptChange}
           />
-          {showDiff && (
-            <Text size="xs" c="dimmed">
+          {showDiff ? <Text size="xs" c="dimmed">
               {prompt.length} → {enhancedPrompt.length} chars
-            </Text>
-          )}
-          {onApply && (
-            <Button size="compact-sm" onClick={() => onApply(enhancedPrompt)}>
+            </Text> : null}
+          {onApply ? <Button size="compact-sm" onClick={() => { onApply(enhancedPrompt); }}>
               Apply
-            </Button>
-          )}
-        </Stack>
-      )}
+            </Button> : null}
+        </Stack> : null}
     </Stack>
   );
 }
@@ -10623,7 +10484,8 @@ export function Randomize({
   TextInput,
   Tooltip,
 } from "@mantine/core";
-import { IconDice, IconArrowsShuffle } from "@tabler/icons-react";
+import { IconArrowsShuffle,IconDice } from "@tabler/icons-react";
+
 import type { RandomizeProps } from "@patternbase/core";
 
 export function Randomize({
@@ -10677,8 +10539,7 @@ export function Randomize({
           {label}
         </Button>
       </Group>
-      {showSeed && (
-        <TextInput
+      {showSeed ? <TextInput
           label="Seed"
           placeholder="Random seed..."
           value={currentSeed ?? ""}
@@ -10691,13 +10552,10 @@ export function Randomize({
               </ActionIcon>
             </Tooltip>
           }
-        />
-      )}
-      {currentSeed && !showSeed && (
-        <Text size="xs" c="dimmed">
+        /> : null}
+      {currentSeed && !showSeed ? <Text size="xs" c="dimmed">
           Seed: {currentSeed}
-        </Text>
-      )}
+        </Text> : null}
     </Stack>
   );
 }
@@ -10914,6 +10772,7 @@ export function References({
   Text,
 } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
+
 import type { ReferencesProps } from "@patternbase/core";
 
 export function References({
@@ -10943,24 +10802,17 @@ export function References({
             <Text size="sm" fw={500}>
               {ref.title}
             </Text>
-            {ref.type && (
-              <Badge size="xs" variant="light">
+            {ref.type ? <Badge size="xs" variant="light">
                 {ref.type}
-              </Badge>
-            )}
-            {ref.selected && (
-              <Badge size="xs" variant="filled" color="violet">
+              </Badge> : null}
+            {ref.selected ? <Badge size="xs" variant="filled" color="violet">
                 Selected
-              </Badge>
-            )}
+              </Badge> : null}
           </Group>
-          {ref.excerpt && (
-            <Text size="xs" c="dimmed" lineClamp={2}>
+          {ref.excerpt ? <Text size="xs" c="dimmed" lineClamp={2}>
               {ref.excerpt}
-            </Text>
-          )}
-          {ref.location && (
-            <Anchor
+            </Text> : null}
+          {ref.location ? <Anchor
               href={ref.location}
               target="_blank"
               size="xs"
@@ -10969,10 +10821,8 @@ export function References({
               {ref.location.length > 50
                 ? \`\${ref.location.substring(0, 50)}...\`
                 : ref.location}
-            </Anchor>
-          )}
-          {showRelevance && ref.relevance !== undefined && (
-            <Group gap="xs" align="center">
+            </Anchor> : null}
+          {showRelevance && ref.relevance !== undefined ? <Group gap="xs" align="center">
               <Progress
                 value={ref.relevance * 100}
                 size="xs"
@@ -10981,11 +10831,9 @@ export function References({
               <Text size="xs" c="dimmed">
                 {Math.round(ref.relevance * 100)}%
               </Text>
-            </Group>
-          )}
+            </Group> : null}
         </Stack>
-        {onRemoveReference && (
-          <ActionIcon
+        {onRemoveReference ? <ActionIcon
             variant="subtle"
             color="gray"
             size="sm"
@@ -10995,8 +10843,7 @@ export function References({
             }}
           >
             <IconX size={12} />
-          </ActionIcon>
-        )}
+          </ActionIcon> : null}
       </Group>
     </Card>
   );
@@ -11205,8 +11052,8 @@ export function Regenerate({
         <Menu.Dropdown>
           <Menu.Item onClick={onRegenerate}>Regenerate</Menu.Item>
           <Menu.Divider />
-          {options.map((opt, i) => (
-            <Menu.Item key={i} onClick={opt.onSelect}>
+          {options.map((opt) => (
+            <Menu.Item key={opt.label} onClick={opt.onSelect}>
               {opt.label}
             </Menu.Item>
           ))}
@@ -11418,6 +11265,7 @@ export function Restructure({
   Stack,
   Text,
 } from "@mantine/core";
+
 import type { RestructureProps } from "@patternbase/core";
 
 export function Restructure({
@@ -11436,7 +11284,7 @@ export function Restructure({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {isProcessing && <Loader size="xs" />}
+        {isProcessing ? <Loader size="xs" /> : null}
       </Group>
 
       <Card padding="sm" withBorder>
@@ -11451,19 +11299,17 @@ export function Restructure({
               padding="sm"
               withBorder
               style={{ cursor: "pointer" }}
-              onClick={() => onRestructure(option.id)}
+              onClick={() => { onRestructure(option.id); }}
             >
               <Group gap="xs">
-                {option.icon && <span>{option.icon}</span>}
+                {option.icon ? <span>{option.icon}</span> : null}
                 <Stack gap={2}>
                   <Text size="sm" fw={500}>
                     {option.label}
                   </Text>
-                  {option.description && (
-                    <Text size="xs" c="dimmed">
+                  {option.description ? <Text size="xs" c="dimmed">
                       {option.description}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
               </Group>
             </Card>
@@ -11477,7 +11323,7 @@ export function Restructure({
               variant="default"
               size="sm"
               leftSection={option.icon ? <span>{option.icon}</span> : undefined}
-              onClick={() => onRestructure(option.id)}
+              onClick={() => { onRestructure(option.id); }}
               disabled={isProcessing}
             >
               {option.label}
@@ -11486,16 +11332,14 @@ export function Restructure({
         </Group>
       )}
 
-      {restructuredContent && (
-        <Stack gap="xs">
+      {restructuredContent ? <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             {showDiff ? "Changes" : "Result"}
           </Text>
           <Card padding="sm" withBorder>
             <Text size="sm">{restructuredContent}</Text>
           </Card>
-        </Stack>
-      )}
+        </Stack> : null}
     </Stack>
   );
 }
@@ -11787,8 +11631,7 @@ export function Restyle({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import {
+    mantine: `import {
   Card,
   Group,
   Loader,
@@ -11798,6 +11641,8 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core";
+import { useState } from "react";
+
 import type { RestyleProps } from "@patternbase/core";
 
 export function Restyle({
@@ -11818,25 +11663,14 @@ export function Restyle({
     onRestyle(id);
   };
 
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {isProcessing && <Loader size="xs" />}
-      </Group>
-
-      <Card padding="sm" withBorder>
-        <Text size="sm">{content}</Text>
-      </Card>
-
-      {variant === "gallery" ? (
+  const renderOptions = () => {
+    if (variant === "gallery") {
+      return (
         <SimpleGrid cols={2} spacing="xs">
           {options.map((option) => (
             <UnstyledButton
               key={option.id}
-              onClick={() => handleSelect(option.id)}
+              onClick={() => { handleSelect(option.id); }}
             >
               <Card
                 padding="sm"
@@ -11849,30 +11683,30 @@ export function Restyle({
                 }}
               >
                 <Stack gap={4}>
-                  {option.preview && (
-                    <Text
+                  {option.preview ? <Text
                       size="xs"
                       c="dimmed"
                       style={{ fontStyle: "italic" }}
                       lineClamp={2}
                     >
                       {option.preview}
-                    </Text>
-                  )}
+                    </Text> : null}
                   <Text size="xs" fw={500}>
                     {option.label}
                   </Text>
-                  {option.description && (
-                    <Text size="xs" c="dimmed">
+                  {option.description ? <Text size="xs" c="dimmed">
                       {option.description}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
               </Card>
             </UnstyledButton>
           ))}
         </SimpleGrid>
-      ) : variant === "slider" ? (
+      );
+    }
+
+    if (variant === "slider") {
+      return (
         <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed">
             Style
@@ -11881,7 +11715,7 @@ export function Restyle({
             {options.map((option) => (
               <UnstyledButton
                 key={option.id}
-                onClick={() => handleSelect(option.id)}
+                onClick={() => { handleSelect(option.id); }}
               >
                 <Text
                   size="sm"
@@ -11894,36 +11728,54 @@ export function Restyle({
             ))}
           </Group>
         </Stack>
-      ) : (
-        <Group gap="xs" wrap="wrap">
-          {options.map((option) => (
-            <UnstyledButton
-              key={option.id}
-              onClick={() => handleSelect(option.id)}
-            >
-              <Card
-                padding="xs"
-                withBorder
-                style={{
-                  cursor: "pointer",
-                  outline:
-                    selectedId === option.id
-                      ? "2px solid var(--mantine-color-violet-6)"
-                      : undefined,
-                }}
-              >
-                <Group gap="xs">
-                  {option.icon && <span>{option.icon}</span>}
-                  <Text size="sm">{option.label}</Text>
-                </Group>
-              </Card>
-            </UnstyledButton>
-          ))}
-        </Group>
-      )}
+      );
+    }
 
-      {intensity !== undefined && onIntensityChange && (
-        <Stack gap={4}>
+    return (
+      <Group gap="xs" wrap="wrap">
+        {options.map((option) => (
+          <UnstyledButton
+            key={option.id}
+            onClick={() => { handleSelect(option.id); }}
+          >
+            <Card
+              padding="xs"
+              withBorder
+              style={{
+                cursor: "pointer",
+                outline:
+                  selectedId === option.id
+                    ? "2px solid var(--mantine-color-violet-6)"
+                    : undefined,
+              }}
+            >
+              <Group gap="xs">
+                {option.icon ? <span>{option.icon}</span> : null}
+                <Text size="sm">{option.label}</Text>
+              </Group>
+            </Card>
+          </UnstyledButton>
+        ))}
+      </Group>
+    );
+  };
+
+  return (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {isProcessing ? <Loader size="xs" /> : null}
+      </Group>
+
+      <Card padding="sm" withBorder>
+        <Text size="sm">{content}</Text>
+      </Card>
+
+      {renderOptions()}
+
+      {intensity !== undefined && onIntensityChange ? <Stack gap={4}>
           <Group justify="space-between">
             <Text size="xs" fw={500}>
               Intensity
@@ -11939,19 +11791,16 @@ export function Restyle({
             max={100}
             step={1}
           />
-        </Stack>
-      )}
+        </Stack> : null}
 
-      {restyledContent && (
-        <Stack gap="xs">
+      {restyledContent ? <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             Result
           </Text>
           <Card padding="sm" withBorder>
             <Text size="sm">{restyledContent}</Text>
           </Card>
-        </Stack>
-      )}
+        </Stack> : null}
     </Stack>
   );
 }
@@ -12142,6 +11991,7 @@ export function SampleResponse({
   Textarea,
 } from "@mantine/core";
 import { IconCheck, IconRefresh, IconWand } from "@tabler/icons-react";
+
 import type { SampleResponseProps } from "@patternbase/core";
 
 export function SampleResponse({
@@ -12160,21 +12010,18 @@ export function SampleResponse({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {isGenerating && <Loader size="xs" />}
+        {isGenerating ? <Loader size="xs" /> : null}
       </Group>
 
-      {prompt && (
-        <Text size="xs" c="dimmed" style={{ fontStyle: "italic" }}>
+      {prompt ? <Text size="xs" c="dimmed" style={{ fontStyle: "italic" }}>
           &ldquo;{prompt}&rdquo;
-        </Text>
-      )}
+        </Text> : null}
 
       {sample ? (
         <>
           <Textarea value={sample} readOnly minRows={3} autosize />
           <Group gap="xs">
-            {onRegenerateSample && (
-              <Button
+            {onRegenerateSample ? <Button
                 variant="default"
                 size="sm"
                 leftSection={<IconRefresh size={14} />}
@@ -12182,18 +12029,15 @@ export function SampleResponse({
                 disabled={isGenerating}
               >
                 Regenerate
-              </Button>
-            )}
-            {onAcceptSample && (
-              <Button
+              </Button> : null}
+            {onAcceptSample ? <Button
                 size="sm"
                 leftSection={<IconCheck size={14} />}
                 onClick={onAcceptSample}
                 disabled={isGenerating}
               >
                 Accept
-              </Button>
-            )}
+              </Button> : null}
           </Group>
         </>
       ) : (
@@ -12555,8 +12399,7 @@ export function SavedStyles({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import {
+    mantine: `import {
   ActionIcon,
   Badge,
   Button,
@@ -12567,6 +12410,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconDeviceFloppy, IconStar, IconTrash } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { SavedStylesProps } from "@patternbase/core";
 
 export function SavedStyles({
@@ -12585,17 +12430,15 @@ export function SavedStyles({
 
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Group gap="xs">
         <TextInput
           placeholder="Style name..."
           value={saveName}
-          onChange={(e) => setSaveName(e.currentTarget.value)}
+          onChange={(e) => { setSaveName(e.currentTarget.value); }}
           size="sm"
           style={{ flex: 1 }}
         />
@@ -12629,7 +12472,7 @@ export function SavedStyles({
                     ? "2px solid var(--mantine-color-violet-6)"
                     : undefined,
               }}
-              onClick={() => onSelectStyle(style.id)}
+              onClick={() => { onSelectStyle(style.id); }}
             >
               <Group justify="space-between" align="center">
                 <Stack gap={2}>
@@ -12637,30 +12480,25 @@ export function SavedStyles({
                     <Text size="sm" fw={600}>
                       {style.name}
                     </Text>
-                    {style.isDefault && (
-                      <Badge
+                    {style.isDefault ? <Badge
                         size="xs"
                         variant="light"
                         color="yellow"
                         leftSection={<IconStar size={10} />}
                       >
                         Default
-                      </Badge>
-                    )}
+                      </Badge> : null}
                     {selectedStyleId === style.id && (
                       <Badge size="xs" variant="filled" color="violet">
                         Active
                       </Badge>
                     )}
                   </Group>
-                  {style.description && (
-                    <Text size="xs" c="dimmed">
+                  {style.description ? <Text size="xs" c="dimmed">
                       {style.description}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
-                {onDeleteStyle && (
-                  <ActionIcon
+                {onDeleteStyle ? <ActionIcon
                     variant="subtle"
                     color="red"
                     size="sm"
@@ -12670,8 +12508,7 @@ export function SavedStyles({
                     }}
                   >
                     <IconTrash size={14} />
-                  </ActionIcon>
-                )}
+                  </ActionIcon> : null}
               </Group>
             </Card>
           ))}
@@ -12683,32 +12520,28 @@ export function SavedStyles({
               <Group
                 gap="xs"
                 style={{ cursor: "pointer", flex: 1 }}
-                onClick={() => onSelectStyle(style.id)}
+                onClick={() => { onSelectStyle(style.id); }}
               >
                 <Text size="sm" fw={selectedStyleId === style.id ? 600 : 400}>
                   {style.name}
                 </Text>
-                {style.isDefault && (
-                  <Badge size="xs" variant="light" color="yellow">
+                {style.isDefault ? <Badge size="xs" variant="light" color="yellow">
                     Default
-                  </Badge>
-                )}
+                  </Badge> : null}
                 {selectedStyleId === style.id && (
                   <Badge size="xs" variant="filled" color="violet">
                     Active
                   </Badge>
                 )}
               </Group>
-              {onDeleteStyle && (
-                <ActionIcon
+              {onDeleteStyle ? <ActionIcon
                   variant="subtle"
                   color="red"
                   size="sm"
-                  onClick={() => onDeleteStyle(style.id)}
+                  onClick={() => { onDeleteStyle(style.id); }}
                 >
                   <IconTrash size={14} />
-                </ActionIcon>
-              )}
+                </ActionIcon> : null}
             </Group>
           ))}
         </Stack>
@@ -12961,8 +12794,7 @@ export function SharedVision({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import {
+    mantine: `import {
   Avatar,
   Badge,
   Button,
@@ -12974,6 +12806,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { SharedVisionProps } from "@patternbase/core";
 
 export function SharedVision({
@@ -13054,17 +12888,13 @@ export function SharedVision({
                   <Text size="sm" fw={500}>
                     {p.name}
                   </Text>
-                  {p.role && (
-                    <Text size="xs" c="dimmed">
+                  {p.role ? <Text size="xs" c="dimmed">
                       {p.role}
-                    </Text>
-                  )}
+                    </Text> : null}
                 </Stack>
-                {p.isActive && (
-                  <Badge size="xs" color="green" variant="dot">
+                {p.isActive ? <Badge size="xs" color="green" variant="dot">
                     active
-                  </Badge>
-                )}
+                  </Badge> : null}
               </Group>
             ))}
           </Stack>
@@ -13089,12 +12919,11 @@ export function SharedVision({
                 </Text>
               </Group>
             ))}
-            {onAddGoal && (
-              <Group gap="xs">
+            {onAddGoal ? <Group gap="xs">
                 <TextInput
                   placeholder="Add goal..."
                   value={newGoal}
-                  onChange={(e) => setNewGoal(e.currentTarget.value)}
+                  onChange={(e) => { setNewGoal(e.currentTarget.value); }}
                   size="xs"
                   style={{ flex: 1 }}
                   onKeyDown={(e) => {
@@ -13116,8 +12945,7 @@ export function SharedVision({
                 >
                   <IconPlus size={12} />
                 </Button>
-              </Group>
-            )}
+              </Group> : null}
           </Stack>
         </Card>
 
@@ -13204,7 +13032,7 @@ export function StreamOfThought({
                     </Badge>
                     <span style={{ color: config.color }}>{config.icon}</span>
                     <span className="text-capitalize small fw-semibold">
-                      {step.type.replace("_", " ")}
+                      {step.type.replace(/_/g, " ")}
                     </span>
                     <span
                       className="text-muted small text-truncate"
@@ -13252,7 +13080,7 @@ export function StreamOfThought({
                   </Badge>
                   <span style={{ color: config.color }}>{config.icon}</span>
                   <span className="text-capitalize small fw-semibold">
-                    {step.type.replace("_", " ")}
+                    {step.type.replace(/_/g, " ")}
                   </span>
                 </div>
                 <p className="small mb-0">{step.content}</p>
@@ -13297,7 +13125,7 @@ export function StreamOfThought({
           <Badge count={index + 1} style={{ backgroundColor: "#6b7280" }} />
           <span>{config.icon}</span>
           <Text strong style={{ textTransform: "capitalize" as const }}>
-            {step.type.replace("_", " ")}
+            {step.type.replace(/_/g, " ")}
           </Text>
           <Text type="secondary" ellipsis style={{ maxWidth: 300 }}>
             {step.content.substring(0, 80)}
@@ -13367,7 +13195,7 @@ export function StreamOfThought({
                   />
                   <span>{config.icon}</span>
                   <Text strong style={{ textTransform: "capitalize" as const }}>
-                    {step.type.replace("_", " ")}
+                    {step.type.replace(/_/g, " ")}
                   </Text>
                 </Space>
                 <p style={{ margin: 0, fontSize: 13 }}>{step.content}</p>
@@ -13404,7 +13232,7 @@ export function StreamOfThought({
           <Text fw={600} size="sm">
             Reasoning Process
           </Text>
-          {isStreaming && <Loader size="xs" />}
+          {isStreaming ? <Loader size="xs" /> : null}
           <Badge size="xs" variant="light">
             {steps.length} steps
           </Badge>
@@ -13425,7 +13253,7 @@ export function StreamOfThought({
                     </Badge>
                     <span>{config.icon}</span>
                     <Text size="sm" fw={500} tt="capitalize">
-                      {step.type.replace("_", " ")}
+                      {step.type.replace(/_/g, " ")}
                     </Text>
                     <Text
                       size="xs"
@@ -13442,15 +13270,13 @@ export function StreamOfThought({
                     <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
                       {step.content}
                     </Text>
-                    {step.metadata && Object.keys(step.metadata).length > 0 && (
-                      <Text
+                    {step.metadata && Object.keys(step.metadata).length > 0 ? <Text
                         size="xs"
                         c="dimmed"
                         style={{ fontFamily: "monospace" }}
                       >
                         {JSON.stringify(step.metadata, null, 2)}
-                      </Text>
-                    )}
+                      </Text> : null}
                     <Text size="xs" c="dimmed">
                       {new Date(step.timestamp).toLocaleString()}
                     </Text>
@@ -13471,7 +13297,7 @@ export function StreamOfThought({
         <Text fw={600} size="sm">
           Reasoning Process
         </Text>
-        {isStreaming && <Loader size="xs" />}
+        {isStreaming ? <Loader size="xs" /> : null}
       </Group>
       {steps.map((step, index) => {
         const config = STEP_CONFIG[step.type] ?? { icon: "•", color: "gray" };
@@ -13491,7 +13317,7 @@ export function StreamOfThought({
               </Badge>
               <span>{config.icon}</span>
               <Text size="sm" fw={500} tt="capitalize">
-                {step.type.replace("_", " ")}
+                {step.type.replace(/_/g, " ")}
               </Text>
             </Group>
             <Text size="sm">{step.content}</Text>
@@ -13651,7 +13477,7 @@ export function Suggestions({
             variant="light"
             size="lg"
             style={{ cursor: "pointer" }}
-            onClick={() => onSelect(s)}
+            onClick={() => { onSelect(s); }}
           >
             {s.icon ? <span style={{ marginRight: 4 }}>{s.icon}</span> : null}
             {s.title}
@@ -13669,7 +13495,7 @@ export function Suggestions({
           padding="sm"
           withBorder
           style={{ cursor: "pointer" }}
-          onClick={() => onSelect(s)}
+          onClick={() => { onSelect(s); }}
         >
           <Stack gap={4}>
             <Text fw={600} size="sm">
@@ -13917,8 +13743,7 @@ export function Summary({
   );
 }
 `,
-    mantine: `import { useState } from "react";
-import {
+    mantine: `import {
   ActionIcon,
   Card,
   Collapse,
@@ -13935,6 +13760,8 @@ import {
   IconRefresh,
   IconZoomIn,
 } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { SummaryProps } from "@patternbase/core";
 
 export function Summary({
@@ -13955,7 +13782,7 @@ export function Summary({
       <Group justify="space-between" align="center">
         <Group gap="xs">
           <Text fw={600}>{title}</Text>
-          {isGenerating && <Loader size="xs" />}
+          {isGenerating ? <Loader size="xs" /> : null}
         </Group>
         <Group gap={4}>
           {originalLength !== undefined && summaryLength !== undefined && (
@@ -13963,15 +13790,12 @@ export function Summary({
               {summaryLength}/{originalLength} chars
             </Text>
           )}
-          {onCopy && (
-            <Tooltip label="Copy">
+          {onCopy ? <Tooltip label="Copy">
               <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
                 <IconCopy size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
-          {onRegenerate && (
-            <Tooltip label="Regenerate">
+            </Tooltip> : null}
+          {onRegenerate ? <Tooltip label="Regenerate">
               <ActionIcon
                 variant="subtle"
                 size="sm"
@@ -13980,20 +13804,17 @@ export function Summary({
               >
                 <IconRefresh size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
-          {onExpand && (
-            <Tooltip label="Expand">
+            </Tooltip> : null}
+          {onExpand ? <Tooltip label="Expand">
               <ActionIcon variant="subtle" size="sm" onClick={onExpand}>
                 <IconZoomIn size={14} />
               </ActionIcon>
-            </Tooltip>
-          )}
+            </Tooltip> : null}
           {variant === "collapsible" && (
             <ActionIcon
               variant="subtle"
               size="sm"
-              onClick={() => setCollapsed((c) => !c)}
+              onClick={() => { setCollapsed((c) => !c); }}
             >
               {collapsed ? (
                 <IconChevronDown size={14} />
@@ -14335,6 +14156,7 @@ export function Synthesis({
   Text,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
+
 import type { SynthesisProps } from "@patternbase/core";
 
 export function Synthesis({
@@ -14362,15 +14184,14 @@ export function Synthesis({
           <Text fw={600} size="sm">
             {title}
           </Text>
-          {isProcessing && <Loader size="xs" />}
+          {isProcessing ? <Loader size="xs" /> : null}
           {sources.length > 0 && (
             <Badge size="xs" variant="light">
               {sources.length} sources
             </Badge>
           )}
         </Group>
-        {onRegenerate && (
-          <Button
+        {onRegenerate ? <Button
             variant="subtle"
             size="compact-sm"
             leftSection={<IconRefresh size={14} />}
@@ -14378,8 +14199,7 @@ export function Synthesis({
             disabled={isProcessing}
           >
             Regenerate
-          </Button>
-        )}
+          </Button> : null}
       </Group>
 
       {insights.length > 0 && (
@@ -14391,19 +14211,16 @@ export function Synthesis({
             <Card key={insight.id} padding="sm" withBorder>
               <Stack gap="xs">
                 <Group gap="xs">
-                  {insight.type && (
-                    <Badge
+                  {insight.type ? <Badge
                       size="xs"
                       color={insightTypeColor(insight.type)}
                       variant="light"
                     >
                       {insight.type}
-                    </Badge>
-                  )}
+                    </Badge> : null}
                   <Text size="sm">{insight.text}</Text>
                 </Group>
-                {showConfidence && insight.confidence !== undefined && (
-                  <Group gap="xs" align="center">
+                {showConfidence && insight.confidence !== undefined ? <Group gap="xs" align="center">
                     <Text size="xs" c="dimmed">
                       Confidence:
                     </Text>
@@ -14415,8 +14232,7 @@ export function Synthesis({
                     <Text size="xs" c="dimmed">
                       {Math.round(insight.confidence * 100)}%
                     </Text>
-                  </Group>
-                )}
+                  </Group> : null}
                 {insight.sourceIds.length > 0 && (
                   <Group gap={4} wrap="wrap">
                     {insight.sourceIds.map((id) => {
@@ -14443,8 +14259,7 @@ export function Synthesis({
         </Stack>
       )}
 
-      {showSources && sources.length > 0 && (
-        <Stack gap="xs">
+      {showSources && sources.length > 0 ? <Stack gap="xs">
           <Text size="xs" fw={500} c="dimmed" tt="uppercase">
             Sources
           </Text>
@@ -14461,24 +14276,20 @@ export function Synthesis({
                   <Text size="xs" fw={500}>
                     {source.title}
                   </Text>
-                  {source.content && (
-                    <Text size="xs" c="dimmed" lineClamp={2}>
+                  {source.content ? <Text size="xs" c="dimmed" lineClamp={2}>
                       {source.content}
-                    </Text>
-                  )}
-                  {source.url && (
-                    <Anchor
+                    </Text> : null}
+                  {source.url ? <Anchor
                       href={source.url}
                       target="_blank"
                       size="xs"
                       rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => { e.stopPropagation(); }}
                     >
                       {source.url.length > 50
                         ? \`\${source.url.substring(0, 50)}...\`
                         : source.url}
-                    </Anchor>
-                  )}
+                    </Anchor> : null}
                 </Stack>
                 {source.relevance !== undefined && (
                   <Badge size="xs" variant="light" color="gray">
@@ -14488,8 +14299,7 @@ export function Synthesis({
               </Group>
             </Card>
           ))}
-        </Stack>
-      )}
+        </Stack> : null}
     </Stack>
   );
 }
@@ -14732,8 +14542,9 @@ export function Templates({
   Text,
   TextInput,
 } from "@mantine/core";
-import { useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
+import { useState } from "react";
+
 import type { TemplatesProps } from "@patternbase/core";
 
 export function Templates({
@@ -14760,27 +14571,29 @@ export function Templates({
       padding="sm"
       withBorder
       style={{ cursor: "pointer" }}
-      onClick={() => onSelect(t)}
+      onClick={() => {
+        onSelect(t);
+      }}
     >
       <Stack gap="xs">
         <Group justify="space-between" align="flex-start">
           <Group gap="xs">
-            {t.icon && <span>{t.icon}</span>}
+            {t.icon ? <span>{t.icon}</span> : null}
             <Text fw={600} size="sm">
               {t.name}
             </Text>
           </Group>
-          {t.category && (
+          {t.category ? (
             <Badge variant="light" size="xs">
               {t.category}
             </Badge>
-          )}
+          ) : null}
         </Group>
-        {t.description && (
+        {t.description ? (
           <Text size="xs" c="dimmed">
             {t.description}
           </Text>
-        )}
+        ) : null}
       </Stack>
     </Card>
   );
@@ -14793,19 +14606,9 @@ export function Templates({
       }, {})
     : null;
 
-  return (
-    <Stack gap="sm">
-      {searchable && (
-        <TextInput
-          placeholder="Search templates..."
-          leftSection={<IconSearch size={14} />}
-          value={query}
-          onChange={(e) => setQuery(e.currentTarget.value)}
-          size="sm"
-        />
-      )}
-
-      {grouped ? (
+  const renderTemplates = () => {
+    if (grouped) {
+      return (
         <Stack gap="md">
           {Object.entries(grouped).map(([category, items]) => (
             <Stack key={category} gap="xs">
@@ -14822,13 +14625,35 @@ export function Templates({
             </Stack>
           ))}
         </Stack>
-      ) : layout === "grid" ? (
+      );
+    }
+
+    if (layout === "grid") {
+      return (
         <SimpleGrid cols={columns} spacing="sm">
           {filtered.map(renderItem)}
         </SimpleGrid>
-      ) : (
-        <Stack gap="xs">{filtered.map(renderItem)}</Stack>
-      )}
+      );
+    }
+
+    return <Stack gap="xs">{filtered.map(renderItem)}</Stack>;
+  };
+
+  return (
+    <Stack gap="sm">
+      {searchable ? (
+        <TextInput
+          placeholder="Search templates..."
+          leftSection={<IconSearch size={14} />}
+          value={query}
+          onChange={(e) => {
+            setQuery(e.currentTarget.value);
+          }}
+          size="sm"
+        />
+      ) : null}
+
+      {renderTemplates()}
     </Stack>
   );
 }
@@ -15075,11 +14900,9 @@ export function Transform({
 }: TransformProps) {
   return (
     <Stack gap="sm">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       <Card padding="sm" withBorder>
         <Text size="sm">{transformedContent ?? content}</Text>
@@ -15094,7 +14917,7 @@ export function Transform({
             leftSection={
               opt.icon ? <span>{opt.icon}</span> : <IconWand size={12} />
             }
-            onClick={() => onTransform(opt.id)}
+            onClick={() => { onTransform(opt.id); }}
             loading={isTransforming}
           >
             {opt.label}
@@ -15647,6 +15470,7 @@ import {
   IconHelp,
   IconX,
 } from "@tabler/icons-react";
+
 import type { VerificationProps } from "@patternbase/core";
 
 export function Verification({
@@ -15676,11 +15500,9 @@ export function Verification({
         <Text fw={600} size="sm">
           {title}
         </Text>
-        {onRunVerification && (
-          <Button variant="light" size="compact-sm" onClick={onRunVerification}>
+        {onRunVerification ? <Button variant="light" size="compact-sm" onClick={onRunVerification}>
             Run Verification
-          </Button>
-        )}
+          </Button> : null}
       </Group>
 
       <Stack gap="xs">
@@ -15721,8 +15543,7 @@ export function Verification({
                 </Text>
               </Group>
 
-              {showSources && claim.url && (
-                <Anchor
+              {showSources && claim.url ? <Anchor
                   href={claim.url}
                   target="_blank"
                   size="xs"
@@ -15732,13 +15553,10 @@ export function Verification({
                     <IconExternalLink size={10} />
                     {claim.source ?? "Source"}
                   </Group>
-                </Anchor>
-              )}
-              {showSources && claim.source && !claim.url && (
-                <Text size="xs" c="dimmed">
+                </Anchor> : null}
+              {showSources && claim.source && !claim.url ? <Text size="xs" c="dimmed">
                   {claim.source}
-                </Text>
-              )}
+                </Text> : null}
             </Stack>
           </Card>
         ))}
@@ -15872,6 +15690,7 @@ export function VoiceAndTone({
 }
 `,
     mantine: `import { Group, Slider, Stack, Text } from "@mantine/core";
+
 import type { VoiceAndToneProps } from "@patternbase/core";
 
 export function VoiceAndTone({
@@ -15883,11 +15702,9 @@ export function VoiceAndTone({
 }: VoiceAndToneProps) {
   return (
     <Stack gap="md">
-      {title && (
-        <Text fw={600} size="sm">
+      {title ? <Text fw={600} size="sm">
           {title}
-        </Text>
-      )}
+        </Text> : null}
 
       {axes.map((axis) => (
         <Stack key={axis.id} gap="xs">
@@ -15895,11 +15712,9 @@ export function VoiceAndTone({
             <Text size="sm" fw={500}>
               {axis.label}
             </Text>
-            {showValues && (
-              <Text size="xs" c="dimmed">
+            {showValues ? <Text size="xs" c="dimmed">
                 {axis.value}
-              </Text>
-            )}
+              </Text> : null}
           </Group>
           {variant === "compact" ? (
             <Group gap="xs" align="center">
@@ -15911,7 +15726,7 @@ export function VoiceAndTone({
                 max={axis.max ?? 100}
                 step={axis.step ?? 1}
                 value={axis.value}
-                onChange={(v) => onChange(axis.id, v)}
+                onChange={(v) => { onChange(axis.id, v); }}
                 style={{ flex: 1 }}
                 size="xs"
               />
@@ -15930,7 +15745,7 @@ export function VoiceAndTone({
                 max={axis.max ?? 100}
                 step={axis.step ?? 1}
                 value={axis.value}
-                onChange={(v) => onChange(axis.id, v)}
+                onChange={(v) => { onChange(axis.id, v); }}
                 marks={[
                   { value: axis.min ?? 0, label: axis.leftLabel },
                   { value: axis.max ?? 100, label: axis.rightLabel },
@@ -16123,6 +15938,7 @@ export function Watermark({
 `,
     mantine: `import { Badge, Button, Group, Stack, Text } from "@mantine/core";
 import { IconDroplet, IconShieldCheck } from "@tabler/icons-react";
+
 import type { WatermarkProps } from "@patternbase/core";
 
 export function Watermark({
@@ -16149,11 +15965,9 @@ export function Watermark({
             ({Math.round(confidence * 100)}%)
           </Text>
         )}
-        {onVerify && (
-          <Button variant="subtle" size="compact-xs" onClick={onVerify}>
+        {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
             Verify
-          </Button>
-        )}
+          </Button> : null}
       </Group>
     );
   }
@@ -16176,21 +15990,17 @@ export function Watermark({
             </Badge>
           )}
         </Group>
-        {algorithm && (
-          <Text size="xs" c="dimmed">
+        {algorithm ? <Text size="xs" c="dimmed">
             Algorithm: {algorithm}
-          </Text>
-        )}
-        {onVerify && (
-          <Button
+          </Text> : null}
+        {onVerify ? <Button
             variant="light"
             size="compact-sm"
             leftSection={<IconShieldCheck size={12} />}
             onClick={onVerify}
           >
             Verify
-          </Button>
-        )}
+          </Button> : null}
       </Stack>
     );
   }
@@ -16204,13 +16014,11 @@ export function Watermark({
         leftSection={<IconDroplet size={10} />}
       >
         {label}
-        {confidence !== undefined && \` · \${Math.round(confidence * 100)}%\`}
+        {confidence !== undefined && \` · \${String(Math.round(confidence * 100))}%\`}
       </Badge>
-      {onVerify && (
-        <Button variant="subtle" size="compact-xs" onClick={onVerify}>
+      {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
           Verify
-        </Button>
-      )}
+        </Button> : null}
     </Group>
   );
 }

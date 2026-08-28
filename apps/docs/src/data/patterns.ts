@@ -510,3 +510,27 @@ export function getPatternBySlug(slug: string): PatternMeta | undefined {
 export function getCategoryById(id: string): CategoryInfo | undefined {
   return categories.find((c) => c.id === id);
 }
+
+export const FEATURED_SLUGS = [
+  "open-input",
+  "suggestions",
+  "citation",
+  "parameter-control",
+  "regenerate",
+  "data-ownership",
+] as const;
+
+export function getFilteredPatterns(
+  patternsToFilter: PatternMeta[],
+  query: string,
+  tag: string,
+): PatternMeta[] {
+  const q = query.toLowerCase();
+  return patternsToFilter.filter(
+    (p) =>
+      (tag === "all" || p.tags.includes(tag)) &&
+      (p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.tags.some((t) => t.toLowerCase().includes(q))),
+  );
+}
