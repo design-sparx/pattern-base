@@ -8,9 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
+const InputGroup = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(function InputGroup({ className, ...props }, ref) {
   return (
     <div
+      ref={ref}
       data-slot="input-group"
       role="group"
       className={cn(
@@ -34,7 +38,7 @@ function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
       {...props}
     />
   );
-}
+});
 
 const inputGroupAddonVariants = cva(
   "flex h-auto cursor-text items-center justify-center gap-2 py-1.5 text-sm font-medium text-muted-foreground select-none group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4",
@@ -57,13 +61,16 @@ const inputGroupAddonVariants = cva(
   },
 );
 
-function InputGroupAddon({
-  className,
-  align = "inline-start",
-  ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {
+const InputGroupAddon = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>
+>(function InputGroupAddon(
+  { className, align = "inline-start", ...props },
+  ref,
+) {
   return (
     <div
+      ref={ref}
       role="group"
       data-slot="input-group-addon"
       data-align={align}
@@ -77,7 +84,7 @@ function InputGroupAddon({
       {...props}
     />
   );
-}
+});
 
 const inputGroupButtonVariants = cva(
   "flex items-center gap-2 text-sm shadow-none",
@@ -97,16 +104,17 @@ const inputGroupButtonVariants = cva(
   },
 );
 
-function InputGroupButton({
-  className,
-  type = "button",
-  variant = "ghost",
-  size = "xs",
-  ...props
-}: Omit<React.ComponentProps<typeof Button>, "size"> &
-  VariantProps<typeof inputGroupButtonVariants>) {
+const InputGroupButton = React.forwardRef<
+  React.ElementRef<typeof Button>,
+  Omit<React.ComponentProps<typeof Button>, "size"> &
+    VariantProps<typeof inputGroupButtonVariants>
+>(function InputGroupButton(
+  { className, type = "button", variant = "ghost", size = "xs", ...props },
+  ref,
+) {
   return (
     <Button
+      ref={ref}
       type={type}
       data-size={size}
       variant={variant}
@@ -114,11 +122,15 @@ function InputGroupButton({
       {...props}
     />
   );
-}
+});
 
-function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
+const InputGroupText = React.forwardRef<
+  HTMLSpanElement,
+  React.ComponentProps<"span">
+>(function InputGroupText({ className, ...props }, ref) {
   return (
     <span
+      ref={ref}
       className={cn(
         "text-muted-foreground flex items-center gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
         className,
@@ -126,14 +138,15 @@ function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
       {...props}
     />
   );
-}
+});
 
-function InputGroupInput({
-  className,
-  ...props
-}: React.ComponentProps<"input">) {
+const InputGroupInput = React.forwardRef<
+  React.ElementRef<typeof Input>,
+  React.ComponentProps<"input">
+>(function InputGroupInput({ className, ...props }, ref) {
   return (
     <Input
+      ref={ref}
       data-slot="input-group-control"
       className={cn(
         "flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent",
@@ -142,14 +155,15 @@ function InputGroupInput({
       {...props}
     />
   );
-}
+});
 
-function InputGroupTextarea({
-  className,
-  ...props
-}: React.ComponentProps<"textarea">) {
+const InputGroupTextarea = React.forwardRef<
+  React.ElementRef<typeof Textarea>,
+  React.ComponentProps<"textarea">
+>(function InputGroupTextarea({ className, ...props }, ref) {
   return (
     <Textarea
+      ref={ref}
       data-slot="input-group-control"
       className={cn(
         "flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent",
@@ -158,7 +172,7 @@ function InputGroupTextarea({
       {...props}
     />
   );
-}
+});
 
 export {
   InputGroup,

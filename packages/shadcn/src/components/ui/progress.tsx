@@ -2,13 +2,13 @@ import * as React from "react";
 import { cn } from "cn";
 import { Progress as ProgressPrimitive } from "radix-ui";
 
-function Progress({
-  className,
-  value,
-  ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+const Progress = React.forwardRef<
+  React.ElementRef<typeof ProgressPrimitive.Root>,
+  React.ComponentProps<typeof ProgressPrimitive.Root>
+>(function Progress({ className, value, ...props }, ref) {
   return (
     <ProgressPrimitive.Root
+      ref={ref}
       data-slot="progress"
       className={cn(
         "bg-primary/20 relative h-2 w-full overflow-hidden rounded-full",
@@ -23,6 +23,6 @@ function Progress({
       />
     </ProgressPrimitive.Root>
   );
-}
+});
 
 export { Progress };

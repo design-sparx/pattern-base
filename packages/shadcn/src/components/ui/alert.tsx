@@ -18,24 +18,28 @@ const alertVariants = cva(
   },
 );
 
-function Alert({
-  className,
-  variant,
-  ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+const Alert = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & VariantProps<typeof alertVariants>
+>(function Alert({ className, variant, ...props }, ref) {
   return (
     <div
+      ref={ref}
       data-slot="alert"
       role="alert"
       className={cn(alertVariants({ variant }), className)}
       {...props}
     />
   );
-}
+});
 
-function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
+const AlertTitle = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(function AlertTitle({ className, ...props }, ref) {
   return (
     <div
+      ref={ref}
       data-slot="alert-title"
       className={cn(
         "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
@@ -44,14 +48,15 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
       {...props}
     />
   );
-}
+});
 
-function AlertDescription({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+const AlertDescription = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(function AlertDescription({ className, ...props }, ref) {
   return (
     <div
+      ref={ref}
       data-slot="alert-description"
       className={cn(
         "text-muted-foreground col-start-2 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed",
@@ -60,6 +65,6 @@ function AlertDescription({
       {...props}
     />
   );
-}
+});
 
 export { Alert, AlertTitle, AlertDescription };
