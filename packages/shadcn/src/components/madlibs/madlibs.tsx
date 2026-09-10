@@ -1,4 +1,4 @@
-import { Send } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 import { useState } from "react";
 
 import type { MadlibsProps, MadlibsVariable } from "@patternbase/core";
@@ -158,7 +158,9 @@ export function Madlibs({
           disabled={!allFilled || isGenerating}
           size="sm"
         >
-          {isGenerating ? null : (
+          {isGenerating ? (
+            <Loader2 className="size-3.5 animate-spin" />
+          ) : (
             <Send data-icon="inline-start" className="size-3.5" />
           )}
           Submit

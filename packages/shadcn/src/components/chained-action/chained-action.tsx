@@ -91,10 +91,7 @@ function StepRow({
         </span>
         {!isLast ? (
           <span
-            className={cn(
-              "border-border w-px flex-1",
-              isDone && "bg-primary border-primary",
-            )}
+            className={cn("bg-border w-px flex-1", isDone && "bg-primary")}
           />
         ) : null}
       </div>
