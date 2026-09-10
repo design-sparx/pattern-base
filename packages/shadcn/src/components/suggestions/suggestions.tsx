@@ -18,8 +18,16 @@ export function Suggestions({
             key={s.id}
             variant="secondary"
             className="cursor-pointer"
+            role="button"
+            tabIndex={0}
             onClick={() => {
               onSelect(s);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onSelect(s);
+              }
             }}
           >
             {s.icon ? <span className="mr-1">{s.icon}</span> : null}
@@ -43,8 +51,16 @@ export function Suggestions({
         <Card
           key={s.id}
           className="cursor-pointer"
+          role="button"
+          tabIndex={0}
           onClick={() => {
             onSelect(s);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              onSelect(s);
+            }
           }}
         >
           <CardContent className="flex flex-col gap-1 p-3">

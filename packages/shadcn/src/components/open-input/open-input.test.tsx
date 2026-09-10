@@ -26,4 +26,13 @@ describe("OpenInput", () => {
     expect(screen.getByText("Alpha")).toBeInTheDocument();
     expect(screen.getByText("Beta")).toBeInTheDocument();
   });
+
+  it("inserts a newline on Shift+Enter instead of submitting", async () => {
+    const onSubmit = vi.fn();
+    render(<OpenInput onSubmit={onSubmit} />);
+    const textarea = screen.getByPlaceholderText("Ask anything...");
+    await userEvent.type(textarea, "line1{Shift>}{Enter}{/Shift}line2");
+    await userEvent.keyboard("{Enter}");
+    expect(onSubmit).toHaveBeenCalledWith("line1\nline2");
+  });
 });

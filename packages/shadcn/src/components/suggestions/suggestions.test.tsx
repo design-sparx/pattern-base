@@ -39,4 +39,17 @@ describe("Suggestions", () => {
     await userEvent.click(screen.getByText("Translate"));
     expect(onSelect).toHaveBeenCalledWith(prompts[1]);
   });
+
+  it("uses the requested column count", () => {
+    const { container } = render(
+      <Suggestions
+        suggestions={prompts}
+        onSelect={vi.fn()}
+        variant="card"
+        columns={4}
+      />,
+    );
+    const grid = container.firstChild as HTMLElement;
+    expect(grid).toHaveClass("grid", "grid-cols-4");
+  });
 });

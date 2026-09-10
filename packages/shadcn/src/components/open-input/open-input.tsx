@@ -19,6 +19,7 @@ export function OpenInput({
   isLoading = false,
   suggestions = [],
   maxLength,
+  // TODO: multiModal & acceptedFileTypes are intentional no-ops (mantine parity).
 }: OpenInputProps) {
   const [value, setValue] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);

@@ -65,4 +65,25 @@ describe("ParameterControl", () => {
     await userEvent.click(option);
     expect(onChange).toHaveBeenCalledWith("model", "claude");
   });
+
+  it("dispatches matrix changes", async () => {
+    const onChange = vi.fn();
+    render(
+      <ParameterControl
+        parameters={[
+          { id: "xy", label: "XY", type: "matrix", value: { x: 30, y: 70 } },
+        ]}
+        onChange={onChange}
+      />,
+    );
+    expect(screen.getByText("X Axis")).toBeInTheDocument();
+    expect(screen.getByText("Y Axis")).toBeInTheDocument();
+    const sliders = screen.getAllByRole("slider");
+    sliders[0]!.focus();
+    await userEvent.keyboard("{ArrowRight}");
+    expect(onChange).toHaveBeenCalledWith(
+      "xy",
+      expect.objectContaining({ y: 70 }),
+    );
+  });
 });
