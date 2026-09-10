@@ -161,6 +161,7 @@ export function SharedVision({
                   <Button
                     size="sm"
                     className="h-7"
+                    aria-label="Add goal"
                     disabled={!newGoal.trim()}
                     onClick={() => {
                       if (newGoal.trim()) {
