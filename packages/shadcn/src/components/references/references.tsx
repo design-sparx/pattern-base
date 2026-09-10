@@ -1,9 +1,11 @@
+import { X } from "lucide-react";
+
 import type { ReferencesProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { X } from "lucide-react";
 
 export function References({
   references,

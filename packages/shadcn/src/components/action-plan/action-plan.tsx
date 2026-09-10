@@ -1,9 +1,11 @@
+import { Check, Circle, X } from "lucide-react";
+
 import type { ActionPlanProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
-import { Badge } from "@/components/ui/badge";
-import { Check, Circle, X } from "lucide-react";
 
 const statusIcon: Record<string, React.ReactNode> = {
   completed: <Check className="size-3" />,
@@ -47,7 +49,18 @@ export function ActionPlan({
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-sm font-medium ${onStepClick ? "cursor-pointer" : ""}`}
+                      role={onStepClick ? "button" : undefined}
+                      tabIndex={onStepClick ? 0 : undefined}
                       onClick={() => onStepClick?.(step.id)}
+                      onKeyDown={(e) => {
+                        if (
+                          onStepClick &&
+                          (e.key === "Enter" || e.key === " ")
+                        ) {
+                          e.preventDefault();
+                          onStepClick(step.id);
+                        }
+                      }}
                     >
                       {step.title}
                     </span>

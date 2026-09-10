@@ -1,8 +1,10 @@
+import { GitBranch, RotateCcw } from "lucide-react";
+
 import type { DraftModeProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { RotateCcw, GitBranch } from "lucide-react";
 
 export function DraftMode({
   drafts,
@@ -20,7 +22,17 @@ export function DraftMode({
           <div className="flex items-center gap-2">
             <span
               className={`text-sm ${activeDraftId === draft.id ? "font-semibold" : ""} cursor-pointer`}
-              onClick={() => onSelectDraft(draft.id)}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                onSelectDraft(draft.id);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelectDraft(draft.id);
+                }
+              }}
             >
               {draft.label ?? `Draft ${String(draft.number)}`}
             </span>
@@ -43,7 +55,9 @@ export function DraftMode({
               variant="ghost"
               size="sm"
               className="h-7"
-              onClick={() => onRevertToDraft(draft.id)}
+              onClick={() => {
+                onRevertToDraft(draft.id);
+              }}
             >
               <RotateCcw className="size-3" />
               Revert
@@ -53,7 +67,9 @@ export function DraftMode({
                 variant="ghost"
                 size="sm"
                 className="h-7"
-                onClick={() => onBranchFromDraft(draft.id)}
+                onClick={() => {
+                  onBranchFromDraft(draft.id);
+                }}
               >
                 <GitBranch className="size-3" />
                 Branch
@@ -68,7 +84,9 @@ export function DraftMode({
       <Card
         key={draft.id}
         className={`cursor-pointer p-3 ${activeDraftId === draft.id ? "ring-primary ring-2" : ""}`}
-        onClick={() => onSelectDraft(draft.id)}
+        onClick={() => {
+          onSelectDraft(draft.id);
+        }}
       >
         <CardContent className="p-0">
           <div className="flex items-start justify-between">

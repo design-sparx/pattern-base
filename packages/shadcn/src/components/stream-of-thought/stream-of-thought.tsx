@@ -1,5 +1,5 @@
 import type { StreamOfThoughtProps } from "@patternbase/core";
-import { Spinner } from "@/components/ui/spinner";
+
 import {
   Accordion,
   AccordionContent,
@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
 
 const STEP_LABELS: Record<string, string> = {
   thinking: "Thinking",

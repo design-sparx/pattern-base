@@ -1,11 +1,13 @@
+import { Plus } from "lucide-react";
 import { useState } from "react";
+
 import type { SharedVisionProps } from "@patternbase/core";
+
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
 
 const priorityVariant: Record<string, "default" | "secondary" | "destructive"> =
   {
@@ -88,7 +90,18 @@ export function SharedVision({
                 <div
                   key={p.id}
                   className={`flex items-center gap-2 ${onSelectParticipant ? "cursor-pointer" : ""}`}
+                  role={onSelectParticipant ? "button" : undefined}
+                  tabIndex={onSelectParticipant ? 0 : undefined}
                   onClick={() => onSelectParticipant?.(p.id)}
+                  onKeyDown={(e) => {
+                    if (
+                      onSelectParticipant &&
+                      (e.key === "Enter" || e.key === " ")
+                    ) {
+                      e.preventDefault();
+                      onSelectParticipant(p.id);
+                    }
+                  }}
                 >
                   <Avatar size="sm">
                     <AvatarFallback>{getInitials(p.name)}</AvatarFallback>
@@ -134,7 +147,9 @@ export function SharedVision({
                   <Input
                     placeholder="Add goal..."
                     value={newGoal}
-                    onChange={(e) => setNewGoal(e.target.value)}
+                    onChange={(e) => {
+                      setNewGoal(e.target.value);
+                    }}
                     className="h-7 text-xs"
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && newGoal.trim()) {

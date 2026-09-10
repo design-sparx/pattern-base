@@ -1,8 +1,10 @@
+import { GitBranch } from "lucide-react";
+
 import type { BranchesProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { GitBranch } from "lucide-react";
 
 export function Branches({
   branches,
@@ -24,7 +26,17 @@ export function Branches({
             <GitBranch className="size-3" />
             <span
               className={`text-sm ${activeBranchId === branch.id ? "font-semibold" : ""} cursor-pointer`}
-              onClick={() => onSelectBranch(branch.id)}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                onSelectBranch(branch.id);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelectBranch(branch.id);
+                }
+              }}
             >
               {branch.label}
             </span>
@@ -46,7 +58,9 @@ export function Branches({
             variant="ghost"
             size="sm"
             className="h-7 w-fit"
-            onClick={() => onCreateBranch(branch.id)}
+            onClick={() => {
+              onCreateBranch(branch.id);
+            }}
           >
             Branch from here
           </Button>
@@ -58,7 +72,9 @@ export function Branches({
       <Card
         key={branch.id}
         className={`cursor-pointer p-3 ${activeBranchId === branch.id ? "ring-primary ring-2" : ""}`}
-        onClick={() => onSelectBranch(branch.id)}
+        onClick={() => {
+          onSelectBranch(branch.id);
+        }}
       >
         <CardContent className="p-0">
           <div className="flex items-start justify-between">

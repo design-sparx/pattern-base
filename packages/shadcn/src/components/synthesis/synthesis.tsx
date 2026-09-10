@@ -1,10 +1,12 @@
+import { RefreshCw } from "lucide-react";
+
 import type { SynthesisProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
-import { RefreshCw } from "lucide-react";
 
 const insightVariant: Record<string, "default" | "secondary" | "destructive"> =
   {
@@ -130,7 +132,9 @@ export function Synthesis({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary text-xs underline"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
                       >
                         {source.url.length > 50
                           ? `${source.url.substring(0, 50)}...`

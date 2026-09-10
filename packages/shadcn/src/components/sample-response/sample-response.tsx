@@ -1,9 +1,11 @@
+import { Check, RefreshCw, Wand2 } from "lucide-react";
+
 import type { SampleResponseProps } from "@patternbase/core";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
-import { Wand2, RefreshCw, Check } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 export function SampleResponse({
   sample,

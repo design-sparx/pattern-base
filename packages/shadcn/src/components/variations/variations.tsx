@@ -1,8 +1,11 @@
-import type { VariationsProps } from "@patternbase/core";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check } from "lucide-react";
+
+import type { VariationsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
 export function Variations({
   variations,
@@ -71,11 +74,10 @@ export function Variations({
     );
   }
 
+  const gridClass = columns === 2 ? "grid-cols-2" : "grid-cols-3";
+
   return (
-    <div
-      className="grid gap-2"
-      style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
-    >
+    <div className={cn("grid gap-2", gridClass)}>
       {variations.map((v, i) => renderCard(v, i))}
     </div>
   );

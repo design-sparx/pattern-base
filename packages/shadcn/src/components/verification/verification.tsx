@@ -1,9 +1,11 @@
+import { Check, ExternalLink, HelpCircle, X } from "lucide-react";
+
 import type { VerificationProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Check, ExternalLink, HelpCircle, X } from "lucide-react";
 
 const statusVariant: Record<string, "default" | "secondary" | "destructive"> = {
   verified: "default",

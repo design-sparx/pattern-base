@@ -1,8 +1,10 @@
+import { Pencil, Trash2 } from "lucide-react";
+
 import type { MemoryProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2 } from "lucide-react";
 
 export function Memory({
   memories,
@@ -40,7 +42,9 @@ export function Memory({
                 size="icon"
                 className="size-7"
                 aria-label="Edit"
-                onClick={() => onEditMemory(entry.id, entry.value)}
+                onClick={() => {
+                  onEditMemory(entry.id, entry.value);
+                }}
               >
                 <Pencil className="size-3.5" />
               </Button>
@@ -51,7 +55,9 @@ export function Memory({
                 size="icon"
                 className="text-destructive size-7"
                 aria-label="Delete"
-                onClick={() => onDeleteMemory(entry.id)}
+                onClick={() => {
+                  onDeleteMemory(entry.id);
+                }}
               >
                 <Trash2 className="size-3.5" />
               </Button>
