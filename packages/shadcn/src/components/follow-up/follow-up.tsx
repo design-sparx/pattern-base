@@ -69,8 +69,16 @@ export function FollowUp({
               key={item.id}
               variant="secondary"
               className="cursor-pointer"
+              role="button"
+              tabIndex={0}
               onClick={() => {
                 onSelect(item);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onSelect(item);
+                }
               }}
             >
               {item.text}
