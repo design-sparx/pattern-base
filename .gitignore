@@ -13,7 +13,7 @@ apps/docs/src/data/snippet-templates.ts
 .claude
 
 CLAUDE.md
-AGENTS.md
+agent.md
 
 nul
 

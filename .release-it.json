@@ -11,7 +11,9 @@
       "out": [
         "packages/core/package.json",
         "packages/antd/package.json",
-        "packages/bootstrap/package.json"
+        "packages/bootstrap/package.json",
+        "packages/mantine/package.json",
+        "packages/shadcn/package.json"
       ]
     }
   },
