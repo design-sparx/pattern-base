@@ -2,3 +2,5 @@
 // (mirrors packages/mantine/src/index.ts ordering).
 
 export { OpenInput } from "./components/open-input";
+
+export { Suggestions } from "./components/suggestions";
