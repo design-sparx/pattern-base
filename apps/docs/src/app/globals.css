@@ -126,7 +126,9 @@ body {
 .category-arrow {
   opacity: 0.35;
   color: var(--mantine-color-dimmed);
-  transition: opacity 0.2s, transform 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
 }
 
 @media (prefers-reduced-motion: no-preference) {
