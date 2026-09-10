@@ -14,7 +14,12 @@ import type { PropDefinition } from "@/data/props-data";
 
 interface WorkbenchProps {
   patternId: string;
-  snippets: { bootstrap: string; antd: string; mantine: string };
+  snippets: {
+    bootstrap: string;
+    antd: string;
+    mantine: string;
+    shadcn: string;
+  };
   explanation?: PatternExplanation | null;
   propDefinitions?: PropDefinition[];
   relatedLinks?: readonly RelatedPatternLink[];

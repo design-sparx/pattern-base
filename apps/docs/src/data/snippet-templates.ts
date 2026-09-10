@@ -6,7 +6,7 @@
 
 export const codeSnippets: Record<
   string,
-  { bootstrap: string; antd: string; mantine: string }
+  { bootstrap: string; antd: string; mantine: string; shadcn: string }
 > = {
   "action-plan": {
     bootstrap: `import { Button, Card } from "react-bootstrap";
@@ -298,6 +298,121 @@ export function ActionPlan({
               </Button> : null}
           </Group> : null}
       </Stack>
+    </Card>
+  );
+}
+`,
+    shadcn: `import { Check, Circle, X } from "lucide-react";
+
+import type { ActionPlanProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
+
+const statusIcon: Record<string, React.ReactNode> = {
+  completed: <Check className="size-3" />,
+  "in-progress": <Spinner className="size-3" />,
+  failed: <X className="size-3" />,
+  skipped: <span className="text-muted-foreground text-xs">—</span>,
+  pending: <Circle className="text-muted-foreground size-3" />,
+};
+
+const statusVariant: Record<string, "default" | "secondary" | "destructive"> = {
+  completed: "default",
+  failed: "destructive",
+  "in-progress": "secondary",
+  skipped: "secondary",
+  pending: "secondary",
+};
+
+export function ActionPlan({
+  steps,
+  title,
+  onApprove,
+  onReject,
+  onStepClick,
+  showEstimates = false,
+}: ActionPlanProps) {
+  return (
+    <Card>
+      <CardContent className="p-3">
+        <div className="flex flex-col gap-3">
+          {title ? (
+            <span className="text-sm font-semibold">{title}</span>
+          ) : null}
+
+          <div className="flex flex-col gap-2">
+            {steps.map((step) => (
+              <div key={step.id} className="flex items-start gap-2">
+                <div className="mt-0.5 flex items-center justify-center">
+                  {statusIcon[step.status] ?? null}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={\`text-sm font-medium \${onStepClick ? "cursor-pointer" : ""}\`}
+                      role={onStepClick ? "button" : undefined}
+                      tabIndex={onStepClick ? 0 : undefined}
+                      onClick={() => onStepClick?.(step.id)}
+                      onKeyDown={(e) => {
+                        if (
+                          onStepClick &&
+                          (e.key === "Enter" || e.key === " ")
+                        ) {
+                          e.preventDefault();
+                          onStepClick(step.id);
+                        }
+                      }}
+                    >
+                      {step.title}
+                    </span>
+                    {step.tool ? (
+                      <span className="text-muted-foreground text-xs">
+                        ({step.tool})
+                      </span>
+                    ) : null}
+                    <Badge variant={statusVariant[step.status]}>
+                      {step.status}
+                    </Badge>
+                  </div>
+                  {step.description ? (
+                    <span className="text-muted-foreground text-xs">
+                      {step.description}
+                    </span>
+                  ) : null}
+                  {showEstimates && step.estimatedDuration ? (
+                    <span className="text-muted-foreground text-xs">
+                      Est: {step.estimatedDuration}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {(onApprove ?? onReject) ? (
+            <div className="flex items-center gap-2">
+              {onApprove ? (
+                <Button size="sm" onClick={onApprove}>
+                  Approve
+                </Button>
+              ) : null}
+              {onReject ? (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="text-destructive"
+                  onClick={onReject}
+                >
+                  Reject
+                </Button>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </CardContent>
     </Card>
   );
 }
@@ -608,6 +723,97 @@ export function Attachments({
   );
 }
 `,
+    shadcn: `import { Trash2, Upload } from "lucide-react";
+
+import type { AttachmentsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+
+function formatSize(bytes: number): string {
+  if (bytes < 1024) return \`\${String(bytes)} B\`;
+  if (bytes < 1024 * 1024) return \`\${(bytes / 1024).toFixed(1)} KB\`;
+  return \`\${(bytes / (1024 * 1024)).toFixed(1)} MB\`;
+}
+
+export function Attachments({
+  attachments,
+  onAdd,
+  onRemove,
+  maxFiles,
+  showPreview = false,
+}: Readonly<AttachmentsProps>) {
+  const canAdd = !maxFiles || attachments.length < maxFiles;
+
+  const handleFileInput = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+    input.onchange = () => {
+      const files = Array.from(input.files ?? []);
+      if (files.length > 0) onAdd(files);
+    };
+    input.click();
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      {canAdd ? (
+        <button
+          type="button"
+          className="text-muted-foreground hover:bg-accent flex min-h-[60px] cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed p-4 text-sm"
+          onClick={handleFileInput}
+        >
+          <Upload className="size-5 opacity-40" />
+          Drop files here or click to upload
+        </button>
+      ) : null}
+
+      {attachments.map((a) => (
+        <div key={a.id} className="flex items-start gap-3">
+          {showPreview && a.previewUrl ? (
+            <img
+              src={a.previewUrl}
+              alt={a.name}
+              className="size-10 rounded object-cover"
+            />
+          ) : null}
+          <div className="flex flex-1 flex-col gap-0.5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">{a.name}</span>
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                className="text-destructive hover:text-destructive"
+                onClick={() => {
+                  onRemove(a.id);
+                }}
+                aria-label={\`Remove \${a.name}\`}
+              >
+                <Trash2 className="size-3.5" />
+              </Button>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground text-xs">
+                {formatSize(a.size)}
+              </span>
+              {a.status === "error" ? (
+                <Badge variant="destructive" className="text-xs">
+                  Error
+                </Badge>
+              ) : null}
+            </div>
+            {a.status === "uploading" && a.progress !== undefined ? (
+              <Progress value={a.progress} className="mt-1 h-1" />
+            ) : null}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+`,
   },
   "auto-fill": {
     bootstrap: `import { useState } from "react";
@@ -831,6 +1037,89 @@ export function AutoFill({
         </Stack>
       )}
     </Stack>
+  );
+}
+`,
+    shadcn: `import type { AutoFillProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+
+export function AutoFill({
+  suggestions,
+  onSelect,
+  onQueryChange,
+  query = "",
+  isLoading = false,
+  placeholder = "Start typing...",
+  maxSuggestions,
+  highlightMatch = true,
+}: AutoFillProps) {
+  const displayed = maxSuggestions
+    ? suggestions.slice(0, maxSuggestions)
+    : suggestions;
+
+  const highlight = (text: string) => {
+    if (!highlightMatch || !query.trim()) return text;
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return text;
+    return (
+      <>
+        {text.substring(0, idx)}
+        <mark className="rounded-sm bg-yellow-200">
+          {text.substring(idx, idx + query.length)}
+        </mark>
+        {text.substring(idx + query.length)}
+      </>
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="relative">
+        <Input
+          value={query}
+          onChange={(e) => {
+            onQueryChange?.(e.currentTarget.value);
+          }}
+          placeholder={placeholder}
+          className="pr-8"
+        />
+        {isLoading ? (
+          <Spinner className="absolute right-2 top-1/2 size-3 -translate-y-1/2" />
+        ) : null}
+      </div>
+
+      {displayed.length > 0 ? (
+        <div className="flex flex-col gap-1">
+          {displayed.map((s) => (
+            <Card
+              key={s.id}
+              className="cursor-pointer"
+              onClick={() => {
+                onSelect(s);
+              }}
+            >
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm">{highlight(s.text)}</span>
+                  {s.matchScore !== undefined ? (
+                    <Badge variant="secondary">
+                      {Math.round(s.matchScore * 100)}%
+                    </Badge>
+                  ) : null}
+                </div>
+                {s.source ? (
+                  <p className="text-muted-foreground text-xs">{s.source}</p>
+                ) : null}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 `,
@@ -1199,6 +1488,141 @@ export function Avatar({
   );
 }
 `,
+    shadcn: `import type { AvatarProps } from "@patternbase/core";
+
+import {
+  Avatar as AvatarPrimitive,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
+}
+
+const sizeClass: Record<string, string> = {
+  small: "size-6 text-xs",
+  medium: "size-8 text-sm",
+  large: "size-10 text-base",
+};
+
+const dotClass: Record<string, string> = {
+  small: "size-2",
+  medium: "size-2.5",
+  large: "size-3.5",
+};
+
+const statusColor: Record<string, string> = {
+  online: "bg-green-500",
+  idle: "bg-orange-500",
+  offline: "bg-gray-400",
+};
+
+const avatarSize = { small: "sm", medium: "default", large: "lg" } as const;
+
+export function Avatar({
+  name,
+  persona,
+  imageUrl,
+  badgeLabel,
+  status = "online",
+  size = "medium",
+  variant = "inline",
+  onSelect,
+}: AvatarProps) {
+  const avatarEl = (
+    <div className="relative inline-block">
+      <AvatarPrimitive size={avatarSize[size]}>
+        {imageUrl ? <AvatarImage src={imageUrl} alt={name} /> : null}
+        <AvatarFallback className={sizeClass[size]}>
+          {getInitials(name)}
+        </AvatarFallback>
+      </AvatarPrimitive>
+      <span
+        className={\`ring-background absolute bottom-0 right-0 rounded-full ring-2 \${statusColor[status] ?? ""} \${dotClass[size] ?? ""}\`}
+      />
+    </div>
+  );
+
+  if (variant === "compact") {
+    return (
+      <div
+        className={\`flex items-center gap-2 \${onSelect ? "cursor-pointer" : ""}\`}
+        role={onSelect ? "button" : undefined}
+        tabIndex={onSelect ? 0 : undefined}
+        onClick={onSelect}
+        onKeyDown={(e) => {
+          if (onSelect && (e.key === "Enter" || e.key === " ")) {
+            e.preventDefault();
+            onSelect();
+          }
+        }}
+      >
+        {avatarEl}
+        <span className="text-sm font-medium">{name}</span>
+        {badgeLabel ? <Badge variant="secondary">{badgeLabel}</Badge> : null}
+      </div>
+    );
+  }
+
+  if (variant === "card") {
+    return (
+      <Card
+        className={\`\${onSelect ? "cursor-pointer" : ""} p-4\`}
+        onClick={onSelect}
+      >
+        <CardContent className="p-0">
+          <div className="flex flex-col items-center gap-2 text-center">
+            {avatarEl}
+            <div className="flex flex-col gap-1">
+              <span className="font-semibold">{name}</span>
+              {persona ? (
+                <span className="text-muted-foreground text-sm">{persona}</span>
+              ) : null}
+              {badgeLabel ? (
+                <Badge variant="secondary" className="text-sm">
+                  {badgeLabel}
+                </Badge>
+              ) : null}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div
+      className={\`flex items-center gap-3 \${onSelect ? "cursor-pointer" : ""}\`}
+      role={onSelect ? "button" : undefined}
+      tabIndex={onSelect ? 0 : undefined}
+      onClick={onSelect}
+      onKeyDown={(e) => {
+        if (onSelect && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
+    >
+      {avatarEl}
+      <div className="flex flex-col gap-0.5">
+        <span className="text-sm font-medium">{name}</span>
+        {persona ? (
+          <span className="text-muted-foreground text-xs">{persona}</span>
+        ) : null}
+        {badgeLabel ? <Badge variant="secondary">{badgeLabel}</Badge> : null}
+      </div>
+    </div>
+  );
+}
+`,
   },
   "branches": {
     bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
@@ -1459,6 +1883,142 @@ export function Branches({
   );
 }
 `,
+    shadcn: `import { GitBranch } from "lucide-react";
+
+import type { BranchesProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+export function Branches({
+  branches,
+  activeBranchId,
+  onSelectBranch,
+  onCreateBranch,
+  title,
+  variant = "list",
+}: BranchesProps) {
+  const renderBranch = (branch: (typeof branches)[0]) => {
+    if (variant === "tree") {
+      return (
+        <div
+          key={branch.id}
+          className="flex flex-col gap-1"
+          style={{ paddingLeft: (branch.depth ?? 0) * 16 }}
+        >
+          <div className="flex items-center gap-2">
+            <GitBranch className="size-3" />
+            <span
+              className={\`text-sm \${activeBranchId === branch.id ? "font-semibold" : ""} cursor-pointer\`}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                onSelectBranch(branch.id);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelectBranch(branch.id);
+                }
+              }}
+            >
+              {branch.label}
+            </span>
+            {activeBranchId === branch.id ? (
+              <Badge variant="secondary">Active</Badge>
+            ) : null}
+          </div>
+          {branch.preview ? (
+            <span className="text-muted-foreground line-clamp-1 text-xs">
+              {branch.preview}
+            </span>
+          ) : null}
+          {branch.createdAt ? (
+            <span className="text-muted-foreground text-xs">
+              {branch.createdAt.toLocaleDateString()}
+            </span>
+          ) : null}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 w-fit"
+            onClick={() => {
+              onCreateBranch(branch.id);
+            }}
+          >
+            Branch from here
+          </Button>
+        </div>
+      );
+    }
+
+    return (
+      <Card
+        key={branch.id}
+        className={\`cursor-pointer p-3 \${activeBranchId === branch.id ? "ring-primary ring-2" : ""}\`}
+        onClick={() => {
+          onSelectBranch(branch.id);
+        }}
+      >
+        <CardContent className="p-0">
+          <div className="flex items-start justify-between">
+            <div className="flex flex-1 flex-col gap-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">{branch.label}</span>
+                {activeBranchId === branch.id ? (
+                  <Badge variant="secondary">Active</Badge>
+                ) : null}
+                {branch.parentId ? (
+                  <Badge variant="outline">branch</Badge>
+                ) : null}
+              </div>
+              {branch.preview ? (
+                <span className="text-muted-foreground line-clamp-1 text-xs">
+                  {branch.preview}
+                </span>
+              ) : null}
+              {branch.createdAt ? (
+                <span className="text-muted-foreground text-xs">
+                  {branch.createdAt.toLocaleDateString()}
+                </span>
+              ) : null}
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7"
+              onClick={(e) => {
+                e.stopPropagation();
+                onCreateBranch(branch.id);
+              }}
+            >
+              Branch
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      {title ? (
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold">{title}</span>
+        </div>
+      ) : null}
+      <div
+        className={
+          variant === "tree" ? "flex flex-col gap-2" : "flex flex-col gap-2"
+        }
+      >
+        {branches.map(renderBranch)}
+      </div>
+    </div>
+  );
+}
+`,
   },
   "caveat": {
     bootstrap: `import { Alert } from "react-bootstrap";
@@ -1644,6 +2204,64 @@ export function Caveat({
         >
           Learn more
         </Anchor> : null}
+    </Alert>
+  );
+}
+`,
+    shadcn: `import { AlertTriangle, Info, X } from "lucide-react";
+
+import type { CaveatProps } from "@patternbase/core";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+
+const iconMap: Record<string, React.ReactNode> = {
+  info: <Info className="size-4" />,
+  warning: <AlertTriangle className="size-4" />,
+  error: <X className="size-4" />,
+};
+
+export function Caveat({
+  message,
+  variant = "banner",
+  severity = "info",
+  title,
+  learnMoreUrl,
+  dismissible = false,
+  onDismiss,
+}: CaveatProps) {
+  const hasIcon = variant === "banner";
+
+  return (
+    <Alert className={hasIcon ? "" : ""}>
+      {hasIcon ? (iconMap[severity] ?? iconMap.info) : null}
+      {title ? <AlertTitle>{title}</AlertTitle> : null}
+      <AlertDescription>
+        <div className="flex flex-col gap-1">
+          <span className="text-sm">{message}</span>
+          {learnMoreUrl ? (
+            <a
+              href={learnMoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary mt-1 text-xs underline"
+            >
+              Learn more
+            </a>
+          ) : null}
+        </div>
+      </AlertDescription>
+      {dismissible ? (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-2 top-2 size-7"
+          aria-label="Dismiss"
+          onClick={onDismiss}
+        >
+          <X className="size-3" />
+        </Button>
+      ) : null}
     </Alert>
   );
 }
@@ -1876,6 +2494,182 @@ export function ChainedAction({
         Execute
       </Button>
     </Stack>
+  );
+}
+`,
+    shadcn: `import { Check, Loader2, X } from "lucide-react";
+
+import type { ChainedActionProps, ChainedActionStep } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+function getStepStatusClass(
+  isError: boolean,
+  isDone: boolean,
+  isActive: boolean,
+) {
+  if (isError) {
+    return "border-destructive text-destructive";
+  }
+  if (isDone) {
+    return "bg-primary border-primary text-primary-foreground";
+  }
+  if (isActive) {
+    return "border-primary text-primary";
+  }
+  return "border-border text-muted-foreground";
+}
+
+function StepStatus({
+  index,
+  isError,
+  isDone,
+  isActive,
+  isExecuting,
+}: {
+  index: number;
+  isError: boolean;
+  isDone: boolean;
+  isActive: boolean;
+  isExecuting: boolean;
+}) {
+  if (isError) {
+    return <X className="size-3" />;
+  }
+  if (isDone) {
+    return <Check className="size-3" />;
+  }
+  if (isActive && isExecuting) {
+    return <Loader2 className="size-3 animate-spin" />;
+  }
+  return <span>{index + 1}</span>;
+}
+
+function StepRow({
+  step,
+  index,
+  isLast,
+  isError,
+  isDone,
+  isActive,
+  isExecuting,
+  onStepClick,
+}: {
+  step: ChainedActionStep;
+  index: number;
+  isLast: boolean;
+  isError: boolean;
+  isDone: boolean;
+  isActive: boolean;
+  isExecuting: boolean;
+  onStepClick: ChainedActionProps["onStepClick"];
+}) {
+  const label = (
+    <span className={cn("text-sm", isDone && "text-muted-foreground")}>
+      {step.label}
+    </span>
+  );
+
+  return (
+    <div className="flex gap-3">
+      <div className="flex flex-col items-center">
+        <span
+          className={cn(
+            "flex size-6 shrink-0 items-center justify-center rounded-full border text-xs",
+            getStepStatusClass(isError, isDone, isActive),
+          )}
+        >
+          <StepStatus
+            index={index}
+            isError={isError}
+            isDone={isDone}
+            isActive={isActive}
+            isExecuting={isExecuting}
+          />
+        </span>
+        {!isLast ? (
+          <span
+            className={cn("bg-border w-px flex-1", isDone && "bg-primary")}
+          />
+        ) : null}
+      </div>
+
+      <div className="flex min-w-0 flex-col gap-0.5 pb-4">
+        {onStepClick ? (
+          <button
+            type="button"
+            className="cursor-pointer text-left text-sm"
+            onClick={() => {
+              onStepClick(step.id);
+            }}
+          >
+            {label}
+          </button>
+        ) : (
+          label
+        )}
+        {step.description ? (
+          <span className="text-muted-foreground text-xs">
+            {step.description}
+          </span>
+        ) : null}
+        {step.result ? (
+          <span className="text-muted-foreground text-xs">{step.result}</span>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+export function ChainedAction({
+  steps,
+  onExecute,
+  onStepClick,
+  isExecuting = false,
+  title,
+}: ChainedActionProps) {
+  const activeIndex = steps.findIndex((s) => s.status === "active");
+  const active =
+    activeIndex >= 0
+      ? activeIndex
+      : steps.filter((s) => s.status === "completed").length;
+
+  return (
+    <div className="flex flex-col gap-4">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+
+      <div className="flex flex-col">
+        {steps.map((step, index) => {
+          const isDone = index < active;
+          const isActive = !isDone && step.status === "active";
+          const isError = step.status === "error";
+
+          return (
+            <StepRow
+              key={step.id}
+              step={step}
+              index={index}
+              isLast={index === steps.length - 1}
+              isError={isError}
+              isDone={isDone}
+              isActive={isActive}
+              isExecuting={isExecuting}
+              onStepClick={onStepClick}
+            />
+          );
+        })}
+      </div>
+
+      <Button
+        onClick={onExecute}
+        disabled={steps.every((s) => s.status === "completed")}
+        size="sm"
+      >
+        {isExecuting ? <Loader2 className="size-3.5 animate-spin" /> : null}
+        Execute
+      </Button>
+    </div>
   );
 }
 `,
@@ -2307,6 +3101,134 @@ export function InlineCitation({
   );
 }
 `,
+    shadcn: `import { useState } from "react";
+
+import type {
+  CitationProps,
+  CitationsListProps,
+  InlineCitationProps,
+} from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
+function getRelevanceLabel(score: number) {
+  if (score >= 0.8) return "High";
+  if (score >= 0.5) return "Medium";
+  return "Low";
+}
+
+export function Citation({ citation }: CitationProps) {
+  const [expanded, setExpanded] = useState(false);
+  const { source, url, snippet, relevance = 1 } = citation;
+
+  return (
+    <Card>
+      <CardContent className="p-3">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex flex-col gap-0.5">
+              <div className="flex items-start gap-2">
+                <span className="text-primary text-sm font-semibold">
+                  {source}
+                </span>
+                <Badge variant="secondary">
+                  {getRelevanceLabel(relevance)} Relevance
+                </Badge>
+              </div>
+              {url ? (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground text-xs underline"
+                >
+                  {url.length > 60 ? \`\${url.substring(0, 60)}...\` : url}
+                </a>
+              ) : null}
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7"
+              onClick={() => {
+                setExpanded((prev) => !prev);
+              }}
+            >
+              {expanded ? "Hide" : "View"} excerpt
+            </Button>
+          </div>
+
+          {expanded && snippet ? (
+            <p className="border-primary text-muted-foreground border-l-[3px] pl-3 text-sm italic">
+              &ldquo;{snippet}&rdquo;
+            </p>
+          ) : null}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function CitationsList({
+  citations,
+  title = "Sources",
+  maxVisible = 3,
+}: CitationsListProps) {
+  const [showAll, setShowAll] = useState(false);
+  const display = showAll ? citations : citations.slice(0, maxVisible);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        <Badge variant="secondary">{citations.length}</Badge>
+      </div>
+
+      {display.map((c) => (
+        <Citation key={c.id} citation={c} />
+      ))}
+
+      {citations.length > maxVisible ? (
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full"
+          onClick={() => {
+            setShowAll((prev) => !prev);
+          }}
+        >
+          {showAll
+            ? "Show fewer"
+            : \`Show \${String(citations.length - maxVisible)} more\`}
+        </Button>
+      ) : null}
+    </div>
+  );
+}
+
+export function InlineCitation({
+  citationNumber,
+  source,
+  url,
+}: InlineCitationProps) {
+  return (
+    <sup>
+      <a
+        href={url ?? "#"}
+        title={source}
+        className={cn(
+          "bg-primary text-primary-foreground ml-0.5 rounded px-1 text-[10px] no-underline",
+        )}
+      >
+        [{citationNumber}]
+      </a>
+    </sup>
+  );
+}
+`,
   },
   "color": {
     bootstrap: `import { Badge, Card, Stack } from "react-bootstrap";
@@ -2652,6 +3574,178 @@ export function Color({
   );
 }
 `,
+    shadcn: `import { cn } from "cn";
+
+import type { ColorProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+function ColorSwatch({
+  color,
+  size = 24,
+  selected,
+  onClick,
+}: {
+  color: string;
+  size?: number;
+  selected?: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={cn(
+        "rounded-full border",
+        onClick ? "cursor-pointer" : "",
+        selected ? "ring-primary ring-2 ring-offset-2" : "",
+      )}
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: color,
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+export function Color({
+  options,
+  selectedColorId,
+  onSelectColor,
+  title,
+  showLabels = false,
+  variant = "swatches",
+}: ColorProps) {
+  if (variant === "chips") {
+    return (
+      <div className="flex flex-col gap-2">
+        {title ? <span className="text-sm font-medium">{title}</span> : null}
+        <div className="flex flex-wrap items-center gap-2">
+          {options.map((option) => (
+            <Badge
+              key={option.id}
+              variant={selectedColorId === option.id ? "default" : "outline"}
+              className={onSelectColor ? "cursor-pointer" : ""}
+              style={{
+                borderColor: option.value,
+                color: selectedColorId === option.id ? "white" : option.value,
+                backgroundColor:
+                  selectedColorId === option.id ? option.value : undefined,
+              }}
+              onClick={() => onSelectColor?.(option.id)}
+            >
+              <span
+                className="mr-1 inline-block size-2 rounded-full"
+                style={{ backgroundColor: option.value }}
+              />
+              {option.label}
+            </Badge>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "card") {
+    return (
+      <Card className="p-4">
+        <CardContent className="p-0">
+          <div className="flex flex-col gap-3">
+            {title ? (
+              <span className="text-sm font-semibold">{title}</span>
+            ) : null}
+            <div className="grid grid-cols-4 gap-2">
+              {options.map((option) => (
+                <div
+                  key={option.id}
+                  className="flex flex-col items-center gap-1"
+                >
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>
+                          <ColorSwatch
+                            color={option.value}
+                            size={32}
+                            selected={selectedColorId === option.id}
+                            onClick={() => onSelectColor?.(option.id)}
+                          />
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>{option.label}</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span className="text-muted-foreground text-center text-xs">
+                    {option.label}
+                  </span>
+                  {option.description ? (
+                    <span className="text-muted-foreground line-clamp-1 text-center text-xs">
+                      {option.description}
+                    </span>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      {title ? <span className="text-sm font-medium">{title}</span> : null}
+      <div className="flex flex-wrap items-center gap-2">
+        {options.map((option) => (
+          <div key={option.id} className="flex flex-col items-center gap-1">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span>
+                    <ColorSwatch
+                      color={option.value}
+                      size={24}
+                      selected={selectedColorId === option.id}
+                      onClick={() => onSelectColor?.(option.id)}
+                    />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>{option.label}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            {showLabels ? (
+              <span className="text-muted-foreground text-xs">
+                {option.label}
+              </span>
+            ) : null}
+          </div>
+        ))}
+      </div>
+      {selectedColorId ? (
+        <div className="flex items-center gap-2">
+          <ColorSwatch
+            color={
+              options.find((o) => o.id === selectedColorId)?.value ?? "#000"
+            }
+            size={16}
+          />
+          <span className="text-muted-foreground text-xs">
+            {options.find((o) => o.id === selectedColorId)?.label}
+          </span>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+`,
   },
   "connectors": {
     bootstrap: `import { Badge, Button, Card, ListGroup, Stack } from "react-bootstrap";
@@ -2935,6 +4029,111 @@ export function Connectors({
         <Stack gap="xs">{sources.map(renderSource)}</Stack>
       )}
     </Stack>
+  );
+}
+`,
+    shadcn: `import { RefreshCw } from "lucide-react";
+
+import type { ConnectorsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+function statusColor(status: string) {
+  if (status === "connected") return "bg-green-500";
+  if (status === "syncing") return "bg-blue-500";
+  if (status === "error") return "bg-red-500";
+  return "bg-gray-400";
+}
+
+export function Connectors({
+  sources,
+  onConnect,
+  onDisconnect,
+  onSync,
+  title,
+  variant = "list",
+}: ConnectorsProps) {
+  const renderSource = (source: (typeof sources)[0]) => (
+    <Card key={source.id} className="p-3">
+      <CardContent className="flex items-start justify-between p-0">
+        <div className="flex flex-1 flex-col gap-0.5">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold">{source.name}</span>
+            <Badge variant="secondary" className="text-xs">
+              <span
+                className={\`mr-1 inline-block size-1.5 rounded-full \${statusColor(source.status)}\`}
+              />
+              {source.status}
+            </Badge>
+            {source.type ? (
+              <Badge variant="secondary" className="text-xs">
+                {source.type}
+              </Badge>
+            ) : null}
+          </div>
+          {source.description ? (
+            <span className="text-muted-foreground text-xs">
+              {source.description}
+            </span>
+          ) : null}
+          {source.lastSyncedAt ? (
+            <span className="text-muted-foreground text-xs">
+              Last synced: {source.lastSyncedAt.toLocaleString()}
+            </span>
+          ) : null}
+        </div>
+        <div className="flex items-center gap-2">
+          {onSync && source.status === "connected" ? (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => {
+                onSync(source.id);
+              }}
+            >
+              <RefreshCw className="size-3" />
+              Sync
+            </Button>
+          ) : null}
+          {source.status === "disconnected" || source.status === "error" ? (
+            <Button
+              variant="secondary"
+              size="xs"
+              onClick={() => {
+                onConnect(source.id);
+              }}
+            >
+              Connect
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => {
+                onDisconnect(source.id);
+              }}
+            >
+              Disconnect
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  return (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+      {variant === "cards" ? (
+        <div className="grid grid-cols-2 gap-3">
+          {sources.map(renderSource)}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">{sources.map(renderSource)}</div>
+      )}
+    </div>
   );
 }
 `,
@@ -3228,6 +4427,129 @@ export function Consent({
   );
 }
 `,
+    shadcn: `import { useState } from "react";
+
+import type { ConsentProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+
+export function Consent({
+  items,
+  onAccept,
+  onDecline,
+  title,
+  description,
+  acceptLabel = "Accept",
+  declineLabel = "Decline",
+  variant = "inline",
+}: ConsentProps) {
+  const [checked, setChecked] = useState<Record<string, boolean>>(
+    Object.fromEntries(
+      items.map((item) => [item.id, item.defaultChecked ?? false]),
+    ),
+  );
+
+  const toggle = (id: string) => {
+    setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const requiredItems = items.filter((i) => i.required);
+  const allRequiredChecked = requiredItems.every((i) => checked[i.id]);
+
+  const handleAccept = () => {
+    const acceptedIds = Object.entries(checked)
+      .filter(([, v]) => v)
+      .map(([k]) => k);
+    onAccept(acceptedIds);
+  };
+
+  const inner = (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="font-semibold">{title}</span> : null}
+      {description ? (
+        <span className="text-muted-foreground text-sm">{description}</span>
+      ) : null}
+
+      <div className="flex flex-col gap-2">
+        {items.map((item) => (
+          <label key={item.id} className="flex items-start gap-2">
+            <Checkbox
+              checked={Boolean(checked[item.id])}
+              onCheckedChange={() => {
+                toggle(item.id);
+              }}
+              disabled={item.required ? !item.defaultChecked : undefined}
+              className="mt-0.5"
+            />
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm">
+                {item.label}
+                {item.required ? (
+                  <span className="text-destructive ml-1">*</span>
+                ) : null}
+              </span>
+              {item.description ? (
+                <span className="text-muted-foreground text-xs">
+                  {item.description}
+                </span>
+              ) : null}
+            </div>
+          </label>
+        ))}
+      </div>
+
+      <Separator />
+
+      <div className="flex flex-col gap-1.5">
+        <Button onClick={handleAccept} disabled={!allRequiredChecked}>
+          {acceptLabel}
+        </Button>
+        {onDecline ? (
+          <Button
+            variant="ghost"
+            className="text-muted-foreground"
+            onClick={onDecline}
+          >
+            {declineLabel}
+          </Button>
+        ) : null}
+      </div>
+    </div>
+  );
+
+  if (variant === "modal") {
+    return (
+      <Dialog open>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{title ?? "Consent"}</DialogTitle>
+          </DialogHeader>
+          {inner}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  if (variant === "inline") {
+    return inner;
+  }
+
+  return (
+    <Card className="p-4">
+      <CardContent className="p-0">{inner}</CardContent>
+    </Card>
+  );
+}
+`,
   },
   "controls": {
     bootstrap: `import { Badge, Card, Form, ListGroup, Stack } from "react-bootstrap";
@@ -3466,6 +4788,99 @@ export function Controls({
         <Stack gap="xs">{controls.map(renderControl)}</Stack>
       )}
     </Stack>
+  );
+}
+`,
+    shadcn: `import type { ControlsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+const statusVariant: Record<string, "default" | "secondary" | "destructive"> = {
+  active: "default",
+  restricted: "destructive",
+  disabled: "secondary",
+};
+
+export function Controls({
+  controls,
+  onToggleControl,
+  title,
+  variant = "list",
+  showStatus = true,
+}: ControlsProps) {
+  const renderControl = (control: (typeof controls)[0]) => {
+    let switchLabel = "Enable";
+    if (control.locked) {
+      switchLabel = "This control is locked";
+    } else if (control.enabled) {
+      switchLabel = "Disable";
+    }
+
+    return (
+      <Card key={control.id} className="p-3">
+        <CardContent className="p-0">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-1 flex-col gap-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">{control.label}</span>
+                {showStatus && control.status ? (
+                  <Badge variant={statusVariant[control.status] ?? "secondary"}>
+                    {control.status}
+                  </Badge>
+                ) : null}
+                {control.locked ? (
+                  <Badge variant="outline">Locked</Badge>
+                ) : null}
+              </div>
+              {control.description ? (
+                <span className="text-muted-foreground text-xs">
+                  {control.description}
+                </span>
+              ) : null}
+            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Switch
+                    checked={control.enabled}
+                    onCheckedChange={(checked) => {
+                      if (!control.locked) {
+                        onToggleControl(control.id, checked);
+                      }
+                    }}
+                    disabled={control.locked}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <span>{switchLabel}</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+      {variant === "cards" ? (
+        <div className="grid gap-2 [grid-template-columns:repeat(auto-fill,minmax(280px,1fr))]">
+          {controls.map(renderControl)}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">{controls.map(renderControl)}</div>
+      )}
+    </div>
   );
 }
 `,
@@ -3743,6 +5158,97 @@ export function CostEstimate({
             </Table>
           </> : null}
       </Stack>
+    </Card>
+  );
+}
+`,
+    shadcn: `import type { CostEstimateProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+
+const formatCost = (cost: number, currency: string) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 6,
+  }).format(cost);
+
+const formatTokens = (tokens: number) =>
+  new Intl.NumberFormat("en-US").format(tokens);
+
+export function CostEstimate({
+  breakdown,
+  currency = "USD",
+  showTokens = true,
+}: CostEstimateProps) {
+  const inputPct =
+    breakdown.totalTokens > 0
+      ? Math.round((breakdown.inputTokens / breakdown.totalTokens) * 100)
+      : 0;
+
+  return (
+    <Card className="p-3">
+      <CardContent className="p-0">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold">Cost Estimate</span>
+            <Badge variant="secondary">
+              {formatCost(breakdown.totalCost, currency)}
+            </Badge>
+          </div>
+
+          {breakdown.model ? (
+            <span className="text-muted-foreground text-xs">
+              Model: {breakdown.model}
+            </span>
+          ) : null}
+
+          {showTokens ? (
+            <>
+              <Progress value={inputPct} />
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="text-muted-foreground">
+                      Input
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {formatTokens(breakdown.inputTokens)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {formatCost(breakdown.inputCost, currency)}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="text-muted-foreground">
+                      Output
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {formatTokens(breakdown.outputTokens)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {formatCost(breakdown.outputCost, currency)}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-bold">Total</TableCell>
+                    <TableCell className="text-right font-bold">
+                      {formatTokens(breakdown.totalTokens)}
+                    </TableCell>
+                    <TableCell className="text-right font-bold">
+                      {formatCost(breakdown.totalCost, currency)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </>
+          ) : null}
+        </div>
+      </CardContent>
     </Card>
   );
 }
@@ -4050,6 +5556,169 @@ export function DataOwnership({
         ))}
       </Stack>
     </Stack>
+  );
+}
+`,
+    shadcn: `import { Download, Trash2 } from "lucide-react";
+
+import type { DataOwnershipProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+export function DataOwnership({
+  items,
+  onDelete,
+  onExport,
+  onDeleteAll,
+  title = "Your Data",
+  variant = "list",
+}: DataOwnershipProps) {
+  if (variant === "table") {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold">{title}</span>
+          <div className="flex items-center gap-2">
+            {onExport ? (
+              <Button variant="outline" size="sm" onClick={onExport}>
+                <Download className="size-3.5" />
+                Export
+              </Button>
+            ) : null}
+            {onDeleteAll ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-destructive"
+                onClick={onDeleteAll}
+              >
+                <Trash2 className="size-3.5" />
+                Delete All
+              </Button>
+            ) : null}
+          </div>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Data Type</TableHead>
+              <TableHead>Retention</TableHead>
+              <TableHead />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-sm font-medium">{item.dataType}</span>
+                    {item.description ? (
+                      <span className="text-muted-foreground text-xs">
+                        {item.description}
+                      </span>
+                    ) : null}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {item.retention ? (
+                    <Badge variant="secondary">{item.retention}</Badge>
+                  ) : null}
+                </TableCell>
+                <TableCell>
+                  {item.deletable && onDelete ? (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-destructive size-7"
+                      aria-label="Delete"
+                      onClick={() => {
+                        onDelete(item.id);
+                      }}
+                    >
+                      <Trash2 className="size-3.5" />
+                    </Button>
+                  ) : null}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-semibold">{title}</span>
+        <div className="flex items-center gap-2">
+          {onExport ? (
+            <Button variant="outline" size="sm" onClick={onExport}>
+              <Download className="size-3.5" />
+              Export
+            </Button>
+          ) : null}
+          {onDeleteAll ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-destructive"
+              onClick={onDeleteAll}
+            >
+              <Trash2 className="size-3.5" />
+              Delete All
+            </Button>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        {items.map((item) => (
+          <Card key={item.id} className="p-3">
+            <CardContent className="p-0">
+              <div className="flex items-start justify-between">
+                <div className="flex flex-1 flex-col gap-0.5">
+                  <span className="text-sm font-medium">{item.dataType}</span>
+                  {item.description ? (
+                    <span className="text-muted-foreground text-xs">
+                      {item.description}
+                    </span>
+                  ) : null}
+                  {item.retention ? (
+                    <Badge variant="outline" className="w-fit text-xs">
+                      Retention: {item.retention}
+                    </Badge>
+                  ) : null}
+                </div>
+                {item.deletable && onDelete ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive size-7"
+                    aria-label="Delete"
+                    onClick={() => {
+                      onDelete(item.id);
+                    }}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </Button>
+                ) : null}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 }
 `,
@@ -4402,6 +6071,127 @@ export function Describe({
   );
 }
 `,
+    shadcn: `import { Copy } from "lucide-react";
+
+import type { DescribeDetail, DescribeProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+function renderDetailValue(detail: DescribeDetail) {
+  if (detail.type === "badge") {
+    return <Badge variant="secondary">{detail.value}</Badge>;
+  }
+  if (detail.type === "code" || detail.type === "json") {
+    return <code className="font-mono text-xs">{detail.value}</code>;
+  }
+  return <span className="text-xs">{detail.value}</span>;
+}
+
+export function Describe({
+  output,
+  details,
+  inferredPrompt,
+  model,
+  seed,
+  onReuse,
+  onCopy,
+  title = "Description",
+  variant = "panel",
+}: DescribeProps) {
+  const inner = (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        <div className="flex items-center gap-2">
+          {model ? <Badge variant="secondary">{model}</Badge> : null}
+          {seed ? <Badge variant="secondary">seed: {seed}</Badge> : null}
+          {onCopy ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    aria-label="Copy"
+                    onClick={onCopy}
+                  >
+                    <Copy data-icon="inline-start" className="size-3.5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : null}
+        </div>
+      </div>
+
+      <span className="text-sm">{output}</span>
+
+      {inferredPrompt ? (
+        <div className="flex flex-col gap-1">
+          <span className="text-muted-foreground text-xs font-medium uppercase">
+            Inferred Prompt
+          </span>
+          <Card>
+            <CardContent className="p-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs italic">
+                  &ldquo;{inferredPrompt}&rdquo;
+                </span>
+                {onReuse ? (
+                  <Badge
+                    variant="secondary"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      onReuse(inferredPrompt);
+                    }}
+                  >
+                    Reuse
+                  </Badge>
+                ) : null}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
+
+      {details.length > 0 ? (
+        <div className="flex flex-col gap-1">
+          {details.map((detail) => (
+            <div
+              key={detail.id}
+              className="flex items-start justify-between gap-2"
+            >
+              <span className="text-muted-foreground text-xs">
+                {detail.label}
+              </span>
+              {renderDetailValue(detail)}
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+
+  if (variant === "inline") {
+    return <div className="flex flex-col gap-3">{inner}</div>;
+  }
+
+  return (
+    <Card>
+      <CardContent className="p-4">{inner}</CardContent>
+    </Card>
+  );
+}
+`,
   },
   "disclosure": {
     bootstrap: `import { Alert, Badge } from "react-bootstrap";
@@ -4604,6 +6394,66 @@ export function Disclosure({
       {label}
       {model ? \` (\${model})\` : ""}
     </Text>
+  );
+}
+`,
+    shadcn: `import { Bot } from "lucide-react";
+
+import type { DisclosureProps } from "@patternbase/core";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+
+const TYPE_LABELS: Record<DisclosureProps["type"], string> = {
+  "ai-generated": "AI Generated",
+  "ai-assisted": "AI Assisted",
+  "ai-suggested": "AI Suggested",
+};
+
+export function Disclosure({
+  variant = "badge",
+  type,
+  model,
+  timestamp,
+  customLabel,
+}: DisclosureProps) {
+  const label = customLabel ?? TYPE_LABELS[type];
+
+  if (variant === "badge") {
+    return (
+      <Badge variant="secondary">
+        <Bot className="size-3" />
+        {label}
+        {model ? \` (\${model})\` : ""}
+      </Badge>
+    );
+  }
+
+  if (variant === "banner") {
+    return (
+      <Alert className="mb-2">
+        <Bot className="size-4" />
+        <AlertDescription>
+          <span className="text-sm">
+            {label}
+            {model ? \` — \${model}\` : ""}
+            {timestamp ? (
+              <span className="text-muted-foreground ml-2 text-xs">
+                {new Date(timestamp).toLocaleDateString()}
+              </span>
+            ) : null}
+          </span>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  return (
+    <span className="text-muted-foreground flex items-center gap-1 text-xs">
+      <Bot className="size-3" />
+      {label}
+      {model ? \` (\${model})\` : ""}
+    </span>
   );
 }
 `,
@@ -4917,6 +6767,160 @@ export function DraftMode({
   );
 }
 `,
+    shadcn: `import { GitBranch, RotateCcw } from "lucide-react";
+
+import type { DraftModeProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+export function DraftMode({
+  drafts,
+  activeDraftId,
+  onSelectDraft,
+  onRevertToDraft,
+  onBranchFromDraft,
+  title = "Draft History",
+  variant = "list",
+}: DraftModeProps) {
+  const renderDraft = (draft: (typeof drafts)[0]) => {
+    if (variant === "timeline") {
+      return (
+        <div key={draft.id} className="flex flex-col gap-1 border-l-2 pl-3">
+          <div className="flex items-center gap-2">
+            <span
+              className={\`text-sm \${activeDraftId === draft.id ? "font-semibold" : ""} cursor-pointer\`}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                onSelectDraft(draft.id);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelectDraft(draft.id);
+                }
+              }}
+            >
+              {draft.label ?? \`Draft \${String(draft.number)}\`}
+            </span>
+            {activeDraftId === draft.id ? (
+              <Badge variant="secondary">Active</Badge>
+            ) : null}
+          </div>
+          {draft.preview ? (
+            <span className="text-muted-foreground line-clamp-1 text-xs">
+              {draft.preview}
+            </span>
+          ) : null}
+          {draft.createdAt ? (
+            <span className="text-muted-foreground text-xs">
+              {draft.createdAt.toLocaleString()}
+            </span>
+          ) : null}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7"
+              onClick={() => {
+                onRevertToDraft(draft.id);
+              }}
+            >
+              <RotateCcw className="size-3" />
+              Revert
+            </Button>
+            {onBranchFromDraft ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7"
+                onClick={() => {
+                  onBranchFromDraft(draft.id);
+                }}
+              >
+                <GitBranch className="size-3" />
+                Branch
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Card
+        key={draft.id}
+        className={\`cursor-pointer p-3 \${activeDraftId === draft.id ? "ring-primary ring-2" : ""}\`}
+        onClick={() => {
+          onSelectDraft(draft.id);
+        }}
+      >
+        <CardContent className="p-0">
+          <div className="flex items-start justify-between">
+            <div className="flex flex-1 flex-col gap-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">
+                  {draft.label ?? \`Draft \${String(draft.number)}\`}
+                </span>
+                {activeDraftId === draft.id ? (
+                  <Badge variant="secondary">Active</Badge>
+                ) : null}
+              </div>
+              {draft.preview ? (
+                <span className="text-muted-foreground line-clamp-1 text-xs">
+                  {draft.preview}
+                </span>
+              ) : null}
+              {draft.createdAt ? (
+                <span className="text-muted-foreground text-xs">
+                  {draft.createdAt.toLocaleString()}
+                </span>
+              ) : null}
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRevertToDraft(draft.id);
+                }}
+              >
+                <RotateCcw className="size-3" />
+                Revert
+              </Button>
+              {onBranchFromDraft ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onBranchFromDraft(draft.id);
+                  }}
+                >
+                  <GitBranch className="size-3" />
+                  Branch
+                </Button>
+              ) : null}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-semibold">{title}</span>
+      <div className="flex flex-col gap-2">{drafts.map(renderDraft)}</div>
+    </div>
+  );
+}
+`,
   },
   "expand": {
     bootstrap: `import { useState } from "react";
@@ -5173,6 +7177,89 @@ export function Expand({
         Expand
       </Button>
     </Stack>
+  );
+}
+`,
+    shadcn: `import { ChevronDown, Loader2 } from "lucide-react";
+
+import type { ExpandProps } from "@patternbase/core";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+
+export function Expand({
+  content,
+  onExpand,
+  expandedContent,
+  isExpanding = false,
+  title,
+  variant = "button",
+}: ExpandProps) {
+  if (variant === "accordion") {
+    return (
+      <Accordion type="multiple">
+        <AccordionItem value="expand">
+          <AccordionTrigger onClick={onExpand}>
+            {title ?? "Show full content"}
+          </AccordionTrigger>
+          <AccordionContent>
+            <span className="text-sm">{expandedContent ?? content}</span>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    );
+  }
+
+  if (variant === "inline") {
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-sm">{content}</span>
+        {expandedContent ? (
+          <span className="text-muted-foreground text-sm">
+            {expandedContent}
+          </span>
+        ) : null}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-fit"
+          onClick={onExpand}
+          disabled={isExpanding}
+        >
+          {isExpanding ? (
+            <Loader2 className="size-3.5 animate-spin" />
+          ) : (
+            <ChevronDown data-icon="inline-start" className="size-3.5" />
+          )}
+          Expand
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+      <span className="text-sm">{content}</span>
+      {expandedContent ? (
+        <span className="text-muted-foreground text-sm">{expandedContent}</span>
+      ) : null}
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-fit"
+        onClick={onExpand}
+        disabled={isExpanding}
+      >
+        {isExpanding ? <Loader2 className="size-3.5 animate-spin" /> : null}
+        Expand
+      </Button>
+    </div>
   );
 }
 `,
@@ -5565,6 +7652,169 @@ export function Filters({
   );
 }
 `,
+    shadcn: `import type { FiltersProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FieldLegend, FieldSet } from "@/components/ui/field";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+
+export function Filters({
+  groups,
+  values,
+  onChange,
+  onClear,
+  layout = "vertical",
+  title,
+}: FiltersProps) {
+  const hasValues = Object.values(values).some((v) =>
+    Array.isArray(v) ? v.length > 0 : v !== undefined && v !== null && v !== "",
+  );
+
+  const renderGroup = (group: (typeof groups)[0]) => (
+    <FieldSet key={group.id}>
+      <FieldLegend variant="label" className="uppercase">
+        {group.label}
+      </FieldLegend>
+
+      {group.type === "checkbox" && group.options ? (
+        <div className="flex flex-col gap-1">
+          {group.options.map((opt) => {
+            const currentVal = values[group.id];
+            const checked = Array.isArray(currentVal)
+              ? (currentVal as string[]).includes(opt.value)
+              : currentVal === opt.value;
+            return (
+              <Label
+                key={opt.id}
+                className="flex items-center gap-2 text-sm font-normal"
+              >
+                <Checkbox
+                  checked={Boolean(checked)}
+                  onCheckedChange={(c) => {
+                    const raw = values[group.id];
+                    const current = Array.isArray(raw) ? (raw as string[]) : [];
+                    if (c) {
+                      onChange(group.id, [...current, opt.value]);
+                    } else {
+                      onChange(
+                        group.id,
+                        current.filter((v) => v !== opt.value),
+                      );
+                    }
+                  }}
+                />
+                <span>{opt.label}</span>
+                {opt.count !== undefined ? (
+                  <span className="text-muted-foreground text-xs">
+                    ({opt.count})
+                  </span>
+                ) : null}
+              </Label>
+            );
+          })}
+        </div>
+      ) : null}
+
+      {group.type === "radio" && group.options ? (
+        <RadioGroup
+          value={String(values[group.id] ?? "")}
+          onValueChange={(val) => {
+            onChange(group.id, val);
+          }}
+        >
+          <div className="flex flex-col gap-1">
+            {group.options.map((opt) => (
+              <Label
+                key={opt.id}
+                className="flex items-center gap-2 text-sm font-normal"
+              >
+                <RadioGroupItem value={opt.value} />
+                {opt.label}
+              </Label>
+            ))}
+          </div>
+        </RadioGroup>
+      ) : null}
+
+      {group.type === "range" ? (
+        <div className="flex flex-col gap-2">
+          <Slider
+            min={group.min ?? 0}
+            max={group.max ?? 100}
+            step={group.step ?? 1}
+            value={[Number(values[group.id] ?? group.min ?? 0)]}
+            onValueChange={(v) => {
+              onChange(group.id, v[0] ?? 0);
+            }}
+          />
+          <div className="flex justify-between">
+            <span className="text-muted-foreground text-xs">
+              {group.min ?? 0}
+            </span>
+            <span className="text-muted-foreground text-xs">
+              {group.max ?? 100}
+            </span>
+          </div>
+        </div>
+      ) : null}
+
+      {group.type === "select" && group.options ? (
+        <Select
+          value={String(values[group.id] ?? "")}
+          onValueChange={(val) => {
+            onChange(group.id, val);
+          }}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select..." />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {group.options.map((opt) => (
+                <SelectItem key={opt.id} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      ) : null}
+    </FieldSet>
+  );
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        {title ? <span className="text-sm font-medium">{title}</span> : null}
+        {onClear && hasValues ? (
+          <Button variant="ghost" size="xs" onClick={onClear}>
+            Clear all
+          </Button>
+        ) : null}
+      </div>
+
+      {layout === "horizontal" ? (
+        <div className="flex flex-wrap items-start gap-4">
+          {groups.map(renderGroup)}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-4">{groups.map(renderGroup)}</div>
+      )}
+    </div>
+  );
+}
+`,
   },
   "follow-up": {
     bootstrap: `import { Badge, Button, ListGroup } from "react-bootstrap";
@@ -5844,6 +8094,99 @@ export function FollowUp({
 
       {renderItems()}
     </Stack>
+  );
+}
+`,
+    shadcn: `import { ArrowRight } from "lucide-react";
+
+import type { FollowUpProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+export function FollowUp({
+  followUps,
+  onSelect,
+  variant = "chip",
+  title,
+  maxVisible,
+}: FollowUpProps) {
+  const displayed = maxVisible ? followUps.slice(0, maxVisible) : followUps;
+
+  return (
+    <div className="flex flex-col gap-2">
+      {title ? (
+        <span className="text-muted-foreground text-xs font-medium uppercase">
+          {title}
+        </span>
+      ) : null}
+
+      {variant === "list" ? (
+        <div className="flex flex-col gap-1">
+          {displayed.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className="hover:bg-accent flex cursor-pointer items-center justify-between rounded-md border p-2 text-left"
+              onClick={() => {
+                onSelect(item);
+              }}
+            >
+              <div className="flex items-center gap-2">
+                {item.icon ? <span>{item.icon}</span> : null}
+                <span className="text-sm">{item.text}</span>
+              </div>
+              <ArrowRight className="size-3.5 opacity-40" />
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      {variant === "button" ? (
+        <div className="flex flex-col gap-2">
+          {displayed.map((item) => (
+            <Button
+              key={item.id}
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                onSelect(item);
+              }}
+            >
+              {item.icon ? <span>{item.icon}</span> : null}
+              {item.text}
+              <ArrowRight className="size-3.5" />
+            </Button>
+          ))}
+        </div>
+      ) : null}
+
+      {variant === "chip" ? (
+        <div className="flex flex-wrap items-center gap-2">
+          {displayed.map((item) => (
+            <Badge
+              key={item.id}
+              variant="secondary"
+              className="cursor-pointer"
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                onSelect(item);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onSelect(item);
+                }
+              }}
+            >
+              {item.text}
+              <ArrowRight className="size-3" />
+            </Badge>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 `,
@@ -6200,6 +8543,185 @@ export function Footprints({
   );
 }
 `,
+    shadcn: `import { Activity } from "lucide-react";
+
+import type { FootprintsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+export function Footprints({
+  entries,
+  onEntryClick,
+  onClear,
+  title = "Activity History",
+  maxVisible,
+  showTimestamps = true,
+  variant = "timeline",
+}: FootprintsProps) {
+  const displayed = maxVisible ? entries.slice(0, maxVisible) : entries;
+
+  if (variant === "compact") {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold">{title}</span>
+          {onClear ? (
+            <Button variant="ghost" size="sm" className="h-7" onClick={onClear}>
+              Clear
+            </Button>
+          ) : null}
+        </div>
+        <div className="flex flex-col gap-1">
+          {displayed.map((entry) => (
+            <div
+              key={entry.id}
+              className={\`flex items-center gap-2 \${onEntryClick ? "cursor-pointer" : ""}\`}
+              role={onEntryClick ? "button" : undefined}
+              tabIndex={onEntryClick ? 0 : undefined}
+              onClick={() => onEntryClick?.(entry.id)}
+              onKeyDown={(e) => {
+                if (onEntryClick && (e.key === "Enter" || e.key === " ")) {
+                  e.preventDefault();
+                  onEntryClick(entry.id);
+                }
+              }}
+            >
+              <span className="text-muted-foreground min-w-[120px] text-xs">
+                {showTimestamps ? entry.timestamp.toLocaleTimeString() : ""}
+              </span>
+              <span className="text-xs">{entry.action}</span>
+              {entry.model ? (
+                <Badge variant="secondary" className="text-xs">
+                  {entry.model}
+                </Badge>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "list") {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold">{title}</span>
+          {onClear ? (
+            <Button variant="ghost" size="sm" className="h-7" onClick={onClear}>
+              Clear
+            </Button>
+          ) : null}
+        </div>
+        <div className="flex flex-col gap-2">
+          {displayed.map((entry) => (
+            <Card
+              key={entry.id}
+              className={\`p-2 \${onEntryClick ? "cursor-pointer" : ""}\`}
+              onClick={() => onEntryClick?.(entry.id)}
+            >
+              <CardContent className="p-0">
+                <div className="flex items-start justify-between">
+                  <div className="flex flex-1 flex-col gap-0.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">
+                        {entry.action}
+                      </span>
+                      {entry.model ? (
+                        <Badge variant="secondary" className="text-xs">
+                          {entry.model}
+                        </Badge>
+                      ) : null}
+                    </div>
+                    {entry.inputPreview ? (
+                      <span className="text-muted-foreground line-clamp-1 text-xs">
+                        {entry.inputPreview}
+                      </span>
+                    ) : null}
+                  </div>
+                  {showTimestamps ? (
+                    <span className="text-muted-foreground text-xs">
+                      {entry.timestamp.toLocaleString()}
+                    </span>
+                  ) : null}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-semibold">{title}</span>
+        {onClear ? (
+          <Button variant="ghost" size="sm" className="h-7" onClick={onClear}>
+            Clear
+          </Button>
+        ) : null}
+      </div>
+      <div className="flex flex-col gap-2">
+        {displayed.map((entry) => (
+          <div
+            key={entry.id}
+            className="flex items-start gap-2 border-l-2 pl-3"
+          >
+            <div className="mt-1 flex items-center justify-center">
+              <Activity className="size-3" />
+            </div>
+            <div className="flex flex-1 flex-col gap-0.5">
+              <div
+                className={\`flex items-center gap-2 \${onEntryClick ? "cursor-pointer" : ""}\`}
+                role={onEntryClick ? "button" : undefined}
+                tabIndex={onEntryClick ? 0 : undefined}
+                onClick={() => onEntryClick?.(entry.id)}
+                onKeyDown={(e) => {
+                  if (onEntryClick && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault();
+                    onEntryClick(entry.id);
+                  }
+                }}
+              >
+                <span className="text-sm font-medium">{entry.action}</span>
+                {entry.model ? (
+                  <Badge variant="secondary" className="text-xs">
+                    {entry.model}
+                  </Badge>
+                ) : null}
+              </div>
+              {entry.inputPreview ? (
+                <span className="text-muted-foreground line-clamp-1 text-xs">
+                  {entry.inputPreview}
+                </span>
+              ) : null}
+              {entry.outputPreview ? (
+                <span className="text-muted-foreground line-clamp-1 text-xs">
+                  {entry.outputPreview}
+                </span>
+              ) : null}
+              {showTimestamps ? (
+                <span className="text-muted-foreground text-xs">
+                  {entry.timestamp.toLocaleString()}
+                </span>
+              ) : null}
+              {entry.metadata && Object.keys(entry.metadata).length > 0 ? (
+                <Badge variant="secondary" className="mt-1 w-fit text-xs">
+                  {Object.keys(entry.metadata).length} details
+                </Badge>
+              ) : null}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+`,
   },
   "gallery": {
     bootstrap: `import { Card, Col, Row, Spinner } from "react-bootstrap";
@@ -6439,6 +8961,97 @@ export function Gallery({
         </Group>
       ) : null}
     </Stack>
+  );
+}
+`,
+    shadcn: `import type { GalleryProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
+
+function gridCols(columns: number) {
+  if (columns === 2) return "grid-cols-2";
+  if (columns === 3) return "grid-cols-3";
+  return "grid-cols-4";
+}
+
+export function Gallery({
+  items,
+  onSelect,
+  onLoadMore,
+  columns = 3,
+  selectable = false,
+  loading = false,
+  emptyMessage = "No items to display",
+}: GalleryProps) {
+  if (items.length === 0 && !loading) {
+    return (
+      <p className="text-muted-foreground text-center text-sm">
+        {emptyMessage}
+      </p>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className={cn("grid gap-3", gridCols(columns))}>
+        {items.map((item) => (
+          <Card
+            key={item.id}
+            className={cn(
+              "p-3",
+              typeof onSelect === "function" || selectable
+                ? "cursor-pointer"
+                : "cursor-default",
+              item.selected && "ring-2 ring-violet-600",
+            )}
+            onClick={() => {
+              onSelect?.(item);
+            }}
+          >
+            <CardContent className="flex flex-col gap-2 p-0">
+              {item.type === "image" && item.src ? (
+                <img
+                  src={item.src}
+                  alt={item.alt ?? item.title ?? ""}
+                  className="h-[120px] w-full rounded-md object-cover"
+                />
+              ) : null}
+              {item.type === "text" && item.content ? (
+                <p className="line-clamp-4 text-xs">{item.content}</p>
+              ) : null}
+              <div className="flex items-center justify-between">
+                {item.title ? (
+                  <span className="text-xs font-medium">{item.title}</span>
+                ) : null}
+                {item.selected ? (
+                  <Badge variant="default" className="text-xs">
+                    Selected
+                  </Badge>
+                ) : null}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="flex justify-center">
+          <Spinner />
+        </div>
+      ) : null}
+
+      {onLoadMore && !loading ? (
+        <div className="flex justify-center">
+          <Button variant="ghost" size="sm" onClick={onLoadMore}>
+            Load more
+          </Button>
+        </div>
+      ) : null}
+    </div>
   );
 }
 `,
@@ -6769,6 +9382,89 @@ export function IncognitoMode({
   );
 }
 `,
+    shadcn: `import { EyeOff } from "lucide-react";
+
+import type { IncognitoModeProps } from "@patternbase/core";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+
+export function IncognitoMode({
+  enabled,
+  onToggle,
+  onEndSession,
+  title = "Incognito Mode",
+  description,
+  retentionNotice,
+  variant = "card",
+}: IncognitoModeProps) {
+  const inner = (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <EyeOff className="size-5 opacity-70" />
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold">{title}</span>
+              {enabled ? (
+                <Badge variant="default" className="text-xs">
+                  Active
+                </Badge>
+              ) : null}
+            </div>
+            {description ? (
+              <span className="text-muted-foreground text-xs">
+                {description}
+              </span>
+            ) : null}
+          </div>
+        </div>
+        <Switch
+          checked={enabled}
+          onCheckedChange={(checked) => onToggle?.(checked)}
+        />
+      </div>
+
+      {enabled && retentionNotice ? (
+        <Alert>
+          <EyeOff className="size-4" />
+          <AlertDescription>
+            <span className="text-xs">{retentionNotice}</span>
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
+      {enabled && onEndSession ? (
+        <Button variant="ghost" size="sm" onClick={onEndSession}>
+          End Session
+        </Button>
+      ) : null}
+    </div>
+  );
+
+  if (variant === "banner") {
+    return (
+      <Alert>
+        <EyeOff className="size-4" />
+        <AlertDescription>{inner}</AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (variant === "inline") {
+    return <div className="flex flex-col gap-3">{inner}</div>;
+  }
+
+  return (
+    <Card className="p-4">
+      <CardContent className="p-0">{inner}</CardContent>
+    </Card>
+  );
+}
+`,
   },
   "initial-cta": {
     bootstrap: `import { Button, Card, Col, Row } from "react-bootstrap";
@@ -7058,6 +9754,109 @@ export function InitialCta({
   );
 }
 `,
+    shadcn: `import type { InitialCtaProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
+function cardGridCols(count: number) {
+  const cols = Math.min(count, 3);
+  if (cols === 2) return "grid-cols-2";
+  if (cols === 3) return "grid-cols-3";
+  return "grid-cols-1";
+}
+
+export function InitialCta({
+  title,
+  subtitle,
+  actions,
+  onAction,
+  variant = "centered",
+}: InitialCtaProps) {
+  if (variant === "cards") {
+    return (
+      <div className="flex flex-col items-center gap-4 py-6">
+        <h3 className="text-center text-lg font-semibold">{title}</h3>
+        {subtitle ? (
+          <p className="text-muted-foreground max-w-[480px] text-center text-sm">
+            {subtitle}
+          </p>
+        ) : null}
+        <div className={cn("grid gap-3", cardGridCols(actions.length))}>
+          {actions.map((action) => (
+            <Card
+              key={action.id}
+              className="cursor-pointer text-center"
+              onClick={() => {
+                onAction(action);
+              }}
+            >
+              <CardContent className="flex flex-col items-center gap-2 p-4">
+                {action.icon ? (
+                  <span className="text-2xl">{action.icon}</span>
+                ) : null}
+                <span className="text-sm font-semibold">{action.label}</span>
+                {action.description ? (
+                  <span className="text-muted-foreground text-xs">
+                    {action.description}
+                  </span>
+                ) : null}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "minimal") {
+    return (
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-sm font-medium">{title}</span>
+        {actions.map((action) => (
+          <Button
+            key={action.id}
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              onAction(action);
+            }}
+          >
+            {action.icon ? <span>{action.icon}</span> : null}
+            {action.label}
+          </Button>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-center gap-4 py-6 text-center">
+      <h3 className="text-lg font-semibold">{title}</h3>
+      {subtitle ? (
+        <p className="text-muted-foreground max-w-[480px] text-sm">
+          {subtitle}
+        </p>
+      ) : null}
+      <div className="flex flex-wrap justify-center gap-3">
+        {actions.map((action, i) => (
+          <Button
+            key={action.id}
+            variant={i === 0 ? "default" : "outline"}
+            onClick={() => {
+              onAction(action);
+            }}
+          >
+            {action.icon ? <span>{action.icon}</span> : null}
+            {action.label}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
+}
+`,
   },
   "inline-action": {
     bootstrap: `import { Button } from "react-bootstrap";
@@ -7254,6 +10053,71 @@ export function InlineAction({
         </Tooltip>
       ))}
     </Group>
+  );
+}
+`,
+    shadcn: `import type { InlineActionItem, InlineActionProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+
+function getButtonVariant(type: InlineActionItem["type"]) {
+  if (type === "primary") {
+    return "secondary";
+  }
+  if (type === "danger") {
+    return "destructive";
+  }
+  return "ghost";
+}
+
+function renderIcon(icon: InlineActionItem["icon"], iconClass: string) {
+  if (typeof icon === "string") {
+    return <span className={iconClass}>{icon}</span>;
+  }
+  if (icon) {
+    return icon;
+  }
+  return <span className={iconClass}>·</span>;
+}
+
+export function InlineAction({
+  actions,
+  onAction,
+  size = "medium",
+}: InlineActionProps) {
+  const iconClass = size === "small" ? "text-xs" : "text-sm";
+
+  return (
+    <TooltipProvider>
+      <div className="flex items-center gap-1">
+        {actions.map((action) => (
+          <Tooltip key={action.id}>
+            <TooltipTrigger asChild>
+              <Button
+                type="button"
+                variant={getButtonVariant(action.type)}
+                size="icon"
+                className={cn(size === "small" && "size-7")}
+                aria-label={action.label}
+                onClick={() => {
+                  onAction(action.id);
+                }}
+              >
+                {renderIcon(action.icon, iconClass)}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{action.label}</TooltipContent>
+          </Tooltip>
+        ))}
+      </div>
+    </TooltipProvider>
   );
 }
 `,
@@ -7512,6 +10376,112 @@ export function Inpainting({
         Apply
       </Button>
     </Stack>
+  );
+}
+`,
+    shadcn: `import { Brush, Loader2 } from "lucide-react";
+import { useState } from "react";
+
+import type { InpaintingProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
+
+export function Inpainting({
+  content,
+  regions,
+  onRegionSelect,
+  onApply,
+  selectedRegionId,
+  isProcessing = false,
+  prompt = "",
+  onPromptChange,
+  title = "Inpainting",
+  variant = "segment",
+}: InpaintingProps) {
+  const [localPrompt, setLocalPrompt] = useState(prompt);
+
+  const handlePromptChange = (value: string) => {
+    setLocalPrompt(value);
+    onPromptChange?.(value);
+  };
+
+  const selectedRegion = regions.find((r) => r.id === selectedRegionId);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        {isProcessing ? <Spinner className="size-3" /> : null}
+      </div>
+
+      <Card>
+        <CardContent className="p-3">
+          <p className="whitespace-pre-wrap text-sm">{content}</p>
+        </CardContent>
+      </Card>
+
+      {regions.length > 0 ? (
+        <div className="flex flex-col gap-2">
+          <span className="text-muted-foreground text-xs font-medium uppercase">
+            Regions
+          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            {regions.map((region) => (
+              <Badge
+                key={region.id}
+                variant={
+                  selectedRegionId === region.id ? "default" : "secondary"
+                }
+                className="cursor-pointer"
+                onClick={() => {
+                  onRegionSelect(region.id);
+                }}
+              >
+                {region.label ?? region.id}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {selectedRegion ? (
+        <p className="text-muted-foreground text-xs">
+          Selected: <strong>{selectedRegion.label ?? selectedRegion.id}</strong>
+        </p>
+      ) : null}
+
+      <Textarea
+        placeholder="Describe what to replace in the selected region..."
+        value={localPrompt}
+        onChange={(e) => {
+          handlePromptChange(e.currentTarget.value);
+        }}
+        rows={2}
+        disabled={!selectedRegionId}
+      />
+
+      <Button
+        onClick={() => {
+          if (selectedRegionId && localPrompt.trim()) {
+            onApply(selectedRegionId, localPrompt.trim());
+          }
+        }}
+        disabled={!selectedRegionId || !localPrompt.trim() || isProcessing}
+        size="sm"
+        variant={variant === "brush" ? "default" : "outline"}
+      >
+        {isProcessing ? (
+          <Loader2 className="size-3.5 animate-spin" />
+        ) : (
+          <Brush data-icon="inline-start" className="size-3.5" />
+        )}
+        Apply
+      </Button>
+    </div>
   );
 }
 `,
@@ -7873,6 +10843,178 @@ export function Madlibs({
   );
 }
 `,
+    shadcn: `import { Loader2, Send } from "lucide-react";
+import { useState } from "react";
+
+import type { MadlibsProps, MadlibsVariable } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+
+function renderVariableInput(
+  variable: MadlibsVariable,
+  value: string,
+  onChange: (value: string) => void,
+) {
+  const placeholder =
+    variable.placeholder ?? \`Enter \${variable.label.toLowerCase()}...\`;
+
+  if (variable.type === "select" && variable.options) {
+    return (
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger aria-label={variable.label}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {variable.options.map((o) => (
+              <SelectItem key={o.value} value={String(o.value)}>
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+  }
+
+  if (variable.type === "number") {
+    return (
+      <Input
+        type="number"
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => {
+          onChange(e.currentTarget.value);
+        }}
+      />
+    );
+  }
+
+  if (variable.type === "textarea") {
+    return (
+      <Textarea
+        rows={2}
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => {
+          onChange(e.currentTarget.value);
+        }}
+      />
+    );
+  }
+
+  return (
+    <Input
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => {
+        onChange(e.currentTarget.value);
+      }}
+    />
+  );
+}
+
+export function Madlibs({
+  template,
+  variables,
+  values: externalValues,
+  onChange,
+  onSubmit,
+  title,
+  description,
+  isGenerating = false,
+  showPreview = true,
+  variant: _variant = "form",
+}: MadlibsProps) {
+  const [localValues, setLocalValues] = useState<Record<string, string>>(
+    Object.fromEntries(
+      variables.map((v) => [
+        v.id,
+        externalValues?.[v.id] ?? v.defaultValue ?? "",
+      ]),
+    ),
+  );
+
+  const values = externalValues ?? localValues;
+
+  const handleChange = (id: string, value: string) => {
+    setLocalValues((prev) => ({ ...prev, [id]: value }));
+    onChange(id, value);
+  };
+
+  const renderTemplate = () => {
+    let result = template;
+    variables.forEach((v) => {
+      result = result.replace(\`{{\${v.id}}}\`, values[v.id] ?? \`[\${v.label}]\`);
+    });
+    return result;
+  };
+
+  const allFilled = variables
+    .filter((v) => v.required)
+    .every((v) => values[v.id]?.trim());
+
+  return (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="font-semibold">{title}</span> : null}
+      {description ? (
+        <span className="text-muted-foreground text-sm">{description}</span>
+      ) : null}
+
+      {showPreview ? (
+        <Card>
+          <CardContent className="p-3">
+            <p className="text-sm italic">{renderTemplate()}</p>
+          </CardContent>
+        </Card>
+      ) : null}
+
+      {variables.map((variable) => (
+        <div key={variable.id} className="flex flex-col gap-1.5">
+          <Label>
+            {variable.label}
+            {variable.required ? (
+              <span className="text-destructive"> *</span>
+            ) : null}
+          </Label>
+          {renderVariableInput(variable, values[variable.id] ?? "", (value) => {
+            handleChange(variable.id, value);
+          })}
+        </div>
+      ))}
+
+      <div className="flex justify-end">
+        <Button
+          onClick={() => {
+            onSubmit(values);
+          }}
+          disabled={!allFilled || isGenerating}
+          size="sm"
+        >
+          {isGenerating ? (
+            <Loader2 className="size-3.5 animate-spin" />
+          ) : (
+            <Send data-icon="inline-start" className="size-3.5" />
+          )}
+          Submit
+        </Button>
+      </div>
+    </div>
+  );
+}
+`,
   },
   "memory": {
     bootstrap: `import { useState } from "react";
@@ -8173,6 +11315,84 @@ export function Memory({
       </Text>
       <Stack gap="xs">{memories.map(renderEntry)}</Stack>
     </Stack>
+  );
+}
+`,
+    shadcn: `import { Pencil, Trash2 } from "lucide-react";
+
+import type { MemoryProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+export function Memory({
+  memories,
+  onEditMemory,
+  onDeleteMemory,
+  title = "Memory",
+  variant: _variant = "list",
+  showTimestamps = false,
+}: MemoryProps) {
+  const renderEntry = (entry: (typeof memories)[0]) => (
+    <Card key={entry.id} className="p-3">
+      <CardContent className="p-0">
+        <div className="flex items-start justify-between">
+          <div className="flex flex-1 flex-col gap-0.5">
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground text-xs font-medium uppercase">
+                {entry.label}
+              </span>
+              {entry.category ? (
+                <Badge variant="secondary">{entry.category}</Badge>
+              ) : null}
+              {entry.locked ? <Badge variant="outline">Locked</Badge> : null}
+            </div>
+            <span className="text-sm">{entry.value}</span>
+            {showTimestamps && entry.updatedAt ? (
+              <span className="text-muted-foreground text-xs">
+                {entry.updatedAt.toLocaleString()}
+              </span>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-1">
+            {!entry.locked ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-7"
+                aria-label="Edit"
+                onClick={() => {
+                  onEditMemory(entry.id, entry.value);
+                }}
+              >
+                <Pencil className="size-3.5" />
+              </Button>
+            ) : null}
+            {!entry.locked ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-destructive size-7"
+                aria-label="Delete"
+                onClick={() => {
+                  onDeleteMemory(entry.id);
+                }}
+              >
+                <Trash2 className="size-3.5" />
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-semibold">{title}</span>
+      <div className="flex flex-col gap-2">{memories.map(renderEntry)}</div>
+    </div>
   );
 }
 `,
@@ -8484,6 +11704,110 @@ export function ModelManagement({
   );
 }
 `,
+    shadcn: `import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { cn } from "@/lib/utils";
+
+export function ModelManagement({
+  models,
+  selectedModelId,
+  onSelectModel,
+  showDetails = true,
+  groupByProvider = true,
+}: ModelManagementProps) {
+  const grouped = groupByProvider
+    ? models.reduce<Record<string, ModelInfo[]>>((acc, m) => {
+        const key = m.provider;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(m);
+        return acc;
+      }, {})
+    : { All: models };
+
+  return (
+    <Card className="p-3">
+      <CardContent className="flex flex-col gap-3 p-0">
+        <span className="text-sm font-semibold">Model Selection</span>
+        <RadioGroup value={selectedModelId} onValueChange={onSelectModel}>
+          <div className="flex flex-col gap-3">
+            {Object.entries(grouped).map(([provider, providerModels]) => (
+              <div key={provider}>
+                {groupByProvider ? (
+                  <span className="text-muted-foreground mb-2 block text-xs font-bold uppercase">
+                    {provider}
+                  </span>
+                ) : null}
+                <div className="flex flex-col gap-2">
+                  {providerModels.map((model) => (
+                    <Card
+                      key={model.id}
+                      className={cn(
+                        "cursor-pointer p-2",
+                        model.id === selectedModelId &&
+                          "bg-violet-50 dark:bg-violet-950/30",
+                      )}
+                      onClick={() => {
+                        onSelectModel(model.id);
+                      }}
+                    >
+                      <CardContent className="flex items-start justify-between p-0">
+                        <div className="flex items-start gap-2">
+                          <RadioGroupItem value={model.id} className="mt-0.5" />
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-sm font-semibold">
+                              {model.name}
+                            </span>
+                            {showDetails && model.description ? (
+                              <span className="text-muted-foreground text-xs">
+                                {model.description}
+                              </span>
+                            ) : null}
+                            {showDetails ? (
+                              <div className="flex items-center gap-2">
+                                {model.contextWindow ? (
+                                  <span className="text-muted-foreground text-xs">
+                                    {(model.contextWindow / 1000).toFixed(0)}k
+                                    ctx
+                                  </span>
+                                ) : null}
+                                {model.costPer1kInput !== undefined ? (
+                                  <span className="text-muted-foreground text-xs">
+                                    \${model.costPer1kInput}/1k in
+                                  </span>
+                                ) : null}
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                        {model.capabilities ? (
+                          <div className="flex gap-1">
+                            {model.capabilities.slice(0, 2).map((c) => (
+                              <Badge
+                                key={c}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {c}
+                              </Badge>
+                            ))}
+                          </div>
+                        ) : null}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </RadioGroup>
+      </CardContent>
+    </Card>
+  );
+}
+`,
   },
   "modes": {
     bootstrap: `import {
@@ -8740,6 +12064,93 @@ export function Modes({
   );
 }
 `,
+    shadcn: `import type { ModesProps } from "@patternbase/core";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+export function Modes({
+  modes,
+  selectedModeId,
+  onModeChange,
+  title,
+  variant = "segmented",
+}: ModesProps) {
+  const selectedMode = modes.find((m) => m.id === selectedModeId);
+
+  return (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+
+      {variant === "tabs" ? (
+        <Tabs
+          value={selectedModeId}
+          onValueChange={(id) => {
+            if (id) onModeChange(id);
+          }}
+        >
+          <TabsList>
+            {modes.map((mode) => (
+              <TabsTrigger
+                key={mode.id}
+                value={mode.id}
+                disabled={mode.disabled}
+              >
+                {mode.icon ? <span>{mode.icon}</span> : null}
+                {mode.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {selectedMode?.description ? (
+            <TabsContent value={selectedModeId}>
+              <Card className="p-2">
+                <CardContent className="p-0">
+                  <span className="text-muted-foreground text-xs">
+                    {selectedMode.description}
+                  </span>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          ) : null}
+        </Tabs>
+      ) : (
+        <>
+          <ToggleGroup
+            type="single"
+            value={selectedModeId}
+            onValueChange={(id) => {
+              if (id) onModeChange(id);
+            }}
+            className="w-full"
+          >
+            {modes.map((mode) => (
+              <ToggleGroupItem
+                key={mode.id}
+                value={mode.id}
+                disabled={mode.disabled}
+                className="flex-1"
+              >
+                {mode.icon ? <span>{mode.icon}</span> : null}
+                {mode.label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+          {selectedMode?.description ? (
+            <Card className="p-2">
+              <CardContent className="p-0">
+                <span className="text-muted-foreground text-xs">
+                  {selectedMode.description}
+                </span>
+              </CardContent>
+            </Card>
+          ) : null}
+        </>
+      )}
+    </div>
+  );
+}
+`,
   },
   "nudges": {
     bootstrap: `import { Alert, Button } from "react-bootstrap";
@@ -8918,6 +12329,68 @@ export function Nudges({
         </Alert>
       ))}
     </Stack>
+  );
+}
+`,
+    shadcn: `import { AlertTriangle, Info, Lightbulb, X } from "lucide-react";
+import { useState } from "react";
+
+import type { NudgesProps } from "@patternbase/core";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+
+export function Nudges({ nudges, onDismiss, maxVisible }: NudgesProps) {
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
+
+  const visible = nudges
+    .filter((n) => !dismissed.has(n.id))
+    .slice(0, maxVisible ?? nudges.length);
+
+  if (visible.length === 0) return null;
+
+  const getIcon = (type?: string) => {
+    if (type === "reminder") return <AlertTriangle className="size-4" />;
+    if (type === "suggestion") return <Info className="size-4" />;
+    return <Lightbulb className="size-4" />;
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      {visible.map((nudge) => (
+        <Alert key={nudge.id}>
+          {nudge.icon ? <span>{nudge.icon}</span> : getIcon(nudge.type)}
+          <div className="flex flex-1 items-start justify-between gap-2">
+            <div className="flex flex-col gap-1">
+              <AlertDescription>{nudge.message}</AlertDescription>
+              {nudge.actionLabel && nudge.onAction ? (
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  className="mt-1 w-fit"
+                  onClick={nudge.onAction}
+                >
+                  {nudge.actionLabel}
+                </Button>
+              ) : null}
+            </div>
+            {onDismiss ? (
+              <button
+                type="button"
+                className="shrink-0 opacity-50 hover:opacity-100"
+                aria-label="Dismiss"
+                onClick={() => {
+                  setDismissed((prev) => new Set(prev).add(nudge.id));
+                  onDismiss(nudge.id);
+                }}
+              >
+                <X className="size-4" />
+              </button>
+            ) : null}
+          </div>
+        </Alert>
+      ))}
+    </div>
   );
 }
 `,
@@ -9172,6 +12645,102 @@ export function OpenInput({
         </Tooltip>
       </Group>
     </Stack>
+  );
+}
+`,
+    shadcn: `import { Send } from "lucide-react";
+import { useRef, useState, type KeyboardEvent } from "react";
+
+import type { OpenInputProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+export function OpenInput({
+  placeholder = "Ask anything...",
+  onSubmit,
+  isLoading = false,
+  suggestions = [],
+  maxLength,
+  // TODO: multiModal & acceptedFileTypes are intentional no-ops (mantine parity).
+}: OpenInputProps) {
+  const [value, setValue] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleSubmit = () => {
+    if (value.trim()) {
+      onSubmit(value.trim());
+      setValue("");
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  return (
+    <TooltipProvider>
+      <div className="flex flex-col gap-2">
+        {suggestions.length > 0 && !value ? (
+          <div className="flex flex-wrap gap-2">
+            {suggestions.map((s) => (
+              <Badge
+                key={s}
+                variant="secondary"
+                className="cursor-pointer"
+                onClick={() => {
+                  setValue(s);
+                  textareaRef.current?.focus();
+                }}
+              >
+                {s}
+              </Badge>
+            ))}
+          </div>
+        ) : null}
+
+        <div className="flex items-end gap-2">
+          <Textarea
+            ref={textareaRef}
+            value={value}
+            onChange={(e) => {
+              setValue(e.currentTarget.value);
+            }}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            disabled={isLoading}
+            rows={1}
+            maxLength={maxLength}
+            className="max-h-28 min-h-9 flex-1 resize-none"
+          />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="icon"
+                onClick={handleSubmit}
+                disabled={!value.trim() || isLoading}
+                aria-label={isLoading ? "Generating..." : "Send"}
+              >
+                <Send data-icon="inline-start" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isLoading ? "Generating..." : "Send"}
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </div>
+    </TooltipProvider>
   );
 }
 `,
@@ -9568,6 +13137,169 @@ export function ParameterControl({
   );
 }
 `,
+    shadcn: `import { Info } from "lucide-react";
+
+import type {
+  ParameterControlItem,
+  ParameterControlProps,
+} from "@patternbase/core";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+
+interface MatrixControlProps {
+  param: ParameterControlItem;
+  onChange: (id: string, value: unknown) => void;
+}
+
+function MatrixControl({ param, onChange }: MatrixControlProps) {
+  const matrixValue = (param.value ?? {}) as Record<string, number>;
+  const xLabel = param.options?.[0]?.label ?? "X Axis";
+  const yLabel = param.options?.[1]?.label ?? "Y Axis";
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <p className="text-muted-foreground text-xs">{xLabel}</p>
+        <Slider
+          value={[matrixValue.x ?? 50]}
+          onValueChange={(v) => {
+            onChange(param.id, { ...matrixValue, x: v[0] ?? 50 });
+          }}
+        />
+      </div>
+      <div>
+        <p className="text-muted-foreground text-xs">{yLabel}</p>
+        <Slider
+          value={[matrixValue.y ?? 50]}
+          onValueChange={(v) => {
+            onChange(param.id, { ...matrixValue, y: v[0] ?? 50 });
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export function ParameterControl({
+  parameters,
+  onChange,
+  title = "Parameters",
+  layout = "vertical",
+}: ParameterControlProps) {
+  return (
+    <div className="flex flex-col gap-4">
+      {title ? <div className="text-base font-semibold">{title}</div> : null}
+
+      <div
+        className={cn(
+          "flex flex-col gap-3",
+          layout === "horizontal" && "flex-row flex-wrap",
+        )}
+      >
+        {parameters.map((param) => (
+          <div
+            key={param.id}
+            className={cn(
+              "flex flex-col gap-2",
+              layout === "horizontal" && "w-[200px]",
+            )}
+          >
+            <div className="flex items-center gap-1 text-sm font-medium">
+              {param.label}
+              {param.description ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        className="opacity-50"
+                        aria-label={\`\${param.label} info\`}
+                      >
+                        <Info className="size-3.5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>{param.description}</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : null}
+            </div>
+
+            {param.type === "slider" ? (
+              <>
+                <Slider
+                  min={param.min ?? 0}
+                  max={param.max ?? 100}
+                  step={param.step ?? 1}
+                  value={[param.value as number]}
+                  onValueChange={(v) => {
+                    onChange(param.id, v[0] ?? 0);
+                  }}
+                />
+                <p className="text-muted-foreground text-xs">
+                  Current: {String(param.value)}
+                </p>
+              </>
+            ) : null}
+
+            {param.type === "toggle" ? (
+              <Switch
+                checked={param.value as boolean}
+                onCheckedChange={(checked) => {
+                  onChange(param.id, checked);
+                }}
+              />
+            ) : null}
+
+            {param.type === "select" ? (
+              <Select
+                value={param.value as string}
+                onValueChange={(v) => {
+                  onChange(param.id, v);
+                }}
+              >
+                <SelectTrigger aria-label={param.label}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {param.options?.map((opt) => (
+                      <SelectItem
+                        key={String(opt.value)}
+                        value={String(opt.value)}
+                      >
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            ) : null}
+
+            {param.type === "matrix" ? (
+              <MatrixControl param={param} onChange={onChange} />
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+`,
   },
   "preset-styles": {
     bootstrap: `import { Button, Card } from "react-bootstrap";
@@ -9808,6 +13540,81 @@ export function PresetStyles({
   );
 }
 `,
+    shadcn: `import type { PresetStylesProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
+export function PresetStyles({
+  presets,
+  selectedPresetId,
+  onApplyPreset,
+  title,
+  variant = "buttons",
+}: PresetStylesProps) {
+  return (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+
+      {variant === "cards" ? (
+        <div className="grid grid-cols-2 gap-3">
+          {presets.map((preset) => (
+            <Card
+              key={preset.id}
+              className={cn(
+                "cursor-pointer p-3",
+                selectedPresetId === preset.id && "ring-2 ring-violet-600",
+              )}
+              onClick={() => {
+                onApplyPreset(preset.id, preset.values);
+              }}
+            >
+              <CardContent className="flex flex-col gap-2 p-0">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    {preset.icon ? <span>{preset.icon}</span> : null}
+                    <span className="text-sm font-semibold">
+                      {preset.label}
+                    </span>
+                  </div>
+                  {selectedPresetId === preset.id ? (
+                    <Badge variant="default" className="text-xs">
+                      Active
+                    </Badge>
+                  ) : null}
+                </div>
+                {preset.description ? (
+                  <span className="text-muted-foreground text-xs">
+                    {preset.description}
+                  </span>
+                ) : null}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-2">
+          {presets.map((preset) => (
+            <Button
+              key={preset.id}
+              variant={selectedPresetId === preset.id ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                onApplyPreset(preset.id, preset.values);
+              }}
+            >
+              {preset.icon ? <span>{preset.icon}</span> : null}
+              {preset.label}
+            </Button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+`,
   },
   "prompt-details": {
     bootstrap: `import { Badge, Card } from "react-bootstrap";
@@ -10022,6 +13829,90 @@ export function PromptDetails({
   return (
     <Card padding="sm" withBorder>
       {inner}
+    </Card>
+  );
+}
+`,
+    shadcn: `import type { PromptDetail, PromptDetailsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+
+function renderDetailValue(detail: PromptDetail) {
+  if (detail.type === "badge") {
+    return (
+      <Badge variant="secondary" className="text-xs">
+        {detail.value}
+      </Badge>
+    );
+  }
+  if (detail.type === "link" && detail.url) {
+    return (
+      <a
+        href={detail.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-primary text-xs underline-offset-4 hover:underline"
+      >
+        {detail.value}
+      </a>
+    );
+  }
+  return <span className="text-xs">{detail.value}</span>;
+}
+
+export function PromptDetails({
+  prompt,
+  details,
+  timestamp,
+  model,
+  tokenCount,
+  variant = "card",
+}: PromptDetailsProps) {
+  const inner = (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-semibold">Prompt Details</span>
+        <div className="flex items-center gap-2">
+          {model ? <Badge variant="secondary">{model}</Badge> : null}
+          {tokenCount !== undefined ? (
+            <Badge variant="secondary">{tokenCount} tokens</Badge>
+          ) : null}
+        </div>
+      </div>
+
+      <p className="text-muted-foreground text-sm italic">
+        &ldquo;{prompt}&rdquo;
+      </p>
+
+      {timestamp ? (
+        <span className="text-muted-foreground text-xs">
+          {timestamp.toLocaleString()}
+        </span>
+      ) : null}
+
+      {details.length > 0 ? (
+        <div className="flex flex-col gap-1">
+          {details.map((detail) => (
+            <div key={detail.id} className="flex items-center justify-between">
+              <span className="text-muted-foreground text-xs">
+                {detail.label}
+              </span>
+              {renderDetailValue(detail)}
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+
+  if (variant === "inline") {
+    return <div className="flex flex-col gap-3">{inner}</div>;
+  }
+
+  return (
+    <Card className="p-3">
+      <CardContent className="p-0">{inner}</CardContent>
     </Card>
   );
 }
@@ -10366,6 +14257,94 @@ export function PromptEnhancer({
   );
 }
 `,
+    shadcn: `import { Sparkles } from "lucide-react";
+
+import type { PromptEnhancerProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+
+export function PromptEnhancer({
+  prompt,
+  enhancedPrompt,
+  onEnhance,
+  onApply,
+  onEnhancedPromptChange,
+  isEnhancing = false,
+  title,
+  showDiff = false,
+}: PromptEnhancerProps) {
+  return (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+
+      <div className="flex flex-col gap-2">
+        <span className="text-muted-foreground text-xs font-medium">
+          Original
+        </span>
+        <Card className="p-3">
+          <CardContent className="p-0">
+            <span className="text-sm">{prompt}</span>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-fit"
+        onClick={() => {
+          onEnhance(prompt);
+        }}
+        disabled={isEnhancing}
+      >
+        <Sparkles className="size-3.5" />
+        Enhance Prompt
+      </Button>
+
+      {enhancedPrompt ? (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground text-xs font-medium">
+              Enhanced
+            </span>
+            <Badge variant="secondary" className="text-xs">
+              AI Improved
+            </Badge>
+          </div>
+          <Textarea
+            value={enhancedPrompt}
+            onChange={(e) => {
+              onEnhancedPromptChange?.(e.currentTarget.value);
+            }}
+            rows={2}
+            readOnly={!onEnhancedPromptChange}
+            className="min-h-16 resize-none"
+          />
+          {showDiff ? (
+            <span className="text-muted-foreground text-xs">
+              {prompt.length} → {enhancedPrompt.length} chars
+            </span>
+          ) : null}
+          {onApply ? (
+            <Button
+              size="sm"
+              className="w-fit"
+              onClick={() => {
+                onApply(enhancedPrompt);
+              }}
+            >
+              Apply
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+`,
   },
   "randomize": {
     bootstrap: `import { Button, Form, InputGroup, Spinner } from "react-bootstrap";
@@ -10557,6 +14536,112 @@ export function Randomize({
           Seed: {currentSeed}
         </Text> : null}
     </Stack>
+  );
+}
+`,
+    shadcn: `import { Dice5, Shuffle } from "lucide-react";
+
+import type { RandomizeProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+export function Randomize({
+  onRandomize,
+  isRandomizing = false,
+  currentSeed,
+  onSeedChange,
+  showSeed = false,
+  label = "Randomize",
+  variant = "button",
+}: RandomizeProps) {
+  if (variant === "icon") {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={onRandomize}
+              disabled={isRandomizing}
+              aria-label={label}
+            >
+              <Dice5 className="size-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>{label}</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  if (variant === "fab") {
+    return (
+      <Button
+        size="icon-lg"
+        className="rounded-full"
+        onClick={onRandomize}
+        disabled={isRandomizing}
+        aria-label={label}
+      >
+        <Shuffle className="size-5" />
+      </Button>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onRandomize}
+          disabled={isRandomizing}
+        >
+          <Dice5 className="size-3.5" />
+          {label}
+        </Button>
+      </div>
+      {showSeed ? (
+        <div className="flex items-center gap-2">
+          <Input
+            placeholder="Random seed..."
+            value={currentSeed ?? ""}
+            onChange={(e) => {
+              onSeedChange?.(e.currentTarget.value);
+            }}
+            className="h-7 text-xs"
+          />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={onRandomize}
+                  aria-label="Randomize seed"
+                >
+                  <Dice5 className="size-3" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Randomize seed</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ) : null}
+      {currentSeed && !showSeed ? (
+        <span className="text-muted-foreground text-xs">
+          Seed: {currentSeed}
+        </span>
+      ) : null}
+    </div>
   );
 }
 `,
@@ -10869,6 +14954,99 @@ export function References({
   );
 }
 `,
+    shadcn: `import { X } from "lucide-react";
+
+import type { ReferencesProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+
+export function References({
+  references,
+  onSelectReference,
+  onRemoveReference,
+  title = "References",
+  variant = "list",
+  showRelevance = false,
+}: ReferencesProps) {
+  const renderItem = (ref: (typeof references)[0]) => (
+    <Card
+      key={ref.id}
+      className={\`p-3 \${onSelectReference ? "cursor-pointer" : ""} \${ref.selected ? "ring-primary ring-2" : ""}\`}
+      onClick={() => onSelectReference?.(ref.id)}
+    >
+      <CardContent className="p-0">
+        <div className="flex items-start justify-between">
+          <div className="flex flex-1 flex-col gap-0.5">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">{ref.title}</span>
+              {ref.type ? <Badge variant="secondary">{ref.type}</Badge> : null}
+              {ref.selected ? <Badge>Selected</Badge> : null}
+            </div>
+            {ref.excerpt ? (
+              <span className="text-muted-foreground line-clamp-2 text-xs">
+                {ref.excerpt}
+              </span>
+            ) : null}
+            {ref.location ? (
+              <a
+                href={ref.location}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary text-xs underline"
+              >
+                {ref.location.length > 50
+                  ? \`\${ref.location.substring(0, 50)}...\`
+                  : ref.location}
+              </a>
+            ) : null}
+            {showRelevance && ref.relevance !== undefined ? (
+              <div className="flex items-center gap-2">
+                <Progress value={ref.relevance * 100} className="flex-1" />
+                <span className="text-muted-foreground text-xs">
+                  {Math.round(ref.relevance * 100)}%
+                </span>
+              </div>
+            ) : null}
+          </div>
+          {onRemoveReference ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-7"
+              aria-label="Remove"
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemoveReference(ref.id);
+              }}
+            >
+              <X className="size-3" />
+            </Button>
+          ) : null}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        <Badge variant="secondary">{references.length}</Badge>
+      </div>
+      {variant === "cards" ? (
+        <div className="grid grid-cols-2 gap-2">
+          {references.map(renderItem)}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">{references.map(renderItem)}</div>
+      )}
+    </div>
+  );
+}
+`,
   },
   "regenerate": {
     bootstrap: `import { Button, Dropdown, Spinner } from "react-bootstrap";
@@ -11070,6 +15248,99 @@ export function Regenerate({
       loading={isRegenerating}
       size="sm"
     >
+      Regenerate
+    </Button>
+  );
+}
+`,
+    shadcn: `import { Loader2, RefreshCw } from "lucide-react";
+
+import type { RegenerateProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+export function Regenerate({
+  onRegenerate,
+  isRegenerating = false,
+  variant = "button",
+  options,
+}: RegenerateProps) {
+  if (variant === "icon") {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="icon"
+              variant="ghost"
+              aria-label="Regenerate"
+              onClick={onRegenerate}
+              disabled={isRegenerating}
+            >
+              {isRegenerating ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <RefreshCw data-icon="inline-start" className="size-4" />
+              )}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Regenerate</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  if (variant === "dropdown" && options && options.length > 0) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" disabled={isRegenerating}>
+            {isRegenerating ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              <RefreshCw data-icon="inline-start" className="size-3.5" />
+            )}
+            Regenerate
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={onRegenerate}>Regenerate</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {options.map((opt) => (
+            <DropdownMenuItem key={opt.label} onClick={opt.onSelect}>
+              {opt.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={onRegenerate}
+      disabled={isRegenerating}
+    >
+      {isRegenerating ? (
+        <Loader2 className="size-3.5 animate-spin" />
+      ) : (
+        <RefreshCw data-icon="inline-start" className="size-3.5" />
+      )}
       Regenerate
     </Button>
   );
@@ -11341,6 +15612,94 @@ export function Restructure({
           </Card>
         </Stack> : null}
     </Stack>
+  );
+}
+`,
+    shadcn: `import type { RestructureProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
+
+export function Restructure({
+  content,
+  options,
+  onRestructure,
+  restructuredContent,
+  isProcessing = false,
+  showDiff = false,
+  title = "Restructure",
+  variant = "buttons",
+}: RestructureProps) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        {isProcessing ? <Spinner className="size-3" /> : null}
+      </div>
+
+      <Card>
+        <CardContent className="p-3">
+          <p className="text-sm">{content}</p>
+        </CardContent>
+      </Card>
+
+      {variant === "presets" ? (
+        <div className="grid grid-cols-2 gap-2">
+          {options.map((option) => (
+            <Card
+              key={option.id}
+              className="cursor-pointer"
+              onClick={() => {
+                onRestructure(option.id);
+              }}
+            >
+              <CardContent className="flex flex-col gap-0.5 p-3">
+                <span className="flex items-center gap-2 text-sm font-medium">
+                  {option.icon ? <span>{option.icon}</span> : null}
+                  {option.label}
+                </span>
+                {option.description ? (
+                  <span className="text-muted-foreground text-xs">
+                    {option.description}
+                  </span>
+                ) : null}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-center gap-2">
+          {options.map((option) => (
+            <Button
+              key={option.id}
+              variant="outline"
+              size="sm"
+              disabled={isProcessing}
+              onClick={() => {
+                onRestructure(option.id);
+              }}
+            >
+              {option.icon ? <span>{option.icon}</span> : null}
+              {option.label}
+            </Button>
+          ))}
+        </div>
+      )}
+
+      {restructuredContent ? (
+        <div className="flex flex-col gap-2">
+          <span className="text-muted-foreground text-xs font-medium uppercase">
+            {showDiff ? "Changes" : "Result"}
+          </span>
+          <Card>
+            <CardContent className="p-3">
+              <p className="text-sm">{restructuredContent}</p>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
+    </div>
   );
 }
 `,
@@ -11805,6 +16164,182 @@ export function Restyle({
   );
 }
 `,
+    shadcn: `import { useState } from "react";
+
+import type { RestyleProps } from "@patternbase/core";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
+
+export function Restyle({
+  content,
+  options,
+  onRestyle,
+  restyledContent,
+  isProcessing = false,
+  intensity,
+  onIntensityChange,
+  title = "Restyle",
+  variant = "presets",
+}: RestyleProps) {
+  const [selectedId, setSelectedId] = useState(options[0]?.id ?? "");
+
+  const handleSelect = (id: string) => {
+    setSelectedId(id);
+    onRestyle(id);
+  };
+
+  const renderOptions = () => {
+    if (variant === "gallery") {
+      return (
+        <div className="grid grid-cols-2 gap-2">
+          {options.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              className="text-left"
+              onClick={() => {
+                handleSelect(option.id);
+              }}
+            >
+              <Card
+                className={cn(
+                  "cursor-pointer",
+                  selectedId === option.id && "ring-primary ring-2",
+                )}
+              >
+                <CardContent className="flex flex-col gap-1 p-3">
+                  {option.preview ? (
+                    <span className="text-muted-foreground line-clamp-2 text-xs italic">
+                      {option.preview}
+                    </span>
+                  ) : null}
+                  <span className="text-xs font-medium">{option.label}</span>
+                  {option.description ? (
+                    <span className="text-muted-foreground text-xs">
+                      {option.description}
+                    </span>
+                  ) : null}
+                </CardContent>
+              </Card>
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    if (variant === "slider") {
+      return (
+        <div className="flex flex-col gap-2">
+          <span className="text-muted-foreground text-xs font-medium">
+            Style
+          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            {options.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                className="cursor-pointer"
+                onClick={() => {
+                  handleSelect(option.id);
+                }}
+              >
+                <span
+                  className={cn(
+                    "text-sm",
+                    selectedId === option.id
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground font-normal",
+                  )}
+                >
+                  {option.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        {options.map((option) => (
+          <button
+            key={option.id}
+            type="button"
+            className="cursor-pointer"
+            onClick={() => {
+              handleSelect(option.id);
+            }}
+          >
+            <Card
+              className={cn(
+                "cursor-pointer",
+                selectedId === option.id && "ring-primary ring-2",
+              )}
+            >
+              <CardContent className="flex items-center gap-2 p-3">
+                {option.icon ? <span>{option.icon}</span> : null}
+                <span className="text-sm">{option.label}</span>
+              </CardContent>
+            </Card>
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        {isProcessing ? <Spinner className="size-3" /> : null}
+      </div>
+
+      <Card>
+        <CardContent className="p-3">
+          <p className="text-sm">{content}</p>
+        </CardContent>
+      </Card>
+
+      {renderOptions()}
+
+      {intensity !== undefined && onIntensityChange ? (
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium">Intensity</span>
+            <span className="text-muted-foreground text-xs">{intensity}%</span>
+          </div>
+          <Slider
+            value={[intensity]}
+            onValueChange={(v) => {
+              onIntensityChange(v[0] ?? 0);
+            }}
+            min={0}
+            max={100}
+            step={1}
+          />
+        </div>
+      ) : null}
+
+      {restyledContent ? (
+        <div className="flex flex-col gap-2">
+          <span className="text-muted-foreground text-xs font-medium uppercase">
+            Result
+          </span>
+          <Card>
+            <CardContent className="p-3">
+              <p className="text-sm">{restyledContent}</p>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+`,
   },
   "sample-response": {
     bootstrap: `import { Button, Card, Spinner, Stack } from "react-bootstrap";
@@ -12061,6 +16596,94 @@ export function SampleResponse({
   return (
     <Card padding="sm" withBorder>
       {inner}
+    </Card>
+  );
+}
+`,
+    shadcn: `import { Check, RefreshCw, Wand2 } from "lucide-react";
+
+import type { SampleResponseProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
+
+export function SampleResponse({
+  sample,
+  prompt,
+  onGenerateSample,
+  onRegenerateSample,
+  onAcceptSample,
+  isGenerating = false,
+  title = "Sample Response",
+  variant = "card",
+}: SampleResponseProps) {
+  const inner = (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-semibold">{title}</span>
+        {isGenerating ? <Spinner className="size-3.5" /> : null}
+      </div>
+
+      {prompt ? (
+        <span className="text-muted-foreground text-xs italic">
+          &ldquo;{prompt}&rdquo;
+        </span>
+      ) : null}
+
+      {sample ? (
+        <>
+          <Textarea value={sample} readOnly rows={3} className="resize-none" />
+          <div className="flex items-center gap-2">
+            {onRegenerateSample ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onRegenerateSample}
+                disabled={isGenerating}
+              >
+                <RefreshCw className="size-3.5" />
+                Regenerate
+              </Button>
+            ) : null}
+            {onAcceptSample ? (
+              <Button
+                size="sm"
+                onClick={onAcceptSample}
+                disabled={isGenerating}
+              >
+                <Check className="size-3.5" />
+                Accept
+              </Button>
+            ) : null}
+          </div>
+        </>
+      ) : (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onGenerateSample}
+          disabled={isGenerating}
+        >
+          {isGenerating ? (
+            <Spinner className="size-3.5" />
+          ) : (
+            <Wand2 className="size-3.5" />
+          )}
+          Generate Sample
+        </Button>
+      )}
+    </div>
+  );
+
+  if (variant === "inline") {
+    return <div className="flex flex-col gap-3">{inner}</div>;
+  }
+
+  return (
+    <Card className="p-3">
+      <CardContent className="p-0">{inner}</CardContent>
     </Card>
   );
 }
@@ -12550,6 +17173,165 @@ export function SavedStyles({
   );
 }
 `,
+    shadcn: `import { Save, Star, Trash2 } from "lucide-react";
+import { useState } from "react";
+
+import type { SavedStylesProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export function SavedStyles({
+  styles,
+  selectedStyleId,
+  onSelectStyle,
+  onSaveStyle,
+  onDeleteStyle,
+  title,
+  variant = "list",
+  maxVisible,
+}: SavedStylesProps) {
+  const [saveName, setSaveName] = useState("");
+
+  const displayed = maxVisible ? styles.slice(0, maxVisible) : styles;
+
+  return (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+
+      <div className="flex items-center gap-2">
+        <Input
+          placeholder="Style name..."
+          value={saveName}
+          onChange={(e) => {
+            setSaveName(e.currentTarget.value);
+          }}
+          className="h-8 flex-1 text-sm"
+        />
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={!saveName.trim()}
+          onClick={() => {
+            if (saveName.trim()) {
+              onSaveStyle(saveName.trim());
+              setSaveName("");
+            }
+          }}
+        >
+          <Save className="size-3.5" />
+          Save
+        </Button>
+      </div>
+
+      {variant === "cards" ? (
+        <div className="flex flex-col gap-2">
+          {displayed.map((style) => (
+            <Card
+              key={style.id}
+              className={
+                selectedStyleId === style.id
+                  ? "cursor-pointer p-3 ring-2 ring-violet-600"
+                  : "cursor-pointer p-3"
+              }
+              onClick={() => {
+                onSelectStyle(style.id);
+              }}
+            >
+              <CardContent className="flex items-center justify-between p-0">
+                <div className="flex flex-col gap-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold">{style.name}</span>
+                    {style.isDefault ? (
+                      <Badge variant="secondary" className="text-xs">
+                        <Star className="size-2.5" />
+                        Default
+                      </Badge>
+                    ) : null}
+                    {selectedStyleId === style.id ? (
+                      <Badge variant="default" className="text-xs">
+                        Active
+                      </Badge>
+                    ) : null}
+                  </div>
+                  {style.description ? (
+                    <span className="text-muted-foreground text-xs">
+                      {style.description}
+                    </span>
+                  ) : null}
+                </div>
+                {onDeleteStyle ? (
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    className="text-destructive hover:text-destructive"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteStyle(style.id);
+                    }}
+                    aria-label={\`Delete \${style.name}\`}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </Button>
+                ) : null}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {displayed.map((style) => (
+            <div key={style.id} className="flex items-center justify-between">
+              <button
+                type="button"
+                className="flex flex-1 cursor-pointer items-center gap-2 text-left"
+                onClick={() => {
+                  onSelectStyle(style.id);
+                }}
+              >
+                <span
+                  className={
+                    selectedStyleId === style.id
+                      ? "text-sm font-semibold"
+                      : "text-sm"
+                  }
+                >
+                  {style.name}
+                </span>
+                {style.isDefault ? (
+                  <Badge variant="secondary" className="text-xs">
+                    Default
+                  </Badge>
+                ) : null}
+                {selectedStyleId === style.id ? (
+                  <Badge variant="default" className="text-xs">
+                    Active
+                  </Badge>
+                ) : null}
+              </button>
+              {onDeleteStyle ? (
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  className="text-destructive hover:text-destructive"
+                  onClick={() => {
+                    onDeleteStyle(style.id);
+                  }}
+                  aria-label={\`Delete \${style.name}\`}
+                >
+                  <Trash2 className="size-3.5" />
+                </Button>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+`,
   },
   "shared-vision": {
     bootstrap: `import { useState } from "react";
@@ -12980,6 +17762,216 @@ export function SharedVision({
   );
 }
 `,
+    shadcn: `import { Plus } from "lucide-react";
+import { useState } from "react";
+
+import type { SharedVisionProps } from "@patternbase/core";
+
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+const priorityVariant: Record<string, "default" | "secondary" | "destructive"> =
+  {
+    high: "destructive",
+    medium: "secondary",
+    low: "default",
+  };
+
+const contextVariant: Record<string, "default" | "secondary" | "destructive"> =
+  {
+    constraint: "destructive",
+    assumption: "secondary",
+    input: "default",
+  };
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
+}
+
+export function SharedVision({
+  participants,
+  goals,
+  context,
+  onAddGoal,
+  onSelectParticipant,
+  title = "Shared Vision",
+  variant = "board",
+}: SharedVisionProps) {
+  const [newGoal, setNewGoal] = useState("");
+
+  if (variant === "compact") {
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        <div className="flex flex-wrap items-center gap-2">
+          {participants.map((p) => (
+            <Badge
+              key={p.id}
+              variant={p.isActive ? "default" : "secondary"}
+              className={onSelectParticipant ? "cursor-pointer" : ""}
+              onClick={() => onSelectParticipant?.(p.id)}
+            >
+              {p.name}
+            </Badge>
+          ))}
+        </div>
+        <div className="flex flex-col gap-1">
+          {goals.map((g) => (
+            <div key={g.id} className="flex items-center gap-2">
+              <Badge
+                variant={priorityVariant[g.priority ?? "low"]}
+                className="text-xs"
+              >
+                {g.priority ?? "low"}
+              </Badge>
+              <span className="text-sm">{g.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <span className="text-sm font-semibold">{title}</span>
+      <div className="grid grid-cols-3 gap-3">
+        <Card className="p-3">
+          <CardContent className="p-0">
+            <div className="flex flex-col gap-2">
+              <span className="text-muted-foreground text-xs font-semibold uppercase">
+                Participants
+              </span>
+              {participants.map((p) => (
+                <div
+                  key={p.id}
+                  className={\`flex items-center gap-2 \${onSelectParticipant ? "cursor-pointer" : ""}\`}
+                  role={onSelectParticipant ? "button" : undefined}
+                  tabIndex={onSelectParticipant ? 0 : undefined}
+                  onClick={() => onSelectParticipant?.(p.id)}
+                  onKeyDown={(e) => {
+                    if (
+                      onSelectParticipant &&
+                      (e.key === "Enter" || e.key === " ")
+                    ) {
+                      e.preventDefault();
+                      onSelectParticipant(p.id);
+                    }
+                  }}
+                >
+                  <Avatar size="sm">
+                    <AvatarFallback>{getInitials(p.name)}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">{p.name}</span>
+                    {p.role ? (
+                      <span className="text-muted-foreground text-xs">
+                        {p.role}
+                      </span>
+                    ) : null}
+                  </div>
+                  {p.isActive ? (
+                    <Badge variant="default" className="text-xs">
+                      active
+                    </Badge>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="p-3">
+          <CardContent className="p-0">
+            <div className="flex flex-col gap-2">
+              <span className="text-muted-foreground text-xs font-semibold uppercase">
+                Goals
+              </span>
+              {goals.map((g) => (
+                <div key={g.id} className="flex items-start gap-2">
+                  <Badge
+                    variant={priorityVariant[g.priority ?? "low"]}
+                    className="text-xs"
+                  >
+                    {g.priority ?? "low"}
+                  </Badge>
+                  <span className="flex-1 text-sm">{g.text}</span>
+                </div>
+              ))}
+              {onAddGoal ? (
+                <div className="flex items-center gap-2">
+                  <Input
+                    placeholder="Add goal..."
+                    value={newGoal}
+                    onChange={(e) => {
+                      setNewGoal(e.target.value);
+                    }}
+                    className="h-7 text-xs"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && newGoal.trim()) {
+                        onAddGoal(newGoal.trim());
+                        setNewGoal("");
+                      }
+                    }}
+                  />
+                  <Button
+                    size="sm"
+                    className="h-7"
+                    aria-label="Add goal"
+                    disabled={!newGoal.trim()}
+                    onClick={() => {
+                      if (newGoal.trim()) {
+                        onAddGoal(newGoal.trim());
+                        setNewGoal("");
+                      }
+                    }}
+                  >
+                    <Plus className="size-3" />
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="p-3">
+          <CardContent className="p-0">
+            <div className="flex flex-col gap-2">
+              <span className="text-muted-foreground text-xs font-semibold uppercase">
+                Context
+              </span>
+              {context.map((c) => (
+                <div key={c.id} className="flex flex-col gap-0.5">
+                  <div className="flex items-center gap-2">
+                    <Badge
+                      variant={contextVariant[c.type ?? "input"]}
+                      className="text-xs"
+                    >
+                      {c.type ?? "input"}
+                    </Badge>
+                    <span className="text-xs font-medium">{c.label}</span>
+                  </div>
+                  <span className="text-muted-foreground text-xs">
+                    {c.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+`,
   },
   "stream-of-thought": {
     bootstrap: `import { useState } from "react";
@@ -13328,6 +18320,101 @@ export function StreamOfThought({
   );
 }
 `,
+    shadcn: `import type { StreamOfThoughtProps } from "@patternbase/core";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
+
+const STEP_LABELS: Record<string, string> = {
+  thinking: "Thinking",
+  action: "Action",
+  tool_call: "Tool Call",
+  result: "Result",
+};
+
+export function StreamOfThought({
+  steps,
+  isStreaming = false,
+  collapsible = true,
+}: StreamOfThoughtProps) {
+  if (collapsible) {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-semibold">Reasoning Process</span>
+          {isStreaming ? <Spinner className="size-3.5" /> : null}
+          <Badge variant="secondary">{steps.length} steps</Badge>
+        </div>
+        <Accordion type="multiple">
+          {steps.map((step, index) => (
+            <AccordionItem key={step.id} value={step.id}>
+              <AccordionTrigger>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="text-xs">
+                    {index + 1}
+                  </Badge>
+                  <span className="text-sm font-medium capitalize">
+                    {STEP_LABELS[step.type] ?? step.type.replace(/_/g, " ")}
+                  </span>
+                  <span className="text-muted-foreground line-clamp-1 flex-1 text-xs">
+                    {step.content.substring(0, 80)}
+                  </span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col gap-2">
+                  <span className="whitespace-pre-wrap text-sm">
+                    {step.content}
+                  </span>
+                  {step.metadata && Object.keys(step.metadata).length > 0 ? (
+                    <code className="text-muted-foreground text-xs">
+                      {JSON.stringify(step.metadata, null, 2)}
+                    </code>
+                  ) : null}
+                  <span className="text-muted-foreground text-xs">
+                    {new Date(step.timestamp).toLocaleString()}
+                  </span>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-semibold">Reasoning Process</span>
+        {isStreaming ? <Spinner className="size-3.5" /> : null}
+      </div>
+      {steps.map((step, index) => (
+        <div
+          key={step.id}
+          className="flex flex-col gap-2 rounded-lg border p-3"
+        >
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-xs">
+              {index + 1}
+            </Badge>
+            <span className="text-sm font-medium capitalize">
+              {STEP_LABELS[step.type] ?? step.type.replace(/_/g, " ")}
+            </span>
+          </div>
+          <span className="text-sm">{step.content}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+`,
   },
   "suggestions": {
     bootstrap: `import { Badge, Card, Col, Row } from "react-bootstrap";
@@ -13511,6 +18598,86 @@ export function Suggestions({
         </Card>
       ))}
     </SimpleGrid>
+  );
+}
+`,
+    shadcn: `import type { SuggestionsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
+export function Suggestions({
+  suggestions,
+  onSelect,
+  columns = 2,
+  variant = "card",
+}: SuggestionsProps) {
+  if (variant === "chip") {
+    return (
+      <div className="flex flex-wrap gap-2">
+        {suggestions.map((s) => (
+          <Badge
+            key={s.id}
+            variant="secondary"
+            className="cursor-pointer"
+            role="button"
+            tabIndex={0}
+            onClick={() => {
+              onSelect(s);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onSelect(s);
+              }
+            }}
+          >
+            {s.icon ? <span className="mr-1">{s.icon}</span> : null}
+            {s.title}
+          </Badge>
+        ))}
+      </div>
+    );
+  }
+
+  const gridClass =
+    columns === 2
+      ? "grid-cols-2"
+      : columns === 3
+        ? "grid-cols-3"
+        : "grid-cols-4";
+
+  return (
+    <div className={cn("grid gap-2", gridClass)}>
+      {suggestions.map((s) => (
+        <Card
+          key={s.id}
+          className="cursor-pointer"
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            onSelect(s);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              onSelect(s);
+            }
+          }}
+        >
+          <CardContent className="flex flex-col gap-1 p-3">
+            <div className="text-sm font-semibold">
+              {s.icon ? <span className="mr-1.5">{s.icon}</span> : null}
+              {s.title}
+            </div>
+            {s.description ? (
+              <p className="text-muted-foreground text-xs">{s.description}</p>
+            ) : null}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
   );
 }
 `,
@@ -13843,6 +19010,142 @@ export function Summary({
     <Card withBorder padding="md">
       {inner}
     </Card>
+  );
+}
+`,
+    shadcn: `import { ChevronDown, ChevronUp, Copy, RefreshCw, ZoomIn } from "lucide-react";
+import { useState } from "react";
+
+import type { SummaryProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+export function Summary({
+  content,
+  originalLength,
+  summaryLength,
+  onRegenerate,
+  onCopy,
+  onExpand,
+  isGenerating = false,
+  title = "Summary",
+  variant = "card",
+}: SummaryProps) {
+  const [collapsed, setCollapsed] = useState(true);
+
+  const inner = (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold">{title}</span>
+          {isGenerating ? <Spinner className="size-3" /> : null}
+        </div>
+        <div className="flex items-center gap-2">
+          {originalLength !== undefined && summaryLength !== undefined ? (
+            <span className="text-muted-foreground text-xs">
+              {summaryLength}/{originalLength} chars
+            </span>
+          ) : null}
+          {onCopy ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  aria-label="Copy"
+                  onClick={onCopy}
+                >
+                  <Copy data-icon="inline-start" className="size-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Copy</TooltipContent>
+            </Tooltip>
+          ) : null}
+          {onRegenerate ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  aria-label="Regenerate"
+                  onClick={onRegenerate}
+                  disabled={isGenerating}
+                >
+                  <RefreshCw data-icon="inline-start" className="size-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Regenerate</TooltipContent>
+            </Tooltip>
+          ) : null}
+          {onExpand ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  aria-label="Expand"
+                  onClick={onExpand}
+                >
+                  <ZoomIn data-icon="inline-start" className="size-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Expand</TooltipContent>
+            </Tooltip>
+          ) : null}
+          {variant === "collapsible" ? (
+            <Button
+              size="icon"
+              variant="ghost"
+              aria-label={collapsed ? "Show content" : "Hide content"}
+              onClick={() => {
+                setCollapsed((c) => !c);
+              }}
+            >
+              {collapsed ? (
+                <ChevronDown className="size-3.5" />
+              ) : (
+                <ChevronUp className="size-3.5" />
+              )}
+            </Button>
+          ) : null}
+        </div>
+      </div>
+
+      {variant === "collapsible" ? (
+        <Collapsible open={!collapsed}>
+          <CollapsibleContent>
+            <p className="text-sm">{content}</p>
+          </CollapsibleContent>
+        </Collapsible>
+      ) : (
+        <p className="text-sm">{content}</p>
+      )}
+    </div>
+  );
+
+  if (variant === "inline") {
+    return (
+      <TooltipProvider>
+        <div className="flex flex-col gap-2">{inner}</div>
+      </TooltipProvider>
+    );
+  }
+
+  return (
+    <TooltipProvider>
+      <Card>
+        <CardContent className="flex flex-col gap-2 p-4">{inner}</CardContent>
+      </Card>
+    </TooltipProvider>
   );
 }
 `,
@@ -14304,6 +19607,165 @@ export function Synthesis({
   );
 }
 `,
+    shadcn: `import { RefreshCw } from "lucide-react";
+
+import type { SynthesisProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Spinner } from "@/components/ui/spinner";
+
+const insightVariant: Record<string, "default" | "secondary" | "destructive"> =
+  {
+    fact: "default",
+    inference: "secondary",
+    theme: "secondary",
+  };
+
+export function Synthesis({
+  sources,
+  insights,
+  onSourceClick,
+  onRegenerate,
+  isProcessing = false,
+  title = "Synthesis",
+  showSources = true,
+  showConfidence = false,
+  variant: _variant = "aggregated",
+}: SynthesisProps) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-semibold">{title}</span>
+          {isProcessing ? <Spinner className="size-3.5" /> : null}
+          {sources.length > 0 ? (
+            <Badge variant="secondary">{sources.length} sources</Badge>
+          ) : null}
+        </div>
+        {onRegenerate ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onRegenerate}
+            disabled={isProcessing}
+          >
+            <RefreshCw className="size-3.5" />
+            Regenerate
+          </Button>
+        ) : null}
+      </div>
+
+      {insights.length > 0 ? (
+        <div className="flex flex-col gap-2">
+          <span className="text-muted-foreground text-xs font-medium uppercase">
+            Insights
+          </span>
+          {insights.map((insight) => (
+            <Card key={insight.id} className="p-3">
+              <CardContent className="p-0">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    {insight.type ? (
+                      <Badge
+                        variant={insightVariant[insight.type] ?? "secondary"}
+                      >
+                        {insight.type}
+                      </Badge>
+                    ) : null}
+                    <span className="text-sm">{insight.text}</span>
+                  </div>
+                  {showConfidence && insight.confidence !== undefined ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground text-xs">
+                        Confidence:
+                      </span>
+                      <Progress
+                        value={insight.confidence * 100}
+                        className="flex-1"
+                      />
+                      <span className="text-muted-foreground text-xs">
+                        {Math.round(insight.confidence * 100)}%
+                      </span>
+                    </div>
+                  ) : null}
+                  {insight.sourceIds.length > 0 ? (
+                    <div className="flex flex-wrap gap-1">
+                      {insight.sourceIds.map((id) => {
+                        const src = sources.find((s) => s.id === id);
+                        return src ? (
+                          <Badge
+                            key={id}
+                            variant="outline"
+                            className={onSourceClick ? "cursor-pointer" : ""}
+                            onClick={() => onSourceClick?.(id)}
+                          >
+                            {src.title}
+                          </Badge>
+                        ) : null;
+                      })}
+                    </div>
+                  ) : null}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : null}
+
+      {showSources && sources.length > 0 ? (
+        <div className="flex flex-col gap-2">
+          <span className="text-muted-foreground text-xs font-medium uppercase">
+            Sources
+          </span>
+          {sources.map((source) => (
+            <Card
+              key={source.id}
+              className={\`p-2 \${onSourceClick ? "cursor-pointer" : ""}\`}
+              onClick={() => onSourceClick?.(source.id)}
+            >
+              <CardContent className="p-0">
+                <div className="flex items-start justify-between">
+                  <div className="flex flex-1 flex-col gap-0.5">
+                    <span className="text-xs font-medium">{source.title}</span>
+                    {source.content ? (
+                      <span className="text-muted-foreground line-clamp-2 text-xs">
+                        {source.content}
+                      </span>
+                    ) : null}
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary text-xs underline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        {source.url.length > 50
+                          ? \`\${source.url.substring(0, 50)}...\`
+                          : source.url}
+                      </a>
+                    ) : null}
+                  </div>
+                  {source.relevance !== undefined ? (
+                    <Badge variant="secondary" className="text-xs">
+                      {Math.round(source.relevance * 100)}% relevant
+                    </Badge>
+                  ) : null}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+`,
   },
   "templates": {
     bootstrap: `import { useState } from "react";
@@ -14658,6 +20120,135 @@ export function Templates({
   );
 }
 `,
+    shadcn: `import { Search } from "lucide-react";
+import { useState } from "react";
+
+import type { TemplatesProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+
+function gridCols(columns: number) {
+  if (columns === 2) return "grid-cols-2";
+  if (columns === 3) return "grid-cols-3";
+  return "grid-cols-4";
+}
+
+export function Templates({
+  templates,
+  onSelect,
+  layout = "grid",
+  columns = 2,
+  searchable = false,
+  groupByCategory = false,
+}: TemplatesProps) {
+  const [query, setQuery] = useState("");
+
+  const filtered = query.trim()
+    ? templates.filter(
+        (t) =>
+          t.name.toLowerCase().includes(query.toLowerCase()) ||
+          t.description?.toLowerCase().includes(query.toLowerCase()),
+      )
+    : templates;
+
+  const gridClass = gridCols(columns);
+
+  const renderCard = (t: (typeof templates)[0]) => (
+    <Card
+      key={t.id}
+      className="cursor-pointer p-3"
+      onClick={() => {
+        onSelect(t);
+      }}
+    >
+      <CardContent className="flex flex-col gap-2 p-0">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-2">
+            {t.icon ? <span>{t.icon}</span> : null}
+            <span className="text-sm font-semibold">{t.name}</span>
+          </div>
+          {t.category ? (
+            <Badge variant="secondary" className="text-xs">
+              {t.category}
+            </Badge>
+          ) : null}
+        </div>
+        {t.description ? (
+          <span className="text-muted-foreground text-xs">{t.description}</span>
+        ) : null}
+      </CardContent>
+    </Card>
+  );
+
+  const grouped = groupByCategory
+    ? filtered.reduce<Record<string, typeof filtered>>((acc, t) => {
+        const cat = t.category ?? "Other";
+        acc[cat] = [...(acc[cat] ?? []), t];
+        return acc;
+      }, {})
+    : null;
+
+  const renderTemplates = () => {
+    if (grouped) {
+      return (
+        <div className="flex flex-col gap-4">
+          {Object.entries(grouped).map(([category, items]) => (
+            <div key={category} className="flex flex-col gap-2">
+              <span className="text-muted-foreground text-xs font-medium uppercase">
+                {category}
+              </span>
+              {layout === "grid" ? (
+                <div className={cn("grid gap-3", gridClass)}>
+                  {items.map(renderCard)}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {items.map(renderCard)}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    if (layout === "grid") {
+      return (
+        <div className={cn("grid gap-3", gridClass)}>
+          {filtered.map(renderCard)}
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col gap-2">{filtered.map(renderCard)}</div>
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      {searchable ? (
+        <div className="relative">
+          <Search className="text-muted-foreground absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2" />
+          <Input
+            placeholder="Search templates..."
+            value={query}
+            onChange={(e) => {
+              setQuery(e.currentTarget.value);
+            }}
+            className="h-8 pl-8 text-sm"
+          />
+        </div>
+      ) : null}
+
+      {renderTemplates()}
+    </div>
+  );
+}
+`,
   },
   "transform": {
     bootstrap: `import { Button, Card, Dropdown, Spinner } from "react-bootstrap";
@@ -14925,6 +20516,64 @@ export function Transform({
         ))}
       </Group>
     </Stack>
+  );
+}
+`,
+    shadcn: `import { Loader2, Wand2 } from "lucide-react";
+
+import type { TransformOption, TransformProps } from "@patternbase/core";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+function renderLeadingIcon(
+  icon: TransformOption["icon"],
+  isTransforming: boolean,
+) {
+  if (isTransforming) {
+    return <Loader2 className="size-3.5 animate-spin" />;
+  }
+  if (icon) {
+    return <span>{icon}</span>;
+  }
+  return <Wand2 className="size-3.5" />;
+}
+
+export function Transform({
+  content,
+  options,
+  onTransform,
+  transformedContent,
+  isTransforming = false,
+  title,
+}: TransformProps) {
+  return (
+    <div className="flex flex-col gap-3">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+
+      <Card>
+        <CardContent className="p-3">
+          <p className="text-sm">{transformedContent ?? content}</p>
+        </CardContent>
+      </Card>
+
+      <div className="flex flex-wrap items-center gap-2">
+        {options.map((opt) => (
+          <Button
+            key={opt.id}
+            variant="outline"
+            size="sm"
+            disabled={isTransforming}
+            onClick={() => {
+              onTransform(opt.id);
+            }}
+          >
+            {renderLeadingIcon(opt.icon, isTransforming)}
+            {opt.label}
+          </Button>
+        ))}
+      </div>
+    </div>
   );
 }
 `,
@@ -15238,6 +20887,91 @@ export function Variations({
         </Card>
       ))}
     </SimpleGrid>
+  );
+}
+`,
+    shadcn: `import { Check } from "lucide-react";
+
+import type { VariationsProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+
+export function Variations({
+  variations,
+  selectedId,
+  onSelect,
+  layout = "grid",
+  columns = 2,
+}: VariationsProps) {
+  if (layout === "tabs") {
+    return (
+      <Tabs
+        value={selectedId ?? variations[0]?.id}
+        onValueChange={(key) => {
+          if (key) onSelect?.(key);
+        }}
+      >
+        <TabsList>
+          {variations.map((v, i) => (
+            <TabsTrigger key={v.id} value={v.id}>
+              {v.label ?? \`Variation \${String(i + 1)}\`}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {variations.map((v) => (
+          <TabsContent key={v.id} value={v.id}>
+            <span className="text-sm">{v.content}</span>
+          </TabsContent>
+        ))}
+      </Tabs>
+    );
+  }
+
+  const renderCard = (v: (typeof variations)[0], index: number) => (
+    <Card
+      key={v.id}
+      className={\`\${selectedId === v.id ? "ring-primary ring-2" : ""} \${onSelect ? "cursor-pointer" : ""}\`}
+      onClick={() => onSelect?.(v.id)}
+    >
+      <CardContent className="p-3">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">
+              {v.label ??
+                (layout === "list"
+                  ? \`#\${String(index + 1)}\`
+                  : \`Variation \${String(index + 1)}\`)}
+            </Badge>
+            {selectedId === v.id ? (
+              <Badge>
+                <Check className="size-3" />
+                Selected
+              </Badge>
+            ) : null}
+          </div>
+          <span className="text-sm">{v.content}</span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  if (layout === "list") {
+    return (
+      <div className="flex flex-col gap-2">
+        {variations.map((v, i) => renderCard(v, i))}
+      </div>
+    );
+  }
+
+  const gridClass = columns === 2 ? "grid-cols-2" : "grid-cols-3";
+
+  return (
+    <div className={cn("grid gap-2", gridClass)}>
+      {variations.map((v, i) => renderCard(v, i))}
+    </div>
   );
 }
 `,
@@ -15565,6 +21299,98 @@ export function Verification({
   );
 }
 `,
+    shadcn: `import { Check, ExternalLink, HelpCircle, X } from "lucide-react";
+
+import type { VerificationProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+
+const statusVariant: Record<string, "default" | "secondary" | "destructive"> = {
+  verified: "default",
+  disputed: "destructive",
+  uncertain: "secondary",
+};
+
+const statusIcon: Record<string, React.ReactNode> = {
+  verified: <Check className="size-3" />,
+  disputed: <X className="size-3" />,
+  uncertain: <HelpCircle className="size-3" />,
+};
+
+export function Verification({
+  claims,
+  onRunVerification,
+  onSelectClaim,
+  title = "Verification",
+  showSources = true,
+  variant: _variant = "list",
+}: VerificationProps) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-semibold">{title}</span>
+        {onRunVerification ? (
+          <Button variant="secondary" size="sm" onClick={onRunVerification}>
+            Run Verification
+          </Button>
+        ) : null}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        {claims.map((claim) => (
+          <Card
+            key={claim.id}
+            className={\`\${onSelectClaim ? "cursor-pointer" : ""} p-3\`}
+            onClick={() => onSelectClaim?.(claim.id)}
+          >
+            <CardContent className="p-0">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-start justify-between">
+                  <span className="flex-1 text-sm">{claim.text}</span>
+                  <Badge variant={statusVariant[claim.status ?? "uncertain"]}>
+                    {statusIcon[claim.status ?? "uncertain"]}
+                    {claim.status ?? "unknown"}
+                  </Badge>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground text-xs">
+                    Confidence:
+                  </span>
+                  <Progress value={claim.confidence * 100} className="flex-1" />
+                  <span className="text-muted-foreground text-xs">
+                    {Math.round(claim.confidence * 100)}%
+                  </span>
+                </div>
+
+                {showSources && claim.url ? (
+                  <a
+                    href={claim.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary flex items-center gap-1 text-xs"
+                  >
+                    <ExternalLink className="size-2.5" />
+                    {claim.source ?? "Source"}
+                  </a>
+                ) : null}
+                {showSources && claim.source && !claim.url ? (
+                  <span className="text-muted-foreground text-xs">
+                    {claim.source}
+                  </span>
+                ) : null}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+`,
   },
   "voice-and-tone": {
     bootstrap: `import { Card, Form } from "react-bootstrap";
@@ -15764,6 +21590,77 @@ export function VoiceAndTone({
         </Stack>
       ))}
     </Stack>
+  );
+}
+`,
+    shadcn: `import type { VoiceAndToneProps } from "@patternbase/core";
+
+import { Slider } from "@/components/ui/slider";
+
+export function VoiceAndTone({
+  axes,
+  onChange,
+  title = "Voice & Tone",
+  showValues = false,
+  variant = "sliders",
+}: VoiceAndToneProps) {
+  return (
+    <div className="flex flex-col gap-4">
+      {title ? <span className="text-sm font-semibold">{title}</span> : null}
+
+      {axes.map((axis) => (
+        <div key={axis.id} className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">{axis.label}</span>
+            {showValues ? (
+              <span className="text-muted-foreground text-xs">
+                {axis.value}
+              </span>
+            ) : null}
+          </div>
+          {variant === "compact" ? (
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground min-w-[60px] text-xs">
+                {axis.leftLabel}
+              </span>
+              <Slider
+                min={axis.min ?? 0}
+                max={axis.max ?? 100}
+                step={axis.step ?? 1}
+                value={[axis.value]}
+                onValueChange={(v) => {
+                  onChange(axis.id, v[0] ?? 0);
+                }}
+                className="flex-1"
+              />
+              <span className="text-muted-foreground min-w-[60px] text-right text-xs">
+                {axis.rightLabel}
+              </span>
+            </div>
+          ) : (
+            <>
+              <Slider
+                min={axis.min ?? 0}
+                max={axis.max ?? 100}
+                step={axis.step ?? 1}
+                value={[axis.value]}
+                onValueChange={(v) => {
+                  onChange(axis.id, v[0] ?? 0);
+                }}
+              />
+              <div className="flex justify-between">
+                <span className="text-muted-foreground text-xs">
+                  {axis.leftLabel}
+                </span>
+                <span className="text-muted-foreground text-xs">
+                  {axis.rightLabel}
+                </span>
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
   );
 }
 `,
@@ -16020,6 +21917,89 @@ export function Watermark({
           Verify
         </Button> : null}
     </Group>
+  );
+}
+`,
+    shadcn: `import { Droplet, ShieldCheck } from "lucide-react";
+
+import type { WatermarkProps } from "@patternbase/core";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+export function Watermark({
+  label = "AI Generated",
+  visibility = "visible",
+  variant = "badge",
+  confidence,
+  algorithm,
+  onVerify,
+}: WatermarkProps) {
+  if (visibility === "invisible" && variant !== "banner") {
+    return null;
+  }
+
+  if (variant === "inline") {
+    return (
+      <div className="flex items-center gap-2">
+        <Droplet className="size-3 opacity-50" />
+        <span className="text-muted-foreground text-xs">{label}</span>
+        {confidence !== undefined ? (
+          <span className="text-muted-foreground text-xs">
+            ({Math.round(confidence * 100)}%)
+          </span>
+        ) : null}
+        {onVerify ? (
+          <Button variant="ghost" size="sm" className="h-7" onClick={onVerify}>
+            Verify
+          </Button>
+        ) : null}
+      </div>
+    );
+  }
+
+  if (variant === "banner") {
+    return (
+      <div className="bg-muted flex flex-col gap-2 rounded p-2">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="size-4" />
+          <span className="text-sm font-medium">{label}</span>
+          {confidence !== undefined ? (
+            <Badge variant="secondary" className="text-xs">
+              {Math.round(confidence * 100)}% confident
+            </Badge>
+          ) : null}
+        </div>
+        {algorithm ? (
+          <span className="text-muted-foreground text-xs">
+            Algorithm: {algorithm}
+          </span>
+        ) : null}
+        {onVerify ? (
+          <Button variant="secondary" size="sm" onClick={onVerify}>
+            <ShieldCheck className="size-3" />
+            Verify
+          </Button>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <Badge variant="secondary">
+        <Droplet className="size-2.5" />
+        {label}
+        {confidence !== undefined
+          ? \` · \${String(Math.round(confidence * 100))}%\`
+          : null}
+      </Badge>
+      {onVerify ? (
+        <Button variant="ghost" size="sm" className="h-7" onClick={onVerify}>
+          Verify
+        </Button>
+      ) : null}
+    </div>
   );
 }
 `,

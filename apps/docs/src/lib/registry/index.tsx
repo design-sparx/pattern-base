@@ -5,11 +5,13 @@ import type * as React from "react";
 import { antdRegistry } from "./antd";
 import { bootstrapRegistry } from "./bootstrap";
 import { mantineRegistry } from "./mantine";
+import { shadcnRegistry } from "./shadcn";
 
 export interface RegistryEntry {
   bootstrap: React.ComponentType;
   antd: React.ComponentType;
   mantine: React.ComponentType;
+  shadcn: React.ComponentType;
 }
 
 const ids = [
@@ -17,6 +19,7 @@ const ids = [
     ...Object.keys(bootstrapRegistry),
     ...Object.keys(antdRegistry),
     ...Object.keys(mantineRegistry),
+    ...Object.keys(shadcnRegistry),
   ]),
 ];
 
@@ -26,8 +29,9 @@ export const componentRegistry: Record<string, RegistryEntry> =
       const bootstrap = bootstrapRegistry[id];
       const antd = antdRegistry[id];
       const mantine = mantineRegistry[id];
-      return bootstrap && antd && mantine
-        ? [[id, { bootstrap, antd, mantine }]]
+      const shadcn = shadcnRegistry[id];
+      return bootstrap && antd && mantine && shadcn
+        ? [[id, { bootstrap, antd, mantine, shadcn }]]
         : [];
     }),
   );

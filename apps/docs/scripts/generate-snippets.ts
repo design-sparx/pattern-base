@@ -9,7 +9,7 @@
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-type Framework = "bootstrap" | "antd" | "mantine";
+type Framework = "bootstrap" | "antd" | "mantine" | "shadcn";
 
 const ROOT_DIR = join(import.meta.dirname, "..", "..", "..");
 const PACKAGES_DIR = join(ROOT_DIR, "packages");
@@ -26,6 +26,7 @@ const FRAMEWORK_DIRS: Record<Framework, string> = {
   bootstrap: "bootstrap",
   antd: "antd",
   mantine: "mantine",
+  shadcn: "shadcn",
 };
 
 function getComponentSource(
@@ -71,11 +72,13 @@ function generateSnippetTemplates(): void {
     const mantine = escapeTemplateString(
       getComponentSource("mantine", pattern),
     );
+    const shadcn = escapeTemplateString(getComponentSource("shadcn", pattern));
 
     entries.push(`  "${pattern}": {
     bootstrap: \`${bootstrap}\`,
     antd: \`${antd}\`,
     mantine: \`${mantine}\`,
+    shadcn: \`${shadcn}\`,
   }`);
   }
 
@@ -87,7 +90,7 @@ function generateSnippetTemplates(): void {
 
 export const codeSnippets: Record<
   string,
-  { bootstrap: string; antd: string; mantine: string }
+  { bootstrap: string; antd: string; mantine: string; shadcn: string }
 > = {
 ${entries.join(",\n")}
 };
@@ -99,7 +102,7 @@ ${entries.join(",\n")}
   // eslint-disable-next-line no-console
   console.log(`Patterns: ${String(patterns.length)}`);
   // eslint-disable-next-line no-console
-  console.log(`Frameworks: bootstrap, antd, mantine`);
+  console.log(`Frameworks: bootstrap, antd, mantine, shadcn`);
 }
 
 generateSnippetTemplates();

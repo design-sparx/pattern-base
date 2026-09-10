@@ -27,6 +27,7 @@ import {
   LazyAntdSlot,
   LazyBootstrapSlot,
   LazyMantineSlot,
+  LazyShadcnSlot,
   preloadInactiveSlots,
 } from "./framework-slots";
 import { useWorkbench } from "./workbench-context";
@@ -55,12 +56,14 @@ const INSTALL_COMMANDS: Record<Framework, string> = {
   antd: "pnpm add antd @ant-design/icons",
   mantine:
     "pnpm add @mantine/core @mantine/hooks @mantine/dropzone @tabler/icons-react",
+  shadcn: "pnpm add @patternbase/shadcn tailwindcss",
 };
 
 const FRAMEWORK_SLOTS: Record<Framework, React.ElementType> = {
   bootstrap: LazyBootstrapSlot,
   antd: LazyAntdSlot,
   mantine: LazyMantineSlot,
+  shadcn: LazyShadcnSlot,
 };
 
 export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
@@ -188,6 +191,7 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
             { label: "Bootstrap", value: "bootstrap" },
             { label: "Ant Design", value: "antd" },
             { label: "Mantine", value: "mantine" },
+            { label: "shadcn/ui", value: "shadcn" },
           ]}
         />
       </Group>

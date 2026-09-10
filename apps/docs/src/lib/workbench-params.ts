@@ -1,4 +1,4 @@
-export const FRAMEWORKS = ["bootstrap", "antd", "mantine"] as const;
+export const FRAMEWORKS = ["bootstrap", "antd", "mantine", "shadcn"] as const;
 export type Framework = (typeof FRAMEWORKS)[number];
 
 export const INSPECTOR_TABS = ["code", "props", "docs"] as const;
