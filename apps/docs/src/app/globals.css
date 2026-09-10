@@ -1,5 +1,8 @@
 @import "@mantine/core/styles.css";
 @import "@mantine/spotlight/styles.css";
+@import "@patternbase/shadcn/styles.css";
+
+@source "../../../../packages/shadcn/src/components";
 
 :root {
   --header-height: 60px;
@@ -123,7 +126,9 @@ body {
 .category-arrow {
   opacity: 0.35;
   color: var(--mantine-color-dimmed);
-  transition: opacity 0.2s, transform 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
 }
 
 @media (prefers-reduced-motion: no-preference) {

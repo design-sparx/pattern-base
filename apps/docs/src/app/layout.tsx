@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     default: "PatternBase - AI UX Pattern Library",
   },
   description:
-    "A multi-framework component library for AI user experience patterns. 54 battle-tested patterns for Bootstrap, Ant Design, and Mantine.",
+    "A multi-framework component library for AI user experience patterns. 54 battle-tested patterns for Bootstrap, Ant Design, Mantine, and shadcn/ui.",
   metadataBase: new URL(BASE_URL),
   openGraph: {
     type: "website",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     siteName: "PatternBase",
     title: "PatternBase - AI UX Pattern Library",
     description:
-      "54 battle-tested AI UX patterns for React — implemented in Bootstrap, Ant Design, and Mantine.",
+      "54 battle-tested AI UX patterns for React — implemented in Bootstrap, Ant Design, Mantine, and shadcn/ui.",
     images: [
       {
         url: "/og-default.png",
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "PatternBase - AI UX Pattern Library",
     description:
-      "54 battle-tested AI UX patterns for React — implemented in Bootstrap, Ant Design, and Mantine.",
+      "54 battle-tested AI UX patterns for React — implemented in Bootstrap, Ant Design, Mantine, and shadcn/ui.",
     images: ["/og-default.png"],
   },
   robots: {

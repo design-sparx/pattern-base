@@ -35,7 +35,12 @@ export interface RelatedPatternLink {
 
 interface InspectorPaneProps {
   patternId: string;
-  snippets: { bootstrap: string; antd: string; mantine: string };
+  snippets: {
+    bootstrap: string;
+    antd: string;
+    mantine: string;
+    shadcn: string;
+  };
   propDefinitions?: PropDefinition[];
   explanation?: PatternExplanation | null;
   relatedLinks?: readonly RelatedPatternLink[];

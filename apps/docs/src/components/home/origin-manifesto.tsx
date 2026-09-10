@@ -17,7 +17,7 @@ const DEFAULT_PRINCIPLES = [
   {
     label: "P—01",
     title: "Multi-framework",
-    body: "React Bootstrap, Ant Design, and Mantine implementations behind identical prop interfaces.",
+    body: "Bootstrap, Ant Design, Mantine, and shadcn/ui implementations behind identical prop interfaces.",
   },
   {
     label: "P—02",
@@ -27,7 +27,7 @@ const DEFAULT_PRINCIPLES = [
   {
     label: "P—03",
     title: "Fully typed",
-    body: "Strict TypeScript across packages so all three frameworks stay behaviorally in sync.",
+    body: "Strict TypeScript across packages so all four frameworks stay behaviorally in sync.",
   },
 ];
 

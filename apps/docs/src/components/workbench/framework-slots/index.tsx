@@ -21,6 +21,11 @@ export const LazyMantineSlot = dynamic(
   { loading: () => <PreviewSkeleton /> },
 );
 
+export const LazyShadcnSlot = dynamic(
+  () => import("./shadcn-slot").then((m) => ({ default: m.ShadcnSlot })),
+  { loading: () => <PreviewSkeleton /> },
+);
+
 /** Fetches the inactive framework chunks during browser idle time. */
 export function preloadInactiveSlots(active: Framework) {
   if (typeof window === "undefined") return;
@@ -28,6 +33,7 @@ export function preloadInactiveSlots(active: Framework) {
     { name: "bootstrap", load: () => import("./bootstrap-slot") },
     { name: "antd", load: () => import("./antd-slot") },
     { name: "mantine", load: () => import("./mantine-slot") },
+    { name: "shadcn", load: () => import("./shadcn-slot") },
   ];
   const schedule =
     "requestIdleCallback" in window
