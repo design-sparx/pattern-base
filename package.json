@@ -14,6 +14,9 @@
     "format:check": "prettier --check .",
     "prepare": "husky",
     "release": "release-it",
+    "release:patch": "release-it patch",
+    "release:minor": "release-it minor",
+    "release:major": "release-it major",
     "release:dry": "release-it --dry-run"
   },
   "devDependencies": {
