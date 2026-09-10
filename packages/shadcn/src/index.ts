@@ -3,4 +3,6 @@
 
 export { OpenInput } from "./components/open-input";
 
+export { ParameterControl } from "./components/parameter-control";
+
 export { Suggestions } from "./components/suggestions";

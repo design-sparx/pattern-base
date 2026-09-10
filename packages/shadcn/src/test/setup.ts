@@ -1,5 +1,29 @@
 import "@testing-library/jest-dom/vitest";
 
+if (typeof globalThis.PointerEvent === "undefined") {
+  globalThis.PointerEvent = MouseEvent as unknown as typeof PointerEvent;
+}
+
+if (
+  typeof globalThis.HTMLElement !== "undefined" &&
+  !HTMLElement.prototype.hasPointerCapture
+) {
+  HTMLElement.prototype.hasPointerCapture = function hasPointerCapture() {
+    return false;
+  } as typeof HTMLElement.prototype.hasPointerCapture;
+  HTMLElement.prototype.setPointerCapture =
+    function setPointerCapture() {} as typeof HTMLElement.prototype.setPointerCapture;
+  HTMLElement.prototype.releasePointerCapture =
+    function releasePointerCapture() {} as typeof HTMLElement.prototype.releasePointerCapture;
+}
+
+if (
+  typeof globalThis.HTMLElement !== "undefined" &&
+  !HTMLElement.prototype.scrollIntoView
+) {
+  HTMLElement.prototype.scrollIntoView = function scrollIntoView() {};
+}
+
 if (typeof globalThis.ResizeObserver === "undefined") {
   class ResizeObserverStub {
     observe() {}
