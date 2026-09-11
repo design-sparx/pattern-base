@@ -2,8 +2,9 @@
 
 import { useTheme } from "next-themes";
 
-import styles from "@/components/common/editorial.module.css";
 import type { OriginManifestoProps } from "@/components/common/home-props";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 
 const DEFAULT_PRINCIPLES = [
   {
@@ -36,30 +37,21 @@ export function OriginManifesto({
   const isDark = resolvedTheme === "dark";
 
   return (
-    <section
-      id={id}
-      className={`${isDark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-900"} py-12 md:py-[72px]`}
-    >
+    <section id={id} className="bg-muted py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4">
-        <span
-          className={`${styles.editorialKicker} ${isDark ? "text-violet-400" : "text-violet-600"}`}
-        >
+        <Badge variant="outline" className="mb-3 font-mono">
           {kicker}
-        </span>
-        <h2
-          className={`${styles.editorialDisplay} mt-4 text-4xl font-light italic leading-tight`}
-        >
+        </Badge>
+        <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
           {title}
         </h2>
-        <p
-          className={`mt-4 leading-relaxed ${isDark ? "text-gray-400" : "text-gray-700"}`}
-        >
+        <p className="text-muted-foreground mt-4 leading-relaxed">
           {description}{" "}
           <a
             href={shapeofHref}
             target="_blank"
             rel="noopener noreferrer"
-            className={isDark ? "text-violet-400" : "text-violet-600"}
+            className="text-primary underline-offset-4 hover:underline"
           >
             {shapeofLabel}
           </a>{" "}
@@ -68,26 +60,21 @@ export function OriginManifesto({
           them.
         </p>
       </div>
-      <div className="mx-auto mt-6 max-w-7xl px-4">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+      <div className="mx-auto mt-8 max-w-7xl px-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {principles.map((principle) => (
-            <div key={principle.label} className="sm:col-span-1">
-              <span
-                className={`font-mono text-xs ${isDark ? "text-violet-400" : "text-violet-600"}`}
-              >
+            <Card
+              key={principle.label}
+              className="border-border bg-background h-full"
+            >
+              <span className="text-primary font-mono text-xs">
                 {principle.label}
               </span>
-              <h4
-                className={`mt-1.5 ${isDark ? "text-gray-200" : "text-gray-900"}`}
-              >
-                {principle.title}
-              </h4>
-              <p
-                className={`mt-1.5 text-sm leading-relaxed ${isDark ? "text-gray-400" : "text-gray-600"}`}
-              >
+              <h4 className="mt-2 font-medium">{principle.title}</h4>
+              <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                 {principle.body}
               </p>
-            </div>
+            </Card>
           ))}
         </div>
       </div>

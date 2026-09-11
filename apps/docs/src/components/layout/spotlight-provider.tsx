@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";
-import { registry } from "@/lib/registry";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
 import { categories, patterns } from "@/data/patterns";
+import { registry } from "@/lib/registry";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   "prompt-actions": "⌨️",
@@ -34,7 +35,9 @@ export function SpotlightProvider({
       }
     };
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   const items = useMemo(() => {
@@ -54,11 +57,13 @@ export function SpotlightProvider({
   return (
     <>
       {children}
-      {open && (
+      {open ? (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]">
           <div
             className="fixed inset-0 bg-black/50"
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setOpen(false);
+            }}
           />
           <div className="relative w-full max-w-xl rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-800">
@@ -66,7 +71,9 @@ export function SpotlightProvider({
               <input
                 autoFocus
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
                 placeholder="Search patterns..."
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400 dark:text-gray-100"
               />
@@ -110,7 +117,7 @@ export function SpotlightProvider({
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }

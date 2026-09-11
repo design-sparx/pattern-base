@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
+import { IconX } from "@tabler/icons-react";
 import { cn } from "cn";
 import { Dialog as DialogPrimitive } from "radix-ui";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
-import { IconX } from "@tabler/icons-react";
 
 function Dialog({
   ...props
@@ -67,7 +67,7 @@ function DialogContent({
         {...props}
       >
         {children}
-        {showCloseButton && (
+        {showCloseButton ? (
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="ghost"
@@ -78,7 +78,7 @@ function DialogContent({
               <span className="sr-only">Close</span>
             </Button>
           </DialogPrimitive.Close>
-        )}
+        ) : null}
       </DialogPrimitive.Content>
     </DialogPortal>
   );
@@ -112,11 +112,11 @@ function DialogFooter({
       {...props}
     >
       {children}
-      {showCloseButton && (
+      {showCloseButton ? (
         <DialogPrimitive.Close asChild>
           <Button variant="outline">Close</Button>
         </DialogPrimitive.Close>
-      )}
+      ) : null}
     </div>
   );
 }

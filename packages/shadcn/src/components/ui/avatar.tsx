@@ -1,6 +1,6 @@
-import * as React from "react";
 import { cn } from "cn";
 import { Avatar as AvatarPrimitive } from "radix-ui";
+import * as React from "react";
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
@@ -109,9 +109,9 @@ const AvatarGroupCount = React.forwardRef<
 
 export {
   Avatar,
-  AvatarImage,
-  AvatarFallback,
   AvatarBadge,
+  AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
+  AvatarImage,
 };

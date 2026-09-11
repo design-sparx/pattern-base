@@ -3,6 +3,7 @@ dist/
 .next/
 .turbo/
 *.tsbuildinfo
+.superpowers/
 .env
 .env.local
 .env.*.local

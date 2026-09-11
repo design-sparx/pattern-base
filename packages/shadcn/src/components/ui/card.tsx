@@ -1,5 +1,5 @@
-import * as React from "react";
 import { cn } from "cn";
+import * as React from "react";
 
 const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
   function Card({ className, ...props }, ref) {
@@ -108,10 +108,10 @@ const CardFooter = React.forwardRef<
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
   CardAction,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 };

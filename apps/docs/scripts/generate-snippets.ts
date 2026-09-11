@@ -6,7 +6,7 @@
  * and generates apps/docs/src/data/snippet-templates.ts with embedded implementations.
  */
 
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 type Framework = "bootstrap" | "antd" | "shadcn";

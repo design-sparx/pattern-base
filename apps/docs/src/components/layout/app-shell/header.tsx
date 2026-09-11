@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useTheme } from "next-themes";
 import {
   IconBrandGithub,
   IconMoon,
@@ -10,6 +7,9 @@ import {
   IconSparkles,
   IconSun,
 } from "@tabler/icons-react";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useState } from "react";
 
 export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   const { setTheme, resolvedTheme } = useTheme();
@@ -56,7 +56,9 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 
       <div className="flex items-center gap-2">
         <button
-          onClick={() => setSearchOpen(true)}
+          onClick={() => {
+            setSearchOpen(true);
+          }}
           className="header-search flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-500 transition-colors duration-150 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
           aria-label="Search patterns"
           style={{ minWidth: 220 }}
@@ -73,7 +75,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
           </div>
         </button>
 
-        {searchOpen && (
+        {searchOpen ? (
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]">
             <div className="w-full max-w-xl rounded-lg border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-800 dark:bg-gray-900">
               <input
@@ -82,17 +84,21 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
                 className="w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm outline-none dark:border-gray-700"
               />
               <button
-                onClick={() => setSearchOpen(false)}
+                onClick={() => {
+                  setSearchOpen(false);
+                }}
                 className="mt-2 text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               >
                 Close
               </button>
             </div>
           </div>
-        )}
+        ) : null}
 
         <button
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+          onClick={() => {
+            setTheme(resolvedTheme === "dark" ? "light" : "dark");
+          }}
           aria-label="Toggle color scheme"
           className="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
         >

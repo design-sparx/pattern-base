@@ -1,6 +1,7 @@
 "use client";
 
 import { IconHome, IconRefresh } from "@tabler/icons-react";
+
 import { Button } from "@/components/ui/button";
 
 export default function GlobalError({

@@ -1,7 +1,7 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { ConfigProvider, theme as antdTheme } from "antd";
+import { useTheme } from "next-themes";
 
 import { antdRegistry } from "@/lib/registry/antd";
 

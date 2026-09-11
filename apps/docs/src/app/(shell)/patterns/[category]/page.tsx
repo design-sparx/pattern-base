@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { PatternIndexRow } from "@/components/common/pattern-index-row";
 import styles from "@/components/common/editorial.module.css";
+
+import { PatternIndexRow } from "@/components/common/pattern-index-row";
 import {
   categories,
   getCategoryById,

@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   IconCompass,
   IconEye,
@@ -11,6 +9,8 @@ import {
   IconSettings,
   IconShield,
 } from "@tabler/icons-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { categories, getPatternsByCategory } from "@/data/patterns";
 
@@ -43,7 +43,7 @@ export function Sidebar() {
         const catPatterns = getPatternsByCategory(cat.id);
         const isCatActive = pathname.includes(`/patterns/${cat.id}`);
         const isOpen = pathname.includes(`/patterns/${cat.id}`);
-        const Icon = categoryIcons[cat.id] ?? LayoutGrid;
+        const Icon = categoryIcons[cat.id] ?? IconLayoutGrid;
 
         return (
           <div key={cat.id} className="flex flex-col">
@@ -58,7 +58,7 @@ export function Sidebar() {
               <Icon size={16} />
               {cat.name} ({catPatterns.length})
             </Link>
-            {isOpen && (
+            {isOpen ? (
               <div className="ml-4 flex flex-col gap-0.5 border-l border-gray-200 pl-2 dark:border-gray-700">
                 {catPatterns.map((p) => (
                   <Link
@@ -74,7 +74,7 @@ export function Sidebar() {
                   </Link>
                 ))}
               </div>
-            )}
+            ) : null}
           </div>
         );
       })}

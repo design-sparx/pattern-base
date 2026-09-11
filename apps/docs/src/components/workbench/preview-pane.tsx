@@ -3,10 +3,10 @@
 import {
   IconCheck,
   IconCopy,
+  IconDeviceDesktop,
+  IconDeviceMobile,
+  IconDeviceTablet,
   IconDownload,
-  IconMonitor,
-  IconSmartphone,
-  IconTablet,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
@@ -18,20 +18,20 @@ import {
 } from "./framework-slots";
 import { useWorkbench } from "./workbench-context";
 
+import { PreviewErrorBoundary } from "@/components/preview/error-boundary";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { PreviewErrorBoundary } from "@/components/preview/error-boundary";
 import {
   type Framework,
   type Viewport,
@@ -39,9 +39,9 @@ import {
 } from "@/lib/workbench-params";
 
 const viewportIcons: Record<Viewport, React.ElementType> = {
-  mobile: IconSmartphone,
-  tablet: IconTablet,
-  desktop: IconMonitor,
+  mobile: IconDeviceMobile,
+  tablet: IconDeviceTablet,
+  desktop: IconDeviceDesktop,
 };
 
 const viewportWidths: Record<Viewport, number | undefined> = {
@@ -77,7 +77,9 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(INSTALL_COMMANDS[framework]);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
 
   return (

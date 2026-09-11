@@ -1,6 +1,6 @@
-import * as React from "react";
 import { cn } from "cn";
 import { Popover as PopoverPrimitive } from "radix-ui";
+import * as React from "react";
 
 const Popover = ({
   ...props
@@ -98,10 +98,10 @@ const PopoverDescription = React.forwardRef<
 
 export {
   Popover,
-  PopoverTrigger,
-  PopoverContent,
   PopoverAnchor,
+  PopoverContent,
+  PopoverDescription,
   PopoverHeader,
   PopoverTitle,
-  PopoverDescription,
+  PopoverTrigger,
 };

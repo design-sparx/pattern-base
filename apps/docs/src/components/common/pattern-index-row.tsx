@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import type { PatternMeta } from "@patternbase/core";
 
 interface PatternIndexRowProps {

@@ -2,6 +2,7 @@
 
 import { IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
 import { useEffect } from "react";
+
 import { Button } from "@/components/ui/button";
 
 interface ErrorPageProps {
@@ -25,11 +26,11 @@ export default function ErrorPage({ error, reset }: Readonly<ErrorPageProps>) {
           <p className="text-gray-500 dark:text-gray-400">
             An unexpected error occurred while loading this page.
           </p>
-          {error.digest && (
+          {error.digest ? (
             <code className="w-full rounded-md border border-gray-200 bg-gray-50 p-2 text-xs dark:border-gray-700 dark:bg-gray-800">
               {error.digest}
             </code>
-          )}
+          ) : null}
           <div className="flex items-center gap-3">
             <Button variant="secondary" onClick={reset}>
               <IconRefresh size={14} />

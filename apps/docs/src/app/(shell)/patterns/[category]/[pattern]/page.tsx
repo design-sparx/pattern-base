@@ -1,15 +1,3 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-
-import type { RelatedPatternLink } from "@/components/workbench/inspector-pane";
-import { Workbench } from "@/components/workbench/workbench";
-import { patternExplanations } from "@/data/pattern-explanations";
-import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
-import { propsData } from "@/data/props-data";
-import { codeSnippets } from "@/data/snippet-templates";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -20,6 +8,18 @@ import {
   IconSettings,
   IconShield,
 } from "@tabler/icons-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import type { RelatedPatternLink } from "@/components/workbench/inspector-pane";
+import { Workbench } from "@/components/workbench/workbench";
+import { patternExplanations } from "@/data/pattern-explanations";
+import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
+import { propsData } from "@/data/props-data";
+import { codeSnippets } from "@/data/snippet-templates";
 
 const categoryIcons: Record<string, React.ElementType> = {
   "prompt-actions": IconKeyboard,

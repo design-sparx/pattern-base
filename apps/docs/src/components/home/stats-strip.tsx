@@ -1,7 +1,7 @@
 "use client";
 
-import styles from "@/components/common/editorial.module.css";
 import type { StatsStripProps } from "@/components/common/home-props";
+import { Card, CardContent } from "@/components/ui/card";
 import { patterns } from "@/data/patterns";
 
 const DEFAULT_ITEMS = [
@@ -13,21 +13,21 @@ const DEFAULT_ITEMS = [
 
 export function StatsStrip({ items = DEFAULT_ITEMS }: StatsStripProps) {
   return (
-    <div className="grid grid-cols-2 gap-0 md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {items.map((item) => (
-        <div
+        <Card
           key={item.label}
-          className="border border-gray-200 p-4 md:p-6 dark:border-gray-800"
+          className="border-border bg-background hover:border-primary transition-colors"
         >
-          <p
-            className={`${styles.editorialDisplay} text-2xl font-light md:text-4xl`}
-          >
-            {item.value}
-          </p>
-          <p className="mt-1 text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500">
-            {item.label}
-          </p>
-        </div>
+          <CardContent>
+            <p className="text-primary font-mono text-2xl font-semibold md:text-4xl">
+              {item.value}
+            </p>
+            <p className="text-muted-foreground mt-1 text-xs uppercase tracking-wider">
+              {item.label}
+            </p>
+          </CardContent>
+        </Card>
       ))}
     </div>
   );

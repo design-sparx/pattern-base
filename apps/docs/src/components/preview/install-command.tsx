@@ -15,7 +15,9 @@ export function InstallCommand({ command }: InstallCommandProps) {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(command);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
 
   return (

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { useMemo } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
+import * as React from "react";
+import { useMemo } from "react";
 
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -183,7 +183,7 @@ const FieldSeparator = React.forwardRef<
     <div
       ref={ref}
       data-slot="field-separator"
-      data-content={!!children}
+      data-content={Boolean(children)}
       className={cn(
         "relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2",
         className,
@@ -191,14 +191,14 @@ const FieldSeparator = React.forwardRef<
       {...props}
     >
       <Separator className="absolute inset-0 top-1/2" />
-      {children && (
+      {children ? (
         <span
           className="bg-background text-muted-foreground relative mx-auto block w-fit px-2"
           data-slot="field-separator-content"
         >
           {children}
         </span>
-      )}
+      ) : null}
     </div>
   );
 });
@@ -206,7 +206,7 @@ const FieldSeparator = React.forwardRef<
 const FieldError = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
-    errors?: Array<{ message?: string } | undefined>;
+    errors?: ({ message?: string } | undefined)[];
   }
 >(function FieldError({ className, children, errors, ...props }, ref) {
   const content = useMemo(() => {
@@ -222,7 +222,7 @@ const FieldError = React.forwardRef<
       ...new Map(errors.map((error) => [error?.message, error])).values(),
     ];
 
-    if (uniqueErrors?.length == 1) {
+    if (uniqueErrors.length == 1) {
       return uniqueErrors[0]?.message;
     }
 
@@ -255,13 +255,13 @@ const FieldError = React.forwardRef<
 
 export {
   Field,
-  FieldLabel,
+  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
+  FieldLabel,
   FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldContent,
   FieldTitle,
 };

@@ -2,11 +2,12 @@
 
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+
+import styles from "@/components/common/editorial.module.css";
 
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
-import styles from "@/components/common/editorial.module.css";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { categories, getFilteredPatterns, patterns } from "@/data/patterns";
 
 const TAG_FILTERS = [
@@ -42,7 +43,9 @@ export function PatternsIndex() {
           <Input
             placeholder="Filter patterns…"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+            }}
             className="pl-9"
             aria-label="Filter patterns by name or keyword"
           />
@@ -53,7 +56,9 @@ export function PatternsIndex() {
               key={t}
               variant={tag === t ? "default" : "outline"}
               size="xs"
-              onClick={() => setTag(t)}
+              onClick={() => {
+                setTag(t);
+              }}
               className="capitalize"
             >
               {t}

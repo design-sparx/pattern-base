@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { IconChevronRight } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getCategoryById, getPatternBySlug } from "@/data/patterns";

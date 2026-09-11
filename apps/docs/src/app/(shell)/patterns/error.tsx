@@ -2,6 +2,7 @@
 
 import { IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
 import { useEffect } from "react";
+
 import { Button } from "@/components/ui/button";
 
 interface PatternErrorProps {
@@ -28,11 +29,11 @@ export default function PatternError({
           This pattern could not be rendered. The component may have an
           incompatible dependency or a rendering error.
         </p>
-        {error.digest && (
+        {error.digest ? (
           <code className="w-full rounded-md border border-gray-200 bg-gray-50 p-2 text-xs dark:border-gray-700 dark:bg-gray-800">
             {error.digest}
           </code>
-        )}
+        ) : null}
         <Button variant="secondary" onClick={reset}>
           <IconRefresh size={14} />
           Try again

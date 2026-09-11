@@ -26,12 +26,12 @@ export interface OriginManifestoProps {
 }
 
 export interface CategoryIndexProps {
-  categories?: Array<{
+  categories?: {
     id: string;
     name: string;
     description: string;
     count: number;
-  }>;
+  }[];
   getHref?: (id: string) => string;
 }
 

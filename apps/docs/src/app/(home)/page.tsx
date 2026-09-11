@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 
-import { Button } from "@/components/ui/button";
-import styles from "@/components/common/editorial.module.css";
 import { CategoryIndex } from "@/components/home/category-index";
 import { FeaturedPatterns } from "@/components/home/featured-patterns";
+import { FeaturedResources } from "@/components/home/featured-resources";
+import { HomeAnnouncement } from "@/components/home/home-announcement";
+import { NewsletterSignup } from "@/components/home/newsletter-signup";
 import { OriginManifesto } from "@/components/home/origin-manifesto";
+import { PatternFilterTabs } from "@/components/home/pattern-filter-tabs";
 import { StatsStrip } from "@/components/home/stats-strip";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "PatternBase — AI UX Pattern Library",
@@ -16,82 +20,183 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <div className="mx-auto max-w-7xl px-4 pb-12 pt-20 md:pb-12 md:pt-20 lg:pt-20">
-        <p
-          className={`${styles.editorialKicker} text-xs text-violet-600 dark:text-violet-400`}
-        >
-          An open-source component library
-        </p>
-        <h1
-          className={`${styles.editorialDisplay} mt-4 text-4xl font-extralight leading-tight md:text-5xl lg:text-6xl`}
-          style={{ maxWidth: "48rem" }}
-        >
+      <HomeAnnouncement />
+
+      <div className="mx-auto max-w-7xl px-4 pb-12 pt-16 md:pb-12 md:pt-20 lg:pt-20">
+        <Badge variant="outline" className="font-mono">
+          &lt;AI UX Pattern Library /&gt;
+        </Badge>
+        <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
           The missing UX patterns for{" "}
-          <span className="font-normal italic text-violet-600 dark:text-violet-400">
-            AI products,
-          </span>{" "}
-          ready to ship.
+          <span className="bg-linear-to-r from-primary to-[oklch(0.6_0.2_290)] bg-clip-text text-transparent">
+            AI products
+          </span>
+          , ready to ship.
         </h1>
-        <p className="mt-6 max-w-xl text-base leading-relaxed">
+        <p className="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed">
           Fifty-four interaction patterns distilled from shapeof.ai — each
           implemented for Bootstrap, Ant Design, and shadcn/ui. Study them here,
           copy them into your product.
         </p>
-        <div className="mt-8 flex items-center gap-4">
-          <a href="/patterns">
-            <Button
-              variant="default"
-              size="lg"
-              className="rounded-full bg-violet-700 text-white hover:bg-violet-800 dark:bg-violet-600 dark:hover:bg-violet-500"
-            >
-              Browse patterns
-            </Button>
-          </a>
-          <a
-            href="#about"
-            className="text-sm font-semibold text-violet-600 dark:text-violet-400"
-          >
-            Read the approach ↓
-          </a>
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Button size="lg" className="rounded-full" asChild>
+            <a href="/patterns">Browse patterns</a>
+          </Button>
+          <Button variant="outline" size="lg" className="rounded-full" asChild>
+            <a href="#about">Read the approach</a>
+          </Button>
+        </div>
+
+        <div className="border-border bg-muted mt-12 rounded-2xl border p-4 md:p-6">
+          <div className="border-border flex items-center gap-2 border-b pb-3">
+            <div className="flex gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+              <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+              <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+            </div>
+            <span className="text-muted-foreground ml-2 font-mono text-xs">
+              terminal
+            </span>
+          </div>
+          <div className="mt-4 space-y-1 font-mono text-xs leading-relaxed">
+            <div>
+              <span className="text-primary">$</span> npx pattern-base init
+              my-ai-app
+            </div>
+            <div className="text-muted-foreground">
+              ✓ Created 54 UX patterns
+            </div>
+            <div className="text-muted-foreground">
+              ✓ Bootstrap, Ant Design, shadcn/ui
+            </div>
+            <div className="text-muted-foreground">✓ TypeScript ready</div>
+            <div className="flex items-center gap-1">
+              <span className="text-primary">$</span>
+              <span
+                className="bg-primary relative inline-flex h-4 w-1.5"
+                style={{
+                  animation: "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="mx-auto max-w-7xl px-4 pt-16">
-        <StatsStrip />
-      </div>
+      <section className="border-border border-t">
+        <div className="mx-auto max-w-7xl px-4 py-6">
+          <StatsStrip />
+        </div>
+      </section>
 
       {/* Featured */}
-      <div className="mx-auto max-w-7xl px-4 pt-16">
-        <div className="mb-6 flex items-center justify-between">
-          <h2
-            className={`${styles.editorialDisplay} text-2xl font-extralight md:text-3xl`}
-          >
-            Featured patterns
-          </h2>
-          <a
-            href="/patterns"
-            className="text-sm font-semibold text-violet-600 dark:text-violet-400"
-          >
-            View all 54 →
-          </a>
+      <section className="border-border border-t">
+        <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
+          <div className="mb-6 flex items-start justify-between">
+            <div>
+              <Badge variant="outline" className="mb-2 font-mono">
+                Featured patterns
+              </Badge>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Start here
+              </h2>
+              <p className="text-muted-foreground mt-1 text-sm">
+                The most impactful AI UX patterns to explore first
+              </p>
+            </div>
+            <Button variant="ghost" size="sm" className="rounded-full" asChild>
+              <a href="/patterns">View all 54 →</a>
+            </Button>
+          </div>
+
+          <PatternFilterTabs />
+
+          <div className="mt-6">
+            <FeaturedPatterns />
+          </div>
         </div>
-        <FeaturedPatterns />
-      </div>
+      </section>
 
-      {/* Category index */}
-      <div className="mx-auto max-w-7xl px-4 pb-16 pt-16">
-        <h2
-          className={`${styles.editorialDisplay} mb-6 text-2xl font-extralight md:text-3xl`}
-        >
-          Browse by intent
-        </h2>
-        <CategoryIndex />
-      </div>
+      {/* Browse by intent */}
+      <section className="border-border border-t">
+        <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
+          <div className="flex items-start gap-10">
+            <div className="hidden w-52 shrink-0 lg:block">
+              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+                On this page
+              </p>
+              <nav className="mt-3 flex flex-col gap-0.5">
+                <a
+                  className="border-primary text-primary border-l-2 px-3 py-1 text-xs"
+                  href="#featured"
+                >
+                  Featured patterns
+                </a>
+                <a
+                  className="text-muted-foreground hover:border-primary hover:text-foreground border-l-2 border-transparent px-3 py-1 text-xs"
+                  href="#browse"
+                >
+                  Browse by intent
+                </a>
+                <a
+                  className="text-muted-foreground hover:border-primary hover:text-foreground border-l-2 border-transparent px-3 py-1 text-xs"
+                  href="#about"
+                >
+                  About the library
+                </a>
+                <a
+                  className="text-muted-foreground hover:border-primary hover:text-foreground border-l-2 border-transparent px-3 py-1 text-xs"
+                  href="#resources"
+                >
+                  Latest updates
+                </a>
+              </nav>
+            </div>
+            <div className="flex-1" id="browse">
+              <Badge variant="outline" className="mb-2 font-mono">
+                Browse by intent
+              </Badge>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Find what you need
+              </h2>
+              <div className="mt-6">
+                <CategoryIndex />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Origin (absorbs /about) */}
-      <OriginManifesto />
+      {/* Origin */}
+      <OriginManifesto id="about" />
+
+      {/* Featured resources */}
+      <section className="border-border border-t" id="resources">
+        <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <Badge variant="outline" className="mb-2 font-mono">
+                Featured resources
+              </Badge>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Latest updates
+              </h2>
+            </div>
+            <Button variant="ghost" size="sm" className="rounded-full">
+              All resources →
+            </Button>
+          </div>
+          <FeaturedResources />
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="border-border border-t">
+        <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
+          <NewsletterSignup />
+        </div>
+      </section>
     </>
   );
 }

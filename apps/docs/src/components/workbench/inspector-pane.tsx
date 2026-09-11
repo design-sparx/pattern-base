@@ -56,7 +56,9 @@ export function InspectorPane({
     return (
       <button
         key={value}
-        onClick={() => setTab(value)}
+        onClick={() => {
+          setTab(value);
+        }}
         className={[
           TAB_STYLES.base,
           isActive ? TAB_STYLES.active : "border-b-2 border-transparent",
@@ -79,15 +81,15 @@ export function InspectorPane({
         {activeTab === "code" && (
           <CodeBlock code={snippets[framework]} filename={`${patternId}.tsx`} />
         )}
-        {activeTab === "props" && propDefinitions?.length && (
+        {activeTab === "props" && propDefinitions?.length ? (
           <PropsTable props={propDefinitions} />
-        )}
-        {activeTab === "docs" && explanation && (
+        ) : null}
+        {activeTab === "docs" && explanation ? (
           <InspectorDocs
             explanation={explanation}
             relatedLinks={relatedLinks ?? []}
           />
-        )}
+        ) : null}
       </div>
     </div>
   );

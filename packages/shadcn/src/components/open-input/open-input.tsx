@@ -1,5 +1,5 @@
 import { Send } from "lucide-react";
-import { useRef, useState, type KeyboardEvent } from "react";
+import { type KeyboardEvent, useRef, useState } from "react";
 
 import type { OpenInputProps } from "@patternbase/core";
 

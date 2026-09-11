@@ -7,8 +7,8 @@ import {
   OctagonXIcon,
   TriangleAlertIcon,
 } from "lucide-react";
-import * as React from "react";
 import { useTheme } from "next-themes";
+import * as React from "react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 const Toaster = React.forwardRef<HTMLDivElement, ToasterProps>(function Toaster(
