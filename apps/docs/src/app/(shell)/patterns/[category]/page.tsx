@@ -1,13 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Anchor,
-  Box,
-  Container,
-  Divider,
-  Group,
-  Text,
-  Title,
-} from "@mantine/core";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
@@ -47,60 +39,54 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
   const categoryPatterns = getPatternsByCategory(category.id);
 
   return (
-    <Container size="lg" py="xl">
-      <Text fz="sm" c="dimmed">
-        <Anchor href="/patterns" c="dimmed" underline="never">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-6 lg:px-8">
+      <nav className="mb-4 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <Link
+          href="/patterns"
+          className="hover:text-violet-600 dark:hover:text-violet-400"
+        >
           Patterns
-        </Anchor>
-        {" / "}
-        <Text span c="var(--mantine-color-violet-filled)" fw={500}>
+        </Link>
+        <span> / </span>
+        <span className="font-medium text-violet-600 dark:text-violet-400">
           {category.name}
-        </Text>
-      </Text>
+        </span>
+      </nav>
 
-      <Title
-        order={1}
-        className={styles.editorialDisplay}
-        fw={380}
-        fz={{ base: 34, md: 46 }}
-        mt="sm"
+      <h1
+        className={`${styles.editorialDisplay} mt-4 text-4xl font-light md:text-5xl lg:text-6xl`}
       >
         {category.name}
-      </Title>
-      <Text c="dimmed" fz="md" mt="xs">
+      </h1>
+      <p className="mt-2 text-gray-500 md:text-lg dark:text-gray-400">
         {category.description} — {categoryPatterns.length} patterns.
-      </Text>
+      </p>
 
-      <Group gap="xl" mt="lg" mb={-1} wrap="nowrap" visibleFrom="sm">
+      <nav className="mt-6 hidden items-center gap-6 border-b border-gray-200 sm:flex dark:border-gray-800">
         {categories.map((c) => {
           const active = c.id === category.id;
           return (
-            <Anchor
+            <Link
               key={c.id}
               href={`/patterns/${c.id}`}
-              fz="sm"
-              underline="never"
-              c={active ? "inherit" : "dimmed"}
-              fw={active ? 600 : 400}
-              pb={8}
-              bd={
+              className={`border-b-2 pb-2 text-sm transition-colors ${
                 active
-                  ? "2px solid var(--mantine-color-violet-filled)"
-                  : "2px solid transparent"
-              }
+                  ? "border-violet-600 text-gray-900 dark:text-gray-100"
+                  : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              }`}
             >
               {c.name} · {getPatternsByCategory(c.id).length}
-            </Anchor>
+            </Link>
           );
         })}
-      </Group>
-      <Divider />
+      </nav>
+      <div className="border-b border-gray-200 sm:hidden dark:border-gray-800" />
 
-      <Box mt="md">
+      <div className="mt-8">
         {categoryPatterns.map((pattern, i) => (
           <PatternIndexRow key={pattern.id} pattern={pattern} index={i} />
         ))}
-      </Box>
-    </Container>
+      </div>
+    </div>
   );
 }

@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Anchor,
-  Box,
-  Container,
-  Grid,
-  Text,
-  Title,
-  useMantineColorScheme,
-} from "@mantine/core";
+import { useTheme } from "next-themes";
 
 import styles from "@/components/common/editorial.module.css";
 import type { OriginManifestoProps } from "@/components/common/home-props";
@@ -17,7 +9,7 @@ const DEFAULT_PRINCIPLES = [
   {
     label: "P—01",
     title: "Multi-framework",
-    body: "Bootstrap, Ant Design, Mantine, and shadcn/ui implementations behind identical prop interfaces.",
+    body: "Bootstrap, Ant Design, and shadcn/ui implementations behind identical prop interfaces.",
   },
   {
     label: "P—02",
@@ -27,7 +19,7 @@ const DEFAULT_PRINCIPLES = [
   {
     label: "P—03",
     title: "Fully typed",
-    body: "Strict TypeScript across packages so all four frameworks stay behaviorally in sync.",
+    body: "Strict TypeScript across packages so all three frameworks stay behaviorally in sync.",
   },
 ];
 
@@ -40,65 +32,65 @@ export function OriginManifesto({
   shapeofLabel = "shapeof.ai",
   principles = DEFAULT_PRINCIPLES,
 }: OriginManifestoProps) {
-  const { colorScheme } = useMantineColorScheme();
-  const isDark = colorScheme === "dark";
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   return (
-    <Box
+    <section
       id={id}
-      bg={isDark ? "dark.7" : "gray.0"}
-      c={isDark ? "gray.2" : "gray.9"}
-      py={{ base: "xl", md: 72 }}
+      className={`${isDark ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-900"} py-12 md:py-[72px]`}
     >
-      <Container size="lg">
-        <Text
-          fz="xs"
-          c={isDark ? "violet.3" : "violet.6"}
-          className={styles.editorialKicker}
+      <div className="mx-auto max-w-7xl px-4">
+        <span
+          className={`${styles.editorialKicker} ${isDark ? "text-violet-400" : "text-violet-600"}`}
         >
           {kicker}
-        </Text>
-        <Title
-          order={2}
-          className={styles.editorialDisplay}
-          fw={350}
-          fs="italic"
-          mt="md"
-          lh={1.25}
+        </span>
+        <h2
+          className={`${styles.editorialDisplay} mt-4 text-4xl font-light italic leading-tight`}
         >
           {title}
-        </Title>
-        <Text c={isDark ? "gray.4" : "gray.7"} mt="md" lh={1.75}>
+        </h2>
+        <p
+          className={`mt-4 leading-relaxed ${isDark ? "text-gray-400" : "text-gray-700"}`}
+        >
           {description}{" "}
-          <Anchor
+          <a
             href={shapeofHref}
             target="_blank"
-            c={isDark ? "violet.3" : "violet.6"}
+            rel="noopener noreferrer"
+            className={isDark ? "text-violet-400" : "text-violet-600"}
           >
             {shapeofLabel}
-          </Anchor>{" "}
+          </a>{" "}
           style on top of your UI library&apos;s primitives — so patterns
           inherit your theme, tokens, and design system instead of fighting
           them.
-        </Text>
-      </Container>
-      <Container size="lg" mt="xl">
-        <Grid columns={12} gutter="xl">
+        </p>
+      </div>
+      <div className="mx-auto mt-6 max-w-7xl px-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {principles.map((principle) => (
-            <Grid.Col key={principle.label} span={{ base: 12, sm: 4 }}>
-              <Text ff="mono" fz="xs" c={isDark ? "violet.3" : "violet.6"}>
+            <div key={principle.label} className="sm:col-span-1">
+              <span
+                className={`font-mono text-xs ${isDark ? "text-violet-400" : "text-violet-600"}`}
+              >
                 {principle.label}
-              </Text>
-              <Title order={4} mt={6} c={isDark ? "inherit" : "gray.9"}>
+              </span>
+              <h4
+                className={`mt-1.5 ${isDark ? "text-gray-200" : "text-gray-900"}`}
+              >
                 {principle.title}
-              </Title>
-              <Text fz="sm" c={isDark ? "gray.5" : "gray.7"} mt={6} lh={1.6}>
+              </h4>
+              <p
+                className={`mt-1.5 text-sm leading-relaxed ${isDark ? "text-gray-400" : "text-gray-600"}`}
+              >
                 {principle.body}
-              </Text>
-            </Grid.Col>
+              </p>
+            </div>
           ))}
-        </Grid>
-      </Container>
-    </Box>
+        </div>
+      </div>
+    </section>
   );
 }

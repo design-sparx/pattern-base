@@ -1,16 +1,7 @@
-import { Badge, Box, Code, Group, Text, ThemeIcon, Title } from "@mantine/core";
-import {
-  IconAdjustments,
-  IconArrowLeft,
-  IconArrowRight,
-  IconCompass,
-  IconEye,
-  IconKeyboard,
-  IconLayoutGrid,
-  IconShield,
-} from "@tabler/icons-react";
-import type { Metadata } from "next";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import type { RelatedPatternLink } from "@/components/workbench/inspector-pane";
@@ -19,13 +10,23 @@ import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
 import { codeSnippets } from "@/data/snippet-templates";
+import {
+  Settings2,
+  ArrowLeft,
+  ArrowRight,
+  Compass,
+  Eye,
+  Keyboard,
+  LayoutGrid,
+  Shield,
+} from "lucide-react";
 
 const categoryIcons: Record<string, React.ElementType> = {
-  "prompt-actions": IconKeyboard,
-  wayfinders: IconCompass,
-  tuners: IconAdjustments,
-  governors: IconEye,
-  "trust-builders": IconShield,
+  "prompt-actions": Keyboard,
+  wayfinders: Compass,
+  tuners: Settings2,
+  governors: Eye,
+  "trust-builders": Shield,
 };
 
 const categoryColors: Record<string, string> = {
@@ -36,10 +37,6 @@ const categoryColors: Record<string, string> = {
   "trust-builders": "pink",
 };
 
-/**
- * Data records are generated files; a missing entry is a regeneration bug,
- * so lookups model absence explicitly even though the generated types do not.
- */
 function getRecordEntry<T>(
   record: Record<string, T>,
   key: string,
@@ -86,7 +83,7 @@ export default async function PatternPage({
   if (!pattern || !category) notFound();
 
   const color = categoryColors[pattern.category] ?? "violet";
-  const Icon = categoryIcons[pattern.category] ?? IconLayoutGrid;
+  const Icon = categoryIcons[pattern.category] ?? LayoutGrid;
 
   const currentIndex = patterns.findIndex((p) => p.id === pattern.id);
   const prev = currentIndex > 0 ? patterns[currentIndex - 1] : null;
@@ -97,8 +94,6 @@ export default async function PatternPage({
   const explanation = getRecordEntry(patternExplanations, pattern.id);
   const propDefinitions = getRecordEntry(propsData, pattern.id);
 
-  // Resolve related-pattern names to routes server-side (mirrors the old
-  // detail page); unresolved names fall back to inert badges in the inspector.
   const relatedLinks: readonly RelatedPatternLink[] = explanation
     ? explanation.relatedPatterns.map((rp) => {
         const related = patterns.find((p) => p.name === rp);
@@ -109,33 +104,43 @@ export default async function PatternPage({
     : [];
 
   return (
-    <Box p="xl">
+    <div className="p-4 md:p-6 lg:p-8">
       {/* Header */}
-      <Box mb="lg">
-        <Group gap="sm" mb="xs">
-          <ThemeIcon variant="light" color={color} size="md">
-            <Icon size={16} />
-          </ThemeIcon>
-          <Title order={1}>{pattern.name}</Title>
-        </Group>
-        <Text c="dimmed" fz="lg">
+      <div className="mb-6">
+        <div className="flex items-center gap-2">
+          <div
+            className={`flex items-center justify-center rounded-md bg-${color}-100 p-1 dark:bg-${color}-900/30`}
+          >
+            <Icon
+              size={16}
+              className={`text-${color}-600 dark:text-${color}-400`}
+            />
+          </div>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            {pattern.name}
+          </h1>
+        </div>
+        <p className="mt-2 text-gray-500 lg:text-lg dark:text-gray-400">
           {pattern.description}
-        </Text>
-        <Group gap={4} mt="sm">
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
           {pattern.tags.map((tag) => (
-            <Badge key={tag} size="xs" variant="light" color="gray">
+            <Badge key={tag} variant="secondary">
               {tag}
             </Badge>
           ))}
-        </Group>
-      </Box>
+        </div>
+      </div>
 
       {/* Workbench: preview + inspector */}
       {!snippets ? (
-        <Text c="red" mb="xl">
+        <p className="mb-6 text-red-600 dark:text-red-400">
           Snippet generation missing for {`"${pattern.id}"`} — run{" "}
-          <Code>pnpm generate-snippets</Code>.
-        </Text>
+          <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs dark:bg-gray-700">
+            pnpm generate-snippets
+          </code>
+          .
+        </p>
       ) : (
         <Workbench
           patternId={pattern.id}
@@ -147,53 +152,34 @@ export default async function PatternPage({
       )}
 
       {/* Prev/Next Navigation */}
-      <Group
+      <nav
         id="navigation"
-        justify="space-between"
-        mt="xl"
-        pt="xl"
-        style={{
-          borderTop: "1px solid var(--mantine-color-default-border)",
-          scrollMarginTop: 80,
-        }}
+        className="mt-8 flex items-center justify-between border-t border-gray-200 pt-8 dark:border-gray-700"
+        style={{ scrollMarginTop: 80 }}
       >
         {prev ? (
           <Link
             href={`/patterns/${prev.category}/${prev.slug}`}
-            style={{
-              fontSize: "var(--mantine-font-size-sm)",
-              color: "var(--mantine-color-violet-6)",
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
+            className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
           >
-            <IconArrowLeft size={14} />
+            <ArrowLeft size={14} />
             {prev.name}
           </Link>
         ) : (
-          <Box />
+          <div />
         )}
         {next ? (
           <Link
             href={`/patterns/${next.category}/${next.slug}`}
-            style={{
-              fontSize: "var(--mantine-font-size-sm)",
-              color: "var(--mantine-color-violet-6)",
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
+            className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
           >
             {next.name}
-            <IconArrowRight size={14} />
+            <ArrowRight size={14} />
           </Link>
         ) : (
-          <Box />
+          <div />
         )}
-      </Group>
-    </Box>
+      </nav>
+    </div>
   );
 }

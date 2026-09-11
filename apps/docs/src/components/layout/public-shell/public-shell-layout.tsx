@@ -1,57 +1,13 @@
-// ============================================================================
-// PUBLIC SHELL — header + main, no sidebar, no footer
-// Used by: (home) route group
-// ============================================================================
-
 "use client";
 
-import { AppShell, Box } from "@mantine/core";
 import type { ReactNode } from "react";
-
-import { AsideProvider, useAside } from "../aside-context";
 import { PublicHeader } from "./public-header";
 
-function PublicShellContent({ children }: Readonly<{ children: ReactNode }>) {
-  const { content: asideContent } = useAside();
-
+export function PublicShellLayout({ children }: { children: ReactNode }) {
   return (
-    <AppShell
-      header={{ height: 60 }}
-      aside={{
-        width: 200,
-        breakpoint: "lg",
-        collapsed: { desktop: !asideContent, mobile: true },
-      }}
-      padding={0}
-    >
-      <AppShell.Header>
-        <PublicHeader />
-      </AppShell.Header>
-
-      {asideContent ? (
-        <AppShell.Aside p="md" pt="xl">
-          {asideContent}
-        </AppShell.Aside>
-      ) : null}
-
-      <AppShell.Main
-        id="main-content"
-        style={{
-          overflowX: "hidden",
-        }}
-      >
-        <Box>{children}</Box>
-      </AppShell.Main>
-    </AppShell>
-  );
-}
-
-export function PublicShellLayout({
-  children,
-}: Readonly<{ children: ReactNode }>) {
-  return (
-    <AsideProvider>
-      <PublicShellContent>{children}</PublicShellContent>
-    </AsideProvider>
+    <div className="flex min-h-screen flex-col">
+      <PublicHeader />
+      <main className="flex-1">{children}</main>
+    </div>
   );
 }

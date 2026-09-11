@@ -1,37 +1,36 @@
 "use client";
 
 import {
-  ActionIcon,
-  Box,
-  Button,
-  Code,
-  CopyButton,
-  Group,
-  Paper,
-  Popover,
-  SegmentedControl,
-  Text,
-  Tooltip,
-} from "@mantine/core";
-import {
-  IconCheck,
-  IconCopy,
-  IconDeviceDesktop,
-  IconDeviceMobile,
-  IconDeviceTablet,
-  IconDownload,
-} from "@tabler/icons-react";
+  Check,
+  Copy,
+  Download,
+  Monitor,
+  Smartphone,
+  Tablet,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 import {
   LazyAntdSlot,
   LazyBootstrapSlot,
-  LazyMantineSlot,
   LazyShadcnSlot,
   preloadInactiveSlots,
 } from "./framework-slots";
 import { useWorkbench } from "./workbench-context";
 
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { PreviewErrorBoundary } from "@/components/preview/error-boundary";
 import {
   type Framework,
@@ -40,9 +39,9 @@ import {
 } from "@/lib/workbench-params";
 
 const viewportIcons: Record<Viewport, React.ElementType> = {
-  mobile: IconDeviceMobile,
-  tablet: IconDeviceTablet,
-  desktop: IconDeviceDesktop,
+  mobile: Smartphone,
+  tablet: Tablet,
+  desktop: Monitor,
 };
 
 const viewportWidths: Record<Viewport, number | undefined> = {
@@ -54,15 +53,12 @@ const viewportWidths: Record<Viewport, number | undefined> = {
 const INSTALL_COMMANDS: Record<Framework, string> = {
   bootstrap: "pnpm add react-bootstrap bootstrap",
   antd: "pnpm add antd @ant-design/icons",
-  mantine:
-    "pnpm add @mantine/core @mantine/hooks @mantine/dropzone @tabler/icons-react",
   shadcn: "pnpm add @patternbase/shadcn tailwindcss",
 };
 
 const FRAMEWORK_SLOTS: Record<Framework, React.ElementType> = {
   bootstrap: LazyBootstrapSlot,
   antd: LazyAntdSlot,
-  mantine: LazyMantineSlot,
   shadcn: LazyShadcnSlot,
 };
 
@@ -70,6 +66,7 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
   const { framework, viewport, setFramework, setViewport } = useWorkbench();
   const ActiveSlot = FRAMEWORK_SLOTS[framework];
   const [installOpened, setInstallOpened] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Warm the other framework chunks once, after first paint.
   useEffect(() => {
@@ -77,60 +74,50 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- warm once on mount only
   }, []);
 
-  return (
-    <Paper withBorder style={{ overflow: "hidden" }}>
-      {/* Toolbar */}
-      <Group
-        justify="space-between"
-        wrap="nowrap"
-        px="md"
-        py={6}
-        style={{
-          borderBottom: "1px solid var(--mantine-color-default-border)",
-        }}
-      >
-        <ActionIcon.Group>
-          {VIEWPORTS.map((vp) => {
-            const Icon = viewportIcons[vp];
-            const label = vp.charAt(0).toUpperCase() + vp.slice(1);
-            return (
-              <Tooltip
-                key={vp}
-                label={label}
-                withArrow
-                events={{ hover: true, focus: true, touch: false }}
-              >
-                <ActionIcon
-                  variant={viewport === vp ? "light" : "default"}
-                  color={viewport === vp ? "violet" : "gray"}
-                  size="sm"
-                  aria-label={label}
-                  aria-pressed={viewport === vp}
-                  onClick={() => {
-                    setViewport(vp);
-                  }}
-                >
-                  <Icon size={14} />
-                </ActionIcon>
-              </Tooltip>
-            );
-          })}
-        </ActionIcon.Group>
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(INSTALL_COMMANDS[framework]);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-        <Popover
-          width={360}
-          position="bottom-end"
-          shadow="md"
-          withArrow
-          opened={installOpened}
-          onChange={setInstallOpened}
-        >
-          <Popover.Target>
+  return (
+    <div className="overflow-hidden rounded-md border">
+      {/* Toolbar */}
+      <div className="flex w-full flex-nowrap items-center justify-between border-b px-3 py-1">
+        <div className="flex items-center gap-1">
+          <TooltipProvider>
+            {VIEWPORTS.map((vp) => {
+              const Icon = viewportIcons[vp];
+              const label = vp.charAt(0).toUpperCase() + vp.slice(1);
+              return (
+                <Tooltip key={vp}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={viewport === vp ? "secondary" : "ghost"}
+                      size="icon-sm"
+                      aria-label={label}
+                      aria-pressed={viewport === vp}
+                      onClick={() => {
+                        setViewport(vp);
+                      }}
+                    >
+                      <Icon size={14} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{label}</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
+          </TooltipProvider>
+        </div>
+
+        <Popover open={installOpened} onOpenChange={setInstallOpened}>
+          <PopoverTrigger asChild>
             <Button
-              variant="subtle"
-              color="gray"
-              size="compact-xs"
-              leftSection={<IconDownload size={14} />}
+              variant="ghost"
+              size="sm"
               aria-expanded={installOpened}
               onClick={() => {
                 setInstallOpened((open) => !open);
@@ -141,73 +128,62 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
                 }
               }}
             >
+              <Download size={14} />
               Install
             </Button>
-          </Popover.Target>
-          <Popover.Dropdown p="sm">
-            <Group justify="space-between" gap="xs">
-              <Code fz="sm" style={{ flex: 1 }}>
+          </PopoverTrigger>
+          <PopoverContent align="end" sideOffset={4} className="w-80">
+            <div className="flex items-center justify-between gap-2">
+              <code className="flex-1 break-all text-sm">
                 {INSTALL_COMMANDS[framework]}
-              </Code>
-              <CopyButton value={INSTALL_COMMANDS[framework]}>
-                {({ copied, copy }) => (
-                  <Tooltip label={copied ? "Copied!" : "Copy"} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color={copied ? "green" : "gray"}
-                      size="sm"
+              </code>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
                       aria-label={copied ? "Copied!" : "Copy install command"}
-                      onClick={copy}
+                      onClick={handleCopy}
                     >
-                      {copied ? (
-                        <IconCheck size={14} />
-                      ) : (
-                        <IconCopy size={14} />
-                      )}
-                    </ActionIcon>
-                  </Tooltip>
-                )}
-              </CopyButton>
-            </Group>
-          </Popover.Dropdown>
+                      {copied ? <Check size={14} /> : <Copy size={14} />}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{copied ? "Copied!" : "Copy"}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </PopoverContent>
         </Popover>
-      </Group>
+      </div>
 
       {/* Framework selector */}
-      <Group
-        justify="center"
-        py="xs"
-        style={{
-          borderBottom: "1px solid var(--mantine-color-default-border)",
-        }}
-      >
-        <SegmentedControl
-          size="xs"
+      <div className="flex w-full items-center justify-center border-b py-2">
+        <ToggleGroup
+          type="single"
           value={framework}
-          onChange={(value) => {
-            setFramework(value as Framework);
+          onValueChange={(value) => {
+            if (value) setFramework(value as Framework);
           }}
-          data={[
-            { label: "Bootstrap", value: "bootstrap" },
-            { label: "Ant Design", value: "antd" },
-            { label: "Mantine", value: "mantine" },
-            { label: "shadcn/ui", value: "shadcn" },
-          ]}
-        />
-      </Group>
+          className="flex w-fit items-center gap-0 rounded-md"
+        >
+          <ToggleGroupItem value="bootstrap">Bootstrap</ToggleGroupItem>
+          <ToggleGroupItem value="antd">Ant Design</ToggleGroupItem>
+          <ToggleGroupItem value="shadcn">shadcn/ui</ToggleGroupItem>
+        </ToggleGroup>
+      </div>
 
       {/* Live preview */}
-      <Box p="md">
-        <Box
-          className="dot-grid-bg"
-          mih={180}
-          p="md"
-          style={{ borderRadius: 8, display: "flex", justifyContent: "center" }}
-        >
-          <Box
-            w="100%"
-            maw={viewportWidths[viewport]}
-            style={{ transition: "max-width 200ms ease" }}
+      <div className="p-3">
+        <div className="dot-grid-bg flex min-h-[180px] items-center justify-center rounded-md p-3">
+          <div
+            className="w-full"
+            style={{
+              maxWidth: viewportWidths[viewport],
+              transition: "max-width 200ms ease",
+            }}
           >
             <PreviewErrorBoundary
               key={`${patternId}-${framework}`}
@@ -215,12 +191,12 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
             >
               <ActiveSlot patternId={patternId} />
             </PreviewErrorBoundary>
-          </Box>
-        </Box>
-        <Text c="dimmed" fz="xs" ta="center" mt="xs">
-          Rendered live from <Code>@patternbase/{framework}</Code>
-        </Text>
-      </Box>
-    </Paper>
+          </div>
+        </div>
+        <p className="text-muted-foreground text-center text-xs">
+          Rendered live from <code>@patternbase/{framework}</code>
+        </p>
+      </div>
+    </div>
   );
 }

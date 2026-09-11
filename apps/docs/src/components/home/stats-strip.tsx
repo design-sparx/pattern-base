@@ -1,44 +1,34 @@
 "use client";
 
-import { Grid, Paper, Text, Title } from "@mantine/core";
-
 import styles from "@/components/common/editorial.module.css";
 import type { StatsStripProps } from "@/components/common/home-props";
 import { patterns } from "@/data/patterns";
 
 const DEFAULT_ITEMS = [
   { value: String(patterns.length), label: "AI UX Patterns" },
-  { value: "4", label: "UI Frameworks" },
+  { value: "3", label: "UI Frameworks" },
   { value: "100%", label: "TypeScript" },
   { value: "MIT", label: "Open Source" },
 ];
 
 export function StatsStrip({ items = DEFAULT_ITEMS }: StatsStripProps) {
   return (
-    <Grid columns={12} gutter={0}>
+    <div className="grid grid-cols-2 gap-0 md:grid-cols-4">
       {items.map((item) => (
-        <Grid.Col key={item.label} span={{ base: 6, md: 3 }}>
-          <Paper
-            px={{ base: "sm", md: "xl" }}
-            py="lg"
-            withBorder
-            h="100%"
-            radius={0}
+        <div
+          key={item.label}
+          className="border border-gray-200 p-4 md:p-6 dark:border-gray-800"
+        >
+          <p
+            className={`${styles.editorialDisplay} text-2xl font-light md:text-4xl`}
           >
-            <Title
-              order={3}
-              className={styles.editorialDisplay}
-              fw={400}
-              fz="xxxl"
-            >
-              {item.value}
-            </Title>
-            <Text fz="xs" tt="uppercase" mt={4}>
-              {item.label}
-            </Text>
-          </Paper>
-        </Grid.Col>
+            {item.value}
+          </p>
+          <p className="mt-1 text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            {item.label}
+          </p>
+        </div>
       ))}
-    </Grid>
+    </div>
   );
 }

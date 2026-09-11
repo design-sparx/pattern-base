@@ -1,7 +1,6 @@
-import { Box, Group, Text } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons-react";
-import type { Metadata } from "next";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getCategoryById, getPatternBySlug } from "@/data/patterns";
@@ -47,43 +46,27 @@ export default async function PatternDetailLayout({
 
   return (
     <>
-      <Box px="xl" pt="xl">
-        <Group gap={6}>
-          <Link
-            href="/patterns"
-            style={{
-              fontSize: "var(--mantine-font-size-xs)",
-              color: "var(--mantine-color-dimmed)",
-              textDecoration: "none",
-            }}
-          >
-            Patterns
-          </Link>
-          <IconChevronRight
-            size={12}
-            color="var(--mantine-color-dimmed)"
-            style={{ opacity: 0.5 }}
-          />
-          <Link
-            href={`/patterns/${category.id}`}
-            style={{
-              fontSize: "var(--mantine-font-size-xs)",
-              color: "var(--mantine-color-dimmed)",
-              textDecoration: "none",
-            }}
-          >
-            {category.name}
-          </Link>
-          <IconChevronRight
-            size={12}
-            color="var(--mantine-color-dimmed)"
-            style={{ opacity: 0.5 }}
-          />
-          <Text fz="xs" fw={600} c={color}>
-            {pattern.name}
-          </Text>
-        </Group>
-      </Box>
+      <nav className="flex items-center gap-1 px-4 pt-4 md:px-6 lg:px-8">
+        <Link
+          href="/patterns"
+          className="text-xs text-gray-400 no-underline hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+        >
+          Patterns
+        </Link>
+        <ChevronRight size={12} className="text-gray-400 opacity-50" />
+        <Link
+          href={`/patterns/${category.id}`}
+          className="text-xs text-gray-400 no-underline hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+        >
+          {category.name}
+        </Link>
+        <ChevronRight size={12} className="text-gray-400 opacity-50" />
+        <span
+          className={`text-xs font-semibold text-${color}-600 dark:text-${color}-400`}
+        >
+          {pattern.name}
+        </span>
+      </nav>
       {children}
     </>
   );

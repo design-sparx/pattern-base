@@ -1,12 +1,10 @@
 "use client";
 
-import { Box, Skeleton } from "@mantine/core";
-
 export function PreviewSkeleton() {
   return (
-    <Box mih={220} p="md">
-      <Skeleton height={16} radius="sm" mb="md" />
-      <Skeleton height={120} radius="md" />
-    </Box>
+    <div className="min-h-[220px] space-y-4 p-4">
+      <div className="h-4 w-3/4 animate-pulse rounded-sm bg-gray-200 dark:bg-gray-700" />
+      <div className="h-[120px] w-full animate-pulse rounded-md bg-gray-200 dark:bg-gray-700" />
+    </div>
   );
 }

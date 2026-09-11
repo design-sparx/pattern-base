@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Paper, Text, Title } from "@mantine/core";
+import Link from "next/link";
 
 import styles from "@/components/common/editorial.module.css";
 import {
@@ -19,60 +19,32 @@ export function FeaturedPatterns({
   getHref = (slug, category) => `/patterns/${category}/${slug}`,
 }: FeaturedPatternsProps) {
   return (
-    <Grid columns={12} gutter={0}>
+    <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-3">
       {patternsProp.map((pattern) => {
         const category = getCategoryById(pattern.category);
         return (
-          <Grid.Col key={pattern.id} span={{ base: 12, xs: 6, md: 4 }}>
-            <Paper
-              component="a"
-              href={getHref(pattern.slug, pattern.category)}
-              p="xl"
-              h="100%"
-              withBorder
-              radius={0}
-              styles={{
-                root: {
-                  "& .pbFeatureGo": {
-                    opacity: 0,
-                    transition: "opacity 120ms ease",
-                  },
-                  "&:hover": {
-                    backgroundColor:
-                      "light-dark(var(--mantine-color-violet-0), var(--mantine-color-violet-9))",
-                    "& .pbFeatureGo": { opacity: 1 },
-                  },
-                },
-              }}
+          <Link
+            key={pattern.id}
+            href={getHref(pattern.slug, pattern.category)}
+            className="group block border-b border-r border-gray-200 p-6 transition-colors hover:bg-violet-50 sm:border-b lg:border-r-0 lg:last:border-r dark:border-gray-800 dark:hover:bg-violet-950/30"
+          >
+            <p className="text-xs text-gray-400 dark:text-gray-500">
+              {category?.name ?? pattern.category}
+            </p>
+            <h3
+              className={`${styles.editorialDisplay} mt-1 font-medium text-violet-600 dark:text-violet-400`}
             >
-              <Text fz="xs" c="dimmed" className={styles.editorialKicker}>
-                {category?.name ?? pattern.category}
-              </Text>
-              <Title
-                order={3}
-                className={styles.editorialDisplay}
-                fw={500}
-                mt={8}
-                c="violet"
-              >
-                {pattern.name}
-              </Title>
-              <Text fz="sm" c="dimmed" mt={6} lh={1.55}>
-                {pattern.description}
-              </Text>
-              <Text
-                className="pbFeatureGo"
-                fz="sm"
-                fw={600}
-                c="var(--mantine-color-violet-filled)"
-                mt={14}
-              >
-                Open pattern →
-              </Text>
-            </Paper>
-          </Grid.Col>
+              {pattern.name}
+            </h3>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              {pattern.description}
+            </p>
+            <p className="mt-3 text-sm font-semibold text-violet-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-violet-400">
+              Open pattern →
+            </p>
+          </Link>
         );
       })}
-    </Grid>
+    </div>
   );
 }

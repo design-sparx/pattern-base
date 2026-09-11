@@ -1,6 +1,6 @@
 "use client";
 
-import { useComputedColorScheme } from "@mantine/core";
+import { useTheme } from "next-themes";
 import { ConfigProvider, theme as antdTheme } from "antd";
 
 import { antdRegistry } from "@/lib/registry/antd";
@@ -10,7 +10,8 @@ interface SlotProps {
 }
 
 export function AntdSlot({ patternId }: SlotProps) {
-  const colorScheme = useComputedColorScheme("light");
+  const { resolvedTheme } = useTheme();
+  const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
   const Component = antdRegistry[patternId];
   if (!Component) return null;
   return (

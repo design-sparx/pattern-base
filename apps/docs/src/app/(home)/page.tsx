@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
-import {
-  Anchor,
-  Box,
-  Button,
-  Container,
-  Group,
-  Text,
-  Title,
-} from "@mantine/core";
 
+import { Button } from "@/components/ui/button";
 import styles from "@/components/common/editorial.module.css";
 import { CategoryIndex } from "@/components/home/category-index";
 import { FeaturedPatterns } from "@/components/home/featured-patterns";
@@ -18,89 +10,85 @@ import { StatsStrip } from "@/components/home/stats-strip";
 export const metadata: Metadata = {
   title: "PatternBase — AI UX Pattern Library",
   description:
-    "An open-source React component library codifying 54 AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, and Mantine.",
+    "An open-source React component library codifying 54 AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, and shadcn/ui.",
 };
 
 export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <Container size="lg" pt={{ base: "xl", md: 80 }} pb="xl">
-        <Text
-          fz="xs"
-          c="var(--mantine-color-violet-filled)"
-          className={styles.editorialKicker}
+      <div className="mx-auto max-w-7xl px-4 pb-12 pt-20 md:pb-12 md:pt-20 lg:pt-20">
+        <p
+          className={`${styles.editorialKicker} text-xs text-violet-600 dark:text-violet-400`}
         >
           An open-source component library
-        </Text>
-        <Title
-          order={1}
-          className={styles.editorialDisplay}
-          fw={350}
-          fz={{ base: 38, md: 62 }}
-          lh={1.05}
-          mt="md"
-          maw={760}
+        </p>
+        <h1
+          className={`${styles.editorialDisplay} mt-4 text-4xl font-extralight leading-tight md:text-5xl lg:text-6xl`}
+          style={{ maxWidth: "48rem" }}
         >
           The missing UX patterns for{" "}
-          <Text span inherit fs="italic" c="var(--mantine-color-violet-filled)">
+          <span className="font-normal italic text-violet-600 dark:text-violet-400">
             AI products,
-          </Text>{" "}
+          </span>{" "}
           ready to ship.
-        </Title>
-        <Text fz="lg" mt="md" maw={520} lh={1.65}>
+        </h1>
+        <p className="mt-6 max-w-xl text-base leading-relaxed">
           Fifty-four interaction patterns distilled from shapeof.ai — each
-          implemented for Bootstrap, Ant Design, and Mantine. Study them here,
+          implemented for Bootstrap, Ant Design, and shadcn/ui. Study them here,
           copy them into your product.
-        </Text>
-        <Group gap="md" mt="xl" wrap="nowrap">
-          <Anchor href="/patterns">
-            <Button color="violet" radius="xl">
+        </p>
+        <div className="mt-8 flex items-center gap-4">
+          <a href="/patterns">
+            <Button
+              variant="default"
+              size="lg"
+              className="rounded-full bg-violet-700 text-white hover:bg-violet-800 dark:bg-violet-600 dark:hover:bg-violet-500"
+            >
               Browse patterns
             </Button>
-          </Anchor>
-          <Anchor href="#about" c="inherit" fw={600} fz="md" underline="never">
+          </a>
+          <a
+            href="#about"
+            className="text-sm font-semibold text-violet-600 dark:text-violet-400"
+          >
             Read the approach ↓
-          </Anchor>
-        </Group>
-      </Container>
+          </a>
+        </div>
+      </div>
 
-      <Container size="lg" pt="xl">
-        {/* Stats */}
+      {/* Stats */}
+      <div className="mx-auto max-w-7xl px-4 pt-16">
         <StatsStrip />
-      </Container>
+      </div>
 
       {/* Featured */}
-      <Container size="lg" pt="xl">
-        <Group justify="space-between" align="baseline" mb="md">
-          <Title order={2} className={styles.editorialDisplay} fw={450} fz={28}>
+      <div className="mx-auto max-w-7xl px-4 pt-16">
+        <div className="mb-6 flex items-center justify-between">
+          <h2
+            className={`${styles.editorialDisplay} text-2xl font-extralight md:text-3xl`}
+          >
             Featured patterns
-          </Title>
-          <Anchor
+          </h2>
+          <a
             href="/patterns"
-            fz="sm"
-            fw={600}
-            c="var(--mantine-color-violet-filled)"
+            className="text-sm font-semibold text-violet-600 dark:text-violet-400"
           >
             View all 54 →
-          </Anchor>
-        </Group>
+          </a>
+        </div>
         <FeaturedPatterns />
-      </Container>
+      </div>
 
       {/* Category index */}
-      <Container size="lg" pt="xl" pb="xl">
-        <Title
-          order={2}
-          className={styles.editorialDisplay}
-          fw={450}
-          fz={28}
-          mb="md"
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-16">
+        <h2
+          className={`${styles.editorialDisplay} mb-6 text-2xl font-extralight md:text-3xl`}
         >
           Browse by intent
-        </Title>
+        </h2>
         <CategoryIndex />
-      </Container>
+      </div>
 
       {/* Origin (absorbs /about) */}
       <OriginManifesto />

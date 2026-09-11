@@ -16,11 +16,6 @@ export const LazyAntdSlot = dynamic(
   { loading: () => <PreviewSkeleton /> },
 );
 
-export const LazyMantineSlot = dynamic(
-  () => import("./mantine-slot").then((m) => ({ default: m.MantineSlot })),
-  { loading: () => <PreviewSkeleton /> },
-);
-
 export const LazyShadcnSlot = dynamic(
   () => import("./shadcn-slot").then((m) => ({ default: m.ShadcnSlot })),
   { loading: () => <PreviewSkeleton /> },
@@ -32,7 +27,6 @@ export function preloadInactiveSlots(active: Framework) {
   const targets = [
     { name: "bootstrap", load: () => import("./bootstrap-slot") },
     { name: "antd", load: () => import("./antd-slot") },
-    { name: "mantine", load: () => import("./mantine-slot") },
     { name: "shadcn", load: () => import("./shadcn-slot") },
   ];
   const schedule =

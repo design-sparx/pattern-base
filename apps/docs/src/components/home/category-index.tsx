@@ -1,6 +1,6 @@
 "use client";
 
-import { Divider, Grid, Paper, Stack, Text, Title } from "@mantine/core";
+import Link from "next/link";
 
 import styles from "@/components/common/editorial.module.css";
 import { categories, getPatternsByCategory } from "@/data/patterns";
@@ -20,59 +20,40 @@ export function CategoryIndex({
   getHref = DEFAULT_GET_HREF,
 }: CategoryIndexProps) {
   return (
-    <Stack gap={0}>
+    <div className="flex flex-col">
       {categoriesProp.map((category, i) => (
-        <Stack key={category.id} gap={0}>
-          <Paper
-            component="a"
+        <div key={category.id} className="flex flex-col">
+          <Link
             href={getHref(category.id)}
-            py="lg"
-            px="md"
-            styles={{
-              root: {
-                "&:hover": {
-                  "& .pbCatName": {
-                    color: "var(--mantine-color-violet-filled)",
-                  },
-                },
-              },
-            }}
+            className="block border-b border-gray-200 px-4 py-4 transition-colors hover:bg-gray-50 md:px-6 dark:border-gray-800 dark:hover:bg-gray-800/50"
           >
-            <Grid columns={12} gutter="md" align="baseline">
-              <Grid.Col span={{ base: 2, sm: 1 }}>
-                <Text ff="mono" fz="sm" c="dimmed">
-                  {String(i + 1).padStart(2, "0")}
-                </Text>
-              </Grid.Col>
-              <Grid.Col span={{ base: 10, sm: 4 }}>
-                <Title
-                  order={3}
-                  className={`${styles.editorialDisplay} pbCatName`}
-                  fw={500}
-                  c="violet"
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-12 sm:items-center">
+              <div className="sm:col-span-1">
+                <span className="font-mono text-xs text-gray-400 dark:text-gray-500">
+                  {String(i + 1).padStart(2, "00")}
+                </span>
+              </div>
+              <div className="sm:col-span-4">
+                <h3
+                  className={`${styles.editorialDisplay} font-medium text-violet-600 dark:text-violet-400`}
                 >
                   {category.name}
-                </Title>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, sm: 5 }} order={{ base: 3, sm: 2 }}>
-                <Text fz="sm" c="dimmed">
+                </h3>
+              </div>
+              <div className="sm:col-span-5">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {category.description}
-                </Text>
-              </Grid.Col>
-              <Grid.Col
-                span={{ base: 12, sm: 2 }}
-                order={3}
-                ta={{ base: "left", sm: "right" }}
-              >
-                <Text ff="mono" fz="sm" c="dimmed">
+                </p>
+              </div>
+              <div className="text-left sm:col-span-2 sm:text-right">
+                <span className="font-mono text-xs text-gray-400 dark:text-gray-500">
                   {category.count} patterns
-                </Text>
-              </Grid.Col>
-            </Grid>
-          </Paper>
-          {i < categoriesProp.length - 1 && <Divider />}
-        </Stack>
+                </span>
+              </div>
+            </div>
+          </Link>
+        </div>
       ))}
-    </Stack>
+    </div>
   );
 }

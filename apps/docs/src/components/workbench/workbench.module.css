@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--mantine-spacing-md);
+  gap: 1rem;
   align-items: start;
 }
 
@@ -10,17 +10,15 @@
     grid-template-columns: minmax(0, 1fr) clamp(320px, 34vw, 440px);
   }
 
-  /* Hardcoded 60px offsets track the fixed AppShell header height
-     (see app-shell-layout.tsx: header={{ height: 60 }}). */
   .previewCell {
     position: sticky;
-    top: calc(60px + var(--mantine-spacing-md));
+    top: calc(60px + 1rem);
   }
 
   .inspectorCell {
     position: sticky;
-    top: calc(60px + var(--mantine-spacing-md));
-    max-height: calc(100vh - 60px - var(--mantine-spacing-xl) * 2);
+    top: calc(60px + 1rem);
+    max-height: calc(100vh - 60px - 3rem);
     overflow-y: auto;
     overscroll-behavior: contain;
   }

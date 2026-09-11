@@ -1,5 +1,5 @@
 .editorialDisplay {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-family-heading), Georgia, serif;
   letter-spacing: -0.01em;
 }
 

@@ -1,9 +1,10 @@
 "use client";
 
-import { Box, Button, Group, Paper, Text } from "@mantine/core";
-import { IconCheck, IconCopy } from "@tabler/icons-react";
+import { Check, Copy } from "lucide-react";
 import { Highlight, themes } from "prism-react-renderer";
 import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
 
 interface CodeBlockProps {
   code: string;
@@ -27,80 +28,50 @@ export function CodeBlock({
   };
 
   return (
-    <Paper
-      radius="md"
-      style={{
-        overflow: "hidden",
-        border: "1px solid var(--mantine-color-default-border)",
-      }}
-    >
-      <Group
-        justify="space-between"
-        px="md"
-        py="xs"
-        style={{
-          backgroundColor: "#1e1e2e",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-          minHeight: 40,
-        }}
+    <div className="overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
+      <div
+        className="flex items-center justify-between border-b border-white/10 bg-[#1e1e2e] px-4 py-1.5"
+        style={{ minHeight: 40 }}
       >
-        <Text fz="xs" c="gray.5" ff="monospace">
+        <span className="font-mono text-xs text-gray-400">
           {filename ?? language.toUpperCase()}
-        </Text>
+        </span>
         <Button
-          variant="subtle"
-          color={copied ? "green" : "gray"}
-          size="compact-xs"
-          leftSection={
-            copied ? <IconCheck size={14} /> : <IconCopy size={14} />
-          }
+          variant="ghost"
+          size="xs"
           onClick={() => {
             void handleCopy();
           }}
-          styles={{
-            label: { fontSize: "var(--mantine-font-size-xs)" },
-          }}
+          className="text-gray-400 hover:text-gray-200"
         >
-          {copied ? "Copied!" : "Copy"}
+          {copied ? (
+            <Check size={14} className="text-green-400" />
+          ) : (
+            <Copy size={14} />
+          )}
+          <span className="text-xs">{copied ? "Copied!" : "Copy"}</span>
         </Button>
-      </Group>
-      {/* eslint-disable jsx-a11y/no-noninteractive-tabindex -- a horizontally scrollable code region must be keyboard-focusable (axe scrollable-region-focusable) */}
+      </div>
       <Highlight theme={themes.vsDark} code={code.trim()} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
             tabIndex={0}
+            className="m-0 overflow-auto p-4 text-sm"
             style={{
               ...style,
-              margin: 0,
-              padding: "16px",
-              overflow: "auto",
               fontSize: "13px",
               lineHeight: 1.6,
             }}
           >
             {tokens.map((line, lineIndex) => (
-              <Box
+              <div
                 key={`line-${String(lineIndex)}`}
                 {...getLineProps({ line })}
-                component="div"
-                style={{ display: "flex" }}
+                className="flex"
               >
-                <Text
-                  component="span"
-                  c="gray.6"
-                  fz="xs"
-                  ff="monospace"
-                  style={{
-                    userSelect: "none",
-                    display: "inline-block",
-                    width: 32,
-                    textAlign: "right",
-                    marginRight: 16,
-                    flexShrink: 0,
-                  }}
-                >
+                <span className="mr-4 inline-block w-8 flex-shrink-0 select-none text-right font-mono text-xs text-gray-500">
                   {lineIndex + 1}
-                </Text>
+                </span>
                 <span>
                   {line.map((token, tokenIndex) => (
                     <span
@@ -109,12 +80,11 @@ export function CodeBlock({
                     />
                   ))}
                 </span>
-              </Box>
+              </div>
             ))}
           </pre>
         )}
       </Highlight>
-      {/* eslint-enable jsx-a11y/no-noninteractive-tabindex -- re-enable after the scrollable code region */}
-    </Paper>
+    </div>
   );
 }

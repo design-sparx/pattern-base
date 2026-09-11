@@ -14,7 +14,7 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 
 ## Commands (run from repo root)
 
-- `pnpm build` / `pnpm clean` — turbo-cached.
+- `pnpm build` / `pnpm clean` — turbo-cached. `pnpm clean:all` also removes `node_modules/.cache` and `node_modules/.vite`.
 - `pnpm dev` — persistent turbo task that builds `^build` deps first; scope with `--filter` (e.g. `pnpm dev --filter=@patternbase/docs` runs just the docs site).
 - `pnpm lint` / `pnpm lint:fix` / `pnpm type-check` / `pnpm test` / `pnpm format` / `pnpm format:check`.
 - One package: `pnpm test --filter=@patternbase/core -- --watch`.

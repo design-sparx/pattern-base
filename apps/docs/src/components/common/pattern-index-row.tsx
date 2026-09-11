@@ -1,8 +1,6 @@
 "use client";
 
-import { Grid, Group, Pill, Text, UnstyledButton } from "@mantine/core";
 import Link from "next/link";
-
 import type { PatternMeta } from "@patternbase/core";
 
 interface PatternIndexRowProps {
@@ -12,60 +10,51 @@ interface PatternIndexRowProps {
 
 export function PatternIndexRow({ pattern, index }: PatternIndexRowProps) {
   return (
-    <UnstyledButton
-      component={Link}
+    <Link
       href={`/patterns/${pattern.category}/${pattern.slug}`}
-      w="100%"
-      px="md"
-      py="sm"
-      styles={{
-        root: {
-          borderTop: "1px solid var(--mantine-color-default-border)",
-          "&:hover": {
-            backgroundColor:
-              "light-dark(var(--mantine-color-violet-0), var(--mantine-color-violet-9))",
-            "& .pbRowName": {
-              color: "var(--mantine-color-violet-filled)",
-            },
-            "& .pbRowArrow": { opacity: 1 },
-          },
-          "& .pbRowArrow": { opacity: 0, transition: "opacity 120ms ease" },
-        },
-      }}
+      className="group block border-t border-gray-200 px-4 py-3 no-underline transition-colors hover:bg-violet-50 md:px-6 dark:border-gray-800 dark:hover:bg-violet-950/30"
     >
-      <Grid columns={12} gutter="md" align="center">
-        <Grid.Col span={{ base: 2, lg: 1 }}>
-          <Text ff="mono" fz="xs" c="dimmed" aria-hidden>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-12 sm:items-center">
+        <div className="sm:col-span-2 lg:col-span-1">
+          <span
+            className="font-mono text-xs text-gray-400 dark:text-gray-500"
+            aria-hidden
+          >
             {String(index + 1).padStart(3, "0")}
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={{ base: 10, lg: 4 }}>
-          <Text className="pbRowName" fw={600} fz="md">
+          </span>
+        </div>
+        <div className="sm:col-span-10 lg:col-span-4">
+          <span className="font-medium text-gray-900 transition-colors group-hover:text-violet-600 dark:text-gray-100 dark:group-hover:text-violet-400">
             {pattern.name}
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={5} visibleFrom="lg">
-          <Text fz="sm" c="dimmed" truncate>
+          </span>
+        </div>
+        <div className="hidden lg:col-span-5 lg:block">
+          <span
+            className="text-sm text-gray-500 dark:text-gray-400"
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              display: "block",
+            }}
+          >
             {pattern.description}
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={2} visibleFrom="lg">
-          <Group gap={4} justify="flex-end" wrap="nowrap">
-            {pattern.tags.slice(0, 2).map((tag) => (
-              <Pill key={tag} fz="xs" c="dimmed">
-                {tag}
-              </Pill>
-            ))}
-            <Text
-              className="pbRowArrow"
-              c="var(--mantine-color-violet-filled)"
-              fw={700}
+          </span>
+        </div>
+        <div className="hidden items-center justify-end gap-1.5 lg:col-span-2 lg:flex">
+          {pattern.tags.slice(0, 2).map((tag) => (
+            <span
+              key={tag}
+              className="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400"
             >
-              →
-            </Text>
-          </Group>
-        </Grid.Col>
-      </Grid>
-    </UnstyledButton>
+              {tag}
+            </span>
+          ))}
+          <span className="font-bold text-violet-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-violet-400">
+            →
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 }

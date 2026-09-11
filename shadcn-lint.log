@@ -1,0 +1,166 @@
+
+> @patternbase/shadcn@0.3.1 lint D:\works\design-sparx\pattern-base\packages\shadcn
+> eslint src/
+
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\citation\citation.test.tsx
+  29:32  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\open-input\open-input.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\parameter-control\parameter-control.test.tsx
+  48:38  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  82:5   warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\suggestions\suggestions.tsx
+  42:5  warning  Do not nest ternary expressions  no-nested-ternary
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\accordion.tsx
+   3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  67:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\alert.tsx
+   1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  70:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\avatar.tsx
+    1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  110:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\badge.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\button.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\card.tsx
+    1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  109:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\checkbox.tsx
+  3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\collapsible.tsx
+   1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  39:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\dialog.tsx
+    1:1   warning  Run autofix to sort these imports!                                                            simple-import-sort/imports
+   77:10  warning  Potential leaked value that might cause unintentionally rendered values or rendering crashes  react/jsx-no-leaked-render
+  125:8   warning  Potential leaked value that might cause unintentionally rendered values or rendering crashes  react/jsx-no-leaked-render
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\dropdown-menu.tsx
+    3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  258:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\empty.tsx
+  116:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\field.tsx
+    1:1   warning  Run autofix to sort these imports!                                                            simple-import-sort/imports
+  186:21  warning  use `Boolean(children)` instead                                                               no-implicit-coercion
+  194:8   warning  Potential leaked value that might cause unintentionally rendered values or rendering crashes  react/jsx-no-leaked-render
+  209:14  warning  Array type using 'Array<T>' is forbidden. Use 'T[]' instead                                   @typescript-eslint/array-type
+  225:21  warning  Unnecessary optional chain on a non-nullish value                                             @typescript-eslint/no-unnecessary-condition
+  225:30  warning  Expected '===' and instead saw '=='                                                           eqeqeq
+  233:40  warning  Do not use Array index in keys                                                                react/no-array-index-key
+  256:1   warning  Run autofix to sort these exports!                                                            simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\input-group.tsx
+    3:1  warning  Run autofix to sort these imports!                                                              simple-import-sort/imports
+   72:5  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+   72:5  warning  Non-interactive elements should not be assigned mouse or keyboard event listeners               jsx-a11y/no-noninteractive-element-interactions
+  177:1  warning  Run autofix to sort these exports!                                                              simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\input.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\label.tsx
+  3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\popover.tsx
+   1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  99:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\progress.tsx
+   1:1   warning  Run autofix to sort these imports!                                                                         simple-import-sort/imports
+  22:44  warning  Invalid type "number" of template literal expression                                                       @typescript-eslint/restrict-template-expressions
+  22:57  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\radio-group.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\ref-forwarding.test.tsx
+   1:1  warning  Run autofix to sort these imports!             simple-import-sort/imports
+  31:9  warning  Missing an explicit type attribute for button  react/button-has-type
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\scroll-area.tsx
+  3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\select.tsx
+  3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\separator.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\skeleton.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\slider.tsx
+   1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  14:7  warning  Do not nest ternary expressions     no-nested-ternary
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\sonner.tsx
+  3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\spinner.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\switch.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\table.tsx
+    1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  132:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\tabs.tsx
+   3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  92:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\textarea.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\toggle-group.tsx
+   3:1   warning  Run autofix to sort these imports!                                                                         simple-import-sort/imports
+  65:37  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  66:31  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  70:36  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+  71:30  warning  Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator  @typescript-eslint/prefer-nullish-coalescing
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\toggle.tsx
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\components\ui\tooltip.tsx
+   3:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+  65:1  warning  Run autofix to sort these exports!  simple-import-sort/exports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\lib\utils.ts
+  1:1  warning  Run autofix to sort these imports!  simple-import-sort/imports
+
+D:\works\design-sparx\pattern-base\packages\shadcn\src\test\setup.ts
+   9:4   warning  Unnecessary conditional, value is always falsy     @typescript-eslint/no-unnecessary-condition
+  15:34  warning  Unexpected empty function 'setPointerCapture'      @typescript-eslint/no-empty-function
+  17:38  warning  Unexpected empty function 'releasePointerCapture'  @typescript-eslint/no-empty-function
+  22:4   warning  Unnecessary conditional, value is always falsy     @typescript-eslint/no-unnecessary-condition
+  24:68  warning  Unexpected empty function 'scrollIntoView'         @typescript-eslint/no-empty-function
+  29:15  warning  Unexpected empty method 'observe'                  @typescript-eslint/no-empty-function
+  30:17  warning  Unexpected empty method 'unobserve'                @typescript-eslint/no-empty-function
+  31:18  warning  Unexpected empty method 'disconnect'               @typescript-eslint/no-empty-function
+  39:15  warning  Unexpected empty method 'observe'                  @typescript-eslint/no-empty-function
+  40:17  warning  Unexpected empty method 'unobserve'                @typescript-eslint/no-empty-function
+  41:18  warning  Unexpected empty method 'disconnect'               @typescript-eslint/no-empty-function
+
+✖ 80 problems (0 errors, 80 warnings)
+  0 errors and 53 warnings potentially fixable with the `--fix` option.
+

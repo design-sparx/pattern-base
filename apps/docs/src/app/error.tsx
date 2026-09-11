@@ -1,17 +1,8 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Code,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
@@ -24,35 +15,32 @@ export default function ErrorPage({ error, reset }: Readonly<ErrorPageProps>) {
   }, [error]);
 
   return (
-    <Box p="xl">
-      <Paper withBorder p="xl" maw={600} mx="auto" mt="xl">
-        <Stack align="center" gap="md">
-          <IconAlertTriangle size={48} color="var(--mantine-color-red-6)" />
-          <Title order={2} ta="center">
+    <div className="flex min-h-screen items-center justify-center p-4 md:p-8">
+      <div className="w-full max-w-2xl rounded-lg border border-gray-200 p-6 shadow-sm md:p-8 dark:border-gray-700">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <AlertTriangle size={48} className="text-orange-500" />
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             Something went wrong
-          </Title>
-          <Text c="dimmed" ta="center">
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400">
             An unexpected error occurred while loading this page.
-          </Text>
+          </p>
           {error.digest && (
-            <Code fz="xs" p="xs" w="100%">
+            <code className="w-full rounded-md border border-gray-200 bg-gray-50 p-2 text-xs dark:border-gray-700 dark:bg-gray-800">
               {error.digest}
-            </Code>
+            </code>
           )}
-          <Group>
-            <Button
-              variant="light"
-              leftSection={<IconRefresh size={14} />}
-              onClick={reset}
-            >
+          <div className="flex items-center gap-3">
+            <Button variant="secondary" onClick={reset}>
+              <RefreshCw size={14} />
               Try again
             </Button>
-            <Button variant="subtle" component="a" href="/">
-              Go home
+            <Button variant="ghost" asChild>
+              <a href="/">Go home</a>
             </Button>
-          </Group>
-        </Stack>
-      </Paper>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,22 +1,6 @@
 "use client";
 
-import {
-  Badge,
-  Box,
-  Group,
-  List,
-  ListItem,
-  Paper,
-  Tabs,
-  Text,
-  ThemeIcon,
-  Title,
-} from "@mantine/core";
-import {
-  IconBulb,
-  IconCircleCheck,
-  IconTargetArrow,
-} from "@tabler/icons-react";
+import { Lightbulb, CheckCircle2, Target } from "lucide-react";
 import Link from "next/link";
 
 import { useWorkbench } from "./workbench-context";
@@ -38,13 +22,17 @@ interface InspectorPaneProps {
   snippets: {
     bootstrap: string;
     antd: string;
-    mantine: string;
     shadcn: string;
   };
   propDefinitions?: PropDefinition[];
   explanation?: PatternExplanation | null;
   relatedLinks?: readonly RelatedPatternLink[];
 }
+
+const TAB_STYLES: Record<string, string> = {
+  base: "px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100",
+  active: "border-b-2 border-violet-600 text-gray-900 dark:text-gray-100",
+};
 
 export function InspectorPane({
   patternId,
@@ -63,52 +51,45 @@ export function InspectorPane({
 
   const activeTab: InspectorTab = isTabAvailable(tab) ? tab : "code";
 
-  return (
-    <Paper withBorder style={{ overflow: "hidden" }} h="100%">
-      <Tabs
-        value={activeTab}
-        onChange={(raw) => {
-          const value = INSPECTOR_TABS.find((candidate) => candidate === raw);
-          if (value && isTabAvailable(value)) {
-            setTab(value);
-          }
-        }}
-        variant="outline"
-        radius={0}
-        styles={{
-          tabLabel: { fontWeight: 500 },
-        }}
+  const renderTab = (value: InspectorTab, label: string) => {
+    const isActive = activeTab === value;
+    return (
+      <button
+        key={value}
+        onClick={() => setTab(value)}
+        className={[
+          TAB_STYLES.base,
+          isActive ? TAB_STYLES.active : "border-b-2 border-transparent",
+        ].join(" ")}
       >
-        <Tabs.List grow>
-          <Tabs.Tab value="code">Code</Tabs.Tab>
-          {propDefinitions?.length ? (
-            <Tabs.Tab value="props">Props</Tabs.Tab>
-          ) : null}
-          {explanation ? <Tabs.Tab value="docs">Docs</Tabs.Tab> : null}
-        </Tabs.List>
+        {label}
+      </button>
+    );
+  };
 
-        {/* keepMounted keeps prose/tables in the prerendered HTML (SEO);
-            Mantine hides inactive panels via display:none. */}
-        <Tabs.Panel value="code" p="md" keepMounted>
+  return (
+    <div className="h-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex w-full border-b border-gray-200 dark:border-gray-700">
+        {renderTab("code", "Code")}
+        {propDefinitions?.length ? renderTab("props", "Props") : null}
+        {explanation ? renderTab("docs", "Docs") : null}
+      </div>
+
+      <div className="p-4">
+        {activeTab === "code" && (
           <CodeBlock code={snippets[framework]} filename={`${patternId}.tsx`} />
-        </Tabs.Panel>
-
-        {propDefinitions?.length ? (
-          <Tabs.Panel value="props" p="md" keepMounted>
-            <PropsTable props={propDefinitions} />
-          </Tabs.Panel>
-        ) : null}
-
-        {explanation ? (
-          <Tabs.Panel value="docs" p="md" keepMounted>
-            <InspectorDocs
-              explanation={explanation}
-              relatedLinks={relatedLinks ?? []}
-            />
-          </Tabs.Panel>
-        ) : null}
-      </Tabs>
-    </Paper>
+        )}
+        {activeTab === "props" && propDefinitions?.length && (
+          <PropsTable props={propDefinitions} />
+        )}
+        {activeTab === "docs" && explanation && (
+          <InspectorDocs
+            explanation={explanation}
+            relatedLinks={relatedLinks ?? []}
+          />
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -120,100 +101,105 @@ function InspectorDocs({
   relatedLinks: readonly RelatedPatternLink[];
 }) {
   return (
-    <Box>
-      <Text fz="sm" lh={1.7} mb="lg">
+    <div className="space-y-4">
+      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
         {explanation.overview}
-      </Text>
+      </p>
 
       {explanation.variants.length ? (
-        <Box mb="lg">
-          <Group gap="xs" mb="sm">
-            <ThemeIcon variant="light" color="violet" size="sm">
-              <IconBulb size={14} />
-            </ThemeIcon>
-            <Title order={4} fz="sm">
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center justify-center rounded-md bg-violet-100 p-1 dark:bg-violet-900/30">
+              <Lightbulb
+                size={14}
+                className="text-violet-600 dark:text-violet-400"
+              />
+            </div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               Variants
-            </Title>
-          </Group>
-          <List spacing="xs" fz="sm">
+            </h3>
+          </div>
+          <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
             {explanation.variants.map((v) => (
-              <ListItem key={v.title}>
-                <Text fz="sm">
+              <li key={v.title}>
+                <span>
                   <b>{v.title}</b> — {v.description}
-                </Text>
-              </ListItem>
+                </span>
+              </li>
             ))}
-          </List>
-        </Box>
+          </ul>
+        </div>
       ) : null}
 
       {explanation.useCases.length ? (
-        <Box mb="lg">
-          <Group gap="xs" mb="sm">
-            <ThemeIcon variant="light" color="violet" size="sm">
-              <IconTargetArrow size={14} />
-            </ThemeIcon>
-            <Title order={4} fz="sm">
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center justify-center rounded-md bg-violet-100 p-1 dark:bg-violet-900/30">
+              <Target
+                size={14}
+                className="text-violet-600 dark:text-violet-400"
+              />
+            </div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               Use Cases
-            </Title>
-          </Group>
-          <List spacing="xs" fz="sm">
+            </h3>
+          </div>
+          <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
             {explanation.useCases.map((uc) => (
-              <ListItem key={uc}>{uc}</ListItem>
+              <li key={uc}>{uc}</li>
             ))}
-          </List>
-        </Box>
+          </ul>
+        </div>
       ) : null}
 
       {explanation.bestPractices.length ? (
-        <Box mb="lg">
-          <Group gap="xs" mb="sm">
-            <ThemeIcon variant="light" color="teal" size="sm">
-              <IconCircleCheck size={14} />
-            </ThemeIcon>
-            <Title order={4} fz="sm">
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center justify-center rounded-md bg-teal-100 p-1 dark:bg-teal-900/30">
+              <CheckCircle2
+                size={14}
+                className="text-teal-600 dark:text-teal-400"
+              />
+            </div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               Best Practices
-            </Title>
-          </Group>
-          <List spacing="xs" fz="sm">
+            </h3>
+          </div>
+          <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
             {explanation.bestPractices.map((bp) => (
-              <ListItem key={bp}>{bp}</ListItem>
+              <li key={bp}>{bp}</li>
             ))}
-          </List>
-        </Box>
+          </ul>
+        </div>
       ) : null}
 
       {relatedLinks.length ? (
-        <Box>
-          <Title order={4} fz="sm" mb="sm">
+        <div>
+          <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
             Related Patterns
-          </Title>
-          <Group gap="xs">
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
             {relatedLinks.map((link) =>
               link.href ? (
                 <Link
                   key={link.label}
                   href={link.href}
-                  style={{ textDecoration: "none" }}
+                  className="inline-flex cursor-pointer items-center rounded-md bg-violet-100 px-2.5 py-0.5 text-sm font-medium text-violet-800 no-underline hover:bg-violet-200 dark:bg-violet-900/30 dark:text-violet-300 dark:hover:bg-violet-900/50"
                 >
-                  <Badge
-                    size="lg"
-                    variant="light"
-                    color="violet"
-                    style={{ cursor: "pointer" }}
-                  >
-                    {link.label}
-                  </Badge>
+                  {link.label}
                 </Link>
               ) : (
-                <Badge key={link.label} size="lg" variant="light" color="gray">
+                <span
+                  key={link.label}
+                  className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-sm font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+                >
                   {link.label}
-                </Badge>
+                </span>
               ),
             )}
-          </Group>
-        </Box>
+          </div>
+        </div>
       ) : null}
-    </Box>
+    </div>
   );
 }

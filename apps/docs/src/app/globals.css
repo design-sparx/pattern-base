@@ -1,165 +1,58 @@
-@import "@mantine/core/styles.css";
-@import "@mantine/spotlight/styles.css";
-@import "@patternbase/shadcn/styles.css";
+@import "../../../../packages/shadcn/dist/styles.css";
+@import "tailwindcss";
 
-@source "../../../../packages/shadcn/src/components";
+@source "../../../../packages/shadcn/src/components/ui";
 
-:root {
-  --header-height: 60px;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
-  font-family:
-    var(--font-body),
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-family, "Inter, sans-serif");
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Skip link ────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .skip-link {
   position: absolute;
-  top: -100%;
-  left: 16px;
-  z-index: 10000;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
   padding: 8px 16px;
-  background: var(--mantine-color-violet-6);
-  color: white;
-  border-radius: var(--mantine-radius-md);
-  font-weight: 500;
+  z-index: 10000;
+  font-size: 14px;
   text-decoration: none;
-  transition: top 0.15s ease;
 }
-
 .skip-link:focus {
-  top: 16px;
-}
-
-/* ── Thin scrollbar ──────────────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--mantine-color-gray-3);
-  border-radius: 3px;
-}
-
-[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
-  background: var(--mantine-color-dark-4);
-}
-
-/* Header search button hover */
-.header-search:hover {
-  border-color: var(--mantine-color-violet-4) !important;
-}
-
-[data-mantine-color-scheme="dark"] .header-search:hover {
-  border-color: var(--mantine-color-violet-7) !important;
-  background: var(--mantine-color-dark-5) !important;
-}
-
-/* Dot grid background for preview areas */
-.dot-grid-bg {
-  background-image: radial-gradient(
-    circle,
-    var(--mantine-color-gray-3) 1px,
-    transparent 1px
-  );
-  background-size: 20px 20px;
-}
-
-[data-mantine-color-scheme="dark"] .dot-grid-bg {
-  background-image: radial-gradient(
-    circle,
-    var(--mantine-color-dark-4) 1px,
-    transparent 1px
-  );
-}
-
-/* ── Card hover interactions ─────────────────────────────────────────────── */
-.feature-card,
-.category-card {
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.15s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease !important;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .feature-card:hover,
-  .category-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .feature-card:hover,
-  .category-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
-  }
-}
-
-[data-mantine-color-scheme="dark"] .feature-card:hover,
-[data-mantine-color-scheme="dark"] .category-card:hover {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-}
-
-.category-arrow {
-  opacity: 0.35;
-  color: var(--mantine-color-dimmed);
-  transition:
-    opacity 0.2s,
-    transform 0.2s;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .category-card:hover .category-arrow {
-    opacity: 1;
-    transform: translate(2px, -2px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .category-card:hover .category-arrow {
-    opacity: 1;
-  }
-}
-
-/* Reset Bootstrap's opinionated HTML tag styles that bleed into Ant Design previews.
-   Bootstrap is loaded globally for the Bootstrap component previews, but its default
-   styles (e.g. code → pink, kbd → inverted, mark → yellow) must not affect antd components. */
-.antd-preview code,
-.antd-preview pre {
-  color: inherit;
-}
-
-.antd-preview kbd {
-  color: inherit;
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
-}
-
-.antd-preview mark {
-  background-color: transparent;
-  color: inherit;
+  top: 0;
 }
