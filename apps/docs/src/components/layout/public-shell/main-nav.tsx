@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ComponentPropsWithoutRef } from "react";
 
 import { cn } from "cn";
 
@@ -43,34 +44,68 @@ export function MainNav() {
           <NavigationMenuTrigger className={cn(patternsActive && "bg-muted")}>
             Patterns
           </NavigationMenuTrigger>
-          <NavigationMenuContent className="w-56">
-            <ul className="grid gap-1 p-1">
-              <li>
-                <NavigationMenuLink asChild>
-                  <Link
-                    href="/patterns"
-                    className={patternsActive ? "text-foreground" : undefined}
-                  >
-                    All Patterns
-                  </Link>
-                </NavigationMenuLink>
-              </li>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-1.5 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              <ListItem
+                title="All Patterns"
+                href="/patterns"
+                active={patternsActive}
+                className="md:col-span-2"
+              >
+                Browse every pattern across all five categories.
+              </ListItem>
               {categories.map((cat) => (
-                <li key={cat.id}>
-                  <NavigationMenuLink asChild>
-                    <Link href={cat.href}>
-                      <span>{cat.name}</span>
-                      <span className="text-muted-foreground ml-auto font-mono text-xs">
-                        {cat.count}
-                      </span>
-                    </Link>
-                  </NavigationMenuLink>
-                </li>
+                <ListItem
+                  key={cat.id}
+                  title={cat.name}
+                  href={cat.href}
+                  count={cat.count}
+                  active={pathname.startsWith(`/patterns/${cat.id}`)}
+                >
+                  {cat.description}
+                </ListItem>
               ))}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
+  );
+}
+
+function ListItem({
+  title,
+  children,
+  href,
+  count,
+  active,
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"li"> & {
+  href: string;
+  count?: number;
+  active?: boolean;
+}) {
+  return (
+    <li {...props} className={cn(className)}>
+      <NavigationMenuLink active={active} asChild>
+        <Link
+          href={href}
+          className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block select-none space-y-1 rounded-xl p-3 leading-none no-underline outline-none transition-colors"
+        >
+          <div className="flex items-center justify-between gap-2 text-sm font-medium">
+            <span>{title}</span>
+            {count !== undefined && (
+              <span className="text-muted-foreground font-mono text-xs font-normal">
+                {count}
+              </span>
+            )}
+          </div>
+          <div className="text-muted-foreground line-clamp-2 pt-1 text-sm leading-snug">
+            {children}
+          </div>
+        </Link>
+      </NavigationMenuLink>
+    </li>
   );
 }

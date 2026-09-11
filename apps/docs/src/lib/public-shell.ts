@@ -5,6 +5,7 @@ export interface PublicNavCategory {
   name: string;
   count: number;
   href: string;
+  description: string;
 }
 
 export function getNavCategories(): PublicNavCategory[] {
@@ -13,6 +14,7 @@ export function getNavCategories(): PublicNavCategory[] {
     name: cat.name,
     count: getPatternsByCategory(cat.id).length,
     href: `/patterns/${cat.id}`,
+    description: cat.description,
   }));
 }
 

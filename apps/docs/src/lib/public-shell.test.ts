@@ -14,6 +14,7 @@ describe("public shell nav helpers", () => {
     for (const cat of cats) {
       expect(cat.count).toBeGreaterThan(0);
       expect(cat.href).toBe(`/patterns/${cat.id}`);
+      expect(cat.description.length).toBeGreaterThan(0);
     }
     const total = cats.reduce((sum, cat) => sum + cat.count, 0);
     expect(total).toBe(54);
