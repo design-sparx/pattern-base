@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import { IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -18,7 +18,7 @@ export default function ErrorPage({ error, reset }: Readonly<ErrorPageProps>) {
     <div className="flex min-h-screen items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-2xl rounded-lg border border-gray-200 p-6 shadow-sm md:p-8 dark:border-gray-700">
         <div className="flex flex-col items-center gap-4 text-center">
-          <AlertTriangle size={48} className="text-orange-500" />
+          <IconAlertTriangle size={48} className="text-orange-500" />
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             Something went wrong
           </h2>
@@ -32,7 +32,7 @@ export default function ErrorPage({ error, reset }: Readonly<ErrorPageProps>) {
           )}
           <div className="flex items-center gap-3">
             <Button variant="secondary" onClick={reset}>
-              <RefreshCw size={14} />
+              <IconRefresh size={14} />
               Try again
             </Button>
             <Button variant="ghost" asChild>

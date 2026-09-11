@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Manrope, Space_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { SpotlightProvider } from "@/components/layout/spotlight-provider";
+
 import "./globals.css";
+
+import { SpotlightProvider } from "@/components/layout/spotlight-provider";
+import { ThemeProvider } from "@/components/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-family" });
 const manrope = Manrope({
@@ -30,14 +33,16 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${manrope.variable} ${spaceMono.variable}`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          disableTransitionOnChange
-        >
-          <SpotlightProvider />
-          {children}
-        </ThemeProvider>
+        <TooltipProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            disableTransitionOnChange
+          >
+            <SpotlightProvider />
+            {children}
+          </ThemeProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,7 @@ export function PatternsIndex() {
 
       <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center">
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400" />
+          <IconSearch className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400" />
           <Input
             placeholder="Filter patterns…"
             value={query}

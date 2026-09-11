@@ -3,7 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Github, Moon, Search, Sparkles, Sun } from "lucide-react";
+import {
+  IconBrandGithub,
+  IconMoon,
+  IconSearch,
+  IconSparkles,
+  IconSun,
+} from "@tabler/icons-react";
 
 export function PublicHeader() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -14,7 +20,7 @@ export function PublicHeader() {
     <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 py-4">
       <div className="flex items-center gap-2">
         <Link href="/" className="flex items-center gap-2 no-underline">
-          <Sparkles
+          <IconSparkles
             size={24}
             className="text-violet-600 dark:text-violet-400"
             aria-hidden="true"
@@ -35,7 +41,7 @@ export function PublicHeader() {
           aria-label="Search patterns"
           style={{ minWidth: 220 }}
         >
-          <Search size={14} />
+          <IconSearch size={14} />
           <span className="sm:hidden">Search...</span>
           <span className="hidden flex-1 text-left sm:block">
             Search patterns...
@@ -73,7 +79,11 @@ export function PublicHeader() {
           aria-label="Toggle color scheme"
           className="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
         >
-          {colorScheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          {colorScheme === "dark" ? (
+            <IconSun size={18} />
+          ) : (
+            <IconMoon size={18} />
+          )}
         </button>
 
         <a
@@ -83,7 +93,7 @@ export function PublicHeader() {
           aria-label="GitHub"
           className="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
         >
-          <Github size={18} />
+          <IconBrandGithub size={18} />
         </a>
       </div>
     </div>

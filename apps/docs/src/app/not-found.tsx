@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Search } from "lucide-react";
+import { IconHome, IconSearch } from "@tabler/icons-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -20,13 +20,13 @@ export default function NotFound() {
         <div className="mt-6 flex items-center justify-center gap-3">
           <Button asChild>
             <Link href="/">
-              <Home size={14} />
+              <IconHome size={14} />
               Go home
             </Link>
           </Button>
           <Button variant="secondary" asChild>
             <Link href="/patterns/open-input">
-              <Search size={14} />
+              <IconSearch size={14} />
               Browse patterns
             </Link>
           </Button>

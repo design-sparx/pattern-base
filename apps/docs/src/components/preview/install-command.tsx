@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -35,9 +35,9 @@ export function InstallCommand({ command }: InstallCommandProps) {
           title={copied ? "Copied!" : "Copy"}
         >
           {copied ? (
-            <Check size={14} className="text-green-600" />
+            <IconCheck size={14} className="text-green-600" />
           ) : (
-            <Copy size={14} />
+            <IconCopy size={14} />
           )}
         </Button>
       </div>

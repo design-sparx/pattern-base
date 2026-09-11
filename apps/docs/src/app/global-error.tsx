@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, RefreshCw } from "lucide-react";
+import { IconHome, IconRefresh } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 
 export default function GlobalError({
@@ -30,12 +30,12 @@ export default function GlobalError({
             </p>
             <div className="mt-6 flex items-center justify-center gap-3">
               <Button onClick={reset}>
-                <RefreshCw size={14} />
+                <IconRefresh size={14} />
                 Try again
               </Button>
               <Button variant="secondary" asChild>
                 <a href="/">
-                  <Home size={14} />
+                  <IconHome size={14} />
                   Go home
                 </a>
               </Button>

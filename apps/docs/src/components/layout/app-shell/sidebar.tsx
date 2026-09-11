@@ -3,23 +3,23 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Settings2,
-  Compass,
-  Eye,
-  Info,
-  Keyboard,
-  LayoutGrid,
-  Shield,
-} from "lucide-react";
+  IconCompass,
+  IconEye,
+  IconInfoCircle,
+  IconKeyboard,
+  IconLayoutGrid,
+  IconSettings,
+  IconShield,
+} from "@tabler/icons-react";
 
 import { categories, getPatternsByCategory } from "@/data/patterns";
 
 const categoryIcons: Record<string, React.ElementType> = {
-  "prompt-actions": Keyboard,
-  wayfinders: Compass,
-  tuners: Settings2,
-  governors: Eye,
-  "trust-builders": Shield,
+  "prompt-actions": IconKeyboard,
+  wayfinders: IconCompass,
+  tuners: IconSettings,
+  governors: IconEye,
+  "trust-builders": IconShield,
 };
 
 export function Sidebar() {
@@ -35,7 +35,7 @@ export function Sidebar() {
             : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
         }`}
       >
-        <LayoutGrid size={16} />
+        <IconLayoutGrid size={16} />
         All Patterns
       </Link>
 
@@ -87,7 +87,7 @@ export function Sidebar() {
             : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
         }`}
       >
-        <Info size={16} />
+        <IconInfoCircle size={16} />
         About
       </Link>
     </nav>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Lightbulb, CheckCircle2, Target } from "lucide-react";
+import { IconBulb, IconCircleCheck, IconTarget } from "@tabler/icons-react";
 import Link from "next/link";
 
 import { useWorkbench } from "./workbench-context";
@@ -110,7 +110,7 @@ function InspectorDocs({
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <div className="flex items-center justify-center rounded-md bg-violet-100 p-1 dark:bg-violet-900/30">
-              <Lightbulb
+              <IconBulb
                 size={14}
                 className="text-violet-600 dark:text-violet-400"
               />
@@ -135,7 +135,7 @@ function InspectorDocs({
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <div className="flex items-center justify-center rounded-md bg-violet-100 p-1 dark:bg-violet-900/30">
-              <Target
+              <IconTarget
                 size={14}
                 className="text-violet-600 dark:text-violet-400"
               />
@@ -156,7 +156,7 @@ function InspectorDocs({
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <div className="flex items-center justify-center rounded-md bg-teal-100 p-1 dark:bg-teal-900/30">
-              <CheckCircle2
+              <IconCircleCheck
                 size={14}
                 className="text-teal-600 dark:text-teal-400"
               />

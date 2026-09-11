@@ -1,24 +1,54 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "cn";
+import { ScrollArea as ScrollAreaPrimitive } from "radix-ui";
 
-const ScrollArea = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div">
->(function ScrollArea({ className, children, ...props }, ref) {
+function ScrollArea({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
   return (
-    <div
-      ref={ref}
+    <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
       className={cn("relative", className)}
       {...props}
     >
-      <div className="h-full overflow-y-auto overflow-x-hidden">{children}</div>
-    </div>
+      <ScrollAreaPrimitive.Viewport
+        data-slot="scroll-area-viewport"
+        className="focus-visible:ring-ring/50 size-full rounded-[inherit] outline-none transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px]"
+      >
+        {children}
+      </ScrollAreaPrimitive.Viewport>
+      <ScrollBar />
+      <ScrollAreaPrimitive.Corner />
+    </ScrollAreaPrimitive.Root>
   );
-});
+}
 
-ScrollArea.displayName = "ScrollArea";
+function ScrollBar({
+  className,
+  orientation = "vertical",
+  ...props
+}: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) {
+  return (
+    <ScrollAreaPrimitive.ScrollAreaScrollbar
+      data-slot="scroll-area-scrollbar"
+      data-orientation={orientation}
+      orientation={orientation}
+      className={cn(
+        "data-horizontal:h-2.5 data-horizontal:flex-col data-horizontal:border-t data-horizontal:border-t-transparent data-vertical:h-full data-vertical:w-2.5 data-vertical:border-l data-vertical:border-l-transparent flex touch-none select-none p-px transition-colors",
+        className,
+      )}
+      {...props}
+    >
+      <ScrollAreaPrimitive.ScrollAreaThumb
+        data-slot="scroll-area-thumb"
+        className="bg-border relative flex-1 rounded-full"
+      />
+    </ScrollAreaPrimitive.ScrollAreaScrollbar>
+  );
+}
 
-export { ScrollArea };
+export { ScrollArea, ScrollBar };

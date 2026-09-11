@@ -11,22 +11,22 @@ import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
 import { codeSnippets } from "@/data/snippet-templates";
 import {
-  Settings2,
-  ArrowLeft,
-  ArrowRight,
-  Compass,
-  Eye,
-  Keyboard,
-  LayoutGrid,
-  Shield,
-} from "lucide-react";
+  IconArrowLeft,
+  IconArrowRight,
+  IconCompass,
+  IconEye,
+  IconKeyboard,
+  IconLayoutGrid,
+  IconSettings,
+  IconShield,
+} from "@tabler/icons-react";
 
 const categoryIcons: Record<string, React.ElementType> = {
-  "prompt-actions": Keyboard,
-  wayfinders: Compass,
-  tuners: Settings2,
-  governors: Eye,
-  "trust-builders": Shield,
+  "prompt-actions": IconKeyboard,
+  wayfinders: IconCompass,
+  tuners: IconSettings,
+  governors: IconEye,
+  "trust-builders": IconShield,
 };
 
 const categoryColors: Record<string, string> = {
@@ -83,7 +83,7 @@ export default async function PatternPage({
   if (!pattern || !category) notFound();
 
   const color = categoryColors[pattern.category] ?? "violet";
-  const Icon = categoryIcons[pattern.category] ?? LayoutGrid;
+  const Icon = categoryIcons[pattern.category] ?? IconLayoutGrid;
 
   const currentIndex = patterns.findIndex((p) => p.id === pattern.id);
   const prev = currentIndex > 0 ? patterns[currentIndex - 1] : null;
@@ -162,7 +162,7 @@ export default async function PatternPage({
             href={`/patterns/${prev.category}/${prev.slug}`}
             className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
           >
-            <ArrowLeft size={14} />
+            <IconArrowLeft size={14} />
             {prev.name}
           </Link>
         ) : (
@@ -174,7 +174,7 @@ export default async function PatternPage({
             className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
           >
             {next.name}
-            <ArrowRight size={14} />
+            <IconArrowRight size={14} />
           </Link>
         ) : (
           <div />

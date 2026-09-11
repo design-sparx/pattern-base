@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
+import { IconAlertTriangle } from "@tabler/icons-react";
 import { Component, type ErrorInfo, type ReactNode } from "react";
 
 interface ErrorBoundaryProps {
@@ -39,7 +39,7 @@ export class PreviewErrorBoundary extends Component<
       return (
         <div className="flex min-h-[120px] items-center justify-center rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
           <div className="flex items-center gap-3">
-            <AlertTriangle
+            <IconAlertTriangle
               size={20}
               className="text-red-600 dark:text-red-400"
             />

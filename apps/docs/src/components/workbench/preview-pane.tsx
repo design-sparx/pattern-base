@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  Check,
-  Copy,
-  Download,
-  Monitor,
-  Smartphone,
-  Tablet,
-} from "lucide-react";
+  IconCheck,
+  IconCopy,
+  IconDownload,
+  IconMonitor,
+  IconSmartphone,
+  IconTablet,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
 import {
@@ -39,9 +39,9 @@ import {
 } from "@/lib/workbench-params";
 
 const viewportIcons: Record<Viewport, React.ElementType> = {
-  mobile: Smartphone,
-  tablet: Tablet,
-  desktop: Monitor,
+  mobile: IconSmartphone,
+  tablet: IconTablet,
+  desktop: IconMonitor,
 };
 
 const viewportWidths: Record<Viewport, number | undefined> = {
@@ -128,7 +128,7 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
                 }
               }}
             >
-              <Download size={14} />
+              <IconDownload size={14} />
               Install
             </Button>
           </PopoverTrigger>
@@ -146,7 +146,11 @@ export function PreviewPane({ patternId }: Readonly<{ patternId: string }>) {
                       aria-label={copied ? "Copied!" : "Copy install command"}
                       onClick={handleCopy}
                     >
-                      {copied ? <Check size={14} /> : <Copy size={14} />}
+                      {copied ? (
+                        <IconCheck size={14} />
+                      ) : (
+                        <IconCopy size={14} />
+                      )}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>

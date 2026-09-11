@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import { IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -20,7 +20,7 @@ export default function PatternError({
   return (
     <div className="p-4 md:p-6 lg:p-8">
       <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-        <AlertTriangle size={40} className="text-orange-500" />
+        <IconAlertTriangle size={40} className="text-orange-500" />
         <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
           Failed to load pattern
         </h3>
@@ -34,7 +34,7 @@ export default function PatternError({
           </code>
         )}
         <Button variant="secondary" onClick={reset}>
-          <RefreshCw size={14} />
+          <IconRefresh size={14} />
           Try again
         </Button>
       </div>

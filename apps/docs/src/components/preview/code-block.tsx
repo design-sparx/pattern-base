@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { Highlight, themes } from "prism-react-renderer";
 import { useState } from "react";
 
@@ -45,9 +45,9 @@ export function CodeBlock({
           className="text-gray-400 hover:text-gray-200"
         >
           {copied ? (
-            <Check size={14} className="text-green-400" />
+            <IconCheck size={14} className="text-green-400" />
           ) : (
-            <Copy size={14} />
+            <IconCopy size={14} />
           )}
           <span className="text-xs">{copied ? "Copied!" : "Copy"}</span>
         </Button>

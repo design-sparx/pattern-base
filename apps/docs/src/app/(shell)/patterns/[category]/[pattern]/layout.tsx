@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { IconChevronRight } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -53,14 +53,14 @@ export default async function PatternDetailLayout({
         >
           Patterns
         </Link>
-        <ChevronRight size={12} className="text-gray-400 opacity-50" />
+        <IconChevronRight size={12} className="text-gray-400 opacity-50" />
         <Link
           href={`/patterns/${category.id}`}
           className="text-xs text-gray-400 no-underline hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
         >
           {category.name}
         </Link>
-        <ChevronRight size={12} className="text-gray-400 opacity-50" />
+        <IconChevronRight size={12} className="text-gray-400 opacity-50" />
         <span
           className={`text-xs font-semibold text-${color}-600 dark:text-${color}-400`}
         >

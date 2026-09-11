@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { IconSearch } from "@tabler/icons-react";
 import { registry } from "@/lib/registry";
 import { categories, patterns } from "@/data/patterns";
 
@@ -62,7 +62,7 @@ export function SpotlightProvider({
           />
           <div className="relative w-full max-w-xl rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-800">
-              <Search className="size-4 text-gray-400" />
+              <IconSearch className="size-4 text-gray-400" />
               <input
                 autoFocus
                 value={query}
