@@ -1,41 +1,46 @@
 "use client";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { categories } from "@/data/patterns";
+
+interface PatternFilterTabItem {
+  value: string;
+  label: string;
+}
 
 interface PatternFilterTabsProps {
-  categories?: string[];
+  items?: PatternFilterTabItem[];
   selected?: string;
   onChange?: (value: string) => void;
 }
 
-const DEFAULT_CATEGORIES = [
-  "All",
-  "Prompt Actions",
-  "Generation States",
-  "Context Management",
-  "Error Handling",
+const DEFAULT_ITEMS: PatternFilterTabItem[] = [
+  { value: "all", label: "All" },
+  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
 ];
 
 export function PatternFilterTabs({
-  categories = DEFAULT_CATEGORIES,
-  selected = "All",
+  items = DEFAULT_ITEMS,
+  selected = "all",
   onChange,
 }: PatternFilterTabsProps) {
   return (
     <ToggleGroup
       type="single"
       value={selected}
-      onValueChange={(value) => onChange?.(value)}
+      onValueChange={(value) => {
+        if (value) onChange?.(value);
+      }}
       className="flex-wrap"
     >
-      {categories.map((category) => (
+      {items.map((item) => (
         <ToggleGroupItem
-          key={category}
-          value={category}
-          aria-label={category}
+          key={item.value}
+          value={item.value}
+          aria-label={item.label}
           className="border-border data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:border-primary rounded-full border px-3 py-1 text-xs font-medium"
         >
-          {category}
+          {item.label}
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

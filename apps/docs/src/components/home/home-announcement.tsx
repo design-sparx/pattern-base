@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { patterns } from "@/data/patterns";
+
+const totalPatterns = patterns.length;
 
 interface HomeAnnouncementProps {
   text?: string;
@@ -12,7 +15,7 @@ interface HomeAnnouncementProps {
 }
 
 export function HomeAnnouncement({
-  text = "54 patterns now available for shadcn/ui — Bootstrap and Ant Design coming soon",
+  text = `All ${totalPatterns} patterns ship for Bootstrap, Ant Design, Mantine, and shadcn/ui`,
   linkText = "Explore patterns",
   linkHref = "/patterns",
 }: HomeAnnouncementProps) {

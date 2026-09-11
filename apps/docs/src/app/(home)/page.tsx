@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 
 import { CategoryIndex } from "@/components/home/category-index";
-import { FeaturedPatterns } from "@/components/home/featured-patterns";
 import { FeaturedResources } from "@/components/home/featured-resources";
+import { FeaturedSection } from "@/components/home/featured-section";
 import { HomeAnnouncement } from "@/components/home/home-announcement";
-import { NewsletterSignup } from "@/components/home/newsletter-signup";
 import { OriginManifesto } from "@/components/home/origin-manifesto";
-import { PatternFilterTabs } from "@/components/home/pattern-filter-tabs";
 import { StatsStrip } from "@/components/home/stats-strip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { patterns } from "@/data/patterns";
+
+const totalPatterns = patterns.length;
 
 export const metadata: Metadata = {
   title: "PatternBase — AI UX Pattern Library",
-  description:
-    "An open-source React component library codifying 54 AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, and shadcn/ui.",
+  description: `An open-source React component library codifying ${totalPatterns} AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, Mantine, and shadcn/ui.`,
 };
 
 export default function HomePage() {
@@ -34,9 +34,9 @@ export default function HomePage() {
           , ready to ship.
         </h1>
         <p className="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed">
-          Fifty-four interaction patterns distilled from shapeof.ai — each
-          implemented for Bootstrap, Ant Design, and shadcn/ui. Study them here,
-          copy them into your product.
+          {totalPatterns} interaction patterns distilled from shapeof.ai — each
+          implemented for Bootstrap, Ant Design, Mantine, and shadcn/ui. Browse
+          them here, copy them into your product.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Button size="lg" className="rounded-full" asChild>
@@ -60,14 +60,14 @@ export default function HomePage() {
           </div>
           <div className="mt-4 space-y-1 font-mono text-xs leading-relaxed">
             <div>
-              <span className="text-primary">$</span> npx pattern-base init
-              my-ai-app
+              <span className="text-primary">$</span> pnpm add
+              @patternbase/shadcn tailwindcss
             </div>
             <div className="text-muted-foreground">
-              ✓ Created 54 UX patterns
+              ✓ {totalPatterns} patterns with identical prop interfaces
             </div>
             <div className="text-muted-foreground">
-              ✓ Bootstrap, Ant Design, shadcn/ui
+              ✓ Bootstrap, Ant Design, Mantine, shadcn/ui
             </div>
             <div className="text-muted-foreground">✓ TypeScript ready</div>
             <div className="flex items-center gap-1">
@@ -91,7 +91,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured */}
-      <section className="border-border border-t">
+      <section className="border-border border-t" id="featured">
         <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
           <div className="mb-6 flex items-start justify-between">
             <div>
@@ -106,15 +106,11 @@ export default function HomePage() {
               </p>
             </div>
             <Button variant="ghost" size="sm" className="rounded-full" asChild>
-              <a href="/patterns">View all 54 →</a>
+              <a href="/patterns">View all {totalPatterns} →</a>
             </Button>
           </div>
 
-          <PatternFilterTabs />
-
-          <div className="mt-6">
-            <FeaturedPatterns />
-          </div>
+          <FeaturedSection />
         </div>
       </section>
 
@@ -149,7 +145,7 @@ export default function HomePage() {
                   className="text-muted-foreground hover:border-primary hover:text-foreground border-l-2 border-transparent px-3 py-1 text-xs"
                   href="#resources"
                 >
-                  Latest updates
+                  Resources
                 </a>
               </nav>
             </div>
@@ -171,30 +167,29 @@ export default function HomePage() {
       {/* Origin */}
       <OriginManifesto id="about" />
 
-      {/* Featured resources */}
+      {/* Resources */}
       <section className="border-border border-t" id="resources">
         <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <Badge variant="outline" className="mb-2 font-mono">
-                Featured resources
+                Resources
               </Badge>
               <h2 className="text-2xl font-semibold tracking-tight">
-                Latest updates
+                Where to go next
               </h2>
             </div>
-            <Button variant="ghost" size="sm" className="rounded-full">
-              All resources →
+            <Button variant="ghost" size="sm" className="rounded-full" asChild>
+              <a
+                href="https://github.com/kelvink96/pattern-base"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit GitHub →
+              </a>
             </Button>
           </div>
           <FeaturedResources />
-        </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="border-border border-t">
-        <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
-          <NewsletterSignup />
         </div>
       </section>
     </>
