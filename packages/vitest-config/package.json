@@ -1,6 +1,7 @@
 {
   "name": "@patternbase/vitest-config",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "main": "./index.ts",
   "files": [

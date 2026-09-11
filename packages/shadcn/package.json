@@ -1,6 +1,7 @@
 {
   "name": "@patternbase/shadcn",
   "version": "0.3.1",
+  "license": "MIT",
   "description": "shadcn/ui implementation of AI UI components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

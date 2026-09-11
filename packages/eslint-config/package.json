@@ -1,6 +1,7 @@
 {
   "name": "@patternbase/eslint-config",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "files": [
     "library.js",
