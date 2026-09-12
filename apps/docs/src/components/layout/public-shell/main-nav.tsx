@@ -16,13 +16,16 @@ import {
 } from "@/components/ui/navigation-menu";
 import {
   getNavCategories,
+  getNavResources,
   isHomePath,
   isPatternsPath,
+  isResourcePath,
 } from "@/lib/public-shell";
 
 export function MainNav() {
   const pathname = usePathname();
   const categories = getNavCategories();
+  const resources = getNavResources();
   const patternsActive = isPatternsPath(pathname);
 
   return (
@@ -66,6 +69,19 @@ export function MainNav() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
+        {resources.map((res) => (
+          <NavigationMenuItem key={res.href}>
+            <NavigationMenuLink
+              active={isResourcePath(res.href, pathname)}
+              asChild
+            >
+              <Link href={res.href} className={navigationMenuTriggerStyle()}>
+                {res.label}
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
       </NavigationMenuList>
     </NavigationMenu>
   );
