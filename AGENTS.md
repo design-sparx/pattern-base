@@ -76,7 +76,7 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 - Site-wide Command-palette search (`apps/docs/src/components/layout/spotlight-provider.tsx`): shared by the public and app shells via `useSpotlight()` context, opened by a header search button or `Ctrl/Cmd+K`. Patterns render in a `CommandDialog` grouped by category (`CommandGroup`) and filtered by name/description/tags; keep prop parity with the `getCategoryIcon()`/`@/data/patterns` lookups used there. Primitives vendored in `apps/docs/src/components/ui/{command,input-group,kbd}.tsx` — the `Command` component is cmdk-backed (`cmdk` is a direct `apps/docs` dependency; install it explicitly when re-adding).
 - Page-scoped components for a route belong in a private `_components/` folder colocated with the route, e.g. all home page sections live in `apps/docs/src/app/(home)/_components/` (route groups are non-routable and Next excludes `_*` folders from routing). Shared route-level prop types go in a `home-props.ts` next to them; `page.tsx` imports them relatively (`./_components/...`). Don't create `src/components/<page>/` families.
 - `apps/docs/src/components/ui/card.tsx` supports `size` ("default" | "sm") and `variant` ("default" | "solid" | "interactive"). `solid` = `border-border bg-background`; `interactive` adds `transition-colors hover:border-primary`. Prefer these variants over hand-written card chrome classes; keep only usage-specific classes (`h-full`, `p-5`, `group`, ...) inline.
-- The home page (`apps/docs/src/app/(home)/page.tsx`) is the copy-paste pitch: no npm-install terminal, no "Browse by intent" section, no newsletter. Copy + hero counts derive from `patterns.length`. Text marketing claims (frameworks, counts, MIT, links) must stay truthful.
+- The home page (`apps/docs/src/app/(home)/page.tsx`) is the copy-paste pitch: no npm-install terminal, no "Browse by intent" section, no newsletter. Static copy derives from `patterns.length` (announcement text, stats, "View all N"); text marketing claims (frameworks, counts, MIT, links) must stay truthful. Hero layout: two-column grid — left column has `HomeAnnouncement` (a whole-pill `<Link href="/patterns">`, no dismiss button) above the H1 and two `rounded-full` CTA buttons; right column is the presentational `PromptComposerMock`. The long description paragraph lives in the `#about` section (`OriginManifesto`), not the hero.
 - commitlint enforces conventional commits; husky + lint-staged run linting on pre-commit.
 
 ## Style & conventions
@@ -86,6 +86,7 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 - Prettier: semicolons, double quotes, trailing commas. Don't hand-format against lint/prettier output.
 - Strict TS (`noUnusedLocals`, `noUnusedParameters`, `noUncheckedIndexedAccess`); typecheck must pass.
 - All component props are typed via interfaces from `@patternbase/core`; framework packages maintain prop parity (same props, different UI).
+- Border radius: always use the `--radius` token-scale utilities (`rounded-xs`–`rounded-4xl`, `rounded-full`) — never arbitrary `rounded-[…]` hardcodes. The one kept exception is `rounded-[inherit]` (radix overlay blades / scroll-area scrollbars that must inherit a parent surface's radius).
 
 ## Adding a pattern
 
