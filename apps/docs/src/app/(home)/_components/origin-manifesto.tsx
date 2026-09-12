@@ -1,11 +1,14 @@
 "use client";
 
-import { useTheme } from "next-themes";
-
 import type { OriginManifestoProps } from "./home-props";
 
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const DEFAULT_PRINCIPLES = [
   {
@@ -34,9 +37,6 @@ export function OriginManifesto({
   shapeofLabel = "shapeof.ai",
   principles = DEFAULT_PRINCIPLES,
 }: OriginManifestoProps) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-
   return (
     <section id={id} className="bg-muted py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4">
@@ -68,13 +68,17 @@ export function OriginManifesto({
               key={principle.label}
               className="border-border bg-background h-full"
             >
-              <span className="text-primary font-mono text-xs">
-                {principle.label}
-              </span>
-              <h4 className="mt-2 font-medium">{principle.title}</h4>
-              <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                {principle.body}
-              </p>
+              <CardHeader>
+                <span className="text-primary font-mono text-xs">
+                  {principle.label}
+                </span>
+                <CardTitle className="text-base font-semibold">
+                  {principle.title}
+                </CardTitle>
+                <CardDescription className="leading-relaxed">
+                  {principle.body}
+                </CardDescription>
+              </CardHeader>
             </Card>
           ))}
         </div>
