@@ -16,7 +16,7 @@ function Card({
       data-size={size}
       data-variant={variant}
       className={cn(
-        "group/card gap-(--card-spacing) bg-card py-(--card-spacing) text-card-foreground ring-foreground/5 dark:ring-foreground/10 *:[img:first-child]:rounded-t-[min(var(--radius-4xl),24px)] *:[img:last-child]:rounded-b-[min(var(--radius-4xl),24px)] flex flex-col overflow-hidden rounded-[min(var(--radius-4xl),24px)] text-sm shadow-sm ring-1 [--card-spacing:--spacing(5)] has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)]",
+        "group/card gap-(--card-spacing) bg-card py-(--card-spacing) text-card-foreground ring-foreground/5 dark:ring-foreground/10 *:[img:first-child]:rounded-t-4xl *:[img:last-child]:rounded-b-4xl rounded-4xl flex flex-col overflow-hidden text-sm shadow-sm ring-1 [--card-spacing:--spacing(5)] has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)]",
         variant === "solid" && "border-border bg-background",
         variant === "interactive" &&
           "border-border bg-background hover:border-primary transition-colors",
@@ -32,7 +32,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-header"
       className={cn(
-        "group/card-header @container/card-header px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing) grid auto-rows-min items-start gap-1.5 rounded-t-[min(var(--radius-4xl),24px)]",
+        "group/card-header @container/card-header px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing) rounded-t-4xl grid auto-rows-min items-start gap-1.5",
         className,
       )}
       {...props}
@@ -88,7 +88,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "px-(--card-spacing) [.border-t]:pt-(--card-spacing) flex items-center rounded-b-[min(var(--radius-4xl),24px)]",
+        "px-(--card-spacing) [.border-t]:pt-(--card-spacing) rounded-b-4xl flex items-center",
         className,
       )}
       {...props}
