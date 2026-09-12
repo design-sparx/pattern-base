@@ -5,6 +5,13 @@ import Link from "next/link";
 import type { FeaturedPatternsProps } from "@/components/common/home-props";
 import { Badge } from "@/components/ui/badge";
 import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   FEATURED_SLUGS,
   getCategoryById,
   getPatternBySlug,
@@ -26,25 +33,23 @@ export function FeaturedPatterns({
           <Link
             key={pattern.id}
             href={getHref(pattern.slug, pattern.category)}
-            className="border-border bg-background hover:border-primary group block rounded-2xl border p-5 transition-all hover:shadow-md"
+            className="h-full"
           >
-            <div className="flex items-center justify-between">
-              <Badge variant="outline" className="font-mono">
-                {category?.name ?? pattern.category}
-              </Badge>
-            </div>
-            <h3 className="text-primary mt-3 font-semibold">{pattern.name}</h3>
-            <p className="text-muted-foreground mt-2 text-sm">
-              {pattern.description}
-            </p>
-            <div className="border-border bg-muted text-muted-foreground mt-3 rounded-lg border p-2 font-mono text-[11px]">
-              &lt;
-              {pattern.slug
-                .split("-")
-                .map((w) => w[0].toUpperCase() + w.slice(1))
-                .join("")}{" "}
-              /&gt;
-            </div>
+            <Card className="border-border bg-background hover:border-primary group h-full transition-colors">
+              <CardHeader>
+                <CardAction>
+                  <Badge variant="outline" className="font-mono">
+                    {category?.name ?? pattern.category}
+                  </Badge>
+                </CardAction>
+                <CardTitle className="text-primary group-hover:underline">
+                  {pattern.name}
+                </CardTitle>
+                <CardDescription className="leading-relaxed">
+                  {pattern.description}
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </Link>
         );
       })}
