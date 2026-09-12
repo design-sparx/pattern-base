@@ -58,7 +58,6 @@ export function MainNav() {
                   key={cat.id}
                   title={cat.name}
                   href={cat.href}
-                  count={cat.count}
                   active={pathname.startsWith(`/patterns/${cat.id}`)}
                 >
                   {cat.description}
@@ -90,7 +89,7 @@ function ListItem({
       <NavigationMenuLink active={active} asChild>
         <Link
           href={href}
-          className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block select-none space-y-1 rounded-xl p-3 leading-none no-underline outline-none transition-colors"
+          className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block flex select-none flex-col items-start space-y-1 rounded-xl p-3 leading-none no-underline outline-none transition-colors"
         >
           <div className="flex items-center justify-between gap-2 text-sm font-medium">
             <span>{title}</span>
@@ -100,7 +99,7 @@ function ListItem({
               </span>
             )}
           </div>
-          <div className="text-muted-foreground line-clamp-2 pt-1 text-sm leading-snug">
+          <div className="text-muted-foreground line-clamp-2 text-sm leading-snug">
             {children}
           </div>
         </Link>
