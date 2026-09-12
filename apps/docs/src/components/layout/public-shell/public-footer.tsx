@@ -4,15 +4,14 @@ import Link from "next/link";
 import { getNavCategories } from "@/lib/public-shell";
 
 const resources = [
+  { label: "About", href: "/about", external: false },
+  { label: "Contact", href: "/contact", external: false },
+  { label: "Changelog", href: "/changelog", external: false },
+  { label: "Privacy", href: "/privacy", external: false },
   { label: "Patterns index", href: "/patterns", external: false },
   {
     label: "GitHub",
     href: "https://github.com/kelvink96/pattern-base",
-    external: true,
-  },
-  {
-    label: "Changelog",
-    href: "https://github.com/kelvink96/pattern-base/releases",
     external: true,
   },
 ];

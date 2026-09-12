@@ -1,3 +1,4 @@
+import { copyFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig } from "tsup";
 
@@ -10,4 +11,5 @@ export default defineConfig({
   clean: true,
   external: ["react", "react-dom"],
   alias: { "@": resolve(__dirname, "src") },
+  onSuccess: () => copyFileSync("src/styles.css", "dist/styles.css"),
 });

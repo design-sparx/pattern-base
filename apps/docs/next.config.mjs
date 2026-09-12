@@ -7,9 +7,6 @@ const nextConfig = {
     "@patternbase/mantine",
     "@patternbase/shadcn",
   ],
-  async redirects() {
-    return [{ source: "/about", destination: "/#about", permanent: true }];
-  },
   async headers() {
     const headers = [
       { key: "X-Content-Type-Options", value: "nosniff" },
