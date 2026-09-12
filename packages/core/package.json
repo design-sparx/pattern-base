@@ -1,6 +1,6 @@
 {
   "name": "@patternbase/core",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "description": "Shared types, hooks, and utilities for AI UI components",
   "main": "./dist/index.js",
