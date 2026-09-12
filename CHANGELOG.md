@@ -1,5 +1,35 @@
 # Changelog
 
+## <small>0.3.2 (2026-09-12)</small>
+
+- fix(docs): drop per-category counts from patterns dropdown ([17c69ce](https://github.com/kelvink96/pattern-base/commit/17c69ce))
+- fix(docs): make home page copy truthful and features functional ([e724765](https://github.com/kelvink96/pattern-base/commit/e724765))
+- fix(docs): remove Browse by intent section and unused CategoryIndex ([a6c45f1](https://github.com/kelvink96/pattern-base/commit/a6c45f1))
+- fix(docs): remove hero terminal block ([7e78a02](https://github.com/kelvink96/pattern-base/commit/7e78a02))
+- fix(docs): use shadcn Card for featured patterns, drop code snippet strip ([fbe0265](https://github.com/kelvink96/pattern-base/commit/fbe0265))
+- fix(docs): use shadcn Card subcomponents in OriginManifesto, drop dead theme hook ([b5764e9](https://github.com/kelvink96/pattern-base/commit/b5764e9))
+- fix(docs): wire header search to command palette and static category colors ([bc33c67](https://github.com/kelvink96/pattern-base/commit/bc33c67))
+- feat(docs): add desktop navigation menu to public shell ([8f1a2ff](https://github.com/kelvink96/pattern-base/commit/8f1a2ff))
+- feat(docs): add home page SEO metadata and security headers ([bfb881d](https://github.com/kelvink96/pattern-base/commit/bfb881d))
+- feat(docs): add mobile navigation drawer to public shell ([3be25b3](https://github.com/kelvink96/pattern-base/commit/3be25b3))
+- feat(docs): add multi-column footer to public shell ([18a6613](https://github.com/kelvink96/pattern-base/commit/18a6613))
+- feat(docs): add shared app-container utility ([83b2320](https://github.com/kelvink96/pattern-base/commit/83b2320))
+- feat(docs): add shared nav helpers for public shell ([7057963](https://github.com/kelvink96/pattern-base/commit/7057963))
+- feat(docs): consolidate shadcn setup, tabler icons, turbo configs, and agent docs ([61af02d](https://github.com/kelvink96/pattern-base/commit/61af02d))
+- feat(docs): redesign home page with shadcn components and primitives ([442e83c](https://github.com/kelvink96/pattern-base/commit/442e83c))
+- feat(docs): rewrite public header with navigation menu and aligned container ([2a2455e](https://github.com/kelvink96/pattern-base/commit/2a2455e))
+- feat(docs): use shadcn components dropdown for patterns menu ([492f0be](https://github.com/kelvink96/pattern-base/commit/492f0be))
+- feat(docs): wire footer into public shell layout ([e19285b](https://github.com/kelvink96/pattern-base/commit/e19285b))
+- feat(ui): add solid and interactive variants to Card ([6b9425d](https://github.com/kelvink96/pattern-base/commit/6b9425d))
+- docs: add shadcn redesign and public shell plans ([f0813e6](https://github.com/kelvink96/pattern-base/commit/f0813e6))
+- docs: document public shell layout and app-container utility ([939b5d1](https://github.com/kelvink96/pattern-base/commit/939b5d1))
+- docs(agents): document (home)/\_components, card variants, dropdown counts ([4d85d67](https://github.com/kelvink96/pattern-base/commit/4d85d67))
+- docs(agents): document workbench, split registry, and (shell) route group ([9aa2dfb](https://github.com/kelvink96/pattern-base/commit/9aa2dfb))
+- refactor(docs): colocate home page components in (home)/\_components ([ba09bcf](https://github.com/kelvink96/pattern-base/commit/ba09bcf))
+- chore(docs): commit build-regenerated type refs and snippet whitespace ([153fd55](https://github.com/kelvink96/pattern-base/commit/153fd55))
+- chore(docs): remove Mantine and add shadcn framework support ([9d4eec1](https://github.com/kelvink96/pattern-base/commit/9d4eec1))
+- build: add MIT license to root and all packages ([ebcb983](https://github.com/kelvink96/pattern-base/commit/ebcb983))
+
 ## <small>0.3.1 (2026-09-10)</small>
 
 - chore: add .kilo, .lavish, opencode.json to gitignore and cleanup layout files ([6742b47](https://github.com/kelvink96/pattern-base/commit/6742b47))
