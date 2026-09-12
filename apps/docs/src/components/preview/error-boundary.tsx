@@ -1,6 +1,5 @@
 "use client";
 
-import { Alert } from "@mantine/core";
 import { IconAlertTriangle } from "@tabler/icons-react";
 import { Component, type ErrorInfo, type ReactNode } from "react";
 
@@ -38,15 +37,23 @@ export class PreviewErrorBoundary extends Component<
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <Alert
-          color="red"
-          title="Preview failed"
-          icon={<IconAlertTriangle size={16} />}
-          mih={120}
-        >
-          {this.state.error?.message ??
-            "An error occurred rendering this component."}
-        </Alert>
+        <div className="flex min-h-[120px] items-center justify-center rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+          <div className="flex items-center gap-3">
+            <IconAlertTriangle
+              size={20}
+              className="text-red-600 dark:text-red-400"
+            />
+            <div>
+              <p className="font-medium text-red-800 dark:text-red-300">
+                Preview failed
+              </p>
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {this.state.error?.message ??
+                  "An error occurred rendering this component."}
+              </p>
+            </div>
+          </div>
+        </div>
       );
     }
 

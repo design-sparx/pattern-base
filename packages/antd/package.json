@@ -1,6 +1,7 @@
 {
   "name": "@patternbase/antd",
   "version": "0.3.1",
+  "license": "MIT",
   "description": "Ant Design implementation of AI UI components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

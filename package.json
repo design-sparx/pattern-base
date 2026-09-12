@@ -2,6 +2,7 @@
   "name": "patternbase",
   "version": "0.3.1",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -9,7 +10,8 @@
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "type-check": "turbo run type-check",
-    "clean": "turbo run clean",
+    "clean": "turbo run clean && node scripts/clean-cache.js",
+    "clean:all": "node scripts/clean-cache.js && pnpm exec rimraf '**/node_modules/.cache' '**/node_modules/.vite' 2>/dev/null || echo 'No cache modules to clean'",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",

@@ -22,9 +22,9 @@ describe("parseWorkbenchParams", () => {
   });
 
   it("parses valid values case-sensitively", () => {
-    const result = parseWorkbenchParams(sp("fw=mantine&tab=props&vp=tablet"));
+    const result = parseWorkbenchParams(sp("fw=shadcn&tab=props&vp=tablet"));
     expect(result).toEqual({
-      framework: "mantine",
+      framework: "shadcn",
       tab: "props",
       viewport: "tablet",
     });
@@ -66,11 +66,11 @@ describe("buildWorkbenchQuery", () => {
   it("encodes only non-default values", () => {
     expect(
       buildWorkbenchQuery({
-        framework: "mantine",
+        framework: "shadcn",
         tab: "code",
         viewport: "desktop",
       }),
-    ).toBe("fw=mantine");
+    ).toBe("fw=shadcn");
     expect(
       buildWorkbenchQuery({
         framework: "bootstrap",

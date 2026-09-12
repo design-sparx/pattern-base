@@ -1,109 +1,144 @@
 import type { Metadata } from "next";
-import {
-  Anchor,
-  Box,
-  Button,
-  Container,
-  Group,
-  Text,
-  Title,
-} from "@mantine/core";
 
-import styles from "@/components/common/editorial.module.css";
-import { CategoryIndex } from "@/components/home/category-index";
-import { FeaturedPatterns } from "@/components/home/featured-patterns";
-import { OriginManifesto } from "@/components/home/origin-manifesto";
-import { StatsStrip } from "@/components/home/stats-strip";
+import { FeaturedResources } from "./_components/featured-resources";
+import { FeaturedSection } from "./_components/featured-section";
+import { HomeAnnouncement } from "./_components/home-announcement";
+import { OriginManifesto } from "./_components/origin-manifesto";
+import { StatsStrip } from "./_components/stats-strip";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { patterns } from "@/data/patterns";
+
+const totalPatterns = patterns.length || 0;
+
+const siteDescription = `Copy-paste React components for ${totalPatterns.toString()} AI UX patterns from shapeof.ai — built on Bootstrap, Ant Design, Mantine, and shadcn/ui.`;
 
 export const metadata: Metadata = {
   title: "PatternBase — AI UX Pattern Library",
-  description:
-    "An open-source React component library codifying 54 AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, and Mantine.",
+  description: siteDescription,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "PatternBase — AI UX Pattern Library",
+    description: siteDescription,
+    url: "/",
+    siteName: "PatternBase",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/logo-transparent.png",
+        width: 2000,
+        height: 971,
+        alt: "PatternBase — AI UX Pattern Library",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PatternBase — AI UX Pattern Library",
+    description: siteDescription,
+    images: ["/logo-transparent.png"],
+  },
 };
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <Container size="lg" pt={{ base: "xl", md: 80 }} pb="xl">
-        <Text
-          fz="xs"
-          c="var(--mantine-color-violet-filled)"
-          className={styles.editorialKicker}
-        >
-          An open-source component library
-        </Text>
-        <Title
-          order={1}
-          className={styles.editorialDisplay}
-          fw={350}
-          fz={{ base: 38, md: 62 }}
-          lh={1.05}
-          mt="md"
-          maw={760}
-        >
-          The missing UX patterns for{" "}
-          <Text span inherit fs="italic" c="var(--mantine-color-violet-filled)">
-            AI products,
-          </Text>{" "}
-          ready to ship.
-        </Title>
-        <Text fz="lg" mt="md" maw={520} lh={1.65}>
-          Fifty-four interaction patterns distilled from shapeof.ai — each
-          implemented for Bootstrap, Ant Design, and Mantine. Study them here,
-          copy them into your product.
-        </Text>
-        <Group gap="md" mt="xl" wrap="nowrap">
-          <Anchor href="/patterns">
-            <Button color="violet" radius="xl">
-              Browse patterns
-            </Button>
-          </Anchor>
-          <Anchor href="#about" c="inherit" fw={600} fz="md" underline="never">
-            Read the approach ↓
-          </Anchor>
-        </Group>
-      </Container>
+      <HomeAnnouncement />
 
-      <Container size="lg" pt="xl">
-        {/* Stats */}
-        <StatsStrip />
-      </Container>
+      <div className="app-container pb-12 pt-16 md:pb-12 md:pt-20 lg:pt-20">
+        <Badge variant="outline" className="font-mono">
+          &lt;AI UX Pattern Library /&gt;
+        </Badge>
+        <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
+          The missing UX patterns for{" "}
+          <span className="bg-linear-to-r from-primary to-[oklch(0.6_0.2_290)] bg-clip-text text-transparent">
+            AI products
+          </span>
+          , ready to ship.
+        </h1>
+        <p className="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed">
+          {totalPatterns} interaction patterns distilled from shapeof.ai — each
+          implemented for Bootstrap, Ant Design, Mantine, and shadcn/ui. Every
+          pattern ships as a self-contained React component with one typed props
+          interface across all four libraries, so you can switch UI stacks
+          without rewriting your AI features. Browse them here, copy them into
+          your product.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Button size="lg" className="rounded-full" asChild>
+            <a href="/patterns">Browse patterns</a>
+          </Button>
+          <Button variant="outline" size="lg" className="rounded-full" asChild>
+            <a href="#about">Read the approach</a>
+          </Button>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <section className="border-border border-t">
+        <div className="app-container py-6">
+          <StatsStrip />
+        </div>
+      </section>
 
       {/* Featured */}
-      <Container size="lg" pt="xl">
-        <Group justify="space-between" align="baseline" mb="md">
-          <Title order={2} className={styles.editorialDisplay} fw={450} fz={28}>
-            Featured patterns
-          </Title>
-          <Anchor
-            href="/patterns"
-            fz="sm"
-            fw={600}
-            c="var(--mantine-color-violet-filled)"
-          >
-            View all 54 →
-          </Anchor>
-        </Group>
-        <FeaturedPatterns />
-      </Container>
+      <section className="border-border border-t" id="featured">
+        <div className="app-container py-12 md:py-14">
+          <div className="mb-6 flex items-start justify-between">
+            <div>
+              <Badge variant="outline" className="mb-2 font-mono">
+                Featured patterns
+              </Badge>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Start here
+              </h2>
+              <p className="text-muted-foreground mt-1 text-sm">
+                The most impactful AI UX patterns to explore first — spanning
+                prompt actions, wayfinders, tuners, governors, and trust
+                builders.
+              </p>
+            </div>
+            <Button variant="ghost" size="sm" className="rounded-full" asChild>
+              <a href="/patterns">View all {totalPatterns} →</a>
+            </Button>
+          </div>
 
-      {/* Category index */}
-      <Container size="lg" pt="xl" pb="xl">
-        <Title
-          order={2}
-          className={styles.editorialDisplay}
-          fw={450}
-          fz={28}
-          mb="md"
-        >
-          Browse by intent
-        </Title>
-        <CategoryIndex />
-      </Container>
+          <FeaturedSection />
+        </div>
+      </section>
 
-      {/* Origin (absorbs /about) */}
-      <OriginManifesto />
+      {/* Origin */}
+      <OriginManifesto id="about" />
+
+      {/* Resources */}
+      <section className="border-border border-t" id="resources">
+        <div className="app-container py-12 md:py-14">
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <Badge variant="outline" className="mb-2 font-mono">
+                Resources
+              </Badge>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Where to go next
+              </h2>
+            </div>
+            <Button variant="ghost" size="sm" className="rounded-full" asChild>
+              <a
+                href="https://github.com/kelvink96/pattern-base"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit GitHub →
+              </a>
+            </Button>
+          </div>
+          <FeaturedResources />
+        </div>
+      </section>
     </>
   );
 }

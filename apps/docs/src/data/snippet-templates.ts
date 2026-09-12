@@ -6,9 +6,9 @@
 
 export const codeSnippets: Record<
   string,
-  { bootstrap: string; antd: string; mantine: string; shadcn: string }
+  { bootstrap: string; antd: string; shadcn: string }
 > = {
-  "action-plan": {
+"action-plan": {
     bootstrap: `import { Button, Card } from "react-bootstrap";
 
 import type { ActionPlanProps, ActionPlanStep } from "@patternbase/core";
@@ -223,85 +223,6 @@ export function ActionPlan({
   );
 }
 `,
-    mantine: `import { Button, Card, Group, Stack, Stepper, Text } from "@mantine/core";
-
-import type { ActionPlanProps } from "@patternbase/core";
-
-export function ActionPlan({
-  steps,
-  title,
-  onApprove,
-  onReject,
-  onStepClick,
-  showEstimates = false,
-}: Readonly<ActionPlanProps>) {
-  const activeIndex = steps.findIndex((s) => s.status === "in-progress");
-  const active =
-    activeIndex >= 0
-      ? activeIndex
-      : steps.filter((s) => s.status === "completed").length;
-
-  return (
-    <Card padding="sm" withBorder>
-      <Stack gap="sm">
-        {title ? <Text fw={600}>{title}</Text> : null}
-
-        <Stepper active={active} orientation="vertical" size="sm">
-          {steps.map((step) => (
-            <Stepper.Step
-              key={step.id}
-              label={
-                <Text
-                  size="sm"
-                  fw={500}
-                  style={{ cursor: onStepClick ? "pointer" : undefined }}
-                  onClick={() => onStepClick?.(step.id)}
-                >
-                  {step.title}
-                  {step.tool ? <Text component="span" size="xs" c="dimmed" ml="xs">
-                      ({step.tool})
-                    </Text> : null}
-                </Text>
-              }
-              description={
-                <Stack gap={2}>
-                  {step.description ? <Text size="xs" c="dimmed">
-                      {step.description}
-                    </Text> : null}
-                  {showEstimates && step.estimatedDuration ? <Text size="xs" c="dimmed">
-                      Est: {step.estimatedDuration}
-                    </Text> : null}
-                </Stack>
-              }
-              color={
-                step.status === "failed" ? "red"
-                : step.status === "completed" ? "green"
-                : step.status === "skipped" ? "gray"
-                : undefined
-              }
-              loading={step.status === "in-progress"}
-            />
-          ))}
-        </Stepper>
-
-        {(onApprove ?? onReject) ? <Group gap="sm" mt="xs">
-            {onApprove ? <Button size="sm" onClick={onApprove}>
-                Approve
-              </Button> : null}
-            {onReject ? <Button
-                size="sm"
-                color="red"
-                variant="outline"
-                onClick={onReject}
-              >
-                Reject
-              </Button> : null}
-          </Group> : null}
-      </Stack>
-    </Card>
-  );
-}
-`,
     shadcn: `import { Check, Circle, X } from "lucide-react";
 
 import type { ActionPlanProps } from "@patternbase/core";
@@ -418,7 +339,7 @@ export function ActionPlan({
 }
 `,
   },
-  "attachments": {
+"attachments": {
     bootstrap: `import { Badge, Button, Card, ProgressBar } from "react-bootstrap";
 
 import type { AttachmentsProps } from "@patternbase/core";
@@ -623,106 +544,6 @@ export function Attachments({
   );
 }
 `,
-    mantine: `import { ActionIcon, Badge, Group, Progress, Stack, Text } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
-import { IconTrash, IconUpload } from "@tabler/icons-react";
-
-import type { AttachmentsProps } from "@patternbase/core";
-
-function formatSize(bytes: number): string {
-  if (bytes < 1024) return \`\${String(bytes)} B\`;
-  if (bytes < 1024 * 1024) return \`\${(bytes / 1024).toFixed(1)} KB\`;
-  return \`\${(bytes / (1024 * 1024)).toFixed(1)} MB\`;
-}
-
-export function Attachments({
-  attachments,
-  onAdd,
-  onRemove,
-  maxFiles,
-  acceptedTypes,
-  showPreview = false,
-}: Readonly<AttachmentsProps>) {
-  const canAdd = !maxFiles || attachments.length < maxFiles;
-
-  const mimeTypes = acceptedTypes?.reduce<Record<string, string[]>>(
-    (acc, type) => {
-      acc[type] = [];
-      return acc;
-    },
-    {},
-  );
-
-  return (
-    <Stack gap="sm">
-      {canAdd ? <Dropzone
-          onDrop={(files) => { onAdd(files as unknown as File[]); }}
-          accept={mimeTypes}
-          multiple
-        >
-          <Group
-            justify="center"
-            gap="xs"
-            style={{ minHeight: 60, pointerEvents: "none" }}
-          >
-            <Dropzone.Accept>
-              <IconUpload size={20} />
-            </Dropzone.Accept>
-            <Dropzone.Idle>
-              <IconUpload size={20} style={{ opacity: 0.4 }} />
-            </Dropzone.Idle>
-            <Text size="sm" c="dimmed">
-              Drop files here or click to upload
-            </Text>
-          </Group>
-        </Dropzone> : null}
-
-      {attachments.map((a) => (
-        <Group key={a.id} gap="sm" align="flex-start">
-          {showPreview && a.previewUrl ? <img
-              src={a.previewUrl}
-              alt={a.name}
-              style={{
-                width: 40,
-                height: 40,
-                objectFit: "cover",
-                borderRadius: 4,
-              }}
-            /> : null}
-          <Stack gap={2} style={{ flex: 1 }}>
-            <Group justify="space-between" align="center">
-              <Text size="sm" fw={500}>
-                {a.name}
-              </Text>
-              <ActionIcon
-                variant="subtle"
-                color="red"
-                size="sm"
-                onClick={() => { onRemove(a.id); }}
-              >
-                <IconTrash size={14} />
-              </ActionIcon>
-            </Group>
-            <Group gap="xs">
-              <Text size="xs" c="dimmed">
-                {formatSize(a.size)}
-              </Text>
-              {a.status === "error" && (
-                <Badge size="xs" color="red">
-                  Error
-                </Badge>
-              )}
-            </Group>
-            {a.status === "uploading" && a.progress !== undefined && (
-              <Progress value={a.progress} size="xs" mt={2} />
-            )}
-          </Stack>
-        </Group>
-      ))}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Trash2, Upload } from "lucide-react";
 
 import type { AttachmentsProps } from "@patternbase/core";
@@ -815,7 +636,7 @@ export function Attachments({
 }
 `,
   },
-  "auto-fill": {
+"auto-fill": {
     bootstrap: `import { useState } from "react";
 import { Dropdown, Form, Spinner } from "react-bootstrap";
 
@@ -956,90 +777,6 @@ export function AutoFill({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Card,
-  Group,
-  Loader,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
-
-import type { AutoFillProps } from "@patternbase/core";
-
-export function AutoFill({
-  suggestions,
-  onSelect,
-  onQueryChange,
-  query = "",
-  isLoading = false,
-  placeholder = "Start typing...",
-  maxSuggestions,
-  highlightMatch = true,
-}: AutoFillProps) {
-  const displayed = maxSuggestions
-    ? suggestions.slice(0, maxSuggestions)
-    : suggestions;
-
-  const highlight = (text: string) => {
-    if (!highlightMatch || !query.trim()) return text;
-    const idx = text.toLowerCase().indexOf(query.toLowerCase());
-    if (idx === -1) return text;
-    return (
-      <>
-        {text.substring(0, idx)}
-        <mark
-          style={{
-            background: "var(--mantine-color-yellow-3)",
-            borderRadius: 2,
-          }}
-        >
-          {text.substring(idx, idx + query.length)}
-        </mark>
-        {text.substring(idx + query.length)}
-      </>
-    );
-  };
-
-  return (
-    <Stack gap="xs">
-      <TextInput
-        value={query}
-        onChange={(e) => onQueryChange?.(e.currentTarget.value)}
-        placeholder={placeholder}
-        rightSection={isLoading ? <Loader size="xs" /> : null}
-      />
-
-      {displayed.length > 0 && (
-        <Stack gap={4}>
-          {displayed.map((s) => (
-            <Card
-              key={s.id}
-              padding="xs"
-              withBorder
-              style={{ cursor: "pointer" }}
-              onClick={() => { onSelect(s); }}
-            >
-              <Group justify="space-between" align="center">
-                <Text size="sm">{highlight(s.text)}</Text>
-                {s.matchScore !== undefined && (
-                  <Badge size="xs" variant="light" color="gray">
-                    {Math.round(s.matchScore * 100)}%
-                  </Badge>
-                )}
-              </Group>
-              {s.source ? <Text size="xs" c="dimmed">
-                  {s.source}
-                </Text> : null}
-            </Card>
-          ))}
-        </Stack>
-      )}
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { AutoFillProps } from "@patternbase/core";
 
 import { Badge } from "@/components/ui/badge";
@@ -1124,7 +861,7 @@ export function AutoFill({
 }
 `,
   },
-  "avatar": {
+"avatar": {
     bootstrap: `import { Badge, Button, Card, Image, Stack } from "react-bootstrap";
 
 import type { AvatarProps } from "@patternbase/core";
@@ -1370,124 +1107,6 @@ export function Avatar({
   );
 }
 `,
-    mantine: `import {
-  Avatar as MantineAvatar,
-  Badge,
-  Card,
-  Group,
-  Stack,
-  Text,
-} from "@mantine/core";
-
-import type { AvatarProps } from "@patternbase/core";
-
-export function Avatar({
-  name,
-  persona,
-  imageUrl,
-  badgeLabel,
-  status = "online",
-  size = "medium",
-  variant = "inline",
-  onSelect,
-}: AvatarProps) {
-  const sizeMap = { small: "sm", medium: "md", large: "lg" } as const;
-  const dotSize = { small: 8, medium: 10, large: 14 };
-  const statusColor = {
-    online: "var(--mantine-color-green-6)",
-    idle: "var(--mantine-color-orange-6)",
-    offline: "var(--mantine-color-gray-4)",
-  };
-
-  const avatarEl = (
-    <div style={{ position: "relative", display: "inline-block" }}>
-      <MantineAvatar
-        src={imageUrl}
-        name={name}
-        size={sizeMap[size]}
-        radius="xl"
-        color="violet"
-      />
-      <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            width: dotSize[size],
-            height: dotSize[size],
-            borderRadius: "50%",
-            backgroundColor: statusColor[status],
-            border: "2px solid var(--mantine-color-body)",
-          }}
-        />
-    </div>
-  );
-
-  if (variant === "compact") {
-    return (
-      <Group
-        gap="xs"
-        style={{ cursor: onSelect ? "pointer" : "default" }}
-        onClick={onSelect}
-      >
-        {avatarEl}
-        <Text size="sm" fw={500}>
-          {name}
-        </Text>
-        {badgeLabel ? <Badge size="xs" variant="light">
-            {badgeLabel}
-          </Badge> : null}
-      </Group>
-    );
-  }
-
-  if (variant === "card") {
-    return (
-      <Card
-        withBorder
-        padding="md"
-        style={{ cursor: onSelect ? "pointer" : "default" }}
-        onClick={onSelect}
-      >
-        <Stack gap="sm" align="center" ta="center">
-          {avatarEl}
-          <Stack gap={4}>
-            <Text fw={600}>{name}</Text>
-            {persona ? <Text size="sm" c="dimmed">
-                {persona}
-              </Text> : null}
-            {badgeLabel ? <Badge size="sm" variant="light">
-                {badgeLabel}
-              </Badge> : null}
-          </Stack>
-        </Stack>
-      </Card>
-    );
-  }
-
-  return (
-    <Group
-      gap="sm"
-      align="center"
-      style={{ cursor: onSelect ? "pointer" : "default" }}
-      onClick={onSelect}
-    >
-      {avatarEl}
-      <Stack gap={2}>
-        <Text size="sm" fw={500}>
-          {name}
-        </Text>
-        {persona ? <Text size="xs" c="dimmed">
-            {persona}
-          </Text> : null}
-        {badgeLabel ? <Badge size="xs" variant="light">
-            {badgeLabel}
-          </Badge> : null}
-      </Stack>
-    </Group>
-  );
-}
-`,
     shadcn: `import type { AvatarProps } from "@patternbase/core";
 
 import {
@@ -1624,7 +1243,7 @@ export function Avatar({
 }
 `,
   },
-  "branches": {
+"branches": {
     bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 
 import type { BranchesProps } from "@patternbase/core";
@@ -1750,136 +1369,6 @@ export function Branches({
         )}
       />
     </Card>
-  );
-}
-`,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  Timeline,
-} from "@mantine/core";
-import { IconGitBranch } from "@tabler/icons-react";
-
-import type { BranchesProps } from "@patternbase/core";
-
-export function Branches({
-  branches,
-  activeBranchId,
-  onSelectBranch,
-  onCreateBranch,
-  title,
-  variant = "list",
-}: BranchesProps) {
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        {title ? <Text fw={600} size="sm">
-            {title}
-          </Text> : null}
-      </Group>
-
-      {variant === "tree" ? (
-        <Timeline bulletSize={20} lineWidth={2}>
-          {branches.map((branch) => (
-            <Timeline.Item
-              key={branch.id}
-              bullet={<IconGitBranch size={12} />}
-              title={
-                <Group
-                  gap="xs"
-                  style={{ paddingLeft: (branch.depth ?? 0) * 16 }}
-                >
-                  <Text
-                    size="sm"
-                    fw={activeBranchId === branch.id ? 600 : 400}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => { onSelectBranch(branch.id); }}
-                  >
-                    {branch.label}
-                  </Text>
-                  {activeBranchId === branch.id && (
-                    <Badge size="xs" variant="filled" color="violet">
-                      Active
-                    </Badge>
-                  )}
-                </Group>
-              }
-            >
-              {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
-                  {branch.preview}
-                </Text> : null}
-              {branch.createdAt ? <Text size="xs" c="dimmed">
-                  {branch.createdAt.toLocaleDateString()}
-                </Text> : null}
-              <Button
-                variant="subtle"
-                size="compact-xs"
-                mt={4}
-                onClick={() => { onCreateBranch(branch.id); }}
-              >
-                Branch from here
-              </Button>
-            </Timeline.Item>
-          ))}
-        </Timeline>
-      ) : (
-        <Stack gap="xs">
-          {branches.map((branch) => (
-            <Card
-              key={branch.id}
-              padding="sm"
-              withBorder
-              style={{
-                cursor: "pointer",
-                outline:
-                  activeBranchId === branch.id
-                    ? "2px solid var(--mantine-color-violet-6)"
-                    : undefined,
-              }}
-              onClick={() => { onSelectBranch(branch.id); }}
-            >
-              <Group justify="space-between" align="flex-start">
-                <Stack gap={2} style={{ flex: 1 }}>
-                  <Group gap="xs">
-                    <Text size="sm" fw={500}>
-                      {branch.label}
-                    </Text>
-                    {activeBranchId === branch.id && (
-                      <Badge size="xs" variant="filled" color="violet">
-                        Active
-                      </Badge>
-                    )}
-                    {branch.parentId ? <Badge size="xs" variant="light" color="gray">
-                        branch
-                      </Badge> : null}
-                  </Group>
-                  {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
-                      {branch.preview}
-                    </Text> : null}
-                  {branch.createdAt ? <Text size="xs" c="dimmed">
-                      {branch.createdAt.toLocaleDateString()}
-                    </Text> : null}
-                </Stack>
-                <Button
-                  variant="subtle"
-                  size="compact-xs"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onCreateBranch(branch.id);
-                  }}
-                >
-                  Branch
-                </Button>
-              </Group>
-            </Card>
-          ))}
-        </Stack>
-      )}
-    </Stack>
   );
 }
 `,
@@ -2020,7 +1509,7 @@ export function Branches({
 }
 `,
   },
-  "caveat": {
+"caveat": {
     bootstrap: `import { Alert } from "react-bootstrap";
 
 import type { CaveatProps } from "@patternbase/core";
@@ -2156,58 +1645,6 @@ export function Caveat({
   );
 }
 `,
-    mantine: `import { Alert, Anchor, Text } from "@mantine/core";
-import { IconAlertTriangle, IconInfoCircle, IconX } from "@tabler/icons-react";
-
-import type { CaveatProps } from "@patternbase/core";
-
-export function Caveat({
-  message,
-  variant = "banner",
-  severity = "info",
-  title,
-  learnMoreUrl,
-  dismissible = false,
-  onDismiss,
-}: CaveatProps) {
-  const iconMap = {
-    info: <IconInfoCircle size={16} />,
-    warning: <IconAlertTriangle size={16} />,
-    error: <IconX size={16} />,
-  };
-
-  const colorMap = {
-    info: "blue",
-    warning: "orange",
-    error: "red",
-  };
-
-  return (
-    <Alert
-      icon={iconMap[severity]}
-      color={colorMap[severity]}
-      title={title}
-      withCloseButton={dismissible}
-      onClose={() => {
-        onDismiss?.();
-      }}
-      variant={variant === "banner" ? "filled" : "light"}
-    >
-      <Text size="sm">{message}</Text>
-      {learnMoreUrl ? <Anchor
-          href={learnMoreUrl}
-          target="_blank"
-          size="xs"
-          rel="noopener noreferrer"
-          mt={4}
-          display="block"
-        >
-          Learn more
-        </Anchor> : null}
-    </Alert>
-  );
-}
-`,
     shadcn: `import { AlertTriangle, Info, X } from "lucide-react";
 
 import type { CaveatProps } from "@patternbase/core";
@@ -2267,7 +1704,7 @@ export function Caveat({
 }
 `,
   },
-  "chained-action": {
+"chained-action": {
     bootstrap: `import { Badge, Button, Card, Spinner } from "react-bootstrap";
 
 import type { ChainedActionProps } from "@patternbase/core";
@@ -2430,70 +1867,6 @@ export function ChainedAction({
         {isExecuting ? "Running..." : "Execute"}
       </Button>
     </Card>
-  );
-}
-`,
-    mantine: `import { Button, Stack, Stepper, Text } from "@mantine/core";
-
-import type { ChainedActionProps } from "@patternbase/core";
-
-export function ChainedAction({
-  steps,
-  onExecute,
-  onStepClick,
-  isExecuting = false,
-  title,
-}: ChainedActionProps) {
-  const activeIndex = steps.findIndex((s) => s.status === "active");
-  const active =
-    activeIndex >= 0
-      ? activeIndex
-      : steps.filter((s) => s.status === "completed").length;
-
-  return (
-    <Stack gap="md">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-
-      <Stepper active={active} size="sm">
-        {steps.map((step) => (
-          <Stepper.Step
-            key={step.id}
-            label={
-              <Text
-                size="sm"
-                fw={500}
-                style={{ cursor: onStepClick ? "pointer" : undefined }}
-                onClick={() => onStepClick?.(step.id)}
-              >
-                {step.label}
-              </Text>
-            }
-            description={step.description}
-            color={
-              step.status === "error" ? "red"
-              : step.status === "completed" ? "green"
-              : undefined
-            }
-            loading={step.status === "active" && isExecuting}
-          >
-            {step.result ? <Text size="xs" c="dimmed" mt="xs">
-                {step.result}
-              </Text> : null}
-          </Stepper.Step>
-        ))}
-      </Stepper>
-
-      <Button
-        onClick={onExecute}
-        loading={isExecuting}
-        disabled={steps.every((s) => s.status === "completed")}
-        size="sm"
-      >
-        Execute
-      </Button>
-    </Stack>
   );
 }
 `,
@@ -2674,7 +2047,7 @@ export function ChainedAction({
 }
 `,
   },
-  "citation": {
+"citation": {
     bootstrap: `import { useState } from "react";
 import { Badge, Button, Card, Collapse, Stack } from "react-bootstrap";
 
@@ -2960,147 +2333,6 @@ export function InlineCitation({
   );
 }
 `,
-    mantine: `import { Anchor, Badge, Button, Card, Group, Stack, Text } from "@mantine/core";
-import { useState } from "react";
-
-import type {
-  CitationProps,
-  CitationsListProps,
-  InlineCitationProps,
-} from "@patternbase/core";
-
-function getRelevanceColor(score: number) {
-  if (score >= 0.8) return "green";
-  if (score >= 0.5) return "orange";
-  return "gray";
-}
-
-function getRelevanceLabel(score: number) {
-  if (score >= 0.8) return "High";
-  if (score >= 0.5) return "Medium";
-  return "Low";
-}
-
-export function Citation({ citation }: CitationProps) {
-  const [expanded, setExpanded] = useState(false);
-  const { source, url, snippet, relevance = 1 } = citation;
-
-  return (
-    <Card padding="sm" withBorder mb="xs">
-      <Stack gap="xs">
-        <Group justify="space-between" align="flex-start">
-          <Stack gap={2}>
-            <Group gap="xs">
-              <Text fw={600} size="sm" c="violet">
-                {source}
-              </Text>
-              <Badge
-                size="xs"
-                color={getRelevanceColor(relevance)}
-                variant="light"
-              >
-                {getRelevanceLabel(relevance)} Relevance
-              </Badge>
-            </Group>
-            {url ? <Anchor
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                size="xs"
-              >
-                {url.length > 60 ? \`\${url.substring(0, 60)}...\` : url}
-              </Anchor> : null}
-          </Stack>
-          <Button
-            variant="subtle"
-            size="compact-xs"
-            onClick={() => { setExpanded(!expanded); }}
-          >
-            {expanded ? "Hide" : "View"} excerpt
-          </Button>
-        </Group>
-
-        {expanded && snippet ? <Text
-            size="sm"
-            style={{
-              fontStyle: "italic",
-              borderLeft: "3px solid var(--mantine-color-violet-6)",
-              paddingLeft: 12,
-            }}
-          >
-            &ldquo;{snippet}&rdquo;
-          </Text> : null}
-      </Stack>
-    </Card>
-  );
-}
-
-export function CitationsList({
-  citations,
-  title = "Sources",
-  maxVisible = 3,
-}: CitationsListProps) {
-  const [showAll, setShowAll] = useState(false);
-  const display = showAll ? citations : citations.slice(0, maxVisible);
-
-  return (
-    <Stack gap="xs">
-      <Group gap="xs">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        <Badge size="xs" variant="light">
-          {citations.length}
-        </Badge>
-      </Group>
-
-      {display.map((c) => (
-        <Citation key={c.id} citation={c} />
-      ))}
-
-      {citations.length > maxVisible && (
-        <Button
-          variant="default"
-          size="compact-sm"
-          fullWidth
-          onClick={() => { setShowAll(!showAll); }}
-        >
-          {showAll
-            ? "Show fewer"
-            : \`Show \${String(citations.length - maxVisible)} more\`}
-        </Button>
-      )}
-    </Stack>
-  );
-}
-
-export function InlineCitation({
-  citationNumber,
-  source,
-  url,
-}: InlineCitationProps) {
-  return (
-    <sup>
-      <Anchor
-        href={url ?? "#"}
-        title={source}
-        size="xs"
-        style={{
-          background: "var(--mantine-color-violet-6)",
-          color: "white",
-          padding: "0 4px",
-          borderRadius: 4,
-          fontSize: 10,
-          textDecoration: "none",
-          marginLeft: 2,
-        }}
-      >
-        [{citationNumber}]
-      </Anchor>
-    </sup>
-  );
-}
-`,
     shadcn: `import { useState } from "react";
 
 import type {
@@ -3230,7 +2462,7 @@ export function InlineCitation({
 }
 `,
   },
-  "color": {
+"color": {
     bootstrap: `import { Badge, Card, Stack } from "react-bootstrap";
 
 import type { ColorProps } from "@patternbase/core";
@@ -3441,139 +2673,6 @@ export function Color({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Card,
-  ColorSwatch,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
-
-import type { ColorProps } from "@patternbase/core";
-
-export function Color({
-  options,
-  selectedColorId,
-  onSelectColor,
-  title,
-  showLabels = false,
-  variant = "swatches",
-}: ColorProps) {
-  if (variant === "chips") {
-    return (
-      <Stack gap="xs">
-        {title ? <Text size="sm" fw={500}>
-            {title}
-          </Text> : null}
-        <Group gap="xs" wrap="wrap">
-          {options.map((option) => (
-            <Badge
-              key={option.id}
-              variant={selectedColorId === option.id ? "filled" : "outline"}
-              style={{
-                cursor: onSelectColor ? "pointer" : "default",
-                borderColor: option.value,
-                color: selectedColorId === option.id ? "white" : option.value,
-                backgroundColor:
-                  selectedColorId === option.id ? option.value : undefined,
-              }}
-              leftSection={<ColorSwatch color={option.value} size={10} />}
-              onClick={() => onSelectColor?.(option.id)}
-            >
-              {option.label}
-            </Badge>
-          ))}
-        </Group>
-      </Stack>
-    );
-  }
-
-  if (variant === "card") {
-    return (
-      <Card withBorder padding="md">
-        <Stack gap="sm">
-          {title ? <Text fw={600} size="sm">
-              {title}
-            </Text> : null}
-          <SimpleGrid cols={4} spacing="xs">
-            {options.map((option) => (
-              <Stack key={option.id} gap={4} align="center">
-                <Tooltip label={option.label} withArrow>
-                  <ColorSwatch
-                    color={option.value}
-                    size={32}
-                    onClick={() => onSelectColor?.(option.id)}
-                    style={{
-                      cursor: onSelectColor ? "pointer" : "default",
-                      outline:
-                        selectedColorId === option.id
-                          ? "3px solid var(--mantine-color-violet-6)"
-                          : undefined,
-                      outlineOffset: 2,
-                    }}
-                  />
-                </Tooltip>
-                <Text size="xs" c="dimmed" ta="center">
-                  {option.label}
-                </Text>
-                {option.description ? <Text size="xs" c="dimmed" ta="center" lineClamp={1}>
-                    {option.description}
-                  </Text> : null}
-              </Stack>
-            ))}
-          </SimpleGrid>
-        </Stack>
-      </Card>
-    );
-  }
-
-  return (
-    <Stack gap="xs">
-      {title ? <Text size="sm" fw={500}>
-          {title}
-        </Text> : null}
-      <Group gap="xs" wrap="wrap">
-        {options.map((option) => (
-          <Tooltip key={option.id} label={option.label} withArrow>
-            <Stack gap={4} align="center">
-              <ColorSwatch
-                color={option.value}
-                size={24}
-                onClick={() => onSelectColor?.(option.id)}
-                style={{
-                  cursor: onSelectColor ? "pointer" : "default",
-                  outline:
-                    selectedColorId === option.id
-                      ? "2px solid var(--mantine-color-violet-6)"
-                      : undefined,
-                  outlineOffset: 2,
-                }}
-              />
-              {showLabels ? <Text size="xs" c="dimmed">
-                  {option.label}
-                </Text> : null}
-            </Stack>
-          </Tooltip>
-        ))}
-      </Group>
-      {selectedColorId ? <Group gap="xs">
-          <ColorSwatch
-            color={
-              options.find((o) => o.id === selectedColorId)?.value ?? "#000"
-            }
-            size={16}
-          />
-          <Text size="xs" c="dimmed">
-            {options.find((o) => o.id === selectedColorId)?.label}
-          </Text>
-        </Group> : null}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { cn } from "cn";
 
 import type { ColorProps } from "@patternbase/core";
@@ -3747,7 +2846,7 @@ export function Color({
 }
 `,
   },
-  "connectors": {
+"connectors": {
     bootstrap: `import { Badge, Button, Card, ListGroup, Stack } from "react-bootstrap";
 
 import type { ConnectorsProps } from "@patternbase/core";
@@ -3934,104 +3033,6 @@ export function Connectors({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@mantine/core";
-import { IconRefresh } from "@tabler/icons-react";
-
-import type { ConnectorsProps } from "@patternbase/core";
-
-export function Connectors({
-  sources,
-  onConnect,
-  onDisconnect,
-  onSync,
-  title,
-  variant = "list",
-}: ConnectorsProps) {
-  const statusColor = (status: string) => {
-    if (status === "connected") return "green";
-    if (status === "syncing") return "blue";
-    if (status === "error") return "red";
-    return "gray";
-  };
-
-  const renderSource = (source: (typeof sources)[0]) => (
-    <Card key={source.id} padding="sm" withBorder>
-      <Group justify="space-between" align="flex-start">
-        <Stack gap={2} style={{ flex: 1 }}>
-          <Group gap="xs">
-            <Text size="sm" fw={600}>
-              {source.name}
-            </Text>
-            <Badge size="xs" color={statusColor(source.status)} variant="light">
-              {source.status}
-            </Badge>
-            {source.type ? <Badge size="xs" variant="light" color="gray">
-                {source.type}
-              </Badge> : null}
-          </Group>
-          {source.description ? <Text size="xs" c="dimmed">
-              {source.description}
-            </Text> : null}
-          {source.lastSyncedAt ? <Text size="xs" c="dimmed">
-              Last synced: {source.lastSyncedAt.toLocaleString()}
-            </Text> : null}
-        </Stack>
-        <Group gap="xs">
-          {onSync && source.status === "connected" ? <Button
-              variant="subtle"
-              size="compact-xs"
-              leftSection={<IconRefresh size={12} />}
-              onClick={() => { onSync(source.id); }}
-            >
-              Sync
-            </Button> : null}
-          {source.status === "disconnected" || source.status === "error" ? (
-            <Button
-              variant="light"
-              size="compact-xs"
-              onClick={() => { onConnect(source.id); }}
-            >
-              Connect
-            </Button>
-          ) : (
-            <Button
-              variant="subtle"
-              color="gray"
-              size="compact-xs"
-              onClick={() => { onDisconnect(source.id); }}
-            >
-              Disconnect
-            </Button>
-          )}
-        </Group>
-      </Group>
-    </Card>
-  );
-
-  return (
-    <Stack gap="sm">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-      {variant === "cards" ? (
-        <SimpleGrid cols={2} spacing="sm">
-          {sources.map(renderSource)}
-        </SimpleGrid>
-      ) : (
-        <Stack gap="xs">{sources.map(renderSource)}</Stack>
-      )}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { RefreshCw } from "lucide-react";
 
 import type { ConnectorsProps } from "@patternbase/core";
@@ -4138,7 +3139,7 @@ export function Connectors({
 }
 `,
   },
-  "consent": {
+"consent": {
     bootstrap: `import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
@@ -4327,106 +3328,6 @@ export function Consent({
   );
 }
 `,
-    mantine: `import { Button, Card, Checkbox, Divider, Stack, Text } from "@mantine/core";
-import { useState } from "react";
-
-import type { ConsentProps } from "@patternbase/core";
-
-export function Consent({
-  items,
-  onAccept,
-  onDecline,
-  title,
-  description,
-  acceptLabel = "Accept",
-  declineLabel = "Decline",
-  variant = "inline",
-}: ConsentProps) {
-  const [checked, setChecked] = useState<Record<string, boolean>>(
-    Object.fromEntries(
-      items.map((item) => [item.id, item.defaultChecked ?? false]),
-    ),
-  );
-
-  const toggle = (id: string) => {
-    setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const requiredItems = items.filter((i) => i.required);
-  const allRequiredChecked = requiredItems.every((i) => checked[i.id]);
-
-  const handleAccept = () => {
-    const acceptedIds = Object.entries(checked)
-      .filter(([, v]) => v)
-      .map(([k]) => k);
-    onAccept(acceptedIds);
-  };
-
-  const inner = (
-    <Stack gap="sm">
-      {title ? <Text fw={600}>{title}</Text> : null}
-      {description ? (
-        <Text size="sm" c="dimmed">
-          {description}
-        </Text>
-      ) : null}
-
-      <Stack gap="xs">
-        {items.map((item) => (
-          <Checkbox
-            key={item.id}
-            label={
-              <Stack gap={2}>
-                <Text size="sm">
-                  {item.label}
-                  {item.required ? (
-                    <Text component="span" c="red" ml={4}>
-                      *
-                    </Text>
-                  ) : null}
-                </Text>
-                {item.description ? (
-                  <Text size="xs" c="dimmed">
-                    {item.description}
-                  </Text>
-                ) : null}
-              </Stack>
-            }
-            checked={Boolean(checked[item.id])}
-            onChange={() => {
-              toggle(item.id);
-            }}
-            disabled={item.required ? !item.defaultChecked : undefined}
-          />
-        ))}
-      </Stack>
-
-      <Divider />
-
-      <Stack gap="xs">
-        <Button onClick={handleAccept} disabled={!allRequiredChecked}>
-          {acceptLabel}
-        </Button>
-        {onDecline ? (
-          <Button variant="subtle" color="gray" onClick={onDecline}>
-            {declineLabel}
-          </Button>
-        ) : null}
-      </Stack>
-    </Stack>
-  );
-
-  if (variant === "inline") {
-    return inner;
-  }
-
-  return (
-    <Card withBorder padding="md">
-      {inner}
-    </Card>
-  );
-}
-`,
     shadcn: `import { useState } from "react";
 
 import type { ConsentProps } from "@patternbase/core";
@@ -4551,7 +3452,7 @@ export function Consent({
 }
 `,
   },
-  "controls": {
+"controls": {
     bootstrap: `import { Badge, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
 import type { ControlsProps } from "@patternbase/core";
@@ -4687,110 +3588,6 @@ export function Controls({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Card,
-  Group,
-  Stack,
-  Switch,
-  Text,
-  Tooltip,
-} from "@mantine/core";
-
-import type { ControlsProps } from "@patternbase/core";
-
-export function Controls({
-  controls,
-  onToggleControl,
-  title,
-  variant = "list",
-  showStatus = true,
-}: ControlsProps) {
-  const statusColor = (status?: string) => {
-    if (status === "active") return "green";
-    if (status === "restricted") return "orange";
-    if (status === "disabled") return "gray";
-    return "gray";
-  };
-
-  const renderControl = (control: (typeof controls)[0]) => {
-    let switchLabel = "Enable";
-    if (control.locked) {
-      switchLabel = "This control is locked";
-    } else if (control.enabled) {
-      switchLabel = "Disable";
-    }
-
-    return (
-      <Card key={control.id} padding="sm" withBorder>
-        <Group justify="space-between" align="center">
-          <Stack gap={2} style={{ flex: 1 }}>
-            <Group gap="xs">
-              <Text size="sm" fw={500}>
-                {control.label}
-              </Text>
-              {showStatus && control.status ? (
-                <Badge
-                  size="xs"
-                  color={statusColor(control.status)}
-                  variant="light"
-                >
-                  {control.status}
-                </Badge>
-              ) : null}
-              {control.locked ? (
-                <Badge size="xs" variant="light" color="gray">
-                  Locked
-                </Badge>
-              ) : null}
-            </Group>
-            {control.description ? (
-              <Text size="xs" c="dimmed">
-                {control.description}
-              </Text>
-            ) : null}
-          </Stack>
-          <Tooltip label={switchLabel}>
-            <Switch
-              checked={control.enabled}
-              onChange={(e) => {
-                if (!control.locked) {
-                  onToggleControl(control.id, e.currentTarget.checked);
-                }
-              }}
-              disabled={control.locked}
-              size="sm"
-            />
-          </Tooltip>
-        </Group>
-      </Card>
-    );
-  };
-
-  return (
-    <Stack gap="sm">
-      {title ? (
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-      ) : null}
-      {variant === "cards" ? (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "var(--mantine-spacing-xs)",
-          }}
-        >
-          {controls.map(renderControl)}
-        </div>
-      ) : (
-        <Stack gap="xs">{controls.map(renderControl)}</Stack>
-      )}
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { ControlsProps } from "@patternbase/core";
 
 import { Badge } from "@/components/ui/badge";
@@ -4885,7 +3682,7 @@ export function Controls({
 }
 `,
   },
-  "cost-estimate": {
+"cost-estimate": {
     bootstrap: `import { Badge, Card, ProgressBar, Table } from "react-bootstrap";
 
 import type { CostEstimateProps } from "@patternbase/core";
@@ -5075,93 +3872,6 @@ export function CostEstimate({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Card,
-  Group,
-  Progress,
-  Stack,
-  Table,
-  Text,
-} from "@mantine/core";
-
-import type { CostEstimateProps } from "@patternbase/core";
-
-export function CostEstimate({
-  breakdown,
-  currency = "USD",
-  showTokens = true,
-}: CostEstimateProps) {
-  const formatCost = (cost: number) =>
-    new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 4,
-      maximumFractionDigits: 6,
-    }).format(cost);
-
-  const formatTokens = (tokens: number) =>
-    new Intl.NumberFormat("en-US").format(tokens);
-
-  const inputPct =
-    breakdown.totalTokens > 0
-      ? Math.round((breakdown.inputTokens / breakdown.totalTokens) * 100)
-      : 0;
-
-  return (
-    <Card padding="sm" withBorder>
-      <Stack gap="sm">
-        <Group justify="space-between" align="center">
-          <Text fw={600} size="sm">
-            Cost Estimate
-          </Text>
-          <Badge variant="light">{formatCost(breakdown.totalCost)}</Badge>
-        </Group>
-
-        {breakdown.model ? <Text size="xs" c="dimmed">
-            Model: {breakdown.model}
-          </Text> : null}
-
-        {showTokens ? <>
-            <Progress value={inputPct} size="sm" color="violet" />
-
-            <Table fz="xs" withRowBorders={false}>
-              <Table.Tbody>
-                <Table.Tr>
-                  <Table.Td c="dimmed">Input</Table.Td>
-                  <Table.Td ta="right">
-                    {formatTokens(breakdown.inputTokens)}
-                  </Table.Td>
-                  <Table.Td ta="right">
-                    {formatCost(breakdown.inputCost)}
-                  </Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td c="dimmed">Output</Table.Td>
-                  <Table.Td ta="right">
-                    {formatTokens(breakdown.outputTokens)}
-                  </Table.Td>
-                  <Table.Td ta="right">
-                    {formatCost(breakdown.outputCost)}
-                  </Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td fw={700}>Total</Table.Td>
-                  <Table.Td ta="right" fw={700}>
-                    {formatTokens(breakdown.totalTokens)}
-                  </Table.Td>
-                  <Table.Td ta="right" fw={700}>
-                    {formatCost(breakdown.totalCost)}
-                  </Table.Td>
-                </Table.Tr>
-              </Table.Tbody>
-            </Table>
-          </> : null}
-      </Stack>
-    </Card>
-  );
-}
-`,
     shadcn: `import type { CostEstimateProps } from "@patternbase/core";
 
 import { Badge } from "@/components/ui/badge";
@@ -5254,7 +3964,7 @@ export function CostEstimate({
 }
 `,
   },
-  "data-ownership": {
+"data-ownership": {
     bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 
 import type { DataOwnershipProps } from "@patternbase/core";
@@ -5406,156 +4116,6 @@ export function DataOwnership({
         )}
       />
     </Card>
-  );
-}
-`,
-    mantine: `import {
-  ActionIcon,
-  Badge,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Table,
-  Text,
-} from "@mantine/core";
-import { IconDownload, IconTrash } from "@tabler/icons-react";
-
-import type { DataOwnershipProps } from "@patternbase/core";
-
-export function DataOwnership({
-  items,
-  onDelete,
-  onExport,
-  onDeleteAll,
-  title = "Your Data",
-  variant = "list",
-}: DataOwnershipProps) {
-  if (variant === "table") {
-    return (
-      <Stack gap="sm">
-        <Group justify="space-between" align="center">
-          <Text fw={600} size="sm">
-            {title}
-          </Text>
-          <Group gap="xs">
-            {onExport ? <Button
-                variant="default"
-                size="compact-sm"
-                leftSection={<IconDownload size={14} />}
-                onClick={onExport}
-              >
-                Export
-              </Button> : null}
-            {onDeleteAll ? <Button
-                variant="subtle"
-                color="red"
-                size="compact-sm"
-                leftSection={<IconTrash size={14} />}
-                onClick={onDeleteAll}
-              >
-                Delete All
-              </Button> : null}
-          </Group>
-        </Group>
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Data Type</Table.Th>
-              <Table.Th>Retention</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {items.map((item) => (
-              <Table.Tr key={item.id}>
-                <Table.Td>
-                  <Stack gap={2}>
-                    <Text size="sm" fw={500}>
-                      {item.dataType}
-                    </Text>
-                    {item.description ? <Text size="xs" c="dimmed">
-                        {item.description}
-                      </Text> : null}
-                  </Stack>
-                </Table.Td>
-                <Table.Td>
-                  {item.retention ? <Badge size="xs" variant="light">
-                      {item.retention}
-                    </Badge> : null}
-                </Table.Td>
-                <Table.Td>
-                  {item.deletable && onDelete ? <ActionIcon
-                      variant="subtle"
-                      color="red"
-                      size="sm"
-                      onClick={() => { onDelete(item.id); }}
-                    >
-                      <IconTrash size={14} />
-                    </ActionIcon> : null}
-                </Table.Td>
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        <Group gap="xs">
-          {onExport ? <Button
-              variant="default"
-              size="compact-sm"
-              leftSection={<IconDownload size={14} />}
-              onClick={onExport}
-            >
-              Export
-            </Button> : null}
-          {onDeleteAll ? <Button
-              variant="subtle"
-              color="red"
-              size="compact-sm"
-              onClick={onDeleteAll}
-            >
-              Delete All
-            </Button> : null}
-        </Group>
-      </Group>
-
-      <Stack gap="xs">
-        {items.map((item) => (
-          <Card key={item.id} padding="sm" withBorder>
-            <Group justify="space-between" align="flex-start">
-              <Stack gap={2} style={{ flex: 1 }}>
-                <Text size="sm" fw={500}>
-                  {item.dataType}
-                </Text>
-                {item.description ? <Text size="xs" c="dimmed">
-                    {item.description}
-                  </Text> : null}
-                {item.retention ? <Badge size="xs" variant="light" color="gray">
-                    Retention: {item.retention}
-                  </Badge> : null}
-              </Stack>
-              {item.deletable && onDelete ? <ActionIcon
-                  variant="subtle"
-                  color="red"
-                  size="sm"
-                  onClick={() => { onDelete(item.id); }}
-                >
-                  <IconTrash size={14} />
-                </ActionIcon> : null}
-            </Group>
-          </Card>
-        ))}
-      </Stack>
-    </Stack>
   );
 }
 `,
@@ -5723,7 +4283,7 @@ export function DataOwnership({
 }
 `,
   },
-  "describe": {
+"describe": {
     bootstrap: `import { Badge, Button, Card } from "react-bootstrap";
 
 import type { DescribeProps } from "@patternbase/core";
@@ -5961,116 +4521,6 @@ export function Describe({
   );
 }
 `,
-    mantine: `import {
-  ActionIcon,
-  Badge,
-  Card,
-  Code,
-  Group,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
-import { IconCopy } from "@tabler/icons-react";
-
-import type { DescribeDetail, DescribeProps } from "@patternbase/core";
-
-function renderDetailValue(detail: DescribeDetail) {
-  if (detail.type === "badge") {
-    return (
-      <Badge size="xs" variant="light">
-        {detail.value}
-      </Badge>
-    );
-  }
-  if (detail.type === "code" || detail.type === "json") {
-    return <Code fz="xs">{detail.value}</Code>;
-  }
-  return <Text size="xs">{detail.value}</Text>;
-}
-
-export function Describe({
-  output,
-  details,
-  inferredPrompt,
-  model,
-  seed,
-  onReuse,
-  onCopy,
-  title = "Description",
-  variant = "panel",
-}: DescribeProps) {
-  const inner = (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        <Group gap={4}>
-          {model ? <Badge size="xs" variant="light">
-              {model}
-            </Badge> : null}
-          {seed ? <Badge size="xs" variant="light" color="gray">
-              seed: {seed}
-            </Badge> : null}
-          {onCopy ? <Tooltip label="Copy">
-              <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
-                <IconCopy size={14} />
-              </ActionIcon>
-            </Tooltip> : null}
-        </Group>
-      </Group>
-
-      <Text size="sm">{output}</Text>
-
-      {inferredPrompt ? <Stack gap={4}>
-          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-            Inferred Prompt
-          </Text>
-          <Card padding="xs" withBorder>
-            <Group justify="space-between" align="center">
-              <Text size="xs" style={{ fontStyle: "italic", flex: 1 }}>
-                &ldquo;{inferredPrompt}&rdquo;
-              </Text>
-              {onReuse ? <Badge
-                  size="xs"
-                  variant="light"
-                  color="violet"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => { onReuse(inferredPrompt); }}
-                >
-                  Reuse
-                </Badge> : null}
-            </Group>
-          </Card>
-        </Stack> : null}
-
-      {details.length > 0 && (
-        <Stack gap={4}>
-          {details.map((detail) => (
-            <Group key={detail.id} justify="space-between" align="flex-start">
-              <Text size="xs" c="dimmed">
-                {detail.label}
-              </Text>
-              {renderDetailValue(detail)}
-            </Group>
-          ))}
-        </Stack>
-      )}
-    </Stack>
-  );
-
-  if (variant === "inline") {
-    return <Stack gap="sm">{inner}</Stack>;
-  }
-
-  return (
-    <Card withBorder padding="md">
-      {inner}
-    </Card>
-  );
-}
-`,
     shadcn: `import { Copy } from "lucide-react";
 
 import type { DescribeDetail, DescribeProps } from "@patternbase/core";
@@ -6193,7 +4643,7 @@ export function Describe({
 }
 `,
   },
-  "disclosure": {
+"disclosure": {
     bootstrap: `import { Alert, Badge } from "react-bootstrap";
 
 import type { DisclosureProps } from "@patternbase/core";
@@ -6331,72 +4781,6 @@ export function Disclosure({
   );
 }
 `,
-    mantine: `import { Alert, Badge, Text } from "@mantine/core";
-import { IconRobot } from "@tabler/icons-react";
-
-import type { DisclosureProps } from "@patternbase/core";
-
-const TYPE_LABELS: Record<DisclosureProps["type"], string> = {
-  "ai-generated": "AI Generated",
-  "ai-assisted": "AI Assisted",
-  "ai-suggested": "AI Suggested",
-};
-
-const TYPE_COLORS: Record<DisclosureProps["type"], string> = {
-  "ai-generated": "violet",
-  "ai-assisted": "blue",
-  "ai-suggested": "gray",
-};
-
-export function Disclosure({
-  variant = "badge",
-  type,
-  model,
-  timestamp,
-  customLabel,
-}: DisclosureProps) {
-  const label = customLabel ?? TYPE_LABELS[type];
-  const color = TYPE_COLORS[type];
-
-  if (variant === "badge") {
-    return (
-      <Badge
-        color={color}
-        leftSection={<IconRobot size={10} />}
-        variant="light"
-      >
-        {label}
-        {model ? \` (\${model})\` : ""}
-      </Badge>
-    );
-  }
-
-  if (variant === "banner") {
-    return (
-      <Alert icon={<IconRobot size={16} />} color="blue" mb="xs">
-        <Text size="sm">
-          {label}
-          {model ? \` — \${model}\` : ""}
-          {timestamp ? <Text component="span" size="xs" c="dimmed" ml="xs">
-              {new Date(timestamp).toLocaleDateString()}
-            </Text> : null}
-        </Text>
-      </Alert>
-    );
-  }
-
-  return (
-    <Text size="xs" c="dimmed">
-      <IconRobot
-        size={12}
-        style={{ marginRight: 4, verticalAlign: "middle" }}
-      />
-      {label}
-      {model ? \` (\${model})\` : ""}
-    </Text>
-  );
-}
-`,
     shadcn: `import { Bot } from "lucide-react";
 
 import type { DisclosureProps } from "@patternbase/core";
@@ -6458,7 +4842,7 @@ export function Disclosure({
 }
 `,
   },
-  "draft-mode": {
+"draft-mode": {
     bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 
 import type { DraftModeProps } from "@patternbase/core";
@@ -6621,152 +5005,6 @@ export function DraftMode({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  Timeline,
-} from "@mantine/core";
-import { IconArrowBack, IconGitBranch } from "@tabler/icons-react";
-
-import type { DraftModeProps } from "@patternbase/core";
-
-export function DraftMode({
-  drafts,
-  activeDraftId,
-  onSelectDraft,
-  onRevertToDraft,
-  onBranchFromDraft,
-  title = "Draft History",
-  variant = "list",
-}: DraftModeProps) {
-  return (
-    <Stack gap="sm">
-      <Text fw={600} size="sm">
-        {title}
-      </Text>
-
-      {variant === "timeline" ? (
-        <Timeline bulletSize={16} lineWidth={2}>
-          {drafts.map((draft) => (
-            <Timeline.Item
-              key={draft.id}
-              title={
-                <Group gap="xs">
-                  <Text
-                    size="sm"
-                    fw={activeDraftId === draft.id ? 600 : 400}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => { onSelectDraft(draft.id); }}
-                  >
-                    {draft.label ?? \`Draft \${String(draft.number)}\`}
-                  </Text>
-                  {activeDraftId === draft.id && (
-                    <Badge size="xs" variant="filled" color="violet">
-                      Active
-                    </Badge>
-                  )}
-                </Group>
-              }
-            >
-              {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
-                  {draft.preview}
-                </Text> : null}
-              {draft.createdAt ? <Text size="xs" c="dimmed">
-                  {draft.createdAt.toLocaleString()}
-                </Text> : null}
-              <Group gap="xs" mt={4}>
-                <Button
-                  variant="subtle"
-                  size="compact-xs"
-                  leftSection={<IconArrowBack size={12} />}
-                  onClick={() => { onRevertToDraft(draft.id); }}
-                >
-                  Revert
-                </Button>
-                {onBranchFromDraft ? <Button
-                    variant="subtle"
-                    size="compact-xs"
-                    leftSection={<IconGitBranch size={12} />}
-                    onClick={() => { onBranchFromDraft(draft.id); }}
-                  >
-                    Branch
-                  </Button> : null}
-              </Group>
-            </Timeline.Item>
-          ))}
-        </Timeline>
-      ) : (
-        <Stack gap="xs">
-          {drafts.map((draft) => (
-            <Card
-              key={draft.id}
-              padding="sm"
-              withBorder
-              style={{
-                cursor: "pointer",
-                outline:
-                  activeDraftId === draft.id
-                    ? "2px solid var(--mantine-color-violet-6)"
-                    : undefined,
-              }}
-              onClick={() => { onSelectDraft(draft.id); }}
-            >
-              <Group justify="space-between" align="flex-start">
-                <Stack gap={2} style={{ flex: 1 }}>
-                  <Group gap="xs">
-                    <Text size="sm" fw={500}>
-                      {draft.label ?? \`Draft \${String(draft.number)}\`}
-                    </Text>
-                    {activeDraftId === draft.id && (
-                      <Badge size="xs" variant="filled" color="violet">
-                        Active
-                      </Badge>
-                    )}
-                  </Group>
-                  {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
-                      {draft.preview}
-                    </Text> : null}
-                  {draft.createdAt ? <Text size="xs" c="dimmed">
-                      {draft.createdAt.toLocaleString()}
-                    </Text> : null}
-                </Stack>
-                <Group gap="xs">
-                  <Button
-                    variant="subtle"
-                    size="compact-xs"
-                    leftSection={<IconArrowBack size={12} />}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onRevertToDraft(draft.id);
-                    }}
-                  >
-                    Revert
-                  </Button>
-                  {onBranchFromDraft ? <Button
-                      variant="subtle"
-                      size="compact-xs"
-                      leftSection={<IconGitBranch size={12} />}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onBranchFromDraft(draft.id);
-                      }}
-                    >
-                      Branch
-                    </Button> : null}
-                </Group>
-              </Group>
-            </Card>
-          ))}
-        </Stack>
-      )}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { GitBranch, RotateCcw } from "lucide-react";
 
 import type { DraftModeProps } from "@patternbase/core";
@@ -6922,7 +5160,7 @@ export function DraftMode({
 }
 `,
   },
-  "expand": {
+"expand": {
     bootstrap: `import { useState } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
 
@@ -7107,79 +5345,6 @@ export function Expand({
   );
 }
 `,
-    mantine: `import { Accordion, Button, Stack, Text } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons-react";
-
-import type { ExpandProps } from "@patternbase/core";
-
-export function Expand({
-  content,
-  onExpand,
-  expandedContent,
-  isExpanding = false,
-  title,
-  variant = "button",
-}: ExpandProps) {
-  if (variant === "accordion") {
-    return (
-      <Accordion variant="separated" radius="sm">
-        <Accordion.Item value="expand">
-          <Accordion.Control onClick={onExpand}>
-            <Text size="sm" fw={500}>
-              {title ?? "Show full content"}
-            </Text>
-          </Accordion.Control>
-          <Accordion.Panel>
-            <Text size="sm">{expandedContent ?? content}</Text>
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-    );
-  }
-
-  if (variant === "inline") {
-    return (
-      <Stack gap="xs">
-        <Text size="sm">{content}</Text>
-        {expandedContent ? <Text size="sm" c="dimmed">
-            {expandedContent}
-          </Text> : null}
-        <Button
-          variant="subtle"
-          size="compact-sm"
-          rightSection={<IconChevronDown size={14} />}
-          onClick={onExpand}
-          loading={isExpanding}
-          w="fit-content"
-        >
-          Expand
-        </Button>
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack gap="xs">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-      <Text size="sm">{content}</Text>
-      {expandedContent ? <Text size="sm" c="dimmed">
-          {expandedContent}
-        </Text> : null}
-      <Button
-        variant="default"
-        size="sm"
-        onClick={onExpand}
-        loading={isExpanding}
-        w="fit-content"
-      >
-        Expand
-      </Button>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { ChevronDown, Loader2 } from "lucide-react";
 
 import type { ExpandProps } from "@patternbase/core";
@@ -7264,7 +5429,7 @@ export function Expand({
 }
 `,
   },
-  "filters": {
+"filters": {
     bootstrap: `import { Button, Card, Form } from "react-bootstrap";
 
 import type { FiltersProps } from "@patternbase/core";
@@ -7510,148 +5675,6 @@ export function Filters({
   );
 }
 `,
-    mantine: `import {
-  Button,
-  Checkbox,
-  Group,
-  Radio,
-  Select,
-  Slider,
-  Stack,
-  Text,
-} from "@mantine/core";
-
-import type { FiltersProps } from "@patternbase/core";
-
-export function Filters({
-  groups,
-  values,
-  onChange,
-  onClear,
-  layout = "vertical",
-  title,
-}: FiltersProps) {
-  const hasValues = Object.values(values).some((v) =>
-    Array.isArray(v) ? v.length > 0 : v !== undefined && v !== null && v !== "",
-  );
-
-  const renderGroup = (group: (typeof groups)[0]) => (
-    <Stack key={group.id} gap="xs">
-      <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-        {group.label}
-      </Text>
-
-      {group.type === "checkbox" && group.options ? <Stack gap={4}>
-          {group.options.map((opt) => {
-            const currentVal = values[group.id];
-            const checked = Array.isArray(currentVal)
-              ? (currentVal as string[]).includes(opt.value)
-              : currentVal === opt.value;
-            return (
-              <Checkbox
-                key={opt.id}
-                label={
-                  <Group gap="xs">
-                    <span>{opt.label}</span>
-                    {opt.count !== undefined && (
-                      <Text size="xs" c="dimmed">
-                        ({opt.count})
-                      </Text>
-                    )}
-                  </Group>
-                }
-                checked={Boolean(checked)}
-                onChange={(e) => {
-                  const current = (values[group.id] as string[]) ?? [];
-                  if (e.currentTarget.checked) {
-                    onChange(group.id, [...current, opt.value]);
-                  } else {
-                    onChange(
-                      group.id,
-                      current.filter((v) => v !== opt.value),
-                    );
-                  }
-                }}
-                size="sm"
-              />
-            );
-          })}
-        </Stack> : null}
-
-      {group.type === "radio" && group.options ? <Radio.Group
-          value={(values[group.id] as string) ?? ""}
-          onChange={(val) => { onChange(group.id, val); }}
-        >
-          <Stack gap={4}>
-            {group.options.map((opt) => (
-              <Radio
-                key={opt.id}
-                value={opt.value}
-                label={opt.label}
-                size="sm"
-              />
-            ))}
-          </Stack>
-        </Radio.Group> : null}
-
-      {group.type === "range" && (
-        <Stack gap="xs">
-          <Slider
-            min={group.min ?? 0}
-            max={group.max ?? 100}
-            step={group.step ?? 1}
-            value={(values[group.id] as number) ?? group.min ?? 0}
-            onChange={(val) => { onChange(group.id, val); }}
-          />
-          <Group justify="space-between">
-            <Text size="xs" c="dimmed">
-              {group.min ?? 0}
-            </Text>
-            <Text size="xs" c="dimmed">
-              {group.max ?? 100}
-            </Text>
-          </Group>
-        </Stack>
-      )}
-
-      {group.type === "select" && group.options ? <Select
-          data={group.options.map((o) => ({ value: o.value, label: o.label }))}
-          value={(values[group.id] as string) ?? null}
-          onChange={(val) => { onChange(group.id, val ?? ""); }}
-          placeholder="Select..."
-          size="sm"
-          clearable
-        /> : null}
-    </Stack>
-  );
-
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        {title ? <Text fw={500} size="sm">
-            {title}
-          </Text> : null}
-        {onClear && hasValues ? <Button
-            variant="subtle"
-            size="compact-xs"
-            color="gray"
-            onClick={onClear}
-          >
-            Clear all
-          </Button> : null}
-      </Group>
-
-      {layout === "horizontal" ? (
-        <Group gap="md" align="flex-start" wrap="wrap">
-          {groups.map(renderGroup)}
-        </Group>
-      ) : (
-        <Stack gap="md">{groups.map(renderGroup)}</Stack>
-      )}
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { FiltersProps } from "@patternbase/core";
 
 import { Button } from "@/components/ui/button";
@@ -7816,7 +5839,7 @@ export function Filters({
 }
 `,
   },
-  "follow-up": {
+"follow-up": {
     bootstrap: `import { Badge, Button, ListGroup } from "react-bootstrap";
 
 import type { FollowUpProps } from "@patternbase/core";
@@ -7997,106 +6020,6 @@ export function FollowUp({
   );
 }
 `,
-    mantine: `import {
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  UnstyledButton,
-} from "@mantine/core";
-import { IconArrowRight } from "@tabler/icons-react";
-
-import type { FollowUpProps } from "@patternbase/core";
-
-export function FollowUp({
-  followUps,
-  onSelect,
-  variant = "chip",
-  title,
-  maxVisible,
-}: FollowUpProps) {
-  const displayed = maxVisible ? followUps.slice(0, maxVisible) : followUps;
-
-  const renderItems = () => {
-    if (variant === "list") {
-      return (
-        <Stack gap={4}>
-          {displayed.map((item) => (
-            <UnstyledButton
-              key={item.id}
-              onClick={() => {
-                onSelect(item);
-              }}
-            >
-              <Card padding="xs" withBorder style={{ cursor: "pointer" }}>
-                <Group gap="xs" justify="space-between">
-                  <Group gap="xs">
-                    {item.icon ? <span>{item.icon}</span> : null}
-                    <Text size="sm">{item.text}</Text>
-                  </Group>
-                  <IconArrowRight size={14} style={{ opacity: 0.4 }} />
-                </Group>
-              </Card>
-            </UnstyledButton>
-          ))}
-        </Stack>
-      );
-    }
-
-    if (variant === "button") {
-      return (
-        <Stack gap="xs">
-          {displayed.map((item) => (
-            <Button
-              key={item.id}
-              variant="default"
-              size="sm"
-              leftSection={item.icon ? <span>{item.icon}</span> : undefined}
-              rightSection={<IconArrowRight size={14} />}
-              onClick={() => {
-                onSelect(item);
-              }}
-            >
-              {item.text}
-            </Button>
-          ))}
-        </Stack>
-      );
-    }
-
-    return (
-      <Group gap="xs" wrap="wrap">
-        {displayed.map((item) => (
-          <Button
-            key={item.id}
-            variant="light"
-            size="compact-sm"
-            rightSection={<IconArrowRight size={12} />}
-            onClick={() => {
-              onSelect(item);
-            }}
-          >
-            {item.text}
-          </Button>
-        ))}
-      </Group>
-    );
-  };
-
-  return (
-    <Stack gap="xs">
-      {title ? (
-        <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-          {title}
-        </Text>
-      ) : null}
-
-      {renderItems()}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { ArrowRight } from "lucide-react";
 
 import type { FollowUpProps } from "@patternbase/core";
@@ -8191,7 +6114,7 @@ export function FollowUp({
 }
 `,
   },
-  "footprints": {
+"footprints": {
     bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
 
 import type { FootprintsProps } from "@patternbase/core";
@@ -8400,149 +6323,6 @@ export function Footprints({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  Timeline,
-} from "@mantine/core";
-import { IconActivity } from "@tabler/icons-react";
-
-import type { FootprintsProps } from "@patternbase/core";
-
-export function Footprints({
-  entries,
-  onEntryClick,
-  onClear,
-  title = "Activity History",
-  maxVisible,
-  showTimestamps = true,
-  variant = "timeline",
-}: FootprintsProps) {
-  const displayed = maxVisible ? entries.slice(0, maxVisible) : entries;
-
-  const renderEntries = () => {
-    if (variant === "compact") {
-      return (
-        <Stack gap={4}>
-          {displayed.map((entry) => (
-            <Group
-              key={entry.id}
-              gap="xs"
-              style={{ cursor: onEntryClick ? "pointer" : "default" }}
-              onClick={() => onEntryClick?.(entry.id)}
-            >
-              <Text size="xs" c="dimmed" style={{ minWidth: 120 }}>
-                {showTimestamps ? entry.timestamp.toLocaleTimeString() : ""}
-              </Text>
-              <Text size="xs">{entry.action}</Text>
-              {entry.model ? <Badge size="xs" variant="light">
-                  {entry.model}
-                </Badge> : null}
-            </Group>
-          ))}
-        </Stack>
-      );
-    }
-
-    if (variant === "list") {
-      return (
-        <Stack gap="xs">
-          {displayed.map((entry) => (
-            <Card
-              key={entry.id}
-              padding="xs"
-              withBorder
-              style={{ cursor: onEntryClick ? "pointer" : "default" }}
-              onClick={() => onEntryClick?.(entry.id)}
-            >
-              <Group justify="space-between" align="flex-start">
-                <Stack gap={2} style={{ flex: 1 }}>
-                  <Group gap="xs">
-                    <Text size="sm" fw={500}>
-                      {entry.action}
-                    </Text>
-                    {entry.model ? <Badge size="xs" variant="light">
-                        {entry.model}
-                      </Badge> : null}
-                  </Group>
-                  {entry.inputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
-                      {entry.inputPreview}
-                    </Text> : null}
-                </Stack>
-                {showTimestamps ? <Text size="xs" c="dimmed">
-                    {entry.timestamp.toLocaleString()}
-                  </Text> : null}
-              </Group>
-            </Card>
-          ))}
-        </Stack>
-      );
-    }
-
-    return (
-      <Timeline bulletSize={16} lineWidth={2}>
-        {displayed.map((entry) => (
-          <Timeline.Item
-            key={entry.id}
-            bullet={<IconActivity size={10} />}
-            title={
-              <Group
-                gap="xs"
-                style={{ cursor: onEntryClick ? "pointer" : "default" }}
-                onClick={() => onEntryClick?.(entry.id)}
-              >
-                <Text size="sm" fw={500}>
-                  {entry.action}
-                </Text>
-                {entry.model ? <Badge size="xs" variant="light">
-                    {entry.model}
-                  </Badge> : null}
-              </Group>
-            }
-          >
-            {entry.inputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
-                {entry.inputPreview}
-              </Text> : null}
-            {entry.outputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
-                {entry.outputPreview}
-              </Text> : null}
-            {showTimestamps ? <Text size="xs" c="dimmed">
-                {entry.timestamp.toLocaleString()}
-              </Text> : null}
-            {entry.metadata && Object.keys(entry.metadata).length > 0 ? <Badge size="xs" variant="light" mt={2}>
-                {Object.keys(entry.metadata).length} details
-              </Badge> : null}
-          </Timeline.Item>
-        ))}
-      </Timeline>
-    );
-  };
-
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {onClear ? <Button
-            variant="subtle"
-            color="gray"
-            size="compact-xs"
-            onClick={onClear}
-          >
-            Clear
-          </Button> : null}
-      </Group>
-
-      {renderEntries()}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Activity } from "lucide-react";
 
 import type { FootprintsProps } from "@patternbase/core";
@@ -8723,7 +6503,7 @@ export function Footprints({
 }
 `,
   },
-  "gallery": {
+"gallery": {
     bootstrap: `import { Card, Col, Row, Spinner } from "react-bootstrap";
 
 import type { GalleryProps } from "@patternbase/core";
@@ -8868,102 +6648,6 @@ export function Gallery({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Image,
-  Loader,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@mantine/core";
-
-import type { GalleryProps } from "@patternbase/core";
-
-export function Gallery({
-  items,
-  onSelect,
-  onLoadMore,
-  columns = 3,
-  selectable = false,
-  loading = false,
-  emptyMessage = "No items to display",
-}: GalleryProps) {
-  if (items.length === 0 && !loading) {
-    return (
-      <Text size="sm" c="dimmed" ta="center">
-        {emptyMessage}
-      </Text>
-    );
-  }
-
-  return (
-    <Stack gap="sm">
-      <SimpleGrid cols={columns} spacing="sm">
-        {items.map((item) => (
-          <Card
-            key={item.id}
-            padding="xs"
-            withBorder
-            style={{
-              cursor: (onSelect ?? selectable) ? "pointer" : "default",
-              outline: item.selected
-                ? "2px solid var(--mantine-color-violet-6)"
-                : undefined,
-            }}
-            onClick={() => onSelect?.(item)}
-          >
-            <Stack gap="xs">
-              {item.type === "image" && item.src ? (
-                <Image
-                  src={item.src}
-                  alt={item.alt ?? item.title ?? ""}
-                  radius="sm"
-                  h={120}
-                  fit="cover"
-                />
-              ) : null}
-              {item.type === "text" && item.content ? (
-                <Text size="xs" lineClamp={4}>
-                  {item.content}
-                </Text>
-              ) : null}
-              <Group justify="space-between" align="center">
-                {item.title ? (
-                  <Text size="xs" fw={500}>
-                    {item.title}
-                  </Text>
-                ) : null}
-                {item.selected ? (
-                  <Badge size="xs" variant="filled" color="violet">
-                    Selected
-                  </Badge>
-                ) : null}
-              </Group>
-            </Stack>
-          </Card>
-        ))}
-      </SimpleGrid>
-
-      {loading ? (
-        <Group justify="center">
-          <Loader size="sm" />
-        </Group>
-      ) : null}
-
-      {onLoadMore && !loading ? (
-        <Group justify="center">
-          <Button variant="subtle" size="sm" onClick={onLoadMore}>
-            Load more
-          </Button>
-        </Group>
-      ) : null}
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { GalleryProps } from "@patternbase/core";
 
 import { Badge } from "@/components/ui/badge";
@@ -9056,7 +6740,7 @@ export function Gallery({
 }
 `,
   },
-  "incognito-mode": {
+"incognito-mode": {
     bootstrap: `import { Alert, Badge, Button, Card, Stack } from "react-bootstrap";
 
 import type { IncognitoModeProps } from "@patternbase/core";
@@ -9300,88 +6984,6 @@ export function IncognitoMode({
   );
 }
 `,
-    mantine: `import {
-  Alert,
-  Badge,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Switch,
-  Text,
-} from "@mantine/core";
-import { IconEyeOff } from "@tabler/icons-react";
-
-import type { IncognitoModeProps } from "@patternbase/core";
-
-export function IncognitoMode({
-  enabled,
-  onToggle,
-  onEndSession,
-  title = "Incognito Mode",
-  description,
-  retentionNotice,
-  variant = "card",
-}: IncognitoModeProps) {
-  const inner = (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Group gap="sm">
-          <IconEyeOff size={20} style={{ opacity: 0.7 }} />
-          <Stack gap={2}>
-            <Group gap="xs">
-              <Text fw={600} size="sm">
-                {title}
-              </Text>
-              {enabled ? <Badge size="xs" color="green" variant="light">
-                  Active
-                </Badge> : null}
-            </Group>
-            {description ? <Text size="xs" c="dimmed">
-                {description}
-              </Text> : null}
-          </Stack>
-        </Group>
-        <Switch
-          checked={enabled}
-          onChange={(e) => onToggle?.(e.currentTarget.checked)}
-          size="md"
-        />
-      </Group>
-
-      {enabled && retentionNotice ? <Alert icon={<IconEyeOff size={14} />} color="gray" variant="light">
-          <Text size="xs">{retentionNotice}</Text>
-        </Alert> : null}
-
-      {enabled && onEndSession ? <Button variant="subtle" color="gray" size="sm" onClick={onEndSession}>
-          End Session
-        </Button> : null}
-    </Stack>
-  );
-
-  if (variant === "banner") {
-    return (
-      <Alert
-        icon={<IconEyeOff size={16} />}
-        color={enabled ? "green" : "gray"}
-        variant="light"
-      >
-        {inner}
-      </Alert>
-    );
-  }
-
-  if (variant === "inline") {
-    return <Stack gap="sm">{inner}</Stack>;
-  }
-
-  return (
-    <Card withBorder padding="md">
-      {inner}
-    </Card>
-  );
-}
-`,
     shadcn: `import { EyeOff } from "lucide-react";
 
 import type { IncognitoModeProps } from "@patternbase/core";
@@ -9466,7 +7068,7 @@ export function IncognitoMode({
 }
 `,
   },
-  "initial-cta": {
+"initial-cta": {
     bootstrap: `import { Button, Card, Col, Row } from "react-bootstrap";
 
 import type { InitialCtaProps } from "@patternbase/core";
@@ -9658,102 +7260,6 @@ export function InitialCta({
   );
 }
 `,
-    mantine: `import {
-  Button,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-
-import type { InitialCtaProps } from "@patternbase/core";
-
-export function InitialCta({
-  title,
-  subtitle,
-  actions,
-  onAction,
-  variant = "centered",
-}: InitialCtaProps) {
-  if (variant === "cards") {
-    return (
-      <Stack gap="md" align="center" py="lg">
-        <Title order={3} ta="center">
-          {title}
-        </Title>
-        {subtitle ? <Text size="sm" c="dimmed" ta="center" maw={480}>
-            {subtitle}
-          </Text> : null}
-        <SimpleGrid cols={Math.min(actions.length, 3)} spacing="sm">
-          {actions.map((action) => (
-            <Card
-              key={action.id}
-              padding="md"
-              withBorder
-              style={{ cursor: "pointer", textAlign: "center" }}
-              onClick={() => { onAction(action); }}
-            >
-              <Stack gap="xs" align="center">
-                {action.icon ? <span style={{ fontSize: 24 }}>{action.icon}</span> : null}
-                <Text fw={600} size="sm">
-                  {action.label}
-                </Text>
-                {action.description ? <Text size="xs" c="dimmed">
-                    {action.description}
-                  </Text> : null}
-              </Stack>
-            </Card>
-          ))}
-        </SimpleGrid>
-      </Stack>
-    );
-  }
-
-  if (variant === "minimal") {
-    return (
-      <Group gap="sm" wrap="wrap">
-        <Text size="sm" fw={500}>
-          {title}
-        </Text>
-        {actions.map((action) => (
-          <Button
-            key={action.id}
-            variant="subtle"
-            size="compact-sm"
-            leftSection={action.icon ? <span>{action.icon}</span> : undefined}
-            onClick={() => { onAction(action); }}
-          >
-            {action.label}
-          </Button>
-        ))}
-      </Group>
-    );
-  }
-
-  return (
-    <Stack gap="md" align="center" ta="center" py="lg">
-      <Title order={3}>{title}</Title>
-      {subtitle ? <Text size="sm" c="dimmed" maw={480}>
-          {subtitle}
-        </Text> : null}
-      <Group gap="sm" justify="center" wrap="wrap">
-        {actions.map((action, i) => (
-          <Button
-            key={action.id}
-            variant={i === 0 ? "filled" : "default"}
-            leftSection={action.icon ? <span>{action.icon}</span> : undefined}
-            onClick={() => { onAction(action); }}
-          >
-            {action.label}
-          </Button>
-        ))}
-      </Group>
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { InitialCtaProps } from "@patternbase/core";
 
 import { Button } from "@/components/ui/button";
@@ -9858,7 +7364,7 @@ export function InitialCta({
 }
 `,
   },
-  "inline-action": {
+"inline-action": {
     bootstrap: `import { Button } from "react-bootstrap";
 
 import type { InlineActionProps } from "@patternbase/core";
@@ -10016,46 +7522,6 @@ export function InlineAction({
   );
 }
 `,
-    mantine: `import { ActionIcon, Group, Tooltip } from "@mantine/core";
-
-import type { InlineActionProps } from "@patternbase/core";
-
-export function InlineAction({
-  actions,
-  onAction,
-  size = "medium",
-}: InlineActionProps) {
-  const iconSize = size === "small" ? 12 : 14;
-  const actionIconSize = size === "small" ? "sm" : "md";
-
-  return (
-    <Group gap={4}>
-      {actions.map((action) => (
-        <Tooltip key={action.id} label={action.label} withArrow>
-          <ActionIcon
-            variant={action.type === "primary" ? "light" : "subtle"}
-            color={
-              action.type === "danger" ? "red"
-              : action.type === "primary" ? "violet"
-              : "gray"
-            }
-            size={actionIconSize}
-            onClick={() => { onAction(action.id); }}
-          >
-            {typeof action.icon === "string" ? (
-              <span style={{ fontSize: iconSize }}>{action.icon}</span>
-            ) : action.icon ? (
-              action.icon
-            ) : (
-              <span style={{ fontSize: iconSize }}>·</span>
-            )}
-          </ActionIcon>
-        </Tooltip>
-      ))}
-    </Group>
-  );
-}
-`,
     shadcn: `import type { InlineActionItem, InlineActionProps } from "@patternbase/core";
 
 import { Button } from "@/components/ui/button";
@@ -10122,7 +7588,7 @@ export function InlineAction({
 }
 `,
   },
-  "inpainting": {
+"inpainting": {
     bootstrap: `import { Badge, Button, Card, Form, Spinner } from "react-bootstrap";
 
 import type { InpaintingProps } from "@patternbase/core";
@@ -10277,108 +7743,6 @@ export function Inpainting({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Loader,
-  Stack,
-  Text,
-  Textarea,
-} from "@mantine/core";
-import { IconBrush } from "@tabler/icons-react";
-import { useState } from "react";
-
-import type { InpaintingProps } from "@patternbase/core";
-
-export function Inpainting({
-  content,
-  regions,
-  onRegionSelect,
-  onApply,
-  selectedRegionId,
-  isProcessing = false,
-  prompt = "",
-  onPromptChange,
-  title = "Inpainting",
-  variant = "segment",
-}: InpaintingProps) {
-  const [localPrompt, setLocalPrompt] = useState(prompt);
-
-  const handlePromptChange = (value: string) => {
-    setLocalPrompt(value);
-    onPromptChange?.(value);
-  };
-
-  const selectedRegion = regions.find((r) => r.id === selectedRegionId);
-
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {isProcessing ? <Loader size="xs" /> : null}
-      </Group>
-
-      <Card padding="sm" withBorder>
-        <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
-          {content}
-        </Text>
-      </Card>
-
-      {regions.length > 0 && (
-        <Stack gap="xs">
-          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-            Regions
-          </Text>
-          <Group gap="xs" wrap="wrap">
-            {regions.map((region) => (
-              <Badge
-                key={region.id}
-                variant={selectedRegionId === region.id ? "filled" : "light"}
-                style={{ cursor: "pointer" }}
-                onClick={() => { onRegionSelect(region.id); }}
-              >
-                {region.label ?? region.id}
-              </Badge>
-            ))}
-          </Group>
-        </Stack>
-      )}
-
-      {selectedRegion ? <Text size="xs" c="dimmed">
-          Selected: <strong>{selectedRegion.label ?? selectedRegion.id}</strong>
-        </Text> : null}
-
-      <Textarea
-        placeholder="Describe what to replace in the selected region..."
-        value={localPrompt}
-        onChange={(e) => { handlePromptChange(e.currentTarget.value); }}
-        minRows={2}
-        autosize
-        disabled={!selectedRegionId}
-      />
-
-      <Button
-        leftSection={<IconBrush size={14} />}
-        onClick={() => {
-          if (selectedRegionId && localPrompt.trim()) {
-            onApply(selectedRegionId, localPrompt.trim());
-          }
-        }}
-        disabled={!selectedRegionId || !localPrompt.trim() || isProcessing}
-        loading={isProcessing}
-        size="sm"
-        variant={variant === "brush" ? "filled" : "default"}
-      >
-        Apply
-      </Button>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Brush, Loader2 } from "lucide-react";
 import { useState } from "react";
 
@@ -10486,7 +7850,7 @@ export function Inpainting({
 }
 `,
   },
-  "madlibs": {
+"madlibs": {
     bootstrap: `import { Button, Card, Form, Spinner } from "react-bootstrap";
 
 import type { MadlibsProps } from "@patternbase/core";
@@ -10705,144 +8069,6 @@ export function Madlibs({
   );
 }
 `,
-    mantine: `import {
-  Button,
-  Card,
-  Group,
-  NumberInput,
-  Select,
-  Stack,
-  Text,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
-import { IconSend } from "@tabler/icons-react";
-import { useState } from "react";
-
-import type { MadlibsProps } from "@patternbase/core";
-
-export function Madlibs({
-  template,
-  variables,
-  values: externalValues,
-  onChange,
-  onSubmit,
-  title,
-  description,
-  isGenerating = false,
-  showPreview = true,
-  variant: _variant = "form",
-}: MadlibsProps) {
-  const [localValues, setLocalValues] = useState<Record<string, string>>(
-    Object.fromEntries(
-      variables.map((v) => [
-        v.id,
-        externalValues?.[v.id] ?? v.defaultValue ?? "",
-      ]),
-    ),
-  );
-
-  const values = externalValues ?? localValues;
-
-  const handleChange = (id: string, value: string) => {
-    setLocalValues((prev) => ({ ...prev, [id]: value }));
-    onChange(id, value);
-  };
-
-  const renderTemplate = () => {
-    let result = template;
-    variables.forEach((v) => {
-      result = result.replace(\`{{\${v.id}}}\`, values[v.id] || \`[\${v.label}]\`);
-    });
-    return result;
-  };
-
-  const allFilled = variables
-    .filter((v) => v.required)
-    .every((v) => values[v.id]?.trim());
-
-  return (
-    <Stack gap="sm">
-      {title ? <Text fw={600}>{title}</Text> : null}
-      {description ? <Text size="sm" c="dimmed">
-          {description}
-        </Text> : null}
-
-      {showPreview ? <Card padding="sm" withBorder>
-          <Text size="sm" style={{ fontStyle: "italic" }}>
-            {renderTemplate()}
-          </Text>
-        </Card> : null}
-
-      {variables.map((variable) => {
-        const commonProps = {
-          key: variable.id,
-          label: variable.label,
-          placeholder:
-            variable.placeholder ?? \`Enter \${variable.label.toLowerCase()}...\`,
-          required: variable.required,
-        };
-
-        if (variable.type === "select" && variable.options) {
-          return (
-            <Select
-              {...commonProps}
-              data={variable.options.map((o) => ({
-                value: o.value,
-                label: o.label,
-              }))}
-              value={values[variable.id] ?? ""}
-              onChange={(val) => { handleChange(variable.id, val ?? ""); }}
-            />
-          );
-        }
-
-        if (variable.type === "number") {
-          return (
-            <NumberInput
-              {...commonProps}
-              value={values[variable.id] ? Number(values[variable.id]) : ""}
-              onChange={(val) => { handleChange(variable.id, String(val)); }}
-            />
-          );
-        }
-
-        if (variable.type === "textarea") {
-          return (
-            <Textarea
-              {...commonProps}
-              value={values[variable.id] ?? ""}
-              onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
-              minRows={2}
-              autosize
-            />
-          );
-        }
-
-        return (
-          <TextInput
-            {...commonProps}
-            value={values[variable.id] ?? ""}
-            onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
-          />
-        );
-      })}
-
-      <Group justify="flex-end">
-        <Button
-          leftSection={<IconSend size={14} />}
-          onClick={() => { onSubmit(values); }}
-          disabled={!allFilled || isGenerating}
-          loading={isGenerating}
-          size="sm"
-        >
-          Submit
-        </Button>
-      </Group>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Loader2, Send } from "lucide-react";
 import { useState } from "react";
 
@@ -11016,7 +8242,7 @@ export function Madlibs({
 }
 `,
   },
-  "memory": {
+"memory": {
     bootstrap: `import { useState } from "react";
 import { Badge, Button, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
@@ -11245,79 +8471,6 @@ export function Memory({
   );
 }
 `,
-    mantine: `import { ActionIcon, Badge, Card, Group, Stack, Text } from "@mantine/core";
-import { IconLock, IconPencil, IconTrash } from "@tabler/icons-react";
-
-import type { MemoryProps } from "@patternbase/core";
-
-export function Memory({
-  memories,
-  onEditMemory,
-  onDeleteMemory,
-  title = "Memory",
-  variant: _variant = "list",
-  showTimestamps = false,
-}: MemoryProps) {
-  const renderEntry = (entry: (typeof memories)[0]) => (
-    <Card key={entry.id} padding="sm" withBorder>
-      <Group justify="space-between" align="flex-start">
-        <Stack gap={2} style={{ flex: 1 }}>
-          <Group gap="xs">
-            <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-              {entry.label}
-            </Text>
-            {entry.category ? <Badge size="xs" variant="light">
-                {entry.category}
-              </Badge> : null}
-            {entry.locked ? <Badge
-                size="xs"
-                variant="light"
-                color="gray"
-                leftSection={<IconLock size={10} />}
-              >
-                Locked
-              </Badge> : null}
-          </Group>
-          <Text size="sm">{entry.value}</Text>
-          {showTimestamps && entry.updatedAt ? <Text size="xs" c="dimmed">
-              {entry.updatedAt.toLocaleString()}
-            </Text> : null}
-        </Stack>
-        <Group gap="xs">
-          {!entry.locked && (
-            <ActionIcon
-              variant="subtle"
-              size="sm"
-              onClick={() => { onEditMemory(entry.id, entry.value); }}
-            >
-              <IconPencil size={14} />
-            </ActionIcon>
-          )}
-          {!entry.locked && (
-            <ActionIcon
-              variant="subtle"
-              color="red"
-              size="sm"
-              onClick={() => { onDeleteMemory(entry.id); }}
-            >
-              <IconTrash size={14} />
-            </ActionIcon>
-          )}
-        </Group>
-      </Group>
-    </Card>
-  );
-
-  return (
-    <Stack gap="sm">
-      <Text fw={600} size="sm">
-        {title}
-      </Text>
-      <Stack gap="xs">{memories.map(renderEntry)}</Stack>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Pencil, Trash2 } from "lucide-react";
 
 import type { MemoryProps } from "@patternbase/core";
@@ -11397,7 +8550,7 @@ export function Memory({
 }
 `,
   },
-  "model-management": {
+"model-management": {
     bootstrap: `import { Badge, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
 import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
@@ -11615,95 +8768,6 @@ export function ModelManagement({
   );
 }
 `,
-    mantine: `import { Badge, Card, Group, Radio, Stack, Text } from "@mantine/core";
-
-import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
-
-export function ModelManagement({
-  models,
-  selectedModelId,
-  onSelectModel,
-  showDetails = true,
-  groupByProvider = true,
-}: ModelManagementProps) {
-  const grouped = groupByProvider
-    ? models.reduce<Record<string, ModelInfo[]>>((acc, m) => {
-        const key = m.provider;
-        if (!acc[key]) acc[key] = [];
-        acc[key].push(m);
-        return acc;
-      }, {})
-    : { All: models };
-
-  return (
-    <Card padding="sm" withBorder>
-      <Stack gap="sm">
-        <Text fw={600}>Model Selection</Text>
-        <Radio.Group value={selectedModelId} onChange={onSelectModel}>
-          <Stack gap="sm">
-            {Object.entries(grouped).map(([provider, providerModels]) => (
-              <div key={provider}>
-                {groupByProvider ? <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb="xs">
-                    {provider}
-                  </Text> : null}
-                <Stack gap="xs">
-                  {providerModels.map((model) => (
-                    <Card
-                      key={model.id}
-                      padding="xs"
-                      withBorder
-                      style={{
-                        cursor: "pointer",
-                        backgroundColor:
-                          model.id === selectedModelId
-                            ? "var(--mantine-color-violet-light)"
-                            : undefined,
-                      }}
-                      onClick={() => { onSelectModel(model.id); }}
-                    >
-                      <Group justify="space-between" align="flex-start">
-                        <Group gap="xs" align="flex-start">
-                          <Radio value={model.id} mt={2} />
-                          <Stack gap={2}>
-                            <Text size="sm" fw={600}>
-                              {model.name}
-                            </Text>
-                            {showDetails && model.description ? <Text size="xs" c="dimmed">
-                                {model.description}
-                              </Text> : null}
-                            {showDetails ? <Group gap="xs">
-                                {model.contextWindow ? <Text size="xs" c="dimmed">
-                                    {(model.contextWindow / 1000).toFixed(0)}k
-                                    ctx
-                                  </Text> : null}
-                                {model.costPer1kInput !== undefined && (
-                                  <Text size="xs" c="dimmed">
-                                    \${model.costPer1kInput}/1k in
-                                  </Text>
-                                )}
-                              </Group> : null}
-                          </Stack>
-                        </Group>
-                        {model.capabilities ? <Group gap={4}>
-                            {model.capabilities.slice(0, 2).map((c) => (
-                              <Badge key={c} size="xs" variant="light">
-                                {c}
-                              </Badge>
-                            ))}
-                          </Group> : null}
-                      </Group>
-                    </Card>
-                  ))}
-                </Stack>
-              </div>
-            ))}
-          </Stack>
-        </Radio.Group>
-      </Stack>
-    </Card>
-  );
-}
-`,
     shadcn: `import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
 
 import { Badge } from "@/components/ui/badge";
@@ -11809,7 +8873,7 @@ export function ModelManagement({
 }
 `,
   },
-  "modes": {
+"modes": {
     bootstrap: `import {
   ButtonGroup,
   Card,
@@ -11850,7 +8914,9 @@ export function Modes({
                 eventKey={mode.id}
                 title={
                   <span>
-                    {mode.icon ? <span style={{ marginRight: 4 }}>{mode.icon}</span> : null}
+                    {mode.icon ? (
+                      <span style={{ marginRight: 4 }}>{mode.icon}</span>
+                    ) : null}
                     {mode.label}
                   </span>
                 }
@@ -11887,7 +8953,9 @@ export function Modes({
                   onModeChange(e.currentTarget.value);
                 }}
               >
-                {mode.icon ? <span style={{ marginRight: 4 }}>{mode.icon}</span> : null}
+                {mode.icon ? (
+                  <span style={{ marginRight: 4 }}>{mode.icon}</span>
+                ) : null}
                 {mode.label}
               </ToggleButton>
             ))}
@@ -11972,95 +9040,6 @@ export function Modes({
         )}
       </Space>
     </Card>
-  );
-}
-`,
-    mantine: `import {
-  Card,
-  Group,
-  SegmentedControl,
-  Stack,
-  Tabs,
-  Text,
-} from "@mantine/core";
-
-import type { ModesProps } from "@patternbase/core";
-
-export function Modes({
-  modes,
-  selectedModeId,
-  onModeChange,
-  title,
-  variant = "segmented",
-}: ModesProps) {
-  const selectedMode = modes.find((m) => m.id === selectedModeId);
-
-  return (
-    <Stack gap="sm">
-      {title ? (
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-      ) : null}
-
-      {variant === "tabs" ? (
-        <Tabs
-          value={selectedModeId}
-          onChange={(id) => {
-            if (id) {
-              onModeChange(id);
-            }
-          }}
-        >
-          <Tabs.List>
-            {modes.map((mode) => (
-              <Tabs.Tab
-                key={mode.id}
-                value={mode.id}
-                leftSection={mode.icon ? <span>{mode.icon}</span> : undefined}
-                disabled={mode.disabled}
-              >
-                {mode.label}
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
-          {selectedMode?.description ? (
-            <Tabs.Panel value={selectedModeId} pt="sm">
-              <Card padding="xs" withBorder>
-                <Text size="xs" c="dimmed">
-                  {selectedMode.description}
-                </Text>
-              </Card>
-            </Tabs.Panel>
-          ) : null}
-        </Tabs>
-      ) : (
-        <>
-          <SegmentedControl
-            data={modes.map((m) => ({
-              value: m.id,
-              label: (
-                <Group gap="xs" wrap="nowrap">
-                  {m.icon ? <span>{m.icon}</span> : null}
-                  <span>{m.label}</span>
-                </Group>
-              ),
-              disabled: m.disabled,
-            }))}
-            value={selectedModeId}
-            onChange={onModeChange}
-            fullWidth
-          />
-          {selectedMode?.description ? (
-            <Card padding="xs" withBorder>
-              <Text size="xs" c="dimmed">
-                {selectedMode.description}
-              </Text>
-            </Card>
-          ) : null}
-        </>
-      )}
-    </Stack>
   );
 }
 `,
@@ -12152,7 +9131,7 @@ export function Modes({
 }
 `,
   },
-  "nudges": {
+"nudges": {
     bootstrap: `import { Alert, Button } from "react-bootstrap";
 
 import type { NudgesProps } from "@patternbase/core";
@@ -12268,70 +9247,6 @@ export function Nudges({
   );
 }
 `,
-    mantine: `import { Alert, Button, Stack } from "@mantine/core";
-import {
-  IconAlertTriangle,
-  IconBulb,
-  IconInfoCircle,
-} from "@tabler/icons-react";
-import { useState } from "react";
-
-import type { NudgesProps } from "@patternbase/core";
-
-export function Nudges({
-  nudges,
-  onDismiss,
-  variant: _variant = "inline",
-  maxVisible,
-}: NudgesProps) {
-  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
-
-  const visible = nudges
-    .filter((n) => !dismissed.has(n.id))
-    .slice(0, maxVisible ?? nudges.length);
-
-  if (visible.length === 0) return null;
-
-  const getIcon = (type?: string) => {
-    if (type === "reminder") return <IconAlertTriangle size={16} />;
-    if (type === "suggestion") return <IconInfoCircle size={16} />;
-    return <IconBulb size={16} />;
-  };
-
-  const getColor = (type?: string) => {
-    if (type === "reminder") return "orange";
-    if (type === "suggestion") return "blue";
-    return "yellow";
-  };
-
-  return (
-    <Stack gap="xs">
-      {visible.map((nudge) => (
-        <Alert
-          key={nudge.id}
-          icon={nudge.icon ? <span>{nudge.icon}</span> : getIcon(nudge.type)}
-          color={getColor(nudge.type)}
-          withCloseButton
-          onClose={() => {
-            setDismissed((prev) => new Set(prev).add(nudge.id));
-            onDismiss?.(nudge.id);
-          }}
-        >
-          {nudge.message}
-          {nudge.actionLabel && nudge.onAction ? <Button
-              variant="subtle"
-              size="compact-xs"
-              mt="xs"
-              onClick={nudge.onAction}
-            >
-              {nudge.actionLabel}
-            </Button> : null}
-        </Alert>
-      ))}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { AlertTriangle, Info, Lightbulb, X } from "lucide-react";
 import { useState } from "react";
 
@@ -12395,7 +9310,7 @@ export function Nudges({ nudges, onDismiss, maxVisible }: NudgesProps) {
 }
 `,
   },
-  "open-input": {
+"open-input": {
     bootstrap: `import { type KeyboardEvent, useRef, useState } from "react";
 import { Badge, Button, Form, InputGroup, Stack } from "react-bootstrap";
 
@@ -12561,95 +9476,8 @@ export function OpenInput({
   );
 }
 `,
-    mantine: `import {
-  ActionIcon,
-  Badge,
-  Group,
-  Stack,
-  Textarea,
-  Tooltip,
-} from "@mantine/core";
-import { IconSend } from "@tabler/icons-react";
-import { type KeyboardEvent, useRef, useState } from "react";
-
-import type { OpenInputProps } from "@patternbase/core";
-
-export function OpenInput({
-  placeholder = "Ask anything...",
-  onSubmit,
-  isLoading = false,
-  suggestions = [],
-  maxLength,
-}: OpenInputProps) {
-  const [value, setValue] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleSubmit = () => {
-    if (value.trim()) {
-      onSubmit(value.trim());
-      setValue("");
-    }
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  return (
-    <Stack gap="xs">
-      {suggestions.length > 0 && !value && (
-        <Group gap="xs" wrap="wrap">
-          {suggestions.map((s) => (
-            <Badge
-              key={s}
-              variant="light"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                setValue(s);
-                textareaRef.current?.focus();
-              }}
-            >
-              {s}
-            </Badge>
-          ))}
-        </Group>
-      )}
-
-      <Group gap="xs" align="flex-end">
-        <Textarea
-          ref={textareaRef}
-          value={value}
-          onChange={(e) => { setValue(e.currentTarget.value); }}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          disabled={isLoading}
-          autosize
-          minRows={1}
-          maxRows={6}
-          maxLength={maxLength}
-          style={{ flex: 1 }}
-        />
-        <Tooltip label={isLoading ? "Generating..." : "Send"}>
-          <ActionIcon
-            size="lg"
-            variant="filled"
-            onClick={handleSubmit}
-            disabled={!value.trim() || isLoading}
-            loading={isLoading}
-          >
-            <IconSend size={16} />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Send } from "lucide-react";
-import { useRef, useState, type KeyboardEvent } from "react";
+import { type KeyboardEvent, useRef, useState } from "react";
 
 import type { OpenInputProps } from "@patternbase/core";
 
@@ -12745,7 +9573,7 @@ export function OpenInput({
 }
 `,
   },
-  "parameter-control": {
+"parameter-control": {
     bootstrap: `import { Form, OverlayTrigger, Stack, Tooltip } from "react-bootstrap";
 
 import type { ParameterControlProps } from "@patternbase/core";
@@ -13013,130 +9841,6 @@ export function ParameterControl({
   );
 }
 `,
-    mantine: `import { Select, Slider, Stack, Switch, Text, Tooltip } from "@mantine/core";
-import { IconInfoCircle } from "@tabler/icons-react";
-
-import type { ParameterControlProps } from "@patternbase/core";
-
-export function ParameterControl({
-  parameters,
-  onChange,
-  title = "Parameters",
-  layout = "vertical",
-}: ParameterControlProps) {
-  return (
-    <Stack gap="md">
-      {title ? <Text fw={600} size="md">
-          {title}
-        </Text> : null}
-
-      <div
-        style={
-          layout === "horizontal"
-            ? { display: "flex", flexWrap: "wrap", gap: 16 }
-            : undefined
-        }
-      >
-        {parameters.map((param) => (
-          <Stack
-            key={param.id}
-            gap="xs"
-            style={{
-              width: layout === "horizontal" ? 200 : "100%",
-              marginBottom: layout === "vertical" ? 12 : 0,
-            }}
-          >
-            <Text
-              fw={500}
-              size="sm"
-              style={{ display: "flex", alignItems: "center", gap: 4 }}
-            >
-              {param.label}
-              {param.description ? <Tooltip label={param.description} withArrow>
-                  <IconInfoCircle size={14} style={{ opacity: 0.5 }} />
-                </Tooltip> : null}
-            </Text>
-
-            {param.type === "slider" && (
-              <>
-                <Slider
-                  min={param.min ?? 0}
-                  max={param.max ?? 100}
-                  step={param.step ?? 1}
-                  value={param.value as number}
-                  onChange={(v) => { onChange(param.id, v); }}
-                />
-                <Text size="xs" c="dimmed">
-                  Current: {String(param.value)}
-                </Text>
-              </>
-            )}
-
-            {param.type === "toggle" && (
-              <Switch
-                checked={param.value as boolean}
-                onChange={(e) => { onChange(param.id, e.currentTarget.checked); }}
-                onLabel="On"
-                offLabel="Off"
-              />
-            )}
-
-            {param.type === "select" && (
-              <Select
-                value={param.value as string}
-                onChange={(v) => { onChange(param.id, v ?? ""); }}
-                data={param.options?.map((opt) => ({
-                  label: opt.label,
-                  value: opt.value as string,
-                }))}
-              />
-            )}
-
-            {param.type === "matrix" &&
-              (() => {
-                const matrixValue = param.value as
-                  | Record<string, number>
-                  | undefined;
-                return (
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 16,
-                    }}
-                  >
-                    <div>
-                      <Text size="xs" c="dimmed">
-                        {param.options?.[0]?.label ?? "X Axis"}
-                      </Text>
-                      <Slider
-                        value={matrixValue?.x ?? 50}
-                        onChange={(x) =>
-                          { onChange(param.id, { ...matrixValue, x }); }
-                        }
-                      />
-                    </div>
-                    <div>
-                      <Text size="xs" c="dimmed">
-                        {param.options?.[1]?.label ?? "Y Axis"}
-                      </Text>
-                      <Slider
-                        value={matrixValue?.y ?? 50}
-                        onChange={(y) =>
-                          { onChange(param.id, { ...matrixValue, y }); }
-                        }
-                      />
-                    </div>
-                  </div>
-                );
-              })()}
-          </Stack>
-        ))}
-      </div>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Info } from "lucide-react";
 
 import type {
@@ -13301,7 +10005,7 @@ export function ParameterControl({
 }
 `,
   },
-  "preset-styles": {
+"preset-styles": {
     bootstrap: `import { Button, Card } from "react-bootstrap";
 
 import type { PresetStylesProps } from "@patternbase/core";
@@ -13339,7 +10043,9 @@ export function PresetStyles({
               >
                 <Card.Body className="px-3 py-2">
                   <div className="small fw-semibold">
-                    {preset.icon ? <span style={{ marginRight: 4 }}>{preset.icon}</span> : null}
+                    {preset.icon ? (
+                      <span style={{ marginRight: 4 }}>{preset.icon}</span>
+                    ) : null}
                     {preset.label}
                   </div>
                   {preset.description ? (
@@ -13420,7 +10126,9 @@ export function PresetStyles({
             >
               <Space direction="vertical" size={2}>
                 <Text strong>
-                  {preset.icon ? <span style={{ marginRight: 4 }}>{preset.icon}</span> : null}
+                  {preset.icon ? (
+                    <span style={{ marginRight: 4 }}>{preset.icon}</span>
+                  ) : null}
                   {preset.label}
                 </Text>
                 {preset.description ? (
@@ -13456,87 +10164,6 @@ export function PresetStyles({
         ))}
       </Space>
     </Card>
-  );
-}
-`,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@mantine/core";
-
-import type { PresetStylesProps } from "@patternbase/core";
-
-export function PresetStyles({
-  presets,
-  selectedPresetId,
-  onApplyPreset,
-  title,
-  variant = "buttons",
-}: PresetStylesProps) {
-  return (
-    <Stack gap="sm">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-
-      {variant === "cards" ? (
-        <SimpleGrid cols={2} spacing="sm">
-          {presets.map((preset) => (
-            <Card
-              key={preset.id}
-              padding="sm"
-              withBorder
-              style={{
-                cursor: "pointer",
-                outline:
-                  selectedPresetId === preset.id
-                    ? "2px solid var(--mantine-color-violet-6)"
-                    : undefined,
-              }}
-              onClick={() => { onApplyPreset(preset.id, preset.values); }}
-            >
-              <Stack gap="xs">
-                <Group justify="space-between" align="flex-start">
-                  <Group gap="xs">
-                    {preset.icon ? <span>{preset.icon}</span> : null}
-                    <Text fw={600} size="sm">
-                      {preset.label}
-                    </Text>
-                  </Group>
-                  {selectedPresetId === preset.id && (
-                    <Badge size="xs" variant="filled" color="violet">
-                      Active
-                    </Badge>
-                  )}
-                </Group>
-                {preset.description ? <Text size="xs" c="dimmed">
-                    {preset.description}
-                  </Text> : null}
-              </Stack>
-            </Card>
-          ))}
-        </SimpleGrid>
-      ) : (
-        <Group gap="xs" wrap="wrap">
-          {presets.map((preset) => (
-            <Button
-              key={preset.id}
-              variant={selectedPresetId === preset.id ? "filled" : "default"}
-              size="sm"
-              leftSection={preset.icon ? <span>{preset.icon}</span> : undefined}
-              onClick={() => { onApplyPreset(preset.id, preset.values); }}
-            >
-              {preset.label}
-            </Button>
-          ))}
-        </Group>
-      )}
-    </Stack>
   );
 }
 `,
@@ -13616,7 +10243,7 @@ export function PresetStyles({
 }
 `,
   },
-  "prompt-details": {
+"prompt-details": {
     bootstrap: `import { Badge, Card } from "react-bootstrap";
 
 import type { PromptDetailsProps } from "@patternbase/core";
@@ -13754,85 +10381,6 @@ export function PromptDetails({
   );
 }
 `,
-    mantine: `import { Anchor, Badge, Card, Group, Stack, Text } from "@mantine/core";
-
-import type { PromptDetailsProps } from "@patternbase/core";
-
-export function PromptDetails({
-  prompt,
-  details,
-  timestamp,
-  model,
-  tokenCount,
-  variant = "card",
-}: PromptDetailsProps) {
-  const inner = (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          Prompt Details
-        </Text>
-        <Group gap="xs">
-          {model ? <Badge variant="light" size="sm">
-              {model}
-            </Badge> : null}
-          {tokenCount !== undefined && (
-            <Badge variant="light" size="sm" color="gray">
-              {tokenCount} tokens
-            </Badge>
-          )}
-        </Group>
-      </Group>
-
-      <Text size="sm" style={{ fontStyle: "italic" }} c="dimmed">
-        &ldquo;{prompt}&rdquo;
-      </Text>
-
-      {timestamp ? <Text size="xs" c="dimmed">
-          {timestamp.toLocaleString()}
-        </Text> : null}
-
-      {details.length > 0 && (
-        <Stack gap={4}>
-          {details.map((detail) => (
-            <Group key={detail.id} justify="space-between" align="center">
-              <Text size="xs" c="dimmed">
-                {detail.label}
-              </Text>
-              {detail.type === "badge" ? (
-                <Badge size="xs" variant="light">
-                  {detail.value}
-                </Badge>
-              ) : detail.type === "link" && detail.url ? (
-                <Anchor
-                  href={detail.url}
-                  target="_blank"
-                  size="xs"
-                  rel="noopener noreferrer"
-                >
-                  {detail.value}
-                </Anchor>
-              ) : (
-                <Text size="xs">{detail.value}</Text>
-              )}
-            </Group>
-          ))}
-        </Stack>
-      )}
-    </Stack>
-  );
-
-  if (variant === "inline") {
-    return <Stack gap="sm">{inner}</Stack>;
-  }
-
-  return (
-    <Card padding="sm" withBorder>
-      {inner}
-    </Card>
-  );
-}
-`,
     shadcn: `import type { PromptDetail, PromptDetailsProps } from "@patternbase/core";
 
 import { Badge } from "@/components/ui/badge";
@@ -13918,7 +10466,7 @@ export function PromptDetails({
 }
 `,
   },
-  "prompt-enhancer": {
+"prompt-enhancer": {
     bootstrap: `import { Button, Card, Form } from "react-bootstrap";
 
 import type { PromptEnhancerProps } from "@patternbase/core";
@@ -14182,81 +10730,6 @@ export function PromptEnhancer({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  Textarea,
-} from "@mantine/core";
-import { IconSparkles } from "@tabler/icons-react";
-
-import type { PromptEnhancerProps } from "@patternbase/core";
-
-export function PromptEnhancer({
-  prompt,
-  enhancedPrompt,
-  onEnhance,
-  onApply,
-  onEnhancedPromptChange,
-  isEnhancing = false,
-  title,
-  showDiff = false,
-}: PromptEnhancerProps) {
-  return (
-    <Stack gap="sm">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-
-      <Stack gap="xs">
-        <Text size="xs" c="dimmed" fw={500}>
-          Original
-        </Text>
-        <Card padding="sm" withBorder>
-          <Text size="sm">{prompt}</Text>
-        </Card>
-      </Stack>
-
-      <Button
-        leftSection={<IconSparkles size={14} />}
-        onClick={() => { onEnhance(prompt); }}
-        loading={isEnhancing}
-        variant="default"
-        size="sm"
-      >
-        Enhance Prompt
-      </Button>
-
-      {enhancedPrompt ? <Stack gap="xs">
-          <Group justify="space-between" align="center">
-            <Text size="xs" c="dimmed" fw={500}>
-              Enhanced
-            </Text>
-            <Badge size="xs" variant="light" color="violet">
-              AI Improved
-            </Badge>
-          </Group>
-          <Textarea
-            value={enhancedPrompt}
-            onChange={(e) => onEnhancedPromptChange?.(e.currentTarget.value)}
-            minRows={2}
-            autosize
-            readOnly={!onEnhancedPromptChange}
-          />
-          {showDiff ? <Text size="xs" c="dimmed">
-              {prompt.length} → {enhancedPrompt.length} chars
-            </Text> : null}
-          {onApply ? <Button size="compact-sm" onClick={() => { onApply(enhancedPrompt); }}>
-              Apply
-            </Button> : null}
-        </Stack> : null}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Sparkles } from "lucide-react";
 
 import type { PromptEnhancerProps } from "@patternbase/core";
@@ -14346,7 +10819,7 @@ export function PromptEnhancer({
 }
 `,
   },
-  "randomize": {
+"randomize": {
     bootstrap: `import { Button, Form, InputGroup, Spinner } from "react-bootstrap";
 
 import type { RandomizeProps } from "@patternbase/core";
@@ -14452,91 +10925,6 @@ export function Randomize({
   }
 
   return button;
-}
-`,
-    mantine: `import {
-  ActionIcon,
-  Button,
-  Group,
-  Stack,
-  Text,
-  TextInput,
-  Tooltip,
-} from "@mantine/core";
-import { IconArrowsShuffle,IconDice } from "@tabler/icons-react";
-
-import type { RandomizeProps } from "@patternbase/core";
-
-export function Randomize({
-  onRandomize,
-  isRandomizing = false,
-  currentSeed,
-  onSeedChange,
-  showSeed = false,
-  label = "Randomize",
-  variant = "button",
-}: RandomizeProps) {
-  if (variant === "icon") {
-    return (
-      <Tooltip label={label}>
-        <ActionIcon
-          variant="default"
-          size="lg"
-          onClick={onRandomize}
-          loading={isRandomizing}
-        >
-          <IconDice size={18} />
-        </ActionIcon>
-      </Tooltip>
-    );
-  }
-
-  if (variant === "fab") {
-    return (
-      <ActionIcon
-        variant="filled"
-        size="xl"
-        radius="xl"
-        onClick={onRandomize}
-        loading={isRandomizing}
-      >
-        <IconArrowsShuffle size={22} />
-      </ActionIcon>
-    );
-  }
-
-  return (
-    <Stack gap="xs">
-      <Group gap="xs">
-        <Button
-          leftSection={<IconDice size={14} />}
-          variant="default"
-          size="sm"
-          onClick={onRandomize}
-          loading={isRandomizing}
-        >
-          {label}
-        </Button>
-      </Group>
-      {showSeed ? <TextInput
-          label="Seed"
-          placeholder="Random seed..."
-          value={currentSeed ?? ""}
-          onChange={(e) => onSeedChange?.(e.currentTarget.value)}
-          size="xs"
-          rightSection={
-            <Tooltip label="Randomize seed">
-              <ActionIcon variant="subtle" size="sm" onClick={onRandomize}>
-                <IconDice size={12} />
-              </ActionIcon>
-            </Tooltip>
-          }
-        /> : null}
-      {currentSeed && !showSeed ? <Text size="xs" c="dimmed">
-          Seed: {currentSeed}
-        </Text> : null}
-    </Stack>
-  );
 }
 `,
     shadcn: `import { Dice5, Shuffle } from "lucide-react";
@@ -14646,7 +11034,7 @@ export function Randomize({
 }
 `,
   },
-  "references": {
+"references": {
     bootstrap: `import {
   Badge,
   Button,
@@ -14845,115 +11233,6 @@ export function References({
   );
 }
 `,
-    mantine: `import {
-  ActionIcon,
-  Anchor,
-  Badge,
-  Card,
-  Group,
-  Progress,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
-
-import type { ReferencesProps } from "@patternbase/core";
-
-export function References({
-  references,
-  onSelectReference,
-  onRemoveReference,
-  title = "References",
-  variant = "list",
-  showRelevance = false,
-}: ReferencesProps) {
-  const renderItem = (ref: (typeof references)[0]) => (
-    <Card
-      key={ref.id}
-      padding="sm"
-      withBorder
-      style={{
-        cursor: onSelectReference ? "pointer" : "default",
-        outline: ref.selected
-          ? "2px solid var(--mantine-color-violet-6)"
-          : undefined,
-      }}
-      onClick={() => onSelectReference?.(ref.id)}
-    >
-      <Group justify="space-between" align="flex-start">
-        <Stack gap={2} style={{ flex: 1 }}>
-          <Group gap="xs">
-            <Text size="sm" fw={500}>
-              {ref.title}
-            </Text>
-            {ref.type ? <Badge size="xs" variant="light">
-                {ref.type}
-              </Badge> : null}
-            {ref.selected ? <Badge size="xs" variant="filled" color="violet">
-                Selected
-              </Badge> : null}
-          </Group>
-          {ref.excerpt ? <Text size="xs" c="dimmed" lineClamp={2}>
-              {ref.excerpt}
-            </Text> : null}
-          {ref.location ? <Anchor
-              href={ref.location}
-              target="_blank"
-              size="xs"
-              rel="noopener noreferrer"
-            >
-              {ref.location.length > 50
-                ? \`\${ref.location.substring(0, 50)}...\`
-                : ref.location}
-            </Anchor> : null}
-          {showRelevance && ref.relevance !== undefined ? <Group gap="xs" align="center">
-              <Progress
-                value={ref.relevance * 100}
-                size="xs"
-                style={{ flex: 1 }}
-              />
-              <Text size="xs" c="dimmed">
-                {Math.round(ref.relevance * 100)}%
-              </Text>
-            </Group> : null}
-        </Stack>
-        {onRemoveReference ? <ActionIcon
-            variant="subtle"
-            color="gray"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemoveReference(ref.id);
-            }}
-          >
-            <IconX size={12} />
-          </ActionIcon> : null}
-      </Group>
-    </Card>
-  );
-
-  return (
-    <Stack gap="sm">
-      <Group gap="xs">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        <Badge size="xs" variant="light">
-          {references.length}
-        </Badge>
-      </Group>
-      {variant === "cards" ? (
-        <SimpleGrid cols={2} spacing="sm">
-          {references.map(renderItem)}
-        </SimpleGrid>
-      ) : (
-        <Stack gap="xs">{references.map(renderItem)}</Stack>
-      )}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { X } from "lucide-react";
 
 import type { ReferencesProps } from "@patternbase/core";
@@ -15048,7 +11327,7 @@ export function References({
 }
 `,
   },
-  "regenerate": {
+"regenerate": {
     bootstrap: `import { Button, Dropdown, Spinner } from "react-bootstrap";
 
 import type { RegenerateProps } from "@patternbase/core";
@@ -15188,71 +11467,6 @@ export function Regenerate({
   );
 }
 `,
-    mantine: `import { ActionIcon, Button, Menu, Tooltip } from "@mantine/core";
-import { IconRefresh } from "@tabler/icons-react";
-
-import type { RegenerateProps } from "@patternbase/core";
-
-export function Regenerate({
-  onRegenerate,
-  isRegenerating = false,
-  variant = "button",
-  options,
-}: RegenerateProps) {
-  if (variant === "icon") {
-    return (
-      <Tooltip label="Regenerate">
-        <ActionIcon
-          variant="subtle"
-          color="gray"
-          onClick={onRegenerate}
-          loading={isRegenerating}
-        >
-          <IconRefresh size={16} />
-        </ActionIcon>
-      </Tooltip>
-    );
-  }
-
-  if (variant === "dropdown" && options && options.length > 0) {
-    return (
-      <Menu>
-        <Menu.Target>
-          <Button
-            variant="default"
-            leftSection={<IconRefresh size={14} />}
-            loading={isRegenerating}
-            size="sm"
-          >
-            Regenerate
-          </Button>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item onClick={onRegenerate}>Regenerate</Menu.Item>
-          <Menu.Divider />
-          {options.map((opt) => (
-            <Menu.Item key={opt.label} onClick={opt.onSelect}>
-              {opt.label}
-            </Menu.Item>
-          ))}
-        </Menu.Dropdown>
-      </Menu>
-    );
-  }
-
-  return (
-    <Button
-      variant="default"
-      leftSection={<IconRefresh size={14} />}
-      onClick={onRegenerate}
-      loading={isRegenerating}
-      size="sm"
-    >
-      Regenerate
-    </Button>
-  );
-}
-`,
     shadcn: `import { Loader2, RefreshCw } from "lucide-react";
 
 import type { RegenerateProps } from "@patternbase/core";
@@ -15347,7 +11561,7 @@ export function Regenerate({
 }
 `,
   },
-  "restructure": {
+"restructure": {
     bootstrap: `import { Button, Card, Spinner } from "react-bootstrap";
 
 import type { RestructureProps } from "@patternbase/core";
@@ -15527,94 +11741,6 @@ export function Restructure({
   );
 }
 `,
-    mantine: `import {
-  Button,
-  Card,
-  Group,
-  Loader,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@mantine/core";
-
-import type { RestructureProps } from "@patternbase/core";
-
-export function Restructure({
-  content,
-  options,
-  onRestructure,
-  restructuredContent,
-  isProcessing = false,
-  showDiff = false,
-  title = "Restructure",
-  variant = "buttons",
-}: RestructureProps) {
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {isProcessing ? <Loader size="xs" /> : null}
-      </Group>
-
-      <Card padding="sm" withBorder>
-        <Text size="sm">{content}</Text>
-      </Card>
-
-      {variant === "presets" ? (
-        <SimpleGrid cols={2} spacing="xs">
-          {options.map((option) => (
-            <Card
-              key={option.id}
-              padding="sm"
-              withBorder
-              style={{ cursor: "pointer" }}
-              onClick={() => { onRestructure(option.id); }}
-            >
-              <Group gap="xs">
-                {option.icon ? <span>{option.icon}</span> : null}
-                <Stack gap={2}>
-                  <Text size="sm" fw={500}>
-                    {option.label}
-                  </Text>
-                  {option.description ? <Text size="xs" c="dimmed">
-                      {option.description}
-                    </Text> : null}
-                </Stack>
-              </Group>
-            </Card>
-          ))}
-        </SimpleGrid>
-      ) : (
-        <Group gap="xs" wrap="wrap">
-          {options.map((option) => (
-            <Button
-              key={option.id}
-              variant="default"
-              size="sm"
-              leftSection={option.icon ? <span>{option.icon}</span> : undefined}
-              onClick={() => { onRestructure(option.id); }}
-              disabled={isProcessing}
-            >
-              {option.label}
-            </Button>
-          ))}
-        </Group>
-      )}
-
-      {restructuredContent ? <Stack gap="xs">
-          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-            {showDiff ? "Changes" : "Result"}
-          </Text>
-          <Card padding="sm" withBorder>
-            <Text size="sm">{restructuredContent}</Text>
-          </Card>
-        </Stack> : null}
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { RestructureProps } from "@patternbase/core";
 
 import { Button } from "@/components/ui/button";
@@ -15704,7 +11830,7 @@ export function Restructure({
 }
 `,
   },
-  "restyle": {
+"restyle": {
     bootstrap: `import { Button, Card, Form, Spinner } from "react-bootstrap";
 
 import type { RestyleProps } from "@patternbase/core";
@@ -15990,180 +12116,6 @@ export function Restyle({
   );
 }
 `,
-    mantine: `import {
-  Card,
-  Group,
-  Loader,
-  SimpleGrid,
-  Slider,
-  Stack,
-  Text,
-  UnstyledButton,
-} from "@mantine/core";
-import { useState } from "react";
-
-import type { RestyleProps } from "@patternbase/core";
-
-export function Restyle({
-  content,
-  options,
-  onRestyle,
-  restyledContent,
-  isProcessing = false,
-  intensity,
-  onIntensityChange,
-  title = "Restyle",
-  variant = "presets",
-}: RestyleProps) {
-  const [selectedId, setSelectedId] = useState(options[0]?.id ?? "");
-
-  const handleSelect = (id: string) => {
-    setSelectedId(id);
-    onRestyle(id);
-  };
-
-  const renderOptions = () => {
-    if (variant === "gallery") {
-      return (
-        <SimpleGrid cols={2} spacing="xs">
-          {options.map((option) => (
-            <UnstyledButton
-              key={option.id}
-              onClick={() => { handleSelect(option.id); }}
-            >
-              <Card
-                padding="sm"
-                withBorder
-                style={{
-                  outline:
-                    selectedId === option.id
-                      ? "2px solid var(--mantine-color-violet-6)"
-                      : undefined,
-                }}
-              >
-                <Stack gap={4}>
-                  {option.preview ? <Text
-                      size="xs"
-                      c="dimmed"
-                      style={{ fontStyle: "italic" }}
-                      lineClamp={2}
-                    >
-                      {option.preview}
-                    </Text> : null}
-                  <Text size="xs" fw={500}>
-                    {option.label}
-                  </Text>
-                  {option.description ? <Text size="xs" c="dimmed">
-                      {option.description}
-                    </Text> : null}
-                </Stack>
-              </Card>
-            </UnstyledButton>
-          ))}
-        </SimpleGrid>
-      );
-    }
-
-    if (variant === "slider") {
-      return (
-        <Stack gap="xs">
-          <Text size="xs" fw={500} c="dimmed">
-            Style
-          </Text>
-          <Group gap="xs" wrap="wrap">
-            {options.map((option) => (
-              <UnstyledButton
-                key={option.id}
-                onClick={() => { handleSelect(option.id); }}
-              >
-                <Text
-                  size="sm"
-                  fw={selectedId === option.id ? 600 : 400}
-                  c={selectedId === option.id ? "violet" : "dimmed"}
-                >
-                  {option.label}
-                </Text>
-              </UnstyledButton>
-            ))}
-          </Group>
-        </Stack>
-      );
-    }
-
-    return (
-      <Group gap="xs" wrap="wrap">
-        {options.map((option) => (
-          <UnstyledButton
-            key={option.id}
-            onClick={() => { handleSelect(option.id); }}
-          >
-            <Card
-              padding="xs"
-              withBorder
-              style={{
-                cursor: "pointer",
-                outline:
-                  selectedId === option.id
-                    ? "2px solid var(--mantine-color-violet-6)"
-                    : undefined,
-              }}
-            >
-              <Group gap="xs">
-                {option.icon ? <span>{option.icon}</span> : null}
-                <Text size="sm">{option.label}</Text>
-              </Group>
-            </Card>
-          </UnstyledButton>
-        ))}
-      </Group>
-    );
-  };
-
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {isProcessing ? <Loader size="xs" /> : null}
-      </Group>
-
-      <Card padding="sm" withBorder>
-        <Text size="sm">{content}</Text>
-      </Card>
-
-      {renderOptions()}
-
-      {intensity !== undefined && onIntensityChange ? <Stack gap={4}>
-          <Group justify="space-between">
-            <Text size="xs" fw={500}>
-              Intensity
-            </Text>
-            <Text size="xs" c="dimmed">
-              {intensity}%
-            </Text>
-          </Group>
-          <Slider
-            value={intensity}
-            onChange={onIntensityChange}
-            min={0}
-            max={100}
-            step={1}
-          />
-        </Stack> : null}
-
-      {restyledContent ? <Stack gap="xs">
-          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-            Result
-          </Text>
-          <Card padding="sm" withBorder>
-            <Text size="sm">{restyledContent}</Text>
-          </Card>
-        </Stack> : null}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { useState } from "react";
 
 import type { RestyleProps } from "@patternbase/core";
@@ -16341,7 +12293,7 @@ export function Restyle({
 }
 `,
   },
-  "sample-response": {
+"sample-response": {
     bootstrap: `import { Button, Card, Spinner, Stack } from "react-bootstrap";
 
 import type { SampleResponseProps } from "@patternbase/core";
@@ -16516,90 +12468,6 @@ export function SampleResponse({
   );
 }
 `,
-    mantine: `import {
-  Button,
-  Card,
-  Group,
-  Loader,
-  Stack,
-  Text,
-  Textarea,
-} from "@mantine/core";
-import { IconCheck, IconRefresh, IconWand } from "@tabler/icons-react";
-
-import type { SampleResponseProps } from "@patternbase/core";
-
-export function SampleResponse({
-  sample,
-  prompt,
-  onGenerateSample,
-  onRegenerateSample,
-  onAcceptSample,
-  isGenerating = false,
-  title = "Sample Response",
-  variant = "card",
-}: SampleResponseProps) {
-  const inner = (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {isGenerating ? <Loader size="xs" /> : null}
-      </Group>
-
-      {prompt ? <Text size="xs" c="dimmed" style={{ fontStyle: "italic" }}>
-          &ldquo;{prompt}&rdquo;
-        </Text> : null}
-
-      {sample ? (
-        <>
-          <Textarea value={sample} readOnly minRows={3} autosize />
-          <Group gap="xs">
-            {onRegenerateSample ? <Button
-                variant="default"
-                size="sm"
-                leftSection={<IconRefresh size={14} />}
-                onClick={onRegenerateSample}
-                disabled={isGenerating}
-              >
-                Regenerate
-              </Button> : null}
-            {onAcceptSample ? <Button
-                size="sm"
-                leftSection={<IconCheck size={14} />}
-                onClick={onAcceptSample}
-                disabled={isGenerating}
-              >
-                Accept
-              </Button> : null}
-          </Group>
-        </>
-      ) : (
-        <Button
-          leftSection={<IconWand size={14} />}
-          onClick={onGenerateSample}
-          loading={isGenerating}
-          size="sm"
-          variant="default"
-        >
-          Generate Sample
-        </Button>
-      )}
-    </Stack>
-  );
-
-  if (variant === "inline") {
-    return <Stack gap="sm">{inner}</Stack>;
-  }
-
-  return (
-    <Card padding="sm" withBorder>
-      {inner}
-    </Card>
-  );
-}
-`,
     shadcn: `import { Check, RefreshCw, Wand2 } from "lucide-react";
 
 import type { SampleResponseProps } from "@patternbase/core";
@@ -16689,7 +12557,7 @@ export function SampleResponse({
 }
 `,
   },
-  "saved-styles": {
+"saved-styles": {
     bootstrap: `import { useMemo, useState } from "react";
 import { Badge, Button, Card, Form, ListGroup } from "react-bootstrap";
 
@@ -17022,157 +12890,6 @@ export function SavedStyles({
   );
 }
 `,
-    mantine: `import {
-  ActionIcon,
-  Badge,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
-import { IconDeviceFloppy, IconStar, IconTrash } from "@tabler/icons-react";
-import { useState } from "react";
-
-import type { SavedStylesProps } from "@patternbase/core";
-
-export function SavedStyles({
-  styles,
-  selectedStyleId,
-  onSelectStyle,
-  onSaveStyle,
-  onDeleteStyle,
-  title,
-  variant = "list",
-  maxVisible,
-}: SavedStylesProps) {
-  const [saveName, setSaveName] = useState("");
-
-  const displayed = maxVisible ? styles.slice(0, maxVisible) : styles;
-
-  return (
-    <Stack gap="sm">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-
-      <Group gap="xs">
-        <TextInput
-          placeholder="Style name..."
-          value={saveName}
-          onChange={(e) => { setSaveName(e.currentTarget.value); }}
-          size="sm"
-          style={{ flex: 1 }}
-        />
-        <Button
-          leftSection={<IconDeviceFloppy size={14} />}
-          variant="default"
-          size="sm"
-          onClick={() => {
-            if (saveName.trim()) {
-              onSaveStyle(saveName.trim());
-              setSaveName("");
-            }
-          }}
-          disabled={!saveName.trim()}
-        >
-          Save
-        </Button>
-      </Group>
-
-      {variant === "cards" ? (
-        <Stack gap="xs">
-          {displayed.map((style) => (
-            <Card
-              key={style.id}
-              padding="sm"
-              withBorder
-              style={{
-                cursor: "pointer",
-                outline:
-                  selectedStyleId === style.id
-                    ? "2px solid var(--mantine-color-violet-6)"
-                    : undefined,
-              }}
-              onClick={() => { onSelectStyle(style.id); }}
-            >
-              <Group justify="space-between" align="center">
-                <Stack gap={2}>
-                  <Group gap="xs">
-                    <Text size="sm" fw={600}>
-                      {style.name}
-                    </Text>
-                    {style.isDefault ? <Badge
-                        size="xs"
-                        variant="light"
-                        color="yellow"
-                        leftSection={<IconStar size={10} />}
-                      >
-                        Default
-                      </Badge> : null}
-                    {selectedStyleId === style.id && (
-                      <Badge size="xs" variant="filled" color="violet">
-                        Active
-                      </Badge>
-                    )}
-                  </Group>
-                  {style.description ? <Text size="xs" c="dimmed">
-                      {style.description}
-                    </Text> : null}
-                </Stack>
-                {onDeleteStyle ? <ActionIcon
-                    variant="subtle"
-                    color="red"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteStyle(style.id);
-                    }}
-                  >
-                    <IconTrash size={14} />
-                  </ActionIcon> : null}
-              </Group>
-            </Card>
-          ))}
-        </Stack>
-      ) : (
-        <Stack gap="xs">
-          {displayed.map((style) => (
-            <Group key={style.id} justify="space-between" align="center">
-              <Group
-                gap="xs"
-                style={{ cursor: "pointer", flex: 1 }}
-                onClick={() => { onSelectStyle(style.id); }}
-              >
-                <Text size="sm" fw={selectedStyleId === style.id ? 600 : 400}>
-                  {style.name}
-                </Text>
-                {style.isDefault ? <Badge size="xs" variant="light" color="yellow">
-                    Default
-                  </Badge> : null}
-                {selectedStyleId === style.id && (
-                  <Badge size="xs" variant="filled" color="violet">
-                    Active
-                  </Badge>
-                )}
-              </Group>
-              {onDeleteStyle ? <ActionIcon
-                  variant="subtle"
-                  color="red"
-                  size="sm"
-                  onClick={() => { onDeleteStyle(style.id); }}
-                >
-                  <IconTrash size={14} />
-                </ActionIcon> : null}
-            </Group>
-          ))}
-        </Stack>
-      )}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Save, Star, Trash2 } from "lucide-react";
 import { useState } from "react";
 
@@ -17333,7 +13050,7 @@ export function SavedStyles({
 }
 `,
   },
-  "shared-vision": {
+"shared-vision": {
     bootstrap: `import { useState } from "react";
 import { Badge, Button, Card, Form, ListGroup, Stack } from "react-bootstrap";
 
@@ -17576,192 +13293,6 @@ export function SharedVision({
   );
 }
 `,
-    mantine: `import {
-  Avatar,
-  Badge,
-  Button,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
-import { useState } from "react";
-
-import type { SharedVisionProps } from "@patternbase/core";
-
-export function SharedVision({
-  participants,
-  goals,
-  context,
-  onAddGoal,
-  onSelectParticipant,
-  title = "Shared Vision",
-  variant = "board",
-}: SharedVisionProps) {
-  const [newGoal, setNewGoal] = useState("");
-
-  const priorityColor = (priority?: string) => {
-    if (priority === "high") return "red";
-    if (priority === "medium") return "orange";
-    return "blue";
-  };
-
-  const contextTypeColor = (type?: string) => {
-    if (type === "constraint") return "red";
-    if (type === "assumption") return "yellow";
-    return "blue";
-  };
-
-  if (variant === "compact") {
-    return (
-      <Stack gap="sm">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        <Group gap="xs" wrap="wrap">
-          {participants.map((p) => (
-            <Badge
-              key={p.id}
-              variant="light"
-              color={p.isActive ? "green" : "gray"}
-              style={{ cursor: onSelectParticipant ? "pointer" : "default" }}
-              onClick={() => onSelectParticipant?.(p.id)}
-            >
-              {p.name}
-            </Badge>
-          ))}
-        </Group>
-        <Stack gap={4}>
-          {goals.map((g) => (
-            <Group key={g.id} gap="xs">
-              <Badge size="xs" color={priorityColor(g.priority)} variant="dot">
-                {g.priority ?? "low"}
-              </Badge>
-              <Text size="sm">{g.text}</Text>
-            </Group>
-          ))}
-        </Stack>
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack gap="md">
-      <Text fw={600}>{title}</Text>
-
-      <SimpleGrid cols={3} spacing="sm">
-        <Card withBorder padding="sm">
-          <Stack gap="sm">
-            <Text size="xs" fw={600} tt="uppercase" c="dimmed">
-              Participants
-            </Text>
-            {participants.map((p) => (
-              <Group
-                key={p.id}
-                gap="xs"
-                style={{ cursor: onSelectParticipant ? "pointer" : "default" }}
-                onClick={() => onSelectParticipant?.(p.id)}
-              >
-                <Avatar name={p.name} size="sm" radius="xl" color="violet" />
-                <Stack gap={0}>
-                  <Text size="sm" fw={500}>
-                    {p.name}
-                  </Text>
-                  {p.role ? <Text size="xs" c="dimmed">
-                      {p.role}
-                    </Text> : null}
-                </Stack>
-                {p.isActive ? <Badge size="xs" color="green" variant="dot">
-                    active
-                  </Badge> : null}
-              </Group>
-            ))}
-          </Stack>
-        </Card>
-
-        <Card withBorder padding="sm">
-          <Stack gap="sm">
-            <Text size="xs" fw={600} tt="uppercase" c="dimmed">
-              Goals
-            </Text>
-            {goals.map((g) => (
-              <Group key={g.id} gap="xs" align="flex-start">
-                <Badge
-                  size="xs"
-                  color={priorityColor(g.priority)}
-                  variant="light"
-                >
-                  {g.priority ?? "low"}
-                </Badge>
-                <Text size="sm" style={{ flex: 1 }}>
-                  {g.text}
-                </Text>
-              </Group>
-            ))}
-            {onAddGoal ? <Group gap="xs">
-                <TextInput
-                  placeholder="Add goal..."
-                  value={newGoal}
-                  onChange={(e) => { setNewGoal(e.currentTarget.value); }}
-                  size="xs"
-                  style={{ flex: 1 }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && newGoal.trim()) {
-                      onAddGoal(newGoal.trim());
-                      setNewGoal("");
-                    }
-                  }}
-                />
-                <Button
-                  size="compact-xs"
-                  onClick={() => {
-                    if (newGoal.trim()) {
-                      onAddGoal(newGoal.trim());
-                      setNewGoal("");
-                    }
-                  }}
-                  disabled={!newGoal.trim()}
-                >
-                  <IconPlus size={12} />
-                </Button>
-              </Group> : null}
-          </Stack>
-        </Card>
-
-        <Card withBorder padding="sm">
-          <Stack gap="sm">
-            <Text size="xs" fw={600} tt="uppercase" c="dimmed">
-              Context
-            </Text>
-            {context.map((c) => (
-              <Stack key={c.id} gap={2}>
-                <Group gap="xs">
-                  <Badge
-                    size="xs"
-                    color={contextTypeColor(c.type)}
-                    variant="light"
-                  >
-                    {c.type ?? "input"}
-                  </Badge>
-                  <Text size="xs" fw={500}>
-                    {c.label}
-                  </Text>
-                </Group>
-                <Text size="xs" c="dimmed">
-                  {c.value}
-                </Text>
-              </Stack>
-            ))}
-          </Stack>
-        </Card>
-      </SimpleGrid>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -17973,7 +13504,7 @@ export function SharedVision({
 }
 `,
   },
-  "stream-of-thought": {
+"stream-of-thought": {
     bootstrap: `import { useState } from "react";
 import { Accordion, Badge, Spinner, Stack } from "react-bootstrap";
 
@@ -18200,126 +13731,6 @@ export function StreamOfThought({
   );
 }
 `,
-    mantine: `import { Accordion, Badge, Group, Loader, Stack, Text } from "@mantine/core";
-
-import type { StreamOfThoughtProps } from "@patternbase/core";
-
-const STEP_CONFIG: Record<string, { icon: string; color: string }> = {
-  thinking: { icon: "💭", color: "violet" },
-  action: { icon: "⚡", color: "blue" },
-  tool_call: { icon: "🔧", color: "orange" },
-  result: { icon: "✅", color: "green" },
-};
-
-export function StreamOfThought({
-  steps,
-  isStreaming = false,
-  collapsible = true,
-}: StreamOfThoughtProps) {
-  if (collapsible) {
-    return (
-      <Stack gap="xs">
-        <Group gap="xs">
-          <Text size="sm">🧠</Text>
-          <Text fw={600} size="sm">
-            Reasoning Process
-          </Text>
-          {isStreaming ? <Loader size="xs" /> : null}
-          <Badge size="xs" variant="light">
-            {steps.length} steps
-          </Badge>
-        </Group>
-
-        <Accordion variant="separated" radius="sm">
-          {steps.map((step, index) => {
-            const config = STEP_CONFIG[step.type] ?? {
-              icon: "•",
-              color: "gray",
-            };
-            return (
-              <Accordion.Item key={step.id} value={step.id}>
-                <Accordion.Control>
-                  <Group gap="xs">
-                    <Badge size="xs" variant="light" color="gray">
-                      {index + 1}
-                    </Badge>
-                    <span>{config.icon}</span>
-                    <Text size="sm" fw={500} tt="capitalize">
-                      {step.type.replace(/_/g, " ")}
-                    </Text>
-                    <Text
-                      size="xs"
-                      c="dimmed"
-                      style={{ flex: 1 }}
-                      lineClamp={1}
-                    >
-                      {step.content.substring(0, 80)}
-                    </Text>
-                  </Group>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Stack gap="xs">
-                    <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
-                      {step.content}
-                    </Text>
-                    {step.metadata && Object.keys(step.metadata).length > 0 ? <Text
-                        size="xs"
-                        c="dimmed"
-                        style={{ fontFamily: "monospace" }}
-                      >
-                        {JSON.stringify(step.metadata, null, 2)}
-                      </Text> : null}
-                    <Text size="xs" c="dimmed">
-                      {new Date(step.timestamp).toLocaleString()}
-                    </Text>
-                  </Stack>
-                </Accordion.Panel>
-              </Accordion.Item>
-            );
-          })}
-        </Accordion>
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack gap="xs">
-      <Group gap="xs">
-        <Text size="sm">🧠</Text>
-        <Text fw={600} size="sm">
-          Reasoning Process
-        </Text>
-        {isStreaming ? <Loader size="xs" /> : null}
-      </Group>
-      {steps.map((step, index) => {
-        const config = STEP_CONFIG[step.type] ?? { icon: "•", color: "gray" };
-        return (
-          <Stack
-            key={step.id}
-            gap="xs"
-            p="sm"
-            style={{
-              border: "1px solid var(--mantine-color-default-border)",
-              borderRadius: 8,
-            }}
-          >
-            <Group gap="xs">
-              <Badge size="xs" variant="light" color="gray">
-                {index + 1}
-              </Badge>
-              <span>{config.icon}</span>
-              <Text size="sm" fw={500} tt="capitalize">
-                {step.type.replace(/_/g, " ")}
-              </Text>
-            </Group>
-            <Text size="sm">{step.content}</Text>
-          </Stack>
-        );
-      })}
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { StreamOfThoughtProps } from "@patternbase/core";
 
 import {
@@ -18416,7 +13827,7 @@ export function StreamOfThought({
 }
 `,
   },
-  "suggestions": {
+"suggestions": {
     bootstrap: `import { Badge, Card, Col, Row } from "react-bootstrap";
 
 import type { SuggestionsProps } from "@patternbase/core";
@@ -18545,62 +13956,6 @@ export function Suggestions({
   );
 }
 `,
-    mantine: `import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core";
-
-import type { SuggestionsProps } from "@patternbase/core";
-
-export function Suggestions({
-  suggestions,
-  onSelect,
-  columns = 2,
-  variant = "card",
-}: SuggestionsProps) {
-  if (variant === "chip") {
-    return (
-      <Group gap="xs" wrap="wrap">
-        {suggestions.map((s) => (
-          <Badge
-            key={s.id}
-            variant="light"
-            size="lg"
-            style={{ cursor: "pointer" }}
-            onClick={() => { onSelect(s); }}
-          >
-            {s.icon ? <span style={{ marginRight: 4 }}>{s.icon}</span> : null}
-            {s.title}
-          </Badge>
-        ))}
-      </Group>
-    );
-  }
-
-  return (
-    <SimpleGrid cols={columns} spacing="sm">
-      {suggestions.map((s) => (
-        <Card
-          key={s.id}
-          padding="sm"
-          withBorder
-          style={{ cursor: "pointer" }}
-          onClick={() => { onSelect(s); }}
-        >
-          <Stack gap={4}>
-            <Text fw={600} size="sm">
-              {s.icon ? <span style={{ marginRight: 6 }}>{s.icon}</span> : null}
-              {s.title}
-            </Text>
-            {s.description ? (
-              <Text size="xs" c="dimmed">
-                {s.description}
-              </Text>
-            ) : null}
-          </Stack>
-        </Card>
-      ))}
-    </SimpleGrid>
-  );
-}
-`,
     shadcn: `import type { SuggestionsProps } from "@patternbase/core";
 
 import { Badge } from "@/components/ui/badge";
@@ -18682,7 +14037,7 @@ export function Suggestions({
 }
 `,
   },
-  "summary": {
+"summary": {
     bootstrap: `import { useState } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
 
@@ -18910,109 +14265,6 @@ export function Summary({
   );
 }
 `,
-    mantine: `import {
-  ActionIcon,
-  Card,
-  Collapse,
-  Group,
-  Loader,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
-import {
-  IconChevronDown,
-  IconChevronUp,
-  IconCopy,
-  IconRefresh,
-  IconZoomIn,
-} from "@tabler/icons-react";
-import { useState } from "react";
-
-import type { SummaryProps } from "@patternbase/core";
-
-export function Summary({
-  content,
-  originalLength,
-  summaryLength,
-  onRegenerate,
-  onCopy,
-  onExpand,
-  isGenerating = false,
-  title = "Summary",
-  variant = "card",
-}: SummaryProps) {
-  const [collapsed, setCollapsed] = useState(true);
-
-  const inner = (
-    <Stack gap="xs">
-      <Group justify="space-between" align="center">
-        <Group gap="xs">
-          <Text fw={600}>{title}</Text>
-          {isGenerating ? <Loader size="xs" /> : null}
-        </Group>
-        <Group gap={4}>
-          {originalLength !== undefined && summaryLength !== undefined && (
-            <Text size="xs" c="dimmed">
-              {summaryLength}/{originalLength} chars
-            </Text>
-          )}
-          {onCopy ? <Tooltip label="Copy">
-              <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
-                <IconCopy size={14} />
-              </ActionIcon>
-            </Tooltip> : null}
-          {onRegenerate ? <Tooltip label="Regenerate">
-              <ActionIcon
-                variant="subtle"
-                size="sm"
-                onClick={onRegenerate}
-                disabled={isGenerating}
-              >
-                <IconRefresh size={14} />
-              </ActionIcon>
-            </Tooltip> : null}
-          {onExpand ? <Tooltip label="Expand">
-              <ActionIcon variant="subtle" size="sm" onClick={onExpand}>
-                <IconZoomIn size={14} />
-              </ActionIcon>
-            </Tooltip> : null}
-          {variant === "collapsible" && (
-            <ActionIcon
-              variant="subtle"
-              size="sm"
-              onClick={() => { setCollapsed((c) => !c); }}
-            >
-              {collapsed ? (
-                <IconChevronDown size={14} />
-              ) : (
-                <IconChevronUp size={14} />
-              )}
-            </ActionIcon>
-          )}
-        </Group>
-      </Group>
-      {variant === "collapsible" ? (
-        <Collapse in={!collapsed}>
-          <Text size="sm">{content}</Text>
-        </Collapse>
-      ) : (
-        <Text size="sm">{content}</Text>
-      )}
-    </Stack>
-  );
-
-  if (variant === "inline") {
-    return <Stack gap="xs">{inner}</Stack>;
-  }
-
-  return (
-    <Card withBorder padding="md">
-      {inner}
-    </Card>
-  );
-}
-`,
     shadcn: `import { ChevronDown, ChevronUp, Copy, RefreshCw, ZoomIn } from "lucide-react";
 import { useState } from "react";
 
@@ -19150,7 +14402,7 @@ export function Summary({
 }
 `,
   },
-  "synthesis": {
+"synthesis": {
     bootstrap: `import {
   Badge,
   Button,
@@ -19447,166 +14699,6 @@ export function Synthesis({
   );
 }
 `,
-    mantine: `import {
-  Anchor,
-  Badge,
-  Button,
-  Card,
-  Group,
-  Loader,
-  Progress,
-  Stack,
-  Text,
-} from "@mantine/core";
-import { IconRefresh } from "@tabler/icons-react";
-
-import type { SynthesisProps } from "@patternbase/core";
-
-export function Synthesis({
-  sources,
-  insights,
-  onSourceClick,
-  onRegenerate,
-  isProcessing = false,
-  title = "Synthesis",
-  showSources = true,
-  showConfidence = false,
-  variant: _variant = "aggregated",
-}: SynthesisProps) {
-  const insightTypeColor = (type?: string) => {
-    if (type === "fact") return "blue";
-    if (type === "inference") return "violet";
-    if (type === "theme") return "teal";
-    return "gray";
-  };
-
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Group gap="xs">
-          <Text fw={600} size="sm">
-            {title}
-          </Text>
-          {isProcessing ? <Loader size="xs" /> : null}
-          {sources.length > 0 && (
-            <Badge size="xs" variant="light">
-              {sources.length} sources
-            </Badge>
-          )}
-        </Group>
-        {onRegenerate ? <Button
-            variant="subtle"
-            size="compact-sm"
-            leftSection={<IconRefresh size={14} />}
-            onClick={onRegenerate}
-            disabled={isProcessing}
-          >
-            Regenerate
-          </Button> : null}
-      </Group>
-
-      {insights.length > 0 && (
-        <Stack gap="xs">
-          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-            Insights
-          </Text>
-          {insights.map((insight) => (
-            <Card key={insight.id} padding="sm" withBorder>
-              <Stack gap="xs">
-                <Group gap="xs">
-                  {insight.type ? <Badge
-                      size="xs"
-                      color={insightTypeColor(insight.type)}
-                      variant="light"
-                    >
-                      {insight.type}
-                    </Badge> : null}
-                  <Text size="sm">{insight.text}</Text>
-                </Group>
-                {showConfidence && insight.confidence !== undefined ? <Group gap="xs" align="center">
-                    <Text size="xs" c="dimmed">
-                      Confidence:
-                    </Text>
-                    <Progress
-                      value={insight.confidence * 100}
-                      size="xs"
-                      style={{ flex: 1 }}
-                    />
-                    <Text size="xs" c="dimmed">
-                      {Math.round(insight.confidence * 100)}%
-                    </Text>
-                  </Group> : null}
-                {insight.sourceIds.length > 0 && (
-                  <Group gap={4} wrap="wrap">
-                    {insight.sourceIds.map((id) => {
-                      const src = sources.find((s) => s.id === id);
-                      return src ? (
-                        <Badge
-                          key={id}
-                          size="xs"
-                          variant="outline"
-                          style={{
-                            cursor: onSourceClick ? "pointer" : "default",
-                          }}
-                          onClick={() => onSourceClick?.(id)}
-                        >
-                          {src.title}
-                        </Badge>
-                      ) : null;
-                    })}
-                  </Group>
-                )}
-              </Stack>
-            </Card>
-          ))}
-        </Stack>
-      )}
-
-      {showSources && sources.length > 0 ? <Stack gap="xs">
-          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-            Sources
-          </Text>
-          {sources.map((source) => (
-            <Card
-              key={source.id}
-              padding="xs"
-              withBorder
-              style={{ cursor: onSourceClick ? "pointer" : "default" }}
-              onClick={() => onSourceClick?.(source.id)}
-            >
-              <Group justify="space-between" align="flex-start">
-                <Stack gap={2} style={{ flex: 1 }}>
-                  <Text size="xs" fw={500}>
-                    {source.title}
-                  </Text>
-                  {source.content ? <Text size="xs" c="dimmed" lineClamp={2}>
-                      {source.content}
-                    </Text> : null}
-                  {source.url ? <Anchor
-                      href={source.url}
-                      target="_blank"
-                      size="xs"
-                      rel="noopener noreferrer"
-                      onClick={(e) => { e.stopPropagation(); }}
-                    >
-                      {source.url.length > 50
-                        ? \`\${source.url.substring(0, 50)}...\`
-                        : source.url}
-                    </Anchor> : null}
-                </Stack>
-                {source.relevance !== undefined && (
-                  <Badge size="xs" variant="light" color="gray">
-                    {Math.round(source.relevance * 100)}% relevant
-                  </Badge>
-                )}
-              </Group>
-            </Card>
-          ))}
-        </Stack> : null}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { RefreshCw } from "lucide-react";
 
 import type { SynthesisProps } from "@patternbase/core";
@@ -19767,7 +14859,7 @@ export function Synthesis({
 }
 `,
   },
-  "templates": {
+"templates": {
     bootstrap: `import { useState } from "react";
 import { Card, Col, Form, ListGroup, Row } from "react-bootstrap";
 
@@ -19995,131 +15087,6 @@ export function Templates({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
-import { useState } from "react";
-
-import type { TemplatesProps } from "@patternbase/core";
-
-export function Templates({
-  templates,
-  onSelect,
-  layout = "grid",
-  columns = 2,
-  searchable = false,
-  groupByCategory = false,
-}: TemplatesProps) {
-  const [query, setQuery] = useState("");
-
-  const filtered = query.trim()
-    ? templates.filter(
-        (t) =>
-          t.name.toLowerCase().includes(query.toLowerCase()) ||
-          t.description?.toLowerCase().includes(query.toLowerCase()),
-      )
-    : templates;
-
-  const renderItem = (t: (typeof templates)[0]) => (
-    <Card
-      key={t.id}
-      padding="sm"
-      withBorder
-      style={{ cursor: "pointer" }}
-      onClick={() => {
-        onSelect(t);
-      }}
-    >
-      <Stack gap="xs">
-        <Group justify="space-between" align="flex-start">
-          <Group gap="xs">
-            {t.icon ? <span>{t.icon}</span> : null}
-            <Text fw={600} size="sm">
-              {t.name}
-            </Text>
-          </Group>
-          {t.category ? (
-            <Badge variant="light" size="xs">
-              {t.category}
-            </Badge>
-          ) : null}
-        </Group>
-        {t.description ? (
-          <Text size="xs" c="dimmed">
-            {t.description}
-          </Text>
-        ) : null}
-      </Stack>
-    </Card>
-  );
-
-  const grouped = groupByCategory
-    ? filtered.reduce<Record<string, typeof filtered>>((acc, t) => {
-        const cat = t.category ?? "Other";
-        acc[cat] = [...(acc[cat] ?? []), t];
-        return acc;
-      }, {})
-    : null;
-
-  const renderTemplates = () => {
-    if (grouped) {
-      return (
-        <Stack gap="md">
-          {Object.entries(grouped).map(([category, items]) => (
-            <Stack key={category} gap="xs">
-              <Text size="xs" fw={500} c="dimmed" tt="uppercase">
-                {category}
-              </Text>
-              {layout === "grid" ? (
-                <SimpleGrid cols={columns} spacing="sm">
-                  {items.map(renderItem)}
-                </SimpleGrid>
-              ) : (
-                <Stack gap="xs">{items.map(renderItem)}</Stack>
-              )}
-            </Stack>
-          ))}
-        </Stack>
-      );
-    }
-
-    if (layout === "grid") {
-      return (
-        <SimpleGrid cols={columns} spacing="sm">
-          {filtered.map(renderItem)}
-        </SimpleGrid>
-      );
-    }
-
-    return <Stack gap="xs">{filtered.map(renderItem)}</Stack>;
-  };
-
-  return (
-    <Stack gap="sm">
-      {searchable ? (
-        <TextInput
-          placeholder="Search templates..."
-          leftSection={<IconSearch size={14} />}
-          value={query}
-          onChange={(e) => {
-            setQuery(e.currentTarget.value);
-          }}
-          size="sm"
-        />
-      ) : null}
-
-      {renderTemplates()}
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -20250,7 +15217,7 @@ export function Templates({
 }
 `,
   },
-  "transform": {
+"transform": {
     bootstrap: `import { Button, Card, Dropdown, Spinner } from "react-bootstrap";
 
 import type { TransformProps } from "@patternbase/core";
@@ -20476,49 +15443,6 @@ export function Transform({
   );
 }
 `,
-    mantine: `import { Button, Card, Group, Stack, Text } from "@mantine/core";
-import { IconWand } from "@tabler/icons-react";
-
-import type { TransformProps } from "@patternbase/core";
-
-export function Transform({
-  content,
-  options,
-  onTransform,
-  transformedContent,
-  isTransforming = false,
-  title,
-}: TransformProps) {
-  return (
-    <Stack gap="sm">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-
-      <Card padding="sm" withBorder>
-        <Text size="sm">{transformedContent ?? content}</Text>
-      </Card>
-
-      <Group gap="xs" wrap="wrap">
-        {options.map((opt) => (
-          <Button
-            key={opt.id}
-            variant="default"
-            size="compact-sm"
-            leftSection={
-              opt.icon ? <span>{opt.icon}</span> : <IconWand size={12} />
-            }
-            onClick={() => { onTransform(opt.id); }}
-            loading={isTransforming}
-          >
-            {opt.label}
-          </Button>
-        ))}
-      </Group>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Loader2, Wand2 } from "lucide-react";
 
 import type { TransformOption, TransformProps } from "@patternbase/core";
@@ -20578,7 +15502,7 @@ export function Transform({
 }
 `,
   },
-  "variations": {
+"variations": {
     bootstrap: `import { Badge, Card, Col, Nav, Row, Tab } from "react-bootstrap";
 
 import type { VariationsProps } from "@patternbase/core";
@@ -20769,127 +15693,6 @@ export function Variations({
   );
 }
 `,
-    mantine: `import {
-  Badge,
-  Card,
-  Group,
-  SimpleGrid,
-  Stack,
-  Tabs,
-  Text,
-} from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
-
-import type { VariationsProps } from "@patternbase/core";
-
-export function Variations({
-  variations,
-  selectedId,
-  onSelect,
-  layout = "grid",
-  columns = 2,
-}: VariationsProps) {
-  if (layout === "tabs") {
-    return (
-      <Tabs
-        value={selectedId ?? variations[0]?.id}
-        onChange={(key) => key && onSelect?.(key)}
-      >
-        <Tabs.List>
-          {variations.map((v, i) => (
-            <Tabs.Tab key={v.id} value={v.id}>
-              {v.label ?? \`Variation \${String(i + 1)}\`}
-            </Tabs.Tab>
-          ))}
-        </Tabs.List>
-        {variations.map((v) => (
-          <Tabs.Panel key={v.id} value={v.id} pt="sm">
-            <Text size="sm">{v.content}</Text>
-          </Tabs.Panel>
-        ))}
-      </Tabs>
-    );
-  }
-
-  if (layout === "list") {
-    return (
-      <Stack gap="sm">
-        {variations.map((v, i) => (
-          <Card
-            key={v.id}
-            padding="sm"
-            withBorder
-            style={{
-              outline:
-                selectedId === v.id
-                  ? "2px solid var(--mantine-color-violet-6)"
-                  : undefined,
-              cursor: onSelect ? "pointer" : "default",
-            }}
-            onClick={() => onSelect?.(v.id)}
-          >
-            <Stack gap="xs">
-              <Group gap="xs">
-                <Badge size="xs" variant="light">
-                  {v.label ?? \`#\${String(i + 1)}\`}
-                </Badge>
-                {selectedId === v.id && (
-                  <Badge
-                    size="xs"
-                    color="violet"
-                    leftSection={<IconCheck size={10} />}
-                  >
-                    Selected
-                  </Badge>
-                )}
-              </Group>
-              <Text size="sm">{v.content}</Text>
-            </Stack>
-          </Card>
-        ))}
-      </Stack>
-    );
-  }
-
-  return (
-    <SimpleGrid cols={columns} spacing="sm">
-      {variations.map((v, i) => (
-        <Card
-          key={v.id}
-          padding="sm"
-          withBorder
-          style={{
-            outline:
-              selectedId === v.id
-                ? "2px solid var(--mantine-color-violet-6)"
-                : undefined,
-            cursor: onSelect ? "pointer" : "default",
-          }}
-          onClick={() => onSelect?.(v.id)}
-        >
-          <Stack gap="xs">
-            <Group gap="xs">
-              <Badge size="xs" variant="light">
-                {v.label ?? \`Variation \${String(i + 1)}\`}
-              </Badge>
-              {selectedId === v.id && (
-                <Badge
-                  size="xs"
-                  color="violet"
-                  leftSection={<IconCheck size={10} />}
-                >
-                  Selected
-                </Badge>
-              )}
-            </Group>
-            <Text size="sm">{v.content}</Text>
-          </Stack>
-        </Card>
-      ))}
-    </SimpleGrid>
-  );
-}
-`,
     shadcn: `import { Check } from "lucide-react";
 
 import type { VariationsProps } from "@patternbase/core";
@@ -20976,7 +15779,7 @@ export function Variations({
 }
 `,
   },
-  "verification": {
+"verification": {
     bootstrap: `import {
   Badge,
   Button,
@@ -21188,117 +15991,6 @@ export function Verification({
   );
 }
 `,
-    mantine: `import {
-  Anchor,
-  Badge,
-  Button,
-  Card,
-  Group,
-  Progress,
-  Stack,
-  Text,
-} from "@mantine/core";
-import {
-  IconCheck,
-  IconExternalLink,
-  IconHelp,
-  IconX,
-} from "@tabler/icons-react";
-
-import type { VerificationProps } from "@patternbase/core";
-
-export function Verification({
-  claims,
-  onRunVerification,
-  onSelectClaim,
-  title = "Verification",
-  showSources = true,
-  variant: _variant = "list",
-}: VerificationProps) {
-  const statusColor = (status?: string) => {
-    if (status === "verified") return "green";
-    if (status === "disputed") return "red";
-    if (status === "uncertain") return "orange";
-    return "gray";
-  };
-
-  const statusIcon = (status?: string) => {
-    if (status === "verified") return <IconCheck size={12} />;
-    if (status === "disputed") return <IconX size={12} />;
-    return <IconHelp size={12} />;
-  };
-
-  return (
-    <Stack gap="sm">
-      <Group justify="space-between" align="center">
-        <Text fw={600} size="sm">
-          {title}
-        </Text>
-        {onRunVerification ? <Button variant="light" size="compact-sm" onClick={onRunVerification}>
-            Run Verification
-          </Button> : null}
-      </Group>
-
-      <Stack gap="xs">
-        {claims.map((claim) => (
-          <Card
-            key={claim.id}
-            padding="sm"
-            withBorder
-            style={{ cursor: onSelectClaim ? "pointer" : "default" }}
-            onClick={() => onSelectClaim?.(claim.id)}
-          >
-            <Stack gap="xs">
-              <Group justify="space-between" align="flex-start">
-                <Text size="sm" style={{ flex: 1 }}>
-                  {claim.text}
-                </Text>
-                <Badge
-                  color={statusColor(claim.status)}
-                  variant="light"
-                  leftSection={statusIcon(claim.status)}
-                >
-                  {claim.status ?? "unknown"}
-                </Badge>
-              </Group>
-
-              <Group gap="xs" align="center">
-                <Text size="xs" c="dimmed">
-                  Confidence:
-                </Text>
-                <Progress
-                  value={claim.confidence * 100}
-                  size="xs"
-                  color={statusColor(claim.status)}
-                  style={{ flex: 1 }}
-                />
-                <Text size="xs" c="dimmed">
-                  {Math.round(claim.confidence * 100)}%
-                </Text>
-              </Group>
-
-              {showSources && claim.url ? <Anchor
-                  href={claim.url}
-                  target="_blank"
-                  size="xs"
-                  rel="noopener noreferrer"
-                >
-                  <Group gap={4}>
-                    <IconExternalLink size={10} />
-                    {claim.source ?? "Source"}
-                  </Group>
-                </Anchor> : null}
-              {showSources && claim.source && !claim.url ? <Text size="xs" c="dimmed">
-                  {claim.source}
-                </Text> : null}
-            </Stack>
-          </Card>
-        ))}
-      </Stack>
-    </Stack>
-  );
-}
-`,
     shadcn: `import { Check, ExternalLink, HelpCircle, X } from "lucide-react";
 
 import type { VerificationProps } from "@patternbase/core";
@@ -21392,7 +16084,7 @@ export function Verification({
 }
 `,
   },
-  "voice-and-tone": {
+"voice-and-tone": {
     bootstrap: `import { Card, Form } from "react-bootstrap";
 
 import type { VoiceAndToneProps } from "@patternbase/core";
@@ -21515,84 +16207,6 @@ export function VoiceAndTone({
   );
 }
 `,
-    mantine: `import { Group, Slider, Stack, Text } from "@mantine/core";
-
-import type { VoiceAndToneProps } from "@patternbase/core";
-
-export function VoiceAndTone({
-  axes,
-  onChange,
-  title = "Voice & Tone",
-  showValues = false,
-  variant = "sliders",
-}: VoiceAndToneProps) {
-  return (
-    <Stack gap="md">
-      {title ? <Text fw={600} size="sm">
-          {title}
-        </Text> : null}
-
-      {axes.map((axis) => (
-        <Stack key={axis.id} gap="xs">
-          <Group justify="space-between" align="center">
-            <Text size="sm" fw={500}>
-              {axis.label}
-            </Text>
-            {showValues ? <Text size="xs" c="dimmed">
-                {axis.value}
-              </Text> : null}
-          </Group>
-          {variant === "compact" ? (
-            <Group gap="xs" align="center">
-              <Text size="xs" c="dimmed" style={{ minWidth: 60 }}>
-                {axis.leftLabel}
-              </Text>
-              <Slider
-                min={axis.min ?? 0}
-                max={axis.max ?? 100}
-                step={axis.step ?? 1}
-                value={axis.value}
-                onChange={(v) => { onChange(axis.id, v); }}
-                style={{ flex: 1 }}
-                size="xs"
-              />
-              <Text
-                size="xs"
-                c="dimmed"
-                style={{ minWidth: 60, textAlign: "right" }}
-              >
-                {axis.rightLabel}
-              </Text>
-            </Group>
-          ) : (
-            <>
-              <Slider
-                min={axis.min ?? 0}
-                max={axis.max ?? 100}
-                step={axis.step ?? 1}
-                value={axis.value}
-                onChange={(v) => { onChange(axis.id, v); }}
-                marks={[
-                  { value: axis.min ?? 0, label: axis.leftLabel },
-                  { value: axis.max ?? 100, label: axis.rightLabel },
-                ]}
-              />
-              <Group justify="space-between">
-                <Text size="xs" c="dimmed">
-                  {axis.leftLabel}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  {axis.rightLabel}
-                </Text>
-              </Group>
-            </>
-          )}
-        </Stack>
-      ))}
-    </Stack>
-  );
-}
-`,
     shadcn: `import type { VoiceAndToneProps } from "@patternbase/core";
 
 import { Slider } from "@/components/ui/slider";
@@ -21665,7 +16279,7 @@ export function VoiceAndTone({
 }
 `,
   },
-  "watermark": {
+"watermark": {
     bootstrap: `import { Alert, Badge, Button, Stack } from "react-bootstrap";
 
 import type { WatermarkProps } from "@patternbase/core";
@@ -21830,93 +16444,6 @@ export function Watermark({
         </Button>
       ) : null}
     </Space>
-  );
-}
-`,
-    mantine: `import { Badge, Button, Group, Stack, Text } from "@mantine/core";
-import { IconDroplet, IconShieldCheck } from "@tabler/icons-react";
-
-import type { WatermarkProps } from "@patternbase/core";
-
-export function Watermark({
-  label = "AI Generated",
-  visibility = "visible",
-  variant = "badge",
-  confidence,
-  algorithm,
-  onVerify,
-}: WatermarkProps) {
-  if (visibility === "invisible" && variant !== "banner") {
-    return null;
-  }
-
-  if (variant === "inline") {
-    return (
-      <Group gap="xs" align="center">
-        <IconDroplet size={12} style={{ opacity: 0.5 }} />
-        <Text size="xs" c="dimmed">
-          {label}
-        </Text>
-        {confidence !== undefined && (
-          <Text size="xs" c="dimmed">
-            ({Math.round(confidence * 100)}%)
-          </Text>
-        )}
-        {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
-            Verify
-          </Button> : null}
-      </Group>
-    );
-  }
-
-  if (variant === "banner") {
-    return (
-      <Stack
-        gap="xs"
-        p="xs"
-        style={{ background: "var(--mantine-color-gray-0)", borderRadius: 4 }}
-      >
-        <Group gap="xs">
-          <IconShieldCheck size={16} />
-          <Text size="sm" fw={500}>
-            {label}
-          </Text>
-          {confidence !== undefined && (
-            <Badge size="xs" variant="light">
-              {Math.round(confidence * 100)}% confident
-            </Badge>
-          )}
-        </Group>
-        {algorithm ? <Text size="xs" c="dimmed">
-            Algorithm: {algorithm}
-          </Text> : null}
-        {onVerify ? <Button
-            variant="light"
-            size="compact-sm"
-            leftSection={<IconShieldCheck size={12} />}
-            onClick={onVerify}
-          >
-            Verify
-          </Button> : null}
-      </Stack>
-    );
-  }
-
-  return (
-    <Group gap="xs">
-      <Badge
-        size="sm"
-        variant="light"
-        color="gray"
-        leftSection={<IconDroplet size={10} />}
-      >
-        {label}
-        {confidence !== undefined && \` · \${String(Math.round(confidence * 100))}%\`}
-      </Badge>
-      {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
-          Verify
-        </Button> : null}
-    </Group>
   );
 }
 `,

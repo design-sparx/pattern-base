@@ -1,18 +1,13 @@
 "use client";
 
-import {
-  Box,
-  Group,
-  Text,
-  TextInput,
-  Title,
-  UnstyledButton,
-} from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { PatternIndexRow } from "@/components/common/pattern-index-row";
 import styles from "@/components/common/editorial.module.css";
+
+import { PatternIndexRow } from "@/components/common/pattern-index-row";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { categories, getFilteredPatterns, patterns } from "@/data/patterns";
 
 const TAG_FILTERS = [
@@ -32,76 +27,67 @@ export function PatternsIndex() {
 
   return (
     <>
-      <Title
-        order={1}
-        className={styles.editorialDisplay}
-        fw={380}
-        fz={{ base: 34, md: 46 }}
+      <h1
+        className={`${styles.editorialDisplay} text-4xl font-extralight md:text-5xl lg:text-6xl`}
       >
         All patterns
-      </Title>
-      <Text c="dimmed" fz="md" mt="xs">
+      </h1>
+      <p className="mt-2 text-gray-500 md:text-lg dark:text-gray-400">
         Fifty-four AI UX patterns across five categories. Scan by name, filter
         by intent.
-      </Text>
+      </p>
 
-      <Group gap="md" mt="lg" mb="xl" align="center">
-        <TextInput
-          placeholder="Filter patterns…"
-          leftSection={<IconSearch size={16} />}
-          w={{ base: "100%", sm: 300 }}
-          value={query}
-          onChange={(event) => {
-            setQuery(event.currentTarget.value);
-          }}
-          aria-label="Filter patterns by name or keyword"
-        />
-        <Group gap={6}>
+      <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center">
+        <div className="relative w-full md:w-80">
+          <IconSearch className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400" />
+          <Input
+            placeholder="Filter patterns…"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+            }}
+            className="pl-9"
+            aria-label="Filter patterns by name or keyword"
+          />
+        </div>
+        <div className="flex flex-wrap gap-2">
           {TAG_FILTERS.map((t) => (
-            <UnstyledButton
+            <Button
               key={t}
+              variant={tag === t ? "default" : "outline"}
+              size="xs"
               onClick={() => {
                 setTag(t);
               }}
-              px="sm"
-              py={4}
-              fz="xs"
-              fw={500}
-              bd={
-                tag === t
-                  ? "1px solid var(--mantine-color-text)"
-                  : "1px solid var(--mantine-color-default-border)"
-              }
-              bg={tag === t ? "var(--mantine-color-text)" : "transparent"}
-              c={tag === t ? "var(--mantine-color-body)" : "dimmed"}
+              className="capitalize"
             >
               {t}
-            </UnstyledButton>
+            </Button>
           ))}
-        </Group>
-      </Group>
+        </div>
+      </div>
 
-      <Text fz="sm" c="dimmed" mb="md">
+      <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
         {filtered.length} pattern{filtered.length === 1 ? "" : "s"}
-      </Text>
+      </p>
 
       {categories.map((category) => {
         const rows = filtered.filter((p) => p.category === category.id);
         if (rows.length === 0) return null;
         return (
-          <Box key={category.id} mb="xl">
-            <Group gap="sm" align="baseline" mb="xs">
-              <Title order={3} className="editorial-display" fw={550} fz="lg">
+          <div key={category.id} className="mt-8">
+            <div className="mb-3 flex items-center gap-3">
+              <h2 className="font-serif text-2xl font-light md:text-3xl">
                 {category.name}
-              </Title>
-              <Text ff="mono" fz="xs" c="dimmed">
+              </h2>
+              <span className="font-mono text-xs text-gray-400 dark:text-gray-500">
                 {rows.length} patterns
-              </Text>
-            </Group>
+              </span>
+            </div>
             {rows.map((pattern, i) => (
               <PatternIndexRow key={pattern.id} pattern={pattern} index={i} />
             ))}
-          </Box>
+          </div>
         );
       })}
     </>

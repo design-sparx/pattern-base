@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { cn } from "cn";
 import { Tooltip as TooltipPrimitive } from "radix-ui";
+import * as React from "react";
 
 const TooltipProvider = ({
   delayDuration = 0,
@@ -62,4 +62,4 @@ const TooltipContent = React.forwardRef<
   );
 });
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };

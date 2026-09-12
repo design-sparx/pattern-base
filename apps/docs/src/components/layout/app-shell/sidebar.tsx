@@ -1,13 +1,12 @@
 "use client";
 
-import { AppShell, Box, NavLink, ScrollArea, Text } from "@mantine/core";
 import {
-  IconAdjustments,
   IconCompass,
   IconEye,
   IconInfoCircle,
   IconKeyboard,
   IconLayoutGrid,
+  IconSettings,
   IconShield,
 } from "@tabler/icons-react";
 import Link from "next/link";
@@ -18,7 +17,7 @@ import { categories, getPatternsByCategory } from "@/data/patterns";
 const categoryIcons: Record<string, React.ElementType> = {
   "prompt-actions": IconKeyboard,
   wayfinders: IconCompass,
-  tuners: IconAdjustments,
+  tuners: IconSettings,
   governors: IconEye,
   "trust-builders": IconShield,
 };
@@ -27,95 +26,70 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <>
-      <AppShell.Section grow my="md" component={ScrollArea}>
-        <NavLink
-          component={Link}
-          href="/patterns"
-          label="All Patterns"
-          leftSection={<IconLayoutGrid size={16} stroke={1.5} />}
-          active={pathname === "/patterns"}
-          aria-current={pathname === "/patterns" ? "page" : undefined}
-          variant="light"
-          color="violet"
-          fw={500}
-          mb={4}
-        />
+    <nav className="flex flex-col gap-1 p-3">
+      <Link
+        href="/patterns"
+        className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+          pathname === "/patterns"
+            ? "bg-violet-50 text-violet-700 dark:bg-violet-950 dark:text-violet-300"
+            : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+        }`}
+      >
+        <IconLayoutGrid size={16} />
+        All Patterns
+      </Link>
 
-        {categories.map((cat) => {
-          const catPatterns = getPatternsByCategory(cat.id);
-          const isCatActive = pathname.includes(`/patterns/${cat.id}`);
-          const isOpen = pathname.includes(`/patterns/${cat.id}`);
-          const Icon = categoryIcons[cat.id] ?? IconLayoutGrid;
+      {categories.map((cat) => {
+        const catPatterns = getPatternsByCategory(cat.id);
+        const isCatActive = pathname.includes(`/patterns/${cat.id}`);
+        const isOpen = pathname.includes(`/patterns/${cat.id}`);
+        const Icon = categoryIcons[cat.id] ?? IconLayoutGrid;
 
-          return (
-            <NavLink
-              key={cat.id}
-              label={`${cat.name} (${String(catPatterns.length)})`}
-              leftSection={<Icon size={16} stroke={1.5} />}
-              active={isCatActive}
-              defaultOpened={isOpen}
-              variant="light"
-              color="violet"
-              fw={500}
-              childrenOffset={28}
-              mb={2}
+        return (
+          <div key={cat.id} className="flex flex-col">
+            <Link
+              href={`/patterns/${cat.id}`}
+              className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                isCatActive
+                  ? "bg-violet-50 text-violet-700 dark:bg-violet-950 dark:text-violet-300"
+                  : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              }`}
             >
-              <Box
-                style={{
-                  borderLeft: "1.5px solid var(--mantine-color-default-border)",
-                  marginLeft: 4,
-                }}
-              >
+              <Icon size={16} />
+              {cat.name} ({catPatterns.length})
+            </Link>
+            {isOpen ? (
+              <div className="ml-4 flex flex-col gap-0.5 border-l border-gray-200 pl-2 dark:border-gray-700">
                 {catPatterns.map((p) => (
-                  <NavLink
+                  <Link
                     key={p.id}
-                    component={Link}
                     href={`/patterns/${cat.id}/${p.slug}`}
-                    label={p.name}
-                    active={pathname === `/patterns/${cat.id}/${p.slug}`}
-                    aria-current={
+                    className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
                       pathname === `/patterns/${cat.id}/${p.slug}`
-                        ? "page"
-                        : undefined
-                    }
-                    variant="light"
-                    color="violet"
-                  />
+                        ? "bg-violet-50 text-violet-700 dark:bg-violet-950 dark:text-violet-300"
+                        : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                    }`}
+                  >
+                    {p.name}
+                  </Link>
                 ))}
-              </Box>
-            </NavLink>
-          );
-        })}
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
 
-        <Box
-          mt="md"
-          pt="md"
-          style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
-        >
-          <NavLink
-            component={Link}
-            href="/about"
-            label="About"
-            leftSection={<IconInfoCircle size={16} stroke={1.5} />}
-            active={pathname === "/about"}
-            variant="light"
-            color="violet"
-          />
-        </Box>
-      </AppShell.Section>
-      <AppShell.Section>
-        <Box mt="auto">
-          <Text
-            fz={10}
-            c="dimmed"
-            ta="center"
-            style={{ opacity: 0.6, letterSpacing: "0.03em" }}
-          >
-            PatternBase v0.1.0
-          </Text>
-        </Box>
-      </AppShell.Section>
-    </>
+      <Link
+        href="/about"
+        className={`mt-2 flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+          pathname === "/about"
+            ? "bg-violet-50 text-violet-700 dark:bg-violet-950 dark:text-violet-300"
+            : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+        }`}
+      >
+        <IconInfoCircle size={16} />
+        About
+      </Link>
+    </nav>
   );
 }

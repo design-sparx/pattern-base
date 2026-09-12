@@ -1,17 +1,6 @@
 "use client";
 
 import {
-  ActionIcon,
-  Anchor,
-  Badge,
-  Group,
-  Kbd,
-  Text,
-  UnstyledButton,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { spotlight } from "@mantine/spotlight";
-import {
   IconBrandGithub,
   IconMoon,
   IconSearch,
@@ -19,113 +8,96 @@ import {
   IconSun,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
-export function Header() {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+import { useSpotlight } from "@/components/layout/spotlight-provider";
+
+export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
+  const { setTheme, resolvedTheme } = useTheme();
+  const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
+  const { open: openSpotlight } = useSpotlight();
 
   return (
-    <Group h="100%" px="md" justify="space-between">
-      <Group gap="sm">
-        <Anchor
-          component={Link}
-          href="/"
-          underline="never"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-          }}
+    <div className="flex h-full items-center justify-between px-4">
+      <div className="flex items-center gap-2">
+        <button
+          onClick={onToggleSidebar}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 sm:hidden dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+          aria-label="Toggle sidebar"
         >
+          <svg
+            className="size-5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+        <Link href="/" className="flex items-center gap-2 no-underline">
           <IconSparkles
             size={24}
-            style={{ color: "var(--mantine-color-violet-6)" }}
+            className="text-violet-600 dark:text-violet-400"
             aria-hidden="true"
           />
-          <Text fw={700} fz="lg" style={{ color: "var(--mantine-color-text)" }}>
+          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
             PatternBase
-          </Text>
-          <Badge
-            size="xs"
-            variant="outline"
-            color="violet"
-            radius="sm"
-            styles={{
-              root: {
-                textTransform: "none",
-                fontWeight: 500,
-                borderStyle: "dashed",
-              },
-            }}
-          >
+          </span>
+          <span className="inline-flex items-center rounded-md border border-dashed border-violet-500 px-1.5 py-0.5 text-xs font-medium text-violet-600 dark:text-violet-400">
             v0.1.0
-          </Badge>
-        </Anchor>
-      </Group>
+          </span>
+        </Link>
+      </div>
 
-      <Group gap={8}>
-        <UnstyledButton
-          onClick={spotlight.open}
-          className="header-search"
+      <div className="flex items-center gap-2">
+        <button
+          onClick={openSpotlight}
+          className="header-search flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-500 transition-colors duration-150 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
           aria-label="Search patterns"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "6px 12px",
-            borderRadius: "var(--mantine-radius-md)",
-            border: "1px solid var(--mantine-color-default-border)",
-            minWidth: 220,
-            background:
-              colorScheme === "dark"
-                ? "var(--mantine-color-dark-6)"
-                : "var(--mantine-color-gray-0)",
-            cursor: "pointer",
-            transition: "border-color 0.15s ease, background 0.15s ease",
-          }}
+          style={{ minWidth: 220 }}
         >
-          <IconSearch size={14} color="var(--mantine-color-dimmed)" />
-          <Text fz="xs" c="dimmed" style={{ flex: 1 }}>
-            Search patterns...
-          </Text>
-          <Group gap={3}>
-            <Kbd size="xs" style={{ fontSize: 10, padding: "1px 5px" }}>
+          <IconSearch size={14} />
+          <span className="flex-1 text-left">Search patterns...</span>
+          <div className="flex items-center gap-1">
+            <kbd className="rounded border border-gray-300 px-1.5 py-0.5 font-sans text-[10px] dark:border-gray-700">
               Ctrl
-            </Kbd>
-            <Kbd size="xs" style={{ fontSize: 10, padding: "1px 5px" }}>
+            </kbd>
+            <kbd className="rounded border border-gray-300 px-1.5 py-0.5 font-sans text-[10px] dark:border-gray-700">
               K
-            </Kbd>
-          </Group>
-        </UnstyledButton>
+            </kbd>
+          </div>
+        </button>
 
-        <ActionIcon
-          variant="subtle"
-          color="gray"
-          size="lg"
-          radius="md"
-          onClick={toggleColorScheme}
+        <button
+          onClick={() => {
+            setTheme(resolvedTheme === "dark" ? "light" : "dark");
+          }}
           aria-label="Toggle color scheme"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
         >
           {colorScheme === "dark" ? (
             <IconSun size={18} />
           ) : (
             <IconMoon size={18} />
           )}
-        </ActionIcon>
+        </button>
 
-        <ActionIcon
-          component="a"
+        <a
           href="https://github.com/kelvink96/pattern-base"
           target="_blank"
           rel="noopener noreferrer"
-          variant="subtle"
-          color="gray"
-          size="lg"
-          radius="md"
           aria-label="GitHub"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
         >
           <IconBrandGithub size={18} />
-        </ActionIcon>
-      </Group>
-    </Group>
+        </a>
+      </div>
+    </div>
   );
 }

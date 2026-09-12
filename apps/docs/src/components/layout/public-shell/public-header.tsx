@@ -1,18 +1,6 @@
 "use client";
 
 import {
-  ActionIcon,
-  Anchor,
-  Badge,
-  Container,
-  Group,
-  Kbd,
-  Text,
-  UnstyledButton,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { spotlight } from "@mantine/spotlight";
-import {
   IconBrandGithub,
   IconMoon,
   IconSearch,
@@ -20,122 +8,84 @@ import {
   IconSun,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+
+import { MainNav } from "./main-nav";
+import { MobileNav } from "./mobile-nav";
+
+import { useSpotlight } from "@/components/layout/spotlight-provider";
+import { Button } from "@/components/ui/button";
 
 export function PublicHeader() {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { setTheme, resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+  const { open: openSpotlight } = useSpotlight();
 
   return (
-    <Container size="lg" h="100%" px="md" py="sm">
-      <Group justify="space-between">
-        <Group gap="sm">
-          <Anchor
-            component={Link}
+    <header className="border-border bg-background/80 sticky top-0 z-40 border-b backdrop-blur">
+      <div className="app-container flex h-14 items-center gap-6">
+        <div className="flex items-center gap-2">
+          <MobileNav />
+          <Link
             href="/"
-            underline="never"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-            }}
+            aria-label="PatternBase home"
+            className="text-foreground flex items-center gap-2"
           >
             <IconSparkles
-              size={24}
-              style={{ color: "var(--mantine-color-violet-6)" }}
+              size={22}
+              className="text-primary"
               aria-hidden="true"
             />
-            <Text
-              fw={700}
-              fz="lg"
-              style={{ color: "var(--mantine-color-text)" }}
-            >
-              PatternBase
-            </Text>
-            <Badge
-              size="xs"
-              variant="outline"
-              color="violet"
-              radius="sm"
-              styles={{
-                root: {
-                  textTransform: "none",
-                  fontWeight: 500,
-                  borderStyle: "dashed",
-                },
-              }}
-            >
-              v0.1.0
-            </Badge>
-          </Anchor>
-        </Group>
+            <span className="text-lg font-bold">PatternBase</span>
+          </Link>
+        </div>
 
-        <Group gap={8}>
-          <UnstyledButton
-            onClick={spotlight.open}
-            className="header-search"
+        <MainNav />
+
+        <div className="ml-auto flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={openSpotlight}
             aria-label="Search patterns"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 12px",
-              borderRadius: "var(--mantine-radius-md)",
-              border: "1px solid var(--mantine-color-default-border)",
-              minWidth: 220,
-              background:
-                colorScheme === "dark"
-                  ? "var(--mantine-color-dark-6)"
-                  : "var(--mantine-color-gray-0)",
-              cursor: "pointer",
-              transition: "border-color 0.15s ease, background 0.15s ease",
+            className="text-muted-foreground"
+          >
+            <IconSearch className="size-[18px]" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={
+              isDark ? "Switch to light theme" : "Switch to dark theme"
+            }
+            onClick={() => {
+              setTheme(isDark ? "light" : "dark");
             }}
+            className="text-muted-foreground"
           >
-            <IconSearch size={14} color="var(--mantine-color-dimmed)" />
-            <Text fz="xs" c="dimmed" style={{ flex: 1 }} hiddenFrom="xs">
-              Search...
-            </Text>
-            <Text fz="xs" c="dimmed" style={{ flex: 1 }} visibleFrom="xs">
-              Search patterns...
-            </Text>
-            <Group gap={3} hiddenFrom="xs">
-              <Kbd size="xs" style={{ fontSize: 10, padding: "1px 5px" }}>
-                Ctrl
-              </Kbd>
-              <Kbd size="xs" style={{ fontSize: 10, padding: "1px 5px" }}>
-                K
-              </Kbd>
-            </Group>
-          </UnstyledButton>
-
-          <ActionIcon
-            variant="subtle"
-            color="gray"
-            size="lg"
-            radius="md"
-            onClick={toggleColorScheme}
-            aria-label="Toggle color scheme"
-          >
-            {colorScheme === "dark" ? (
-              <IconSun size={18} />
+            {isDark ? (
+              <IconSun className="size-[18px]" />
             ) : (
-              <IconMoon size={18} />
+              <IconMoon className="size-[18px]" />
             )}
-          </ActionIcon>
-
-          <ActionIcon
-            component="a"
-            href="https://github.com/kelvink96/pattern-base"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="subtle"
-            color="gray"
-            size="lg"
-            radius="md"
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            asChild
             aria-label="GitHub"
+            className="text-muted-foreground"
           >
-            <IconBrandGithub size={18} />
-          </ActionIcon>
-        </Group>
-      </Group>
-    </Container>
+            <a
+              href="https://github.com/kelvink96/pattern-base"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IconBrandGithub className="size-[18px]" />
+            </a>
+          </Button>
+        </div>
+      </div>
+    </header>
   );
 }

@@ -1,6 +1,6 @@
-import * as React from "react";
 import { cn } from "cn";
 import { Switch as SwitchPrimitive } from "radix-ui";
+import * as React from "react";
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitive.Root>,

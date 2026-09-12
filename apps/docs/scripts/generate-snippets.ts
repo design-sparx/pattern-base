@@ -2,14 +2,14 @@
  * Script to generate snippet-templates.ts from actual component implementations.
  * Run: pnpm generate-snippets (from apps/docs)
  *
- * Reads source files from packages/\{bootstrap,antd,mantine\}/src/components/
+ * Reads source files from packages/\{bootstrap,antd,shadcn\}/src/components/
  * and generates apps/docs/src/data/snippet-templates.ts with embedded implementations.
  */
 
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-type Framework = "bootstrap" | "antd" | "mantine" | "shadcn";
+type Framework = "bootstrap" | "antd" | "shadcn";
 
 const ROOT_DIR = join(import.meta.dirname, "..", "..", "..");
 const PACKAGES_DIR = join(ROOT_DIR, "packages");
@@ -25,7 +25,6 @@ const OUTPUT_FILE = join(
 const FRAMEWORK_DIRS: Record<Framework, string> = {
   bootstrap: "bootstrap",
   antd: "antd",
-  mantine: "mantine",
   shadcn: "shadcn",
 };
 
@@ -69,15 +68,11 @@ function generateSnippetTemplates(): void {
       getComponentSource("bootstrap", pattern),
     );
     const antd = escapeTemplateString(getComponentSource("antd", pattern));
-    const mantine = escapeTemplateString(
-      getComponentSource("mantine", pattern),
-    );
     const shadcn = escapeTemplateString(getComponentSource("shadcn", pattern));
 
-    entries.push(`  "${pattern}": {
+    entries.push(`"${pattern}": {
     bootstrap: \`${bootstrap}\`,
     antd: \`${antd}\`,
-    mantine: \`${mantine}\`,
     shadcn: \`${shadcn}\`,
   }`);
   }
@@ -90,7 +85,7 @@ function generateSnippetTemplates(): void {
 
 export const codeSnippets: Record<
   string,
-  { bootstrap: string; antd: string; mantine: string; shadcn: string }
+  { bootstrap: string; antd: string; shadcn: string }
 > = {
 ${entries.join(",\n")}
 };
@@ -102,7 +97,7 @@ ${entries.join(",\n")}
   // eslint-disable-next-line no-console
   console.log(`Patterns: ${String(patterns.length)}`);
   // eslint-disable-next-line no-console
-  console.log(`Frameworks: bootstrap, antd, mantine, shadcn`);
+  console.log(`Frameworks: bootstrap, antd, shadcn`);
 }
 
 generateSnippetTemplates();

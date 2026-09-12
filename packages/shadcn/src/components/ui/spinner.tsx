@@ -1,6 +1,6 @@
-import * as React from "react";
 import { cn } from "cn";
 import { Loader2Icon } from "lucide-react";
+import * as React from "react";
 
 const Spinner = React.forwardRef<SVGSVGElement, React.ComponentProps<"svg">>(
   function Spinner({ className, ...props }, ref) {

@@ -1,5 +1,5 @@
-import * as React from "react";
 import { cn } from "cn";
+import * as React from "react";
 
 const Table = React.forwardRef<HTMLTableElement, React.ComponentProps<"table">>(
   function Table({ className, ...props }, ref) {
@@ -131,11 +131,11 @@ const TableCaption = React.forwardRef<
 
 export {
   Table,
-  TableHeader,
   TableBody,
+  TableCaption,
+  TableCell,
   TableFooter,
   TableHead,
+  TableHeader,
   TableRow,
-  TableCell,
-  TableCaption,
 };

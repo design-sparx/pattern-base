@@ -115,9 +115,9 @@ const EmptyContent = React.forwardRef<
 
 export {
   Empty,
-  EmptyHeader,
-  EmptyTitle,
-  EmptyDescription,
   EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
   EmptyMedia,
+  EmptyTitle,
 };

@@ -12,12 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
   ];
 
   const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({

@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { cn } from "cn";
 import { ChevronDownIcon } from "lucide-react";
 import { Accordion as AccordionPrimitive } from "radix-ui";
+import * as React from "react";
 
 const Accordion = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Root>,
@@ -64,4 +64,4 @@ const AccordionContent = React.forwardRef<
   );
 });
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

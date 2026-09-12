@@ -17,7 +17,6 @@ interface WorkbenchProps {
   snippets: {
     bootstrap: string;
     antd: string;
-    mantine: string;
     shadcn: string;
   };
   explanation?: PatternExplanation | null;

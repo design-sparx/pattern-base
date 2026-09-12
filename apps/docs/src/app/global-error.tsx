@@ -1,7 +1,8 @@
 "use client";
 
-import { Box, Button, Group, Stack, Text, Title } from "@mantine/core";
 import { IconHome, IconRefresh } from "@tabler/icons-react";
+
+import { Button } from "@/components/ui/button";
 
 export default function GlobalError({
   error,
@@ -13,41 +14,35 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body>
-        <Box
-          p="xl"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "100vh",
-          }}
+        <div
+          className="flex items-center justify-center p-4 md:p-8"
+          style={{ minHeight: "100vh" }}
         >
-          <Stack align="center" gap="md" maw={500}>
-            <Title order={1} ta="center" fz={64} fw={800} c="red">
+          <div className="text-center">
+            <h1 className="text-6xl font-extrabold text-red-600 md:text-8xl">
               500
-            </Title>
-            <Title order={3} ta="center">
+            </h1>
+            <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-gray-100">
               Application error
-            </Title>
-            <Text c="dimmed" ta="center">
+            </h2>
+            <p className="mt-2 text-gray-500 dark:text-gray-400">
               A critical error occurred in the root layout. Please try
               refreshing the page.
-            </Text>
-            <Group>
-              <Button leftSection={<IconRefresh size={14} />} onClick={reset}>
+            </p>
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <Button onClick={reset}>
+                <IconRefresh size={14} />
                 Try again
               </Button>
-              <Button
-                variant="subtle"
-                component="a"
-                href="/"
-                leftSection={<IconHome size={14} />}
-              >
-                Go home
+              <Button variant="secondary" asChild>
+                <a href="/">
+                  <IconHome size={14} />
+                  Go home
+                </a>
               </Button>
-            </Group>
-          </Stack>
-        </Box>
+            </div>
+          </div>
+        </div>
       </body>
     </html>
   );

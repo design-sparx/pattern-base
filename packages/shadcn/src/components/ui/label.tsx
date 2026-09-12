@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { cn } from "cn";
 import { Label as LabelPrimitive } from "radix-ui";
+import * as React from "react";
 
 const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
