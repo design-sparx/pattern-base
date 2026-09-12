@@ -1,6 +1,5 @@
 "use client";
 
-import { IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -11,6 +10,15 @@ import {
   useState,
 } from "react";
 
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { categories, patterns } from "@/data/patterns";
 import { getCategoryIcon } from "@/lib/category-icons";
 
@@ -36,7 +44,6 @@ export function SpotlightProvider({
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
 
   const openSpotlight = useCallback(() => {
     setOpen(true);
@@ -44,7 +51,6 @@ export function SpotlightProvider({
 
   const closeSpotlight = useCallback(() => {
     setOpen(false);
-    setQuery("");
   }, []);
 
   useEffect(() => {
@@ -53,9 +59,6 @@ export function SpotlightProvider({
         e.preventDefault();
         setOpen((prev) => !prev);
       }
-      if (e.key === "Escape") {
-        setOpen(false);
-      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -63,19 +66,16 @@ export function SpotlightProvider({
     };
   }, []);
 
-  const items = useMemo(() => {
-    if (!query.trim()) return patterns.slice(0, 7);
-    const q = query.toLowerCase();
-    return patterns
-      .filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q)) ||
-          p.category.toLowerCase().includes(q),
-      )
-      .slice(0, 7);
-  }, [query]);
+  const groups = useMemo(
+    () =>
+      categories
+        .map((category) => ({
+          category,
+          items: patterns.filter((p) => p.category === category.id),
+        }))
+        .filter((group) => group.items.length > 0),
+    [],
+  );
 
   const contextValue = useMemo<SpotlightContextValue>(
     () => ({ open: openSpotlight, close: closeSpotlight }),
@@ -85,60 +85,47 @@ export function SpotlightProvider({
   return (
     <SpotlightContext.Provider value={contextValue}>
       {children}
-      {open ? (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]">
-          <div className="fixed inset-0 bg-black/50" onClick={closeSpotlight} />
-          <div className="relative w-full max-w-xl rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
-            <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-800">
-              <IconSearch className="size-4 text-gray-400" />
-              <input
-                autoFocus
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                }}
-                placeholder="Search patterns..."
-                className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400 dark:text-gray-100"
-              />
-              <kbd className="rounded border border-gray-300 px-1.5 py-0.5 text-[10px] text-gray-400 dark:border-gray-700">
-                ESC
-              </kbd>
-            </div>
-            <div className="max-h-[300px] overflow-y-auto p-2">
-              {items.length === 0 ? (
-                <p className="py-6 text-center text-sm text-gray-400">
-                  No patterns found.
-                </p>
-              ) : (
-                items.map((p) => {
-                  const cat = categories.find((c) => c.id === p.category);
-                  const Icon = getCategoryIcon(p.category);
-                  return (
-                    <button
-                      key={p.id}
-                      onClick={() => {
-                        router.push(`/patterns/${p.category}/${p.slug}`);
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Search patterns"
+        description="Search for a pattern, category, or tag"
+      >
+        <Command>
+          <CommandInput autoFocus placeholder="Search patterns..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            {groups.map(({ category, items }) => {
+              const Icon = getCategoryIcon(category.id);
+              return (
+                <CommandGroup key={category.id} heading={category.name}>
+                  {items.map((pattern) => (
+                    <CommandItem
+                      key={pattern.id}
+                      value={`${pattern.name} ${pattern.description} ${pattern.tags.join(" ")} ${category.name}`}
+                      onSelect={() => {
+                        router.push(
+                          `/patterns/${pattern.category}/${pattern.slug}`,
+                        );
                         closeSpotlight();
                       }}
-                      className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+                      className="py-2"
                     >
-                      <Icon size={18} className="shrink-0 text-gray-400" />
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-900 dark:text-gray-100">
-                          {p.name}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {cat?.name ?? p.category}
-                        </p>
+                      <Icon className="text-muted-foreground shrink-0" />
+                      <div className="flex flex-col">
+                        <span>{pattern.name}</span>
+                        <span className="text-muted-foreground text-xs">
+                          {pattern.description}
+                        </span>
                       </div>
-                    </button>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        </div>
-      ) : null}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              );
+            })}
+          </CommandList>
+        </Command>
+      </CommandDialog>
     </SpotlightContext.Provider>
   );
 }

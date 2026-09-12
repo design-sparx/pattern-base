@@ -15,6 +15,7 @@ import { MobileNav } from "./mobile-nav";
 
 import { useSpotlight } from "@/components/layout/spotlight-provider";
 import { Button } from "@/components/ui/button";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
 export function PublicHeader() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -45,12 +46,17 @@ export function PublicHeader() {
         <div className="ml-auto flex items-center gap-1">
           <Button
             variant="ghost"
-            size="icon"
+            size="default"
             onClick={openSpotlight}
             aria-label="Search patterns"
-            className="text-muted-foreground"
+            className="text-muted-foreground gap-2 px-2.5"
           >
-            <IconSearch className="size-[18px]" />
+            <IconSearch className="size-4" />
+            <span className="hidden sm:inline">Search</span>
+            <KbdGroup className="hidden sm:inline-flex">
+              <Kbd>Ctrl</Kbd>
+              <Kbd>K</Kbd>
+            </KbdGroup>
           </Button>
           <Button
             variant="ghost"
