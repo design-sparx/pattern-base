@@ -25,8 +25,8 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
   const pathname = usePathname();
 
   return (
-    <SidebarProvider>
-      <Sidebar collapsible="icon">
+    <SidebarProvider className="app-canvas">
+      <Sidebar collapsible="icon" variant="floating">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -62,11 +62,14 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>
+      <SidebarInset
+        id="main-content"
+        className="gap-2 bg-transparent p-2 md:pl-0"
+      >
         <Header />
-        <main id="main-content" className="flex flex-1 flex-col">
+        <div className="border-border bg-background supports-[backdrop-filter]:bg-background/60 flex flex-1 flex-col rounded-2xl border shadow-sm backdrop-blur-xl">
           {children}
-        </main>
+        </div>
         <Footer />
       </SidebarInset>
     </SidebarProvider>

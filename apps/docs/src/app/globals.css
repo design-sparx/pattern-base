@@ -113,3 +113,23 @@
   max-width: 80rem;
   padding-inline: 1rem;
 }
+
+@utility app-canvas {
+  background-color: var(--muted);
+  background-image:
+    radial-gradient(
+      55% 45% at 8% 0%,
+      color-mix(in oklab, var(--primary) 12%, transparent),
+      transparent 65%
+    ),
+    radial-gradient(
+      45% 40% at 92% 10%,
+      color-mix(in oklab, var(--primary) 8%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      50% 45% at 72% 100%,
+      color-mix(in oklab, var(--muted-foreground) 6%, transparent),
+      transparent 65%
+    );
+}

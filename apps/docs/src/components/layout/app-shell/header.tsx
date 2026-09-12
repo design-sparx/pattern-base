@@ -19,7 +19,7 @@ export function Header() {
   const { open: openSpotlight } = useSpotlight();
 
   return (
-    <header className="border-border bg-background sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b px-4 md:px-6">
+    <header className="border-border bg-background supports-[backdrop-filter]:bg-background/60 sticky top-2 z-10 flex h-14 shrink-0 items-center gap-2 rounded-2xl border px-4 shadow-sm backdrop-blur-xl md:px-6">
       <SidebarTrigger />
       <Button
         variant="ghost"
