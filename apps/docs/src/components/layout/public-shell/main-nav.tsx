@@ -27,9 +27,6 @@ export function MainNav() {
   const categories = getNavCategories();
   const resources = getNavResources();
   const patternsActive = isPatternsPath(pathname);
-  const resourcesActive = resources.some((res) =>
-    isResourcePath(res.href, pathname),
-  );
 
   return (
     <NavigationMenu
@@ -73,25 +70,18 @@ export function MainNav() {
           </NavigationMenuContent>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className={cn(resourcesActive && "bg-muted")}>
-            Resources
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-1.5 md:w-[420px]">
-              {resources.map((res) => (
-                <ListItem
-                  key={res.href}
-                  title={res.label}
-                  href={res.href}
-                  active={isResourcePath(res.href, pathname)}
-                >
-                  {res.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        {resources.map((res) => (
+          <NavigationMenuItem key={res.href}>
+            <NavigationMenuLink
+              active={isResourcePath(res.href, pathname)}
+              asChild
+            >
+              <Link href={res.href} className={navigationMenuTriggerStyle()}>
+                {res.label}
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
       </NavigationMenuList>
     </NavigationMenu>
   );
