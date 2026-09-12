@@ -1,26 +1,11 @@
 "use client";
 
-import {
-  IconCompass,
-  IconEye,
-  IconInfoCircle,
-  IconKeyboard,
-  IconLayoutGrid,
-  IconSettings,
-  IconShield,
-} from "@tabler/icons-react";
+import { IconInfoCircle, IconLayoutGrid } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { categories, getPatternsByCategory } from "@/data/patterns";
-
-const categoryIcons: Record<string, React.ElementType> = {
-  "prompt-actions": IconKeyboard,
-  wayfinders: IconCompass,
-  tuners: IconSettings,
-  governors: IconEye,
-  "trust-builders": IconShield,
-};
+import { getCategoryIcon } from "@/lib/category-icons";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -43,7 +28,7 @@ export function Sidebar() {
         const catPatterns = getPatternsByCategory(cat.id);
         const isCatActive = pathname.includes(`/patterns/${cat.id}`);
         const isOpen = pathname.includes(`/patterns/${cat.id}`);
-        const Icon = categoryIcons[cat.id] ?? IconLayoutGrid;
+        const Icon = getCategoryIcon(cat.id);
 
         return (
           <div key={cat.id} className="flex flex-col">

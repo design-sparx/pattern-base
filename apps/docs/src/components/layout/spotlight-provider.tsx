@@ -12,14 +12,7 @@ import {
 } from "react";
 
 import { categories, patterns } from "@/data/patterns";
-
-const categoryIcons: Record<string, React.ReactNode> = {
-  "prompt-actions": "⌨️",
-  wayfinders: "🧭",
-  tuners: "🎚️",
-  governors: "👁️",
-  "trust-builders": "🛡️",
-};
+import { getCategoryIcon } from "@/lib/category-icons";
 
 interface SpotlightContextValue {
   open: () => void;
@@ -119,6 +112,7 @@ export function SpotlightProvider({
               ) : (
                 items.map((p) => {
                   const cat = categories.find((c) => c.id === p.category);
+                  const Icon = getCategoryIcon(p.category);
                   return (
                     <button
                       key={p.id}
@@ -128,9 +122,7 @@ export function SpotlightProvider({
                       }}
                       className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
-                      <span className="text-lg">
-                        {categoryIcons[p.category] ?? "📄"}
-                      </span>
+                      <Icon size={18} className="shrink-0 text-gray-400" />
                       <div className="flex-1">
                         <p className="font-medium text-gray-900 dark:text-gray-100">
                           {p.name}

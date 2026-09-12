@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { categories, patterns } from "@/data/patterns";
+import { getCategoryIcon } from "@/lib/category-icons";
 
 const totalPatterns = String(patterns.length);
 const totalCategories = String(categories.length);
@@ -82,23 +83,30 @@ export default function AboutPage() {
             {totalPatterns} patterns across {totalCategories} categories
           </h2>
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((cat) => (
-              <a
-                key={cat.id}
-                href={`/patterns/${cat.id}`}
-                className="border-border bg-card hover:border-primary/60 hover:bg-accent group rounded-lg border p-5 no-underline transition-colors"
-              >
-                <span className="text-xl" aria-hidden="true">
-                  {cat.icon}
-                </span>
-                <h3 className="text-foreground mt-3 font-semibold">
-                  {cat.name}
-                </h3>
-                <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
-                  {cat.description}
-                </p>
-              </a>
-            ))}
+            {categories.map((cat) => {
+              const Icon = getCategoryIcon(cat.id);
+
+              return (
+                <a
+                  key={cat.id}
+                  href={`/patterns/${cat.id}`}
+                  className="border-border bg-card hover:border-primary/60 hover:bg-accent group rounded-lg border p-5 no-underline transition-colors"
+                >
+                  <Icon
+                    className="text-primary"
+                    size={24}
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  <h3 className="text-foreground mt-3 font-semibold">
+                    {cat.name}
+                  </h3>
+                  <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
+                    {cat.description}
+                  </p>
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>

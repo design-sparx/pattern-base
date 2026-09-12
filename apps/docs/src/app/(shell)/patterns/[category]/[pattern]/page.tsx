@@ -1,13 +1,4 @@
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconCompass,
-  IconEye,
-  IconKeyboard,
-  IconLayoutGrid,
-  IconSettings,
-  IconShield,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -21,14 +12,7 @@ import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
 import { codeSnippets } from "@/data/snippet-templates";
 import { getCategoryColors } from "@/lib/category-colors";
-
-const categoryIcons: Record<string, React.ElementType> = {
-  "prompt-actions": IconKeyboard,
-  wayfinders: IconCompass,
-  tuners: IconSettings,
-  governors: IconEye,
-  "trust-builders": IconShield,
-};
+import { getCategoryIcon } from "@/lib/category-icons";
 
 function getRecordEntry<T>(
   record: Record<string, T>,
@@ -76,7 +60,7 @@ export default async function PatternPage({
   if (!pattern || !category) notFound();
 
   const colors = getCategoryColors(pattern.category);
-  const Icon = categoryIcons[pattern.category] ?? IconLayoutGrid;
+  const Icon = getCategoryIcon(pattern.category);
 
   const currentIndex = patterns.findIndex((p) => p.id === pattern.id);
   const prev = currentIndex > 0 ? patterns[currentIndex - 1] : null;
