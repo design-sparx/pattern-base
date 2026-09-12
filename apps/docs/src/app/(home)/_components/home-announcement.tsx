@@ -25,7 +25,7 @@ export function HomeAnnouncement({
 
   return (
     <div className="border-border bg-primary relative overflow-hidden border-b">
-      <div className="text-primary-foreground mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2 text-xs font-medium">
+      <div className="text-primary-foreground app-container flex items-center justify-center gap-2 py-2 text-xs font-medium">
         <span className="relative flex h-2 w-2">
           <span
             className="bg-primary-foreground/70 absolute inline-flex h-full w-full rounded-full opacity-75"

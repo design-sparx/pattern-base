@@ -39,7 +39,7 @@ export function OriginManifesto({
 }: OriginManifestoProps) {
   return (
     <section id={id} className="bg-muted py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="app-container">
         <Badge variant="outline" className="mb-3 font-mono">
           {kicker}
         </Badge>
@@ -61,7 +61,7 @@ export function OriginManifesto({
           them.
         </p>
       </div>
-      <div className="mx-auto mt-8 max-w-7xl px-4">
+      <div className="app-container mt-8">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {principles.map((principle) => (
             <Card key={principle.label} variant="solid" className="h-full">
