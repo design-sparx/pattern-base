@@ -19,18 +19,18 @@ export default function PatternError({
   }, [error]);
 
   return (
-    <div className="p-4 md:p-6 lg:p-8">
+    <div className="app-container py-8">
       <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-        <IconAlertTriangle size={40} className="text-orange-500" />
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <IconAlertTriangle size={40} className="text-destructive" />
+        <h3 className="text-foreground text-xl font-semibold">
           Failed to load pattern
         </h3>
-        <p className="text-gray-500 dark:text-gray-400">
+        <p className="text-muted-foreground">
           This pattern could not be rendered. The component may have an
           incompatible dependency or a rendering error.
         </p>
         {error.digest ? (
-          <code className="w-full rounded-md border border-gray-200 bg-gray-50 p-2 text-xs dark:border-gray-700 dark:bg-gray-800">
+          <code className="border-border bg-muted w-full rounded-md border p-2 text-xs">
             {error.digest}
           </code>
         ) : null}

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import type { RelatedPatternLink } from "@/components/workbench/inspector-pane";
 import { Workbench } from "@/components/workbench/workbench";
 import { patternExplanations } from "@/data/pattern-explanations";
@@ -81,7 +82,7 @@ export default async function PatternPage({
     : [];
 
   return (
-    <div className="p-4 md:p-6 lg:p-8">
+    <div className="app-container py-8">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2">
@@ -90,11 +91,11 @@ export default async function PatternPage({
           >
             <Icon size={16} className={colors.text} />
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+          <h1 className="text-foreground text-2xl font-semibold">
             {pattern.name}
           </h1>
         </div>
-        <p className="mt-2 text-gray-500 lg:text-lg dark:text-gray-400">
+        <p className="text-muted-foreground mt-2 lg:text-lg">
           {pattern.description}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -126,32 +127,30 @@ export default async function PatternPage({
       )}
 
       {/* Prev/Next Navigation */}
+      <Separator className="mt-8" />
       <nav
-        id="navigation"
-        className="mt-8 flex items-center justify-between border-t border-gray-200 pt-8 dark:border-gray-700"
-        style={{ scrollMarginTop: 80 }}
+        aria-label="Pattern navigation"
+        className="flex items-center justify-between gap-2 pt-4"
       >
         {prev ? (
-          <Link
-            href={`/patterns/${prev.category}/${prev.slug}`}
-            className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
-          >
-            <IconArrowLeft size={14} />
-            {prev.name}
-          </Link>
+          <Button asChild variant="ghost">
+            <Link href={`/patterns/${prev.category}/${prev.slug}`}>
+              <IconArrowLeft data-icon="inline-start" />
+              {prev.name}
+            </Link>
+          </Button>
         ) : (
-          <div />
+          <span aria-hidden />
         )}
         {next ? (
-          <Link
-            href={`/patterns/${next.category}/${next.slug}`}
-            className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
-          >
-            {next.name}
-            <IconArrowRight size={14} />
-          </Link>
+          <Button asChild variant="ghost">
+            <Link href={`/patterns/${next.category}/${next.slug}`}>
+              {next.name}
+              <IconArrowRight data-icon="inline-end" />
+            </Link>
+          </Button>
         ) : (
-          <div />
+          <span aria-hidden />
         )}
       </nav>
     </div>
