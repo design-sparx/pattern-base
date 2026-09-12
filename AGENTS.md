@@ -10,15 +10,15 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 - `packages/{antd,bootstrap,mantine,shadcn}` — same 54 patterns in each; must only use the host library's primitives (antd, react-bootstrap, @mantine/\*, shadcn/ui) and keep prop parity with `core` and each other.
 - `packages/shadcn` (`@patternbase/shadcn`) — shadcn/ui implementations. Primitives vendored in `src/components/ui/`, Tailwind v4 theme in `src/styles.css`, Radix + lucide-react bundled by tsup.
 - `packages/{eslint-config,vitest-config}` — private shared configs used by every package.
-- `apps/docs` (`@patternbase/docs`) — Next.js 16.3.1 docs site with live previews for three frameworks: Bootstrap, Ant Design, and shadcn/ui.
+- `apps/docs` (`@patternbase/docs`) — Next.js 16.3.1 docs site. Public shell on the home route group `(home)`; patterns live under the `(shell)` route group with a live workbench previewing three frameworks: Bootstrap, Ant Design, shadcn/ui (Mantine has no docs preview).
 
 ## Commands (run from repo root)
 
 - `pnpm build` / `pnpm clean` — turbo-cached. `pnpm clean:all` also removes `node_modules/.cache` and `node_modules/.vite`.
 - `pnpm dev` — persistent turbo task that builds `^build` deps first; scope with `--filter` (e.g. `pnpm dev --filter=@patternbase/docs` runs just the docs site).
 - `pnpm lint` / `pnpm lint:fix` / `pnpm type-check` / `pnpm test` / `pnpm format` / `pnpm format:check`.
-- One package: `pnpm test --filter=@patternbase/core -- --watch`.
-- One test file, from inside that package: `pnpm exec vitest run src/utils/confidence.test.ts`.
+- One package: `pnpm test --filter=@patternbase/core`.
+- One test file (or watch mode), run from inside that package: `pnpm exec vitest run src/utils/confidence.test.ts` / `pnpm exec vitest --watch`.
 - Docs snippets: `cd apps/docs && pnpm generate-snippets`.
 
 ## Architecture
@@ -41,23 +41,25 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 | Governors      | 14    | stream-of-thought, citation, variations, cost-estimate, action-plan, synthesis, branches, controls, draft-mode, memory, references, sample-response, shared-vision, verification |
 | Trust Builders | 9     | disclosure, caveat, consent, data-ownership, footprints, incognito-mode, watermark, avatar, color                                                                                |
 
-**Docs site pattern preview system (`apps/docs`):** each pattern page (`/patterns/<category>/<pattern>`) renders live, interactive previews. Data flow:
+**Docs site pattern preview system (`apps/docs`):** each pattern page (`/patterns/<category>/<pattern>`) renders a live, interactive workbench. Data flow:
 
 1. `src/data/patterns.ts` — metadata (`PatternMeta`) + lookup helpers (`getPatternBySlug()`, `getCategoryById()`, `getPatternsByCategory()`).
-2. `src/app/patterns/[category]/[pattern]/page.tsx` — dynamic route, `generateStaticParams()`, renders `<ComponentPreview />`.
+2. `src/app/(shell)/patterns/[category]/[pattern]/page.tsx` — dynamic route under the `(shell)` route group, `generateStaticParams()`, looks up snippets/explanation/props and renders `<Workbench />`.
 3. `src/data/demo-data.ts` — shared demo constants (`demoSuggestions`, `demoParameters`, `demoSteps`, `demoCitations`, `demoVariations`, `demoCostBreakdown`, `demoModels`).
-4. `src/lib/registry.tsx` — `Record<string, RegistryEntry>` keyed by pattern ID; each entry has three component factories (`bootstrap`, `antd`, `shadcn`) rendering the real components with demo data.
-5. `src/data/snippet-templates.ts` — auto-generated full implementations for all three frameworks from `scripts/generate-snippets.ts`; regenerate with `pnpm generate-snippets`.
-6. `src/components/preview/component-preview.tsx` — tabbed Preview / Code UI with a framework toggle and framework-appropriate install command (e.g. `pnpm add react-bootstrap bootstrap`, `pnpm add antd @ant-design/icons`, `pnpm add @patternbase/shadcn tailwindcss`).
-7. `src/components/preview/framework-tabs.tsx` — the three-way framework toggle (`FrameworkTabs` render-prop wrapper + `FrameworkToggle` segmented control).
-8. `src/data/props-data.ts` — props tables rendered by `src/components/preview/props-table.tsx`.
+4. `src/lib/registry/{index,antd,bootstrap,shadcn}.tsx` — per-framework registries of real components; `index.tsx` builds `componentRegistry: Record<string, RegistryEntry>` by intersecting the three (a pattern is dropped unless all three frameworks register it). Only bootstrap/antd/shadcn — Mantine is not doc-previewed.
+5. `src/data/snippet-templates.ts` — auto-generated full implementations for all three frameworks; regenerate with `pnpm generate-snippets`. The docs `build` script runs it first (`pnpm generate-snippets && next build`).
+6. `src/components/workbench/workbench.tsx` — client grid: `<PreviewPane>` (live component) + `<InspectorPane>` (code / props / docs tabs).
+7. `src/components/workbench/framework-slots/` — one slot per framework, loaded with `next/dynamic` so only the active framework's chunk mounts; `preloadInactiveSlots()` prefetches the others during idle time.
+8. `src/components/workbench/workbench-context.tsx` — framework/tab/viewport state synced to the URL (`?fw=&tab=&vp=` keys) via `src/lib/workbench-params.ts` (`parseWorkbenchParams` / `buildWorkbenchQuery`). Server-renders documented defaults first, applies URL state after hydration (reading search params during render would force a CSR bailout).
+9. `src/components/preview/` — presentational helpers: `code-block.tsx`, `install-command.tsx`, `props-table.tsx`, `error-boundary.tsx`.
 
 ## Gotchas
 
-- `apps/docs` now has `type-check` (`tsc --noEmit`) and `test` (`vitest run`) scripts, so root `pnpm type-check`/`pnpm test` cover it.
+- `apps/docs` has its own `AGENTS.md` with Next.js-specific rules. The `next dev` server regenerates the `<!-- BEGIN:nextjs-agent-rules -->` block (see `node_modules/next/dist/server/lib/generate-agent-files.js`) warning that the Next 16 APIs differ from training data — don't strip it from diffs, and read the bundled docs in `node_modules/next/dist/docs/`. It also documents two original gotchas: stale Turbopack cache can 404 dynamic pattern routes (`pnpm run clean` fixes it) and the two mandatory CSS imports in `globals.css` (see Build & Config).
+- `apps/docs` has `type-check` (`tsc --noEmit`) and `test` (`vitest run`) scripts, so root `pnpm type-check`/`pnpm test` cover it.
 - Framework deps (react, antd, react-bootstrap, @mantine/\*) are peerDependencies externalized by tsup. shadcn/ui's Radix and icon deps are bundled by tsup; only `tailwindcss` is an external peer. Never import any framework deps into `@patternbase/core`.
 - Docs resolves workspace packages from their `dist` via `next.config.mjs` `transpilePackages`, so run `pnpm build` before working against them in docs.
-- Tests live in `packages/core`, `packages/shadcn`, and `apps/docs` (vitest + jsdom). `packages/{antd,bootstrap,mantine}` currently have none.
+- Tests live in `packages/core`, `packages/shadcn`, and `apps/docs` (vitest + jsdom). `packages/{antd,bootstrap,mantine}` currently have none. Docs lib tests: `src/lib/{registry-parity,workbench-params,public-shell}.test.ts`.
 - Snippets are auto-generated from actual component source files. Run `pnpm generate-snippets` inside `apps/docs` to regenerate. The generated file (`apps/docs/src/data/snippet-templates.ts`) is tracked and committed.
 
 ## Build & Config
@@ -88,7 +90,7 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 
 1. `packages/core/src/types/patterns.ts` — prop interfaces; export from `packages/core/src/index.ts`.
 2. `packages/{antd,bootstrap,mantine,shadcn}/src/components/<name>/` — implementation + `index.ts` barrel (in shadcn, add any needed primitives to `src/components/ui/` first), then re-export from each package `src/index.ts`.
-3. Docs app: metadata in `apps/docs/src/data/patterns.ts`; demo data in `data/demo-data.ts`; registry entry (`bootstrap`/`antd`/`shadcn`) in `src/lib/registry.tsx`; explanation in `data/pattern-explanations.ts`; prop table in `data/props-data.ts`. Snippets are auto-generated from component source files.
+3. Docs app: metadata in `apps/docs/src/data/patterns.ts`; demo data in `data/demo-data.ts`; registry entry in each of `src/lib/registry/{bootstrap,antd,shadcn}.tsx` (the pattern is dropped from docs unless all three register it); explanation in `data/pattern-explanations.ts`; prop table in `data/props-data.ts`. Snippets are auto-generated from component source files.
 
 ## Plans
 
