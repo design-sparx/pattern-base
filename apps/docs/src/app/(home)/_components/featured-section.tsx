@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 
-import { FeaturedPatterns } from "@/components/home/featured-patterns";
-import { PatternFilterTabs } from "@/components/home/pattern-filter-tabs";
+import { FeaturedPatterns } from "./featured-patterns";
+import { PatternFilterTabs } from "./pattern-filter-tabs";
+
 import { FEATURED_SLUGS, getPatternBySlug } from "@/data/patterns";
 
 const DEFAULT_PATTERNS = FEATURED_SLUGS.map(getPatternBySlug).filter(

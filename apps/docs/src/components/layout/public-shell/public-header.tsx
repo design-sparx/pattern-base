@@ -9,10 +9,10 @@ import {
 import Link from "next/link";
 import { useTheme } from "next-themes";
 
-import { Button } from "@/components/ui/button";
-
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
+
+import { Button } from "@/components/ui/button";
 
 export function PublicHeader() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -46,7 +46,9 @@ export function PublicHeader() {
             aria-label={
               isDark ? "Switch to light theme" : "Switch to dark theme"
             }
-            onClick={() => setTheme(isDark ? "light" : "dark")}
+            onClick={() => {
+              setTheme(isDark ? "light" : "dark");
+            }}
             className="text-muted-foreground"
           >
             {isDark ? (

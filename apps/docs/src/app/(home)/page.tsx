@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 
-import { FeaturedResources } from "@/components/home/featured-resources";
-import { FeaturedSection } from "@/components/home/featured-section";
-import { HomeAnnouncement } from "@/components/home/home-announcement";
-import { OriginManifesto } from "@/components/home/origin-manifesto";
-import { StatsStrip } from "@/components/home/stats-strip";
+import { FeaturedResources } from "./_components/featured-resources";
+import { FeaturedSection } from "./_components/featured-section";
+import { HomeAnnouncement } from "./_components/home-announcement";
+import { OriginManifesto } from "./_components/origin-manifesto";
+import { StatsStrip } from "./_components/stats-strip";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { patterns } from "@/data/patterns";
 
-const totalPatterns = patterns.length;
+const totalPatterns = patterns.length || 0;
 
 export const metadata: Metadata = {
   title: "PatternBase — AI UX Pattern Library",
-  description: `An open-source React component library codifying ${totalPatterns} AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, Mantine, and shadcn/ui.`,
+  description: `An open-source React component library codifying ${totalPatterns.toString()} AI UX patterns from shapeof.ai into production-ready components for Bootstrap, Ant Design, Mantine, and shadcn/ui.`,
 };
 
 export default function HomePage() {

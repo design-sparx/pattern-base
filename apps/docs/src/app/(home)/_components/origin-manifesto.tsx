@@ -2,7 +2,8 @@
 
 import { useTheme } from "next-themes";
 
-import type { OriginManifestoProps } from "@/components/common/home-props";
+import type { OriginManifestoProps } from "./home-props";
+
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 

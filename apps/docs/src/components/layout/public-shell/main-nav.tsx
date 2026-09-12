@@ -1,10 +1,9 @@
 "use client";
 
+import { cn } from "cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
-
-import { cn } from "cn";
 
 import {
   NavigationMenu,

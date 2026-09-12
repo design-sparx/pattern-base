@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 
-import type { FeaturedPatternsProps } from "@/components/common/home-props";
+import type { FeaturedPatternsProps } from "./home-props";
+
 import { Badge } from "@/components/ui/badge";
 import {
   Card,

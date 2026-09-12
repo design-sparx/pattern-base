@@ -1,11 +1,10 @@
 "use client";
 
 import { IconBrandGithub, IconMenu2 } from "@tabler/icons-react";
+import { cn } from "cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
-import { cn } from "cn";
 
 import { Button } from "@/components/ui/button";
 import {

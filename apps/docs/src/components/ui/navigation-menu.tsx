@@ -1,8 +1,8 @@
-import * as React from "react";
+import { IconChevronDown } from "@tabler/icons-react";
 import { cva } from "class-variance-authority";
 import { cn } from "cn";
 import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
-import { IconChevronDown } from "@tabler/icons-react";
+import * as React from "react";
 
 function NavigationMenu({
   className,
@@ -23,7 +23,7 @@ function NavigationMenu({
       {...props}
     >
       {children}
-      {viewport && <NavigationMenuViewport />}
+      {viewport ? <NavigationMenuViewport /> : null}
     </NavigationMenuPrimitive.Root>
   );
 }
@@ -155,12 +155,12 @@ function NavigationMenuIndicator({
 
 export {
   NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
   NavigationMenuContent,
-  NavigationMenuTrigger,
-  NavigationMenuLink,
   NavigationMenuIndicator,
-  NavigationMenuViewport,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
+  NavigationMenuViewport,
 };

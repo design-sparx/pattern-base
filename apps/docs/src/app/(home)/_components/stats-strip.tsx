@@ -1,6 +1,7 @@
 "use client";
 
-import type { StatsStripProps } from "@/components/common/home-props";
+import type { StatsStripProps } from "./home-props";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { patterns } from "@/data/patterns";
 
