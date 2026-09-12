@@ -9,12 +9,13 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+
+import { useSpotlight } from "@/components/layout/spotlight-provider";
 
 export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   const { setTheme, resolvedTheme } = useTheme();
   const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
-  const [searchOpen, setSearchOpen] = useState(false);
+  const { open: openSpotlight } = useSpotlight();
 
   return (
     <div className="flex h-full items-center justify-between px-4">
@@ -56,9 +57,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 
       <div className="flex items-center gap-2">
         <button
-          onClick={() => {
-            setSearchOpen(true);
-          }}
+          onClick={openSpotlight}
           className="header-search flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-500 transition-colors duration-150 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
           aria-label="Search patterns"
           style={{ minWidth: 220 }}
@@ -74,26 +73,6 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
             </kbd>
           </div>
         </button>
-
-        {searchOpen ? (
-          <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]">
-            <div className="w-full max-w-xl rounded-lg border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-800 dark:bg-gray-900">
-              <input
-                autoFocus
-                placeholder="Search patterns..."
-                className="w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm outline-none dark:border-gray-700"
-              />
-              <button
-                onClick={() => {
-                  setSearchOpen(false);
-                }}
-                className="mt-2 text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        ) : null}
 
         <button
           onClick={() => {

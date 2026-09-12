@@ -51,8 +51,7 @@ export default function RootLayout({
             defaultTheme="system"
             disableTransitionOnChange
           >
-            <SpotlightProvider />
-            {children}
+            <SpotlightProvider>{children}</SpotlightProvider>
           </ThemeProvider>
         </TooltipProvider>
       </body>

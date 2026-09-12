@@ -20,6 +20,7 @@ import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
 import { codeSnippets } from "@/data/snippet-templates";
+import { getCategoryColors } from "@/lib/category-colors";
 
 const categoryIcons: Record<string, React.ElementType> = {
   "prompt-actions": IconKeyboard,
@@ -27,14 +28,6 @@ const categoryIcons: Record<string, React.ElementType> = {
   tuners: IconSettings,
   governors: IconEye,
   "trust-builders": IconShield,
-};
-
-const categoryColors: Record<string, string> = {
-  "prompt-actions": "violet",
-  wayfinders: "teal",
-  tuners: "orange",
-  governors: "blue",
-  "trust-builders": "pink",
 };
 
 function getRecordEntry<T>(
@@ -82,7 +75,7 @@ export default async function PatternPage({
 
   if (!pattern || !category) notFound();
 
-  const color = categoryColors[pattern.category] ?? "violet";
+  const colors = getCategoryColors(pattern.category);
   const Icon = categoryIcons[pattern.category] ?? IconLayoutGrid;
 
   const currentIndex = patterns.findIndex((p) => p.id === pattern.id);
@@ -109,12 +102,9 @@ export default async function PatternPage({
       <div className="mb-6">
         <div className="flex items-center gap-2">
           <div
-            className={`flex items-center justify-center rounded-md bg-${color}-100 p-1 dark:bg-${color}-900/30`}
+            className={`flex items-center justify-center rounded-md ${colors.chip} p-1`}
           >
-            <Icon
-              size={16}
-              className={`text-${color}-600 dark:text-${color}-400`}
-            />
+            <Icon size={16} className={colors.text} />
           </div>
           <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             {pattern.name}

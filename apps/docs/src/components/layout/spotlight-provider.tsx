@@ -2,10 +2,16 @@
 
 import { IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import { categories, patterns } from "@/data/patterns";
-import { registry } from "@/lib/registry";
 
 const categoryIcons: Record<string, React.ReactNode> = {
   "prompt-actions": "⌨️",
@@ -15,6 +21,21 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "trust-builders": "🛡️",
 };
 
+interface SpotlightContextValue {
+  open: () => void;
+  close: () => void;
+}
+
+const SpotlightContext = createContext<SpotlightContextValue | null>(null);
+
+export function useSpotlight(): SpotlightContextValue {
+  const ctx = useContext(SpotlightContext);
+  if (!ctx) {
+    throw new Error("useSpotlight must be used within a SpotlightProvider");
+  }
+  return ctx;
+}
+
 export function SpotlightProvider({
   children,
 }: {
@@ -23,6 +44,15 @@ export function SpotlightProvider({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+
+  const openSpotlight = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const closeSpotlight = useCallback(() => {
+    setOpen(false);
+    setQuery("");
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -54,17 +84,17 @@ export function SpotlightProvider({
       .slice(0, 7);
   }, [query]);
 
+  const contextValue = useMemo<SpotlightContextValue>(
+    () => ({ open: openSpotlight, close: closeSpotlight }),
+    [openSpotlight, closeSpotlight],
+  );
+
   return (
-    <>
+    <SpotlightContext.Provider value={contextValue}>
       {children}
       {open ? (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]">
-          <div
-            className="fixed inset-0 bg-black/50"
-            onClick={() => {
-              setOpen(false);
-            }}
-          />
+          <div className="fixed inset-0 bg-black/50" onClick={closeSpotlight} />
           <div className="relative w-full max-w-xl rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-800">
               <IconSearch className="size-4 text-gray-400" />
@@ -94,8 +124,7 @@ export function SpotlightProvider({
                       key={p.id}
                       onClick={() => {
                         router.push(`/patterns/${p.category}/${p.slug}`);
-                        setOpen(false);
-                        setQuery("");
+                        closeSpotlight();
                       }}
                       className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
@@ -118,6 +147,6 @@ export function SpotlightProvider({
           </div>
         </div>
       ) : null}
-    </>
+    </SpotlightContext.Provider>
   );
 }

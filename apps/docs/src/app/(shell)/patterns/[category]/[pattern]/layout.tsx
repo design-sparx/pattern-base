@@ -4,14 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getCategoryById, getPatternBySlug } from "@/data/patterns";
-
-const categoryColors: Record<string, string> = {
-  "prompt-actions": "violet",
-  wayfinders: "teal",
-  tuners: "orange",
-  governors: "blue",
-  "trust-builders": "pink",
-};
+import { getCategoryColors } from "@/lib/category-colors";
 
 interface LayoutParams {
   params: Promise<{ category: string; pattern: string }>;
@@ -42,7 +35,7 @@ export default async function PatternDetailLayout({
 
   if (!pattern || !category) notFound();
 
-  const color = categoryColors[pattern.category] ?? "violet";
+  const colors = getCategoryColors(pattern.category);
 
   return (
     <>
@@ -61,9 +54,7 @@ export default async function PatternDetailLayout({
           {category.name}
         </Link>
         <IconChevronRight size={12} className="text-gray-400 opacity-50" />
-        <span
-          className={`text-xs font-semibold text-${color}-600 dark:text-${color}-400`}
-        >
+        <span className={`text-xs font-semibold ${colors.text}`}>
           {pattern.name}
         </span>
       </nav>
