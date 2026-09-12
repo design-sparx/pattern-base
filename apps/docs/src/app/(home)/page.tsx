@@ -46,41 +46,6 @@ export default function HomePage() {
             <a href="#about">Read the approach</a>
           </Button>
         </div>
-
-        <div className="border-border bg-muted mt-12 rounded-2xl border p-4 md:p-6">
-          <div className="border-border flex items-center gap-2 border-b pb-3">
-            <div className="flex gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-              <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-            </div>
-            <span className="text-muted-foreground ml-2 font-mono text-xs">
-              terminal
-            </span>
-          </div>
-          <div className="mt-4 space-y-1 font-mono text-xs leading-relaxed">
-            <div>
-              <span className="text-primary">$</span> pnpm add
-              @patternbase/shadcn tailwindcss
-            </div>
-            <div className="text-muted-foreground">
-              ✓ {totalPatterns} patterns with identical prop interfaces
-            </div>
-            <div className="text-muted-foreground">
-              ✓ Bootstrap, Ant Design, Mantine, shadcn/ui
-            </div>
-            <div className="text-muted-foreground">✓ TypeScript ready</div>
-            <div className="flex items-center gap-1">
-              <span className="text-primary">$</span>
-              <span
-                className="bg-primary relative inline-flex h-4 w-1.5"
-                style={{
-                  animation: "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
-                }}
-              />
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Stats */}
