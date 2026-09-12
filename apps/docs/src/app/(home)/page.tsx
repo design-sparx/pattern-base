@@ -4,6 +4,7 @@ import { FeaturedResources } from "./_components/featured-resources";
 import { FeaturedSection } from "./_components/featured-section";
 import { HomeAnnouncement } from "./_components/home-announcement";
 import { OriginManifesto } from "./_components/origin-manifesto";
+import { PromptComposerMock } from "./_components/prompt-composer-mock";
 import { StatsStrip } from "./_components/stats-strip";
 
 import { Badge } from "@/components/ui/badge";
@@ -47,34 +48,32 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <HomeAnnouncement />
-
-      <div className="app-container pb-12 pt-16 md:pb-12 md:pt-20 lg:pt-20">
-        <Badge variant="outline" className="font-mono">
-          &lt;AI UX Pattern Library /&gt;
-        </Badge>
-        <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
-          The missing UX patterns for{" "}
-          <span className="bg-linear-to-r from-primary to-[oklch(0.6_0.2_290)] bg-clip-text text-transparent">
-            AI products
-          </span>
-          , ready to ship.
-        </h1>
-        <p className="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed">
-          {totalPatterns} interaction patterns distilled from shapeof.ai — each
-          implemented for Bootstrap, Ant Design, Mantine, and shadcn/ui. Every
-          pattern ships as a self-contained React component with one typed props
-          interface across all four libraries, so you can switch UI stacks
-          without rewriting your AI features. Browse them here, copy them into
-          your product.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Button size="lg" className="rounded-full" asChild>
-            <a href="/patterns">Browse patterns</a>
-          </Button>
-          <Button variant="outline" size="lg" className="rounded-full" asChild>
-            <a href="#about">Read the approach</a>
-          </Button>
+      <div className="app-container pb-12 pt-12 md:pb-12 md:pt-16 lg:pt-20">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <HomeAnnouncement />
+            <h1 className="mt-8 max-w-2xl text-balance text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
+              The missing UX patterns for{" "}
+              <span className="bg-linear-to-r from-primary to-[oklch(0.6_0.2_290)] bg-clip-text text-transparent">
+                AI products
+              </span>
+              , ready to ship.
+            </h1>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Button size="lg" className="rounded-full" asChild>
+                <a href="/patterns">Browse patterns</a>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full"
+                asChild
+              >
+                <a href="#about">Read the approach</a>
+              </Button>
+            </div>
+          </div>
+          <PromptComposerMock />
         </div>
       </div>
 

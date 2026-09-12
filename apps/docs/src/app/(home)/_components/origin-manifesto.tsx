@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { patterns } from "@/data/patterns";
 
 const DEFAULT_PRINCIPLES = [
   {
@@ -59,6 +60,12 @@ export function OriginManifesto({
           style on top of your UI library&apos;s primitives — so patterns
           inherit your theme, tokens, and design system instead of fighting
           them.
+        </p>
+        <p className="text-muted-foreground mt-3 leading-relaxed">
+          {patterns.length} interaction patterns from shapeof.ai, each
+          implemented as one typed React component across Bootstrap, Ant Design,
+          Mantine, and shadcn/ui — so you can switch UI stacks without rewriting
+          your AI features.
         </p>
       </div>
       <div className="app-container mt-8">
