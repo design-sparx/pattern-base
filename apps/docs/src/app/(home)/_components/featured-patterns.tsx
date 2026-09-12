@@ -36,7 +36,7 @@ export function FeaturedPatterns({
             href={getHref(pattern.slug, pattern.category)}
             className="h-full"
           >
-            <Card className="border-border bg-background hover:border-primary group h-full transition-colors">
+            <Card variant="interactive" className="group h-full">
               <CardHeader>
                 <CardAction>
                   <Badge variant="outline" className="font-mono">

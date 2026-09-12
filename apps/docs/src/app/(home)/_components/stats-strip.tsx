@@ -16,10 +16,7 @@ export function StatsStrip({ items = DEFAULT_ITEMS }: StatsStripProps) {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {items.map((item) => (
-        <Card
-          key={item.label}
-          className="border-border bg-background hover:border-primary transition-colors"
-        >
+        <Card key={item.label} variant="interactive">
           <CardContent>
             <p className="text-primary font-mono text-2xl font-semibold md:text-4xl">
               {item.value}

@@ -66,10 +66,7 @@ export function FeaturedResources({
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {resources.map((resource) => (
-        <Card
-          key={resource.id}
-          className="border-border bg-background hover:border-primary h-full p-5 transition-colors"
-        >
+        <Card key={resource.id} variant="interactive" className="h-full p-5">
           <Badge variant="outline" className="mb-3 font-mono text-[10px]">
             {resource.type}
           </Badge>

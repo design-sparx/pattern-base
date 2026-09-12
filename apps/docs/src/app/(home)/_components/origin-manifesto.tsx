@@ -64,10 +64,7 @@ export function OriginManifesto({
       <div className="mx-auto mt-8 max-w-7xl px-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {principles.map((principle) => (
-            <Card
-              key={principle.label}
-              className="border-border bg-background h-full"
-            >
+            <Card key={principle.label} variant="solid" className="h-full">
               <CardHeader>
                 <span className="text-primary font-mono text-xs">
                   {principle.label}

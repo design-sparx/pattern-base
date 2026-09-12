@@ -4,14 +4,22 @@ import * as React from "react";
 function Card({
   className,
   size = "default",
+  variant = "default",
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+}: React.ComponentProps<"div"> & {
+  size?: "default" | "sm";
+  variant?: "default" | "solid" | "interactive";
+}) {
   return (
     <div
       data-slot="card"
       data-size={size}
+      data-variant={variant}
       className={cn(
         "group/card gap-(--card-spacing) bg-card py-(--card-spacing) text-card-foreground ring-foreground/5 dark:ring-foreground/10 *:[img:first-child]:rounded-t-[min(var(--radius-4xl),24px)] *:[img:last-child]:rounded-b-[min(var(--radius-4xl),24px)] flex flex-col overflow-hidden rounded-[min(var(--radius-4xl),24px)] text-sm shadow-sm ring-1 [--card-spacing:--spacing(5)] has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)]",
+        variant === "solid" && "border-border bg-background",
+        variant === "interactive" &&
+          "border-border bg-background hover:border-primary transition-colors",
         className,
       )}
       {...props}
