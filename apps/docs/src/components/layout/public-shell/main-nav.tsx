@@ -16,14 +16,20 @@ import {
 } from "@/components/ui/navigation-menu";
 import {
   getNavCategories,
+  getNavResources,
   isHomePath,
   isPatternsPath,
+  isResourcePath,
 } from "@/lib/public-shell";
 
 export function MainNav() {
   const pathname = usePathname();
   const categories = getNavCategories();
+  const resources = getNavResources();
   const patternsActive = isPatternsPath(pathname);
+  const resourcesActive = resources.some((res) =>
+    isResourcePath(res.href, pathname),
+  );
 
   return (
     <NavigationMenu
@@ -61,6 +67,26 @@ export function MainNav() {
                   active={pathname.startsWith(`/patterns/${cat.id}`)}
                 >
                   {cat.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className={cn(resourcesActive && "bg-muted")}>
+            Resources
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-1.5 md:w-[420px]">
+              {resources.map((res) => (
+                <ListItem
+                  key={res.href}
+                  title={res.label}
+                  href={res.href}
+                  active={isResourcePath(res.href, pathname)}
+                >
+                  {res.description}
                 </ListItem>
               ))}
             </ul>

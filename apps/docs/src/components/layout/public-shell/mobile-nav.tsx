@@ -18,8 +18,10 @@ import {
 } from "@/components/ui/drawer";
 import {
   getNavCategories,
+  getNavResources,
   isHomePath,
   isPatternsPath,
+  isResourcePath,
 } from "@/lib/public-shell";
 
 const navItem =
@@ -30,6 +32,7 @@ const navIdle = "text-muted-foreground hover:bg-muted hover:text-foreground";
 export function MobileNav() {
   const pathname = usePathname();
   const categories = getNavCategories();
+  const resources = getNavResources();
   const [open, setOpen] = useState(false);
 
   const linkClass = (active: boolean) =>
@@ -91,6 +94,20 @@ export function MobileNav() {
               </DrawerClose>
             ))}
           </nav>
+
+          <p className="text-muted-foreground px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider">
+            Resources
+          </p>
+          {resources.map((res) => (
+            <DrawerClose asChild key={res.href}>
+              <Link
+                href={res.href}
+                className={linkClass(isResourcePath(res.href, pathname))}
+              >
+                {res.label}
+              </Link>
+            </DrawerClose>
+          ))}
 
           <div className="border-border mt-auto border-t pt-3">
             <a
