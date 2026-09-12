@@ -25,16 +25,6 @@ export interface OriginManifestoProps {
   principles?: Principle[];
 }
 
-export interface CategoryIndexProps {
-  categories?: {
-    id: string;
-    name: string;
-    description: string;
-    count: number;
-  }[];
-  getHref?: (id: string) => string;
-}
-
 export interface FeaturedPatternsProps {
   patterns?: PatternMeta[];
   getHref?: (slug: string, category: string) => string;

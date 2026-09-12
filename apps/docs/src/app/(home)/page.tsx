@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { CategoryIndex } from "@/components/home/category-index";
 import { FeaturedResources } from "@/components/home/featured-resources";
 import { FeaturedSection } from "@/components/home/featured-section";
 import { HomeAnnouncement } from "@/components/home/home-announcement";
@@ -76,56 +75,6 @@ export default function HomePage() {
           </div>
 
           <FeaturedSection />
-        </div>
-      </section>
-
-      {/* Browse by intent */}
-      <section className="border-border border-t">
-        <div className="mx-auto max-w-7xl px-4 py-12 md:py-14">
-          <div className="flex items-start gap-10">
-            <div className="hidden w-52 shrink-0 lg:block">
-              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
-                On this page
-              </p>
-              <nav className="mt-3 flex flex-col gap-0.5">
-                <a
-                  className="border-primary text-primary border-l-2 px-3 py-1 text-xs"
-                  href="#featured"
-                >
-                  Featured patterns
-                </a>
-                <a
-                  className="text-muted-foreground hover:border-primary hover:text-foreground border-l-2 border-transparent px-3 py-1 text-xs"
-                  href="#browse"
-                >
-                  Browse by intent
-                </a>
-                <a
-                  className="text-muted-foreground hover:border-primary hover:text-foreground border-l-2 border-transparent px-3 py-1 text-xs"
-                  href="#about"
-                >
-                  About the library
-                </a>
-                <a
-                  className="text-muted-foreground hover:border-primary hover:text-foreground border-l-2 border-transparent px-3 py-1 text-xs"
-                  href="#resources"
-                >
-                  Resources
-                </a>
-              </nav>
-            </div>
-            <div className="flex-1" id="browse">
-              <Badge variant="outline" className="mb-2 font-mono">
-                Browse by intent
-              </Badge>
-              <h2 className="text-2xl font-semibold tracking-tight">
-                Find what you need
-              </h2>
-              <div className="mt-6">
-                <CategoryIndex />
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
