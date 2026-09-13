@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -95,8 +96,8 @@ export default async function PatternPage({
   return (
     <div className="flex min-h-full flex-col gap-4">
       {/* Hero */}
-      <Card size="sm" variant="interactive" className="rounded-2xl">
-        <CardHeader className="gap-3">
+      <Card variant="interactive" className="overflow-visible">
+        <CardContent>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">
               <div
@@ -112,7 +113,16 @@ export default async function PatternPage({
                   {pattern.name}
                 </CardTitle>
                 <CardDescription className="mt-1 max-w-prose">
-                  {pattern.description}
+                  <div className="flex flex-col gap-2">
+                    <p>{pattern.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {pattern.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
                 </CardDescription>
               </div>
             </div>
@@ -127,16 +137,8 @@ export default async function PatternPage({
               />
             </Link>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {pattern.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </CardHeader>
+        </CardContent>
       </Card>
-
       {/* Workbench: viewer + props/docs below */}
       {!snippets ? (
         <p className="mb-4 text-red-600 dark:text-red-400">
@@ -160,10 +162,10 @@ export default async function PatternPage({
       <Separator className="mt-2" />
       <nav
         aria-label="Pattern navigation"
-        className="flex items-center justify-between gap-2 pt-4"
+        className="flex items-center justify-between gap-2 pb-4"
       >
         {prev ? (
-          <Button asChild variant="ghost">
+          <Button asChild variant="outline">
             <Link href={`/patterns/${prev.category}/${prev.slug}`}>
               <IconArrowLeft data-icon="inline-start" />
               {prev.name}
@@ -173,7 +175,7 @@ export default async function PatternPage({
           <span aria-hidden />
         )}
         {next ? (
-          <Button asChild variant="ghost">
+          <Button asChild variant="outline">
             <Link href={`/patterns/${next.category}/${next.slug}`}>
               {next.name}
               <IconArrowRight data-icon="inline-end" />
