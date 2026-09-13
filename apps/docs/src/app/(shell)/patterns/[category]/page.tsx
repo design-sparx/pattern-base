@@ -5,14 +5,6 @@ import { notFound } from "next/navigation";
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
 import { Badge } from "@/components/ui/badge";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -58,21 +50,7 @@ export default async function CategoryPage({ params }: CategoryPageParams) {
 
   return (
     <div className="flex min-h-full flex-col p-4 md:p-6">
-      <Breadcrumb className="px-1">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/patterns">Patterns</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{category.name}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      <Card size="sm" className="mt-4 rounded-2xl">
+      <Card size="sm" className="rounded-2xl">
         <CardHeader className="flex flex-row items-center gap-3">
           <span className="bg-primary/10 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
             <Icon className="size-5" aria-hidden />

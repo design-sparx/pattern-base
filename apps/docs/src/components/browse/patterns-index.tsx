@@ -1,11 +1,8 @@
 "use client";
 
 import { IconSearch } from "@tabler/icons-react";
-import { cn } from "cn";
 import Link from "next/link";
 import { useState } from "react";
-
-import styles from "@/components/common/editorial.module.css";
 
 import { PatternsToolbar } from "@/components/browse/patterns-toolbar";
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
@@ -43,33 +40,13 @@ export function PatternsIndex() {
 
   return (
     <div className="flex min-h-full flex-col p-4 md:p-6">
-      <header className="px-1">
-        <p
-          className={cn(
-            styles.editorialKicker,
-            "text-muted-foreground font-mono text-xs",
-          )}
-        >
-          Pattern library
-        </p>
-        <h1
-          className={`${styles.editorialDisplay} mt-3 text-4xl font-extralight md:text-5xl`}
-        >
-          All patterns
-        </h1>
-        <p className="text-muted-foreground mt-2 md:text-lg">
-          {patterns.length} AI UX patterns across {categories.length} categories
-          — scan by name, filter by intent.
-        </p>
-      </header>
-
       <PatternsToolbar
         query={query}
         tag={tag}
         count={filtered.length}
         onQueryChange={setQuery}
         onTagChange={setTag}
-        className="sticky top-2 z-10 mt-6"
+        className="sticky top-2 z-10"
       />
 
       {isIdle ? (

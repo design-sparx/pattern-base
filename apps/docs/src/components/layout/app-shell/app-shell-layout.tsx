@@ -1,6 +1,10 @@
 "use client";
 
-import { IconInfoCircle, IconSparkles } from "@tabler/icons-react";
+import {
+  IconInfoCircle,
+  IconLayoutSidebar,
+  IconSparkles,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -19,10 +23,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
   const pathname = usePathname();
+  const { toggleSidebar } = useSidebar();
 
   return (
     <SidebarProvider className="app-canvas h-svh overflow-hidden">
@@ -47,6 +53,16 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={toggleSidebar}
+                tooltip="Collapse sidebar"
+                className="hidden lg:inline-flex"
+              >
+                <IconLayoutSidebar />
+                <span>Collapse</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
