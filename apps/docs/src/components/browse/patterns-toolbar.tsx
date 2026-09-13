@@ -6,31 +6,22 @@ import { useEffect, useRef } from "react";
 
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-
-const TAG_FILTERS = [
-  "all",
-  "prompt",
-  "generation",
-  "transparency",
-  "control",
-  "trust",
-];
+import { categories, getPatternsByCategory, patterns } from "@/data/patterns";
+import { getCategoryIcon } from "@/lib/category-icons";
 
 interface PatternsToolbarProps {
   query: string;
-  tag: string;
-  count: number;
+  activeCategory: string;
   onQueryChange: (query: string) => void;
-  onTagChange: (tag: string) => void;
+  onCategoryChange: (category: string) => void;
   className?: string;
 }
 
 export function PatternsToolbar({
   query,
-  tag,
-  count,
+  activeCategory,
   onQueryChange,
-  onTagChange,
+  onCategoryChange,
   className,
 }: PatternsToolbarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -67,7 +58,7 @@ export function PatternsToolbar({
         className,
       )}
     >
-      <div className="relative w-full md:w-80">
+      <div className="relative w-full md:w-72">
         <IconSearch
           className="text-muted-foreground absolute left-3 top-1/2 size-4 -translate-y-1/2"
           aria-hidden
@@ -87,21 +78,38 @@ export function PatternsToolbar({
       <ToggleGroup
         type="single"
         variant="outline"
-        value={tag}
+        value={activeCategory}
         onValueChange={(value) => {
-          if (value) onTagChange(value);
+          if (value) onCategoryChange(value);
         }}
+        className="flex-wrap"
       >
-        {TAG_FILTERS.map((t) => (
-          <ToggleGroupItem key={t} value={t} className="capitalize">
-            {t}
-          </ToggleGroupItem>
-        ))}
+        <ToggleGroupItem
+          value="all"
+          className="text-muted-foreground data-[state=on]:text-foreground flex-none gap-1.5 rounded-full px-3"
+        >
+          All patterns
+          <span className="font-mono text-xs opacity-70">
+            {patterns.length}
+          </span>
+        </ToggleGroupItem>
+        {categories.map((category) => {
+          const Icon = getCategoryIcon(category.id);
+          return (
+            <ToggleGroupItem
+              key={category.id}
+              value={category.id}
+              className="text-muted-foreground data-[state=on]:text-foreground flex-none gap-1.5 rounded-full px-3"
+            >
+              <Icon className="size-3.5" aria-hidden />
+              {category.name}
+              <span className="font-mono text-xs opacity-70">
+                {getPatternsByCategory(category.id).length}
+              </span>
+            </ToggleGroupItem>
+          );
+        })}
       </ToggleGroup>
-
-      <span className="text-muted-foreground font-mono text-xs md:ml-auto">
-        {count} pattern{count === 1 ? "" : "s"}
-      </span>
     </div>
   );
 }

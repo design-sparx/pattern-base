@@ -1,8 +1,14 @@
 "use client";
 
-import { IconSearch } from "@tabler/icons-react";
+import { IconChevronDown, IconSearch } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
+
+import type {
+  CategoryInfo,
+  PatternCategory,
+  PatternMeta,
+} from "@patternbase/core";
 
 import { PatternsToolbar } from "@/components/browse/patterns-toolbar";
 import { PatternIndexRow } from "@/components/common/pattern-index-row";
@@ -15,6 +21,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Empty,
   EmptyDescription,
@@ -30,140 +41,160 @@ import {
 } from "@/data/patterns";
 import { getCategoryIcon } from "@/lib/category-icons";
 
+const VISIBLE_ROWS = 3;
+
+type TabValue = "all" | PatternCategory;
+
+interface CategoryGroupProps {
+  category: CategoryInfo;
+  query: string;
+}
+
+function CategoryGroup({ category, query }: CategoryGroupProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  const rows = getFilteredPatterns(
+    getPatternsByCategory(category.id),
+    query,
+    "all",
+  );
+  if (rows.length === 0) return null;
+
+  const Icon = getCategoryIcon(category.id);
+  const total = getPatternsByCategory(category.id).length;
+  const q = query.trim();
+  const gated = q === "";
+  const visible = gated ? rows.slice(0, VISIBLE_ROWS) : rows;
+  const hidden = gated ? rows.slice(VISIBLE_ROWS) : [];
+
+  return (
+    <Card size="sm" variant="interactive" className="rounded-2xl">
+      <CardHeader className="flex flex-row items-center gap-3">
+        <span className="bg-primary/10 text-primary flex size-10 shrink-0 items-center justify-center rounded-xl">
+          <Icon className="size-5" aria-hidden />
+        </span>
+        <div className="min-w-0 flex-1">
+          <CardTitle>{category.name}</CardTitle>
+          <CardDescription className="truncate">
+            {category.description}
+          </CardDescription>
+        </div>
+        <Badge variant="secondary" className="hidden sm:inline-flex">
+          {gated
+            ? `${String(total)} patterns`
+            : `${String(rows.length)} of ${String(total)}`}
+        </Badge>
+        <Link
+          href={`/patterns/${category.id}`}
+          className="text-primary hidden items-center gap-1 text-sm font-semibold no-underline hover:underline md:inline-flex"
+        >
+          View all <span aria-hidden>→</span>
+        </Link>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-1 p-2">
+        {visible.map((pattern, i) => (
+          <PatternIndexRow
+            key={pattern.id}
+            pattern={pattern}
+            index={i}
+            query={q}
+          />
+        ))}
+        {hidden.length > 0 && (
+          <Collapsible
+            open={expanded}
+            onOpenChange={setExpanded}
+            className="mt-1"
+          >
+            <CollapsibleContent className="overflow-hidden data-[state=closed]:hidden">
+              <div className="flex flex-col gap-1 pt-1">
+                {hidden.map((pattern, i) => (
+                  <PatternIndexRow
+                    key={pattern.id}
+                    pattern={pattern}
+                    index={visible.length + i}
+                    query={q}
+                  />
+                ))}
+              </div>
+            </CollapsibleContent>
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground hover:bg-muted w-full justify-center gap-1.5 rounded-xl px-3"
+              >
+                <IconChevronDown
+                  className={`text-muted-foreground size-4 transition-transform duration-200 ${
+                    expanded ? "rotate-180" : ""
+                  }`}
+                  aria-hidden
+                />
+                {expanded
+                  ? "Show fewer"
+                  : `Show all ${String(rows.length)} patterns`}
+              </Button>
+            </CollapsibleTrigger>
+          </Collapsible>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 export function PatternsIndex() {
   const [query, setQuery] = useState("");
-  const [tag, setTag] = useState("all");
+  const [tab, setTab] = useState<TabValue>("all");
 
-  const filtered = getFilteredPatterns(patterns, query, tag);
-  const isIdle = query.trim() === "" && tag === "all";
-  const q = query.trim();
+  const scope: PatternMeta[] =
+    tab === "all" ? patterns : getPatternsByCategory(tab);
+  const filteredCount = getFilteredPatterns(scope, query, "all").length;
+
+  const clearFilters = () => {
+    setQuery("");
+    setTab("all");
+  };
+
+  const activeCategories =
+    tab === "all"
+      ? categories
+      : categories.filter((category) => category.id === tab);
 
   return (
     <div className="flex min-h-full flex-col">
       <PatternsToolbar
         query={query}
-        tag={tag}
-        count={filtered.length}
+        activeCategory={tab}
         onQueryChange={setQuery}
-        onTagChange={setTag}
+        onCategoryChange={(value) => {
+          setTab(value as TabValue);
+        }}
         className="sticky top-2 z-10"
       />
 
-      {isIdle ? (
-        <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
-          {categories.map((cat) => {
-            const Icon = getCategoryIcon(cat.id);
-            const tileCount = getPatternsByCategory(cat.id).length;
-            return (
-              <Card
-                key={cat.id}
-                size="sm"
-                variant="interactive"
-                className="rounded-2xl"
-              >
-                <Link
-                  href={`/patterns/${cat.id}`}
-                  className="group flex size-full flex-col gap-2.5 p-4 no-underline"
-                >
-                  <span className="flex items-center justify-between">
-                    <span className="bg-primary/10 text-primary flex size-9 items-center justify-center rounded-xl">
-                      <Icon className="size-4" aria-hidden />
-                    </span>
-                    <span className="text-muted-foreground font-mono text-xs">
-                      {tileCount}
-                    </span>
-                  </span>
-                  <span className="text-foreground text-sm font-medium">
-                    {cat.name}
-                  </span>
-                  <span className="text-muted-foreground text-xs leading-relaxed">
-                    {cat.description}
-                  </span>
-                  <span
-                    className="text-primary mt-auto self-end text-sm font-bold opacity-0 transition-opacity group-hover:opacity-100"
-                    aria-hidden
-                  >
-                    →
-                  </span>
-                </Link>
-              </Card>
-            );
-          })}
-        </div>
-      ) : null}
-
-      {filtered.length === 0 ? (
+      {filteredCount === 0 ? (
         <Empty className="mt-4 min-h-64 border">
           <EmptyMedia variant="icon">
             <IconSearch />
           </EmptyMedia>
           <EmptyHeader>
             <EmptyTitle>No patterns found</EmptyTitle>
-            <EmptyDescription>
-              Try a different keyword or tag filter.
-            </EmptyDescription>
+            <EmptyDescription>Try a different keyword.</EmptyDescription>
           </EmptyHeader>
-          <Button
-            size="sm"
-            className="rounded-full"
-            onClick={() => {
-              setQuery("");
-              setTag("all");
-            }}
-          >
+          <Button size="sm" className="rounded-full" onClick={clearFilters}>
             Clear filters
           </Button>
         </Empty>
       ) : (
-        categories.map((category) => {
-          const rows = filtered.filter((p) => p.category === category.id);
-          if (rows.length === 0) return null;
-
-          const Icon = getCategoryIcon(category.id);
-          const total = getPatternsByCategory(category.id).length;
-
-          return (
-            <Card
+        <div className="mt-4 flex flex-col gap-2">
+          {activeCategories.map((category) => (
+            <CategoryGroup
               key={category.id}
-              size="sm"
-              variant="interactive"
-              className="mt-2 rounded-2xl"
-            >
-              <CardHeader className="flex flex-row items-center gap-3">
-                <span className="bg-primary/10 text-primary flex size-10 shrink-0 items-center justify-center rounded-xl">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <CardTitle>{category.name}</CardTitle>
-                  <CardDescription className="truncate">
-                    {category.description}
-                  </CardDescription>
-                </div>
-                <Badge variant="secondary" className="hidden sm:inline-flex">
-                  {isIdle
-                    ? `${String(total)} patterns`
-                    : `${String(rows.length)} of ${String(total)}`}
-                </Badge>
-                <Link
-                  href={`/patterns/${category.id}`}
-                  className="text-primary hidden items-center gap-1 text-sm font-semibold no-underline hover:underline md:inline-flex"
-                >
-                  View all <span aria-hidden>→</span>
-                </Link>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-1 p-2">
-                {rows.map((pattern, i) => (
-                  <PatternIndexRow
-                    key={pattern.id}
-                    pattern={pattern}
-                    index={i}
-                    query={q}
-                  />
-                ))}
-              </CardContent>
-            </Card>
-          );
-        })
+              category={category}
+              query={query}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
