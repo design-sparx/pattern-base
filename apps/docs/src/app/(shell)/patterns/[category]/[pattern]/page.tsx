@@ -15,11 +15,13 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Workbench } from "@/components/workbench/workbench";
+import { DocsCard } from "@/components/preview/docs-card";
+import { PreviewPane } from "@/components/workbench/preview-pane";
+import { PropsTable } from "@/components/preview/props-table";
+import { TableOfContents } from "@/components/preview/table-of-contents";
 import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
@@ -91,10 +93,17 @@ export default async function PatternPage({
       })
     : [];
 
+  const tocItems = [
+    { id: "overview", label: "Overview" },
+    { id: "demo", label: "Interactive Demo" },
+    ...(propDefinitions?.length ? [{ id: "props", label: "Props" }] : []),
+    ...(explanation ? [{ id: "docs", label: "Docs" }] : []),
+  ];
+
   return (
     <div className="flex min-h-full flex-col gap-4">
-      {/* Hero */}
-      <Card variant="interactive" className="overflow-visible">
+      {/* Hero / Overview */}
+      <Card variant="interactive" className="overflow-visible" id="overview">
         <CardContent>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">
@@ -136,52 +145,72 @@ export default async function PatternPage({
           </div>
         </CardContent>
       </Card>
-      {/* Workbench: viewer + props/docs below */}
-      {!snippets ? (
-        <p className="mb-4 text-red-600 dark:text-red-400">
-          Snippet generation missing for {`"${pattern.id}"`} — run{" "}
-          <code className="bg-muted rounded px-1.5 py-0.5 text-xs">
-            pnpm generate-snippets
-          </code>
-          .
-        </p>
-      ) : (
-        <Workbench
-          patternId={pattern.id}
-          snippets={snippets}
-          explanation={explanation}
-          propDefinitions={propDefinitions}
-          relatedLinks={relatedLinks}
-        />
-      )}
 
-      {/* Prev/Next Navigation */}
-      <Separator className="mt-2" />
-      <nav
-        aria-label="Pattern navigation"
-        className="flex items-center justify-between gap-2 pb-4"
-      >
-        {prev ? (
-          <Button asChild variant="outline">
-            <Link href={`/patterns/${prev.category}/${prev.slug}`}>
-              <IconArrowLeft data-icon="inline-start" />
-              {prev.name}
-            </Link>
-          </Button>
-        ) : (
-          <span aria-hidden />
-        )}
-        {next ? (
-          <Button asChild variant="outline">
-            <Link href={`/patterns/${next.category}/${next.slug}`}>
-              {next.name}
-              <IconArrowRight data-icon="inline-end" />
-            </Link>
-          </Button>
-        ) : (
-          <span aria-hidden />
-        )}
-      </nav>
+      <div className="grid gap-4 xl:grid-cols-[1fr_16rem]">
+        <div className="flex min-w-0 flex-col gap-4">
+          {/* Interactive Demo */}
+          {!snippets ? (
+            <p className="text-red-600 dark:text-red-400">
+              Snippet generation missing for {`"${pattern.id}"`} — run{" "}
+              <code className="bg-muted rounded px-1.5 py-0.5 text-xs">
+                pnpm generate-snippets
+              </code>
+              .
+            </p>
+          ) : (
+            <section id="demo" className="scroll-mt-24">
+              <PreviewPane patternId={pattern.id} snippets={snippets} />
+            </section>
+          )}
+
+          {/* Props */}
+          {propDefinitions?.length ? (
+            <section id="props" className="scroll-mt-24">
+              <PropsTable props={propDefinitions} />
+            </section>
+          ) : null}
+
+          {/* Docs */}
+          {explanation ? (
+            <section id="docs" className="scroll-mt-24">
+              <DocsCard explanation={explanation} relatedLinks={relatedLinks} />
+            </section>
+          ) : null}
+
+          {/* Prev/Next Navigation */}
+          <Separator className="mt-2" />
+          <nav
+            aria-label="Pattern navigation"
+            className="flex items-center justify-between gap-2 pb-4"
+          >
+            {prev ? (
+              <Button asChild variant="outline">
+                <Link href={`/patterns/${prev.category}/${prev.slug}`}>
+                  <IconArrowLeft data-icon="inline-start" />
+                  {prev.name}
+                </Link>
+              </Button>
+            ) : (
+              <span aria-hidden />
+            )}
+            {next ? (
+              <Button asChild variant="outline">
+                <Link href={`/patterns/${next.category}/${next.slug}`}>
+                  {next.name}
+                  <IconArrowRight data-icon="inline-end" />
+                </Link>
+              </Button>
+            ) : (
+              <span aria-hidden />
+            )}
+          </nav>
+        </div>
+
+        <TableOfContents
+          items={tocItems}
+          className="sticky top-24 self-start"
+        />
+      </div>
     </div>
   );
 }
