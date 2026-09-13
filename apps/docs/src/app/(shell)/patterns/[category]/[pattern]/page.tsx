@@ -94,7 +94,6 @@ export default async function PatternPage({
     : [];
 
   const tocItems = [
-    { id: "overview", label: "Overview" },
     { id: "demo", label: "Interactive Demo" },
     ...(propDefinitions?.length ? [{ id: "props", label: "Props" }] : []),
     ...(explanation ? [{ id: "docs", label: "Docs" }] : []),
