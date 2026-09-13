@@ -1,6 +1,11 @@
 "use client";
 
-import { IconChevronDown, IconSearch } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconChevronsDown,
+  IconChevronUp,
+  IconSearch,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -44,6 +49,25 @@ import { getCategoryIcon } from "@/lib/category-icons";
 const VISIBLE_ROWS = 3;
 
 type TabValue = "all" | PatternCategory;
+type CardState = "collapsed" | "preview" | "expanded";
+
+const NEXT_CARD_STATE: Record<CardState, CardState> = {
+  collapsed: "preview",
+  preview: "expanded",
+  expanded: "collapsed",
+};
+
+const CARD_STATE_ICON: Record<CardState, typeof IconChevronDown> = {
+  collapsed: IconChevronDown,
+  preview: IconChevronsDown,
+  expanded: IconChevronUp,
+};
+
+const CARD_STATE_ACTION_LABEL: Record<CardState, string> = {
+  collapsed: "Expand category",
+  preview: "Expand all patterns",
+  expanded: "Collapse category",
+};
 
 interface CategoryGroupProps {
   category: CategoryInfo;
@@ -51,7 +75,8 @@ interface CategoryGroupProps {
 }
 
 function CategoryGroup({ category, query }: CategoryGroupProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [cardState, setCardState] = useState<CardState>("preview");
+  const StateIcon = CARD_STATE_ICON[cardState];
 
   const rows = getFilteredPatterns(
     getPatternsByCategory(category.id),
@@ -68,76 +93,103 @@ function CategoryGroup({ category, query }: CategoryGroupProps) {
   const hidden = gated ? rows.slice(VISIBLE_ROWS) : [];
 
   return (
-    <Card size="sm" variant="interactive" className="rounded-2xl">
+    <Card size="sm" variant="interactive" className="group/card rounded-2xl">
       <CardHeader className="flex flex-row items-center gap-3">
-        <span className="bg-primary/10 text-primary flex size-10 shrink-0 items-center justify-center rounded-xl">
+        <span className="bg-primary/10 text-primary group-hover/card:bg-primary group-hover/card:text-primary-foreground flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-300">
           <Icon className="size-5" aria-hidden />
         </span>
         <div className="min-w-0 flex-1">
-          <CardTitle>{category.name}</CardTitle>
+          <CardTitle className="group-hover/card:text-primary transition-colors duration-300">
+            {category.name}
+          </CardTitle>
           <CardDescription className="truncate">
             {category.description}
           </CardDescription>
         </div>
-        <Badge variant="secondary" className="hidden sm:inline-flex">
-          {gated
-            ? `${String(total)} patterns`
-            : `${String(rows.length)} of ${String(total)}`}
-        </Badge>
-        <Link
-          href={`/patterns/${category.id}`}
-          className="text-primary hidden items-center gap-1 text-sm font-semibold no-underline hover:underline md:inline-flex"
-        >
-          View all <span aria-hidden>→</span>
-        </Link>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-1 p-2">
-        {visible.map((pattern, i) => (
-          <PatternIndexRow
-            key={pattern.id}
-            pattern={pattern}
-            index={i}
-            query={q}
-          />
-        ))}
-        {hidden.length > 0 && (
-          <Collapsible
-            open={expanded}
-            onOpenChange={setExpanded}
-            className="mt-1"
+        <div className="flex flex-col items-end gap-1.5">
+          <Badge variant="secondary" className="tabular-nums">
+            {gated
+              ? `${String(total)} patterns`
+              : `${String(rows.length)} of ${String(total)}`}
+          </Badge>
+          <Link
+            href={`/patterns/${category.id}`}
+            className="text-primary hover:text-primary/85 flex items-center gap-1 text-sm font-semibold no-underline transition-colors"
           >
-            <CollapsibleContent className="overflow-hidden data-[state=closed]:hidden">
-              <div className="flex flex-col gap-1 pt-1">
-                {hidden.map((pattern, i) => (
-                  <PatternIndexRow
-                    key={pattern.id}
-                    pattern={pattern}
-                    index={visible.length + i}
-                    query={q}
+            View all
+            <span
+              aria-hidden
+              className="transition-transform duration-300 group-hover/card:translate-x-0.5"
+            >
+              →
+            </span>
+          </Link>
+        </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="size-8 shrink-0 rounded-full"
+          aria-expanded={cardState !== "collapsed"}
+          aria-label={CARD_STATE_ACTION_LABEL[cardState]}
+          onClick={() => {
+            setCardState((value) => NEXT_CARD_STATE[value]);
+          }}
+        >
+          <StateIcon className="size-4" aria-hidden />
+        </Button>
+      </CardHeader>
+      {cardState !== "collapsed" && (
+        <CardContent className="flex flex-col gap-1 p-2">
+          {visible.map((pattern, i) => (
+            <PatternIndexRow
+              key={pattern.id}
+              pattern={pattern}
+              index={i}
+              query={q}
+            />
+          ))}
+          {hidden.length > 0 && (
+            <Collapsible
+              open={cardState === "expanded"}
+              onOpenChange={(open) => {
+                setCardState(open ? "expanded" : "preview");
+              }}
+              className="mt-1"
+            >
+              <CollapsibleContent className="overflow-hidden data-[state=closed]:hidden">
+                <div className="flex flex-col gap-1 pt-1">
+                  {hidden.map((pattern, i) => (
+                    <PatternIndexRow
+                      key={pattern.id}
+                      pattern={pattern}
+                      index={visible.length + i}
+                      query={q}
+                    />
+                  ))}
+                </div>
+              </CollapsibleContent>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted w-full justify-center gap-1.5 rounded-xl px-3"
+                >
+                  <IconChevronDown
+                    className={`text-muted-foreground size-4 transition-transform duration-200 ${
+                      cardState === "expanded" ? "rotate-180" : ""
+                    }`}
+                    aria-hidden
                   />
-                ))}
-              </div>
-            </CollapsibleContent>
-            <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground hover:bg-muted w-full justify-center gap-1.5 rounded-xl px-3"
-              >
-                <IconChevronDown
-                  className={`text-muted-foreground size-4 transition-transform duration-200 ${
-                    expanded ? "rotate-180" : ""
-                  }`}
-                  aria-hidden
-                />
-                {expanded
-                  ? "Show fewer"
-                  : `Show all ${String(rows.length)} patterns`}
-              </Button>
-            </CollapsibleTrigger>
-          </Collapsible>
-        )}
-      </CardContent>
+                  {cardState === "expanded"
+                    ? "Show fewer"
+                    : `Show all ${String(rows.length)} patterns`}
+                </Button>
+              </CollapsibleTrigger>
+            </Collapsible>
+          )}
+        </CardContent>
+      )}
     </Card>
   );
 }
