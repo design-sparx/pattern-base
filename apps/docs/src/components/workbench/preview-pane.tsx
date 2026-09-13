@@ -18,6 +18,8 @@ import { useWorkbench } from "./workbench-context";
 import { CodeBlock } from "@/components/preview/code-block";
 import { PreviewErrorBoundary } from "@/components/preview/error-boundary";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Card, CardContent } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Tooltip,
@@ -83,105 +85,114 @@ export function PreviewPane({
   }, []);
 
   return (
-    <div className="border-border bg-background supports-[backdrop-filter]:bg-background/60 overflow-hidden rounded-2xl border shadow-sm supports-[backdrop-filter]:backdrop-blur-xl">
+    <Card className="overflow-hidden">
       {/* Single-row toolbar: framework pills | preview/code toggle | devices */}
-      <div className="border-border flex w-full flex-wrap items-center justify-between gap-2 border-b p-2">
-        <ToggleGroup
-          type="single"
-          value={framework}
-          onValueChange={(value) => {
-            if (value) setFramework(value as Framework);
-          }}
-          variant="outline"
-          className="w-fit gap-1"
-          aria-label="Framework"
-        >
-          <ToggleGroupItem value="bootstrap" className={pillItem}>
-            Bootstrap
-          </ToggleGroupItem>
-          <ToggleGroupItem value="antd" className={pillItem}>
-            Ant Design
-          </ToggleGroupItem>
-          <ToggleGroupItem value="shadcn" className={pillItem}>
-            shadcn/ui
-          </ToggleGroupItem>
-        </ToggleGroup>
+      <div className="border-border border-b p-2">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2">
+          <ToggleGroup
+            type="single"
+            value={framework}
+            onValueChange={(value) => {
+              if (value) setFramework(value as Framework);
+            }}
+            variant="outline"
+            className="w-fit gap-1"
+            aria-label="Framework"
+          >
+            <ToggleGroupItem value="bootstrap" className={pillItem}>
+              Bootstrap
+            </ToggleGroupItem>
+            <ToggleGroupItem value="antd" className={pillItem}>
+              Ant Design
+            </ToggleGroupItem>
+            <ToggleGroupItem value="shadcn" className={pillItem}>
+              shadcn/ui
+            </ToggleGroupItem>
+          </ToggleGroup>
 
-        <ToggleGroup
-          type="single"
-          value={viewer}
-          onValueChange={(value) => {
-            if (value === "code" || value === "preview") setTab(value);
-          }}
-          variant="outline"
-          className="w-fit gap-1"
-          aria-label="Preview or code view"
-        >
-          <ToggleGroupItem value="preview" className={viewerItem}>
-            Preview
-          </ToggleGroupItem>
-          <ToggleGroupItem value="code" className={viewerItem}>
-            Code
-          </ToggleGroupItem>
-        </ToggleGroup>
+          <ToggleGroup
+            type="single"
+            value={viewer}
+            onValueChange={(value) => {
+              if (value === "code" || value === "preview") setTab(value);
+            }}
+            variant="outline"
+            className="w-fit gap-1"
+            aria-label="Preview or code view"
+          >
+            <ToggleGroupItem value="preview" className={viewerItem}>
+              Preview
+            </ToggleGroupItem>
+            <ToggleGroupItem value="code" className={viewerItem}>
+              Code
+            </ToggleGroupItem>
+          </ToggleGroup>
 
-        <div className="flex items-center gap-1">
-          <TooltipProvider>
-            {VIEWPORTS.map((vp) => {
-              const Icon = viewportIcons[vp];
-              const label = vp.charAt(0).toUpperCase() + vp.slice(1);
-              return (
-                <Tooltip key={vp}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant={viewport === vp ? "secondary" : "ghost"}
-                      size="icon-sm"
-                      aria-label={label}
-                      aria-pressed={viewport === vp}
-                      onClick={() => {
-                        setViewport(vp);
-                      }}
-                    >
-                      <Icon size={14} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{label}</p>
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })}
-          </TooltipProvider>
+          <ButtonGroup orientation="horizontal">
+            <TooltipProvider>
+              {VIEWPORTS.map((vp) => {
+                const Icon = viewportIcons[vp];
+                const label = vp.charAt(0).toUpperCase() + vp.slice(1);
+                return (
+                  <Tooltip key={vp}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant={viewport === vp ? "secondary" : "ghost"}
+                        size="icon-sm"
+                        aria-label={label}
+                        aria-pressed={viewport === vp}
+                        onClick={() => {
+                          setViewport(vp);
+                        }}
+                      >
+                        <Icon size={14} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{label}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </TooltipProvider>
+          </ButtonGroup>
         </div>
       </div>
 
       {viewer === "code" ? (
-        <div className="p-4">
-          <CodeBlock code={snippets[framework]} filename={`${patternId}.tsx`} />
-        </div>
-      ) : (
-        <div className="p-3">
-          <div className="dot-grid-bg flex min-h-[180px] items-center justify-center rounded-md p-3">
-            <div
-              className="w-full"
-              style={{
-                maxWidth: viewportWidths[viewport],
-                transition: "max-width 200ms ease",
-              }}
-            >
-              <PreviewErrorBoundary
-                key={`${patternId}-${framework}`}
-                patternId={patternId}
-              >
-                <ActiveSlot patternId={patternId} />
-              </PreviewErrorBoundary>
-            </div>
+        <CardContent className="p-0">
+          <div className="p-4">
+            <CodeBlock
+              code={snippets[framework]}
+              filename={`${patternId}.tsx`}
+            />
           </div>
-          <p className="text-muted-foreground text-center text-xs">
-            Rendered live from <code>@patternbase/{framework}</code>
-          </p>
-        </div>
+        </CardContent>
+      ) : (
+        <CardContent className="p-0">
+          <div className="p-3">
+            <div className="dot-grid-bg flex min-h-[180px] items-center justify-center rounded-md p-3">
+              <div
+                className="w-full"
+                style={{
+                  maxWidth: viewportWidths[viewport],
+                  transition: "max-width 200ms ease",
+                }}
+              >
+                <PreviewErrorBoundary
+                  key={`${patternId}-${framework}`}
+                  patternId={patternId}
+                >
+                  <ActiveSlot patternId={patternId} />
+                </PreviewErrorBoundary>
+              </div>
+            </div>
+            <p className="text-muted-foreground text-center text-xs">
+              Rendered live from <code>@patternbase/{framework}</code>
+            </p>
+          </div>
+        </CardContent>
       )}
-    </div>
+    </Card>
   );
 }
