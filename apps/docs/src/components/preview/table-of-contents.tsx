@@ -49,7 +49,9 @@ export function TableOfContents({
       if (el) observer.observe(el);
     });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, [items]);
 
   const handleClick = (id: string) => {
@@ -87,7 +89,9 @@ export function TableOfContents({
           <li key={item.id}>
             <button
               type="button"
-              onClick={() => handleClick(item.id)}
+              onClick={() => {
+                handleClick(item.id);
+              }}
               className={cn(
                 "block w-full text-left text-sm transition-colors",
                 activeId === item.id

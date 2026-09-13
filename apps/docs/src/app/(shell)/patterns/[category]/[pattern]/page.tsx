@@ -9,6 +9,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import type { RelatedPatternLink } from "@/components/preview/docs-card";
+import { DocsCard } from "@/components/preview/docs-card";
+import { PropsTable } from "@/components/preview/props-table";
+import { TableOfContents } from "@/components/preview/table-of-contents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,10 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { DocsCard } from "@/components/preview/docs-card";
 import { PreviewPane } from "@/components/workbench/preview-pane";
-import { PropsTable } from "@/components/preview/props-table";
-import { TableOfContents } from "@/components/preview/table-of-contents";
 import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
