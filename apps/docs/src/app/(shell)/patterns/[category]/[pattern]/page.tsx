@@ -24,7 +24,6 @@ import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
 import { codeSnippets } from "@/data/snippet-templates";
-import { getCategoryColors } from "@/lib/category-colors";
 import { getCategoryIcon } from "@/lib/category-icons";
 
 function getRecordEntry<T>(
@@ -72,7 +71,6 @@ export default async function PatternPage({
 
   if (!pattern || !category) notFound();
 
-  const colors = getCategoryColors(pattern.category);
   const Icon = getCategoryIcon(pattern.category);
 
   const currentIndex = patterns.findIndex((p) => p.id === pattern.id);
@@ -102,11 +100,10 @@ export default async function PatternPage({
             <div className="flex min-w-0 items-center gap-3">
               <div
                 className={cn(
-                  "flex size-11 shrink-0 items-center justify-center rounded-xl",
-                  colors.chip,
+                  "border-border flex size-9 shrink-0 items-center justify-center rounded-lg border",
                 )}
               >
-                <Icon size={22} className={colors.text} />
+                <Icon size={18} />
               </div>
               <div className="min-w-0">
                 <CardTitle className="text-xl font-semibold">
@@ -128,7 +125,7 @@ export default async function PatternPage({
             </div>
             <Link
               href={`/patterns/${category.id}`}
-              className="text-muted-foreground hover:bg-primary/10 hover:text-primary border-border group inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium no-underline transition-colors"
+              className="text-primary hover:bg-primary/10 hover:text-primary/85 border-primary/20 group inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium no-underline transition-colors"
             >
               {category.name}
               <IconChevronRight
