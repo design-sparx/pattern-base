@@ -49,7 +49,7 @@ export function PublicHeader() {
             size="default"
             onClick={openSpotlight}
             aria-label="Search patterns"
-            className="text-muted-foreground gap-2 px-2.5"
+            className="text-muted-foreground bg-input/50 hover:bg-input/70 justify-start gap-2 px-2.5"
           >
             <IconSearch className="size-4" />
             <span className="hidden sm:inline">Search</span>

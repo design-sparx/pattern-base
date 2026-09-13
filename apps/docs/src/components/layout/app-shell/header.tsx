@@ -26,7 +26,7 @@ export function Header() {
         size="sm"
         onClick={openSpotlight}
         aria-label="Search patterns"
-        className="text-muted-foreground w-full max-w-60 justify-start gap-2 md:max-w-72"
+        className="text-muted-foreground bg-input/50 hover:bg-input/70 w-full max-w-60 justify-start gap-2 md:max-w-72"
       >
         <IconSearch data-icon="inline-start" />
         <span className="flex-1 text-left">Search patterns...</span>
