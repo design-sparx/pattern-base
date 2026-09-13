@@ -6,6 +6,7 @@ import {
   DEFAULT_TAB,
   DEFAULT_VIEWPORT,
   parseWorkbenchParams,
+  tabToViewer,
 } from "./workbench-params";
 
 function sp(query: string): URLSearchParams {
@@ -57,7 +58,7 @@ describe("buildWorkbenchQuery", () => {
     expect(
       buildWorkbenchQuery({
         framework: "bootstrap",
-        tab: "code",
+        tab: "preview",
         viewport: "desktop",
       }),
     ).toBe("");
@@ -70,7 +71,7 @@ describe("buildWorkbenchQuery", () => {
         tab: "code",
         viewport: "desktop",
       }),
-    ).toBe("fw=shadcn");
+    ).toBe("fw=shadcn&tab=code");
     expect(
       buildWorkbenchQuery({
         framework: "bootstrap",
@@ -88,5 +89,14 @@ describe("buildWorkbenchQuery", () => {
         viewport: "tablet",
       }),
     ).toBe("fw=antd&tab=props&vp=tablet");
+  });
+});
+
+describe("tabToViewer", () => {
+  it("maps code to code and everything else to preview", () => {
+    expect(tabToViewer("code")).toBe("code");
+    expect(tabToViewer("preview")).toBe("preview");
+    expect(tabToViewer("props")).toBe("preview");
+    expect(tabToViewer("docs")).toBe("preview");
   });
 });
