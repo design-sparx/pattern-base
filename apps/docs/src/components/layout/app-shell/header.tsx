@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 
+import { useSpotlight } from "@/components/layout/spotlight-provider";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,12 +19,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { useSpotlight } from "@/components/layout/spotlight-provider";
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { getCategoryById, getPatternBySlug } from "@/data/patterns";
-import { cn } from "@/lib/utils";
 
 function useShellTitle(): ReactNode {
   const pathname = usePathname();
