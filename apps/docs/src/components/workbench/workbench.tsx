@@ -1,14 +1,16 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 
-import { InspectorPane, type RelatedPatternLink } from "./inspector-pane";
 import { PreviewPane } from "./preview-pane";
 import { PreviewSkeleton } from "./preview-skeleton";
-import { WorkbenchProvider } from "./workbench-context";
+import { useWorkbench, WorkbenchProvider } from "./workbench-context";
 
-import styles from "./workbench.module.css";
-
+import {
+  DocsCard,
+  type RelatedPatternLink,
+} from "@/components/preview/docs-card";
+import { PropsTable } from "@/components/preview/props-table";
 import type { PatternExplanation } from "@/data/pattern-explanations";
 import type { PropDefinition } from "@/data/props-data";
 
@@ -32,34 +34,65 @@ export function Workbench({
   relatedLinks,
 }: Readonly<WorkbenchProps>) {
   return (
-    // The fallback mirrors the real grid so layout dimensions do not jump
-    // when the boundary resolves.
-    <Suspense
-      fallback={
-        <div className={styles.grid} aria-hidden>
-          <div className={styles.previewCell}>
-            <PreviewSkeleton />
-          </div>
-          <div className={styles.inspectorCell} />
-        </div>
-      }
-    >
+    <Suspense fallback={<WorkbenchSkeleton />}>
       <WorkbenchProvider>
-        <div className={styles.grid}>
-          <div className={styles.previewCell}>
-            <PreviewPane patternId={patternId} />
-          </div>
-          <div className={styles.inspectorCell}>
-            <InspectorPane
-              patternId={patternId}
-              snippets={snippets}
-              propDefinitions={propDefinitions}
-              explanation={explanation}
-              relatedLinks={relatedLinks}
-            />
-          </div>
-        </div>
+        <WorkbenchContent
+          patternId={patternId}
+          snippets={snippets}
+          explanation={explanation}
+          propDefinitions={propDefinitions}
+          relatedLinks={relatedLinks}
+        />
       </WorkbenchProvider>
     </Suspense>
+  );
+}
+
+function WorkbenchContent(props: WorkbenchProps) {
+  const { tab } = useWorkbench();
+
+  // Deep-linked ?tab=props|docs scroll the always-visible cards into view.
+  useEffect(() => {
+    if (tab !== "props" && tab !== "docs") return;
+    const id = tab === "props" ? "pattern-props" : "pattern-docs";
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, [tab]);
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="min-w-0">
+        <PreviewPane patternId={props.patternId} snippets={props.snippets} />
+      </div>
+
+      {(props.propDefinitions?.length ?? props.explanation) ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          {props.propDefinitions?.length ? (
+            <div id="pattern-props" className="min-w-0 scroll-mt-28">
+              <PropsTable props={props.propDefinitions} />
+            </div>
+          ) : null}
+          {props.explanation ? (
+            <div id="pattern-docs" className="min-w-0 scroll-mt-28">
+              <DocsCard
+                explanation={props.explanation}
+                relatedLinks={props.relatedLinks ?? []}
+              />
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function WorkbenchSkeleton() {
+  return (
+    <div className="flex flex-col gap-4" aria-hidden>
+      <div className="border-border bg-muted/40 overflow-hidden rounded-2xl border p-4 shadow-sm">
+        <PreviewSkeleton />
+      </div>
+    </div>
   );
 }
