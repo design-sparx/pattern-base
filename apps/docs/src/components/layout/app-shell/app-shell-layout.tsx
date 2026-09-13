@@ -26,10 +26,41 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
+function ShellSidebarFooter() {
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
 
+  return (
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            onClick={toggleSidebar}
+            tooltip="Collapse sidebar"
+            className="hidden lg:inline-flex"
+          >
+            <IconLayoutSidebar />
+            <span>Collapse</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname === "/about"}
+            tooltip="About"
+          >
+            <Link href="/about">
+              <IconInfoCircle />
+              <span>About</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
+  );
+}
+
+function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <SidebarProvider className="app-canvas h-svh overflow-hidden">
       <Sidebar collapsible="icon" variant="floating">
@@ -51,32 +82,7 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
         <SidebarContent>
           <SidebarNav />
         </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={toggleSidebar}
-                tooltip="Collapse sidebar"
-                className="hidden lg:inline-flex"
-              >
-                <IconLayoutSidebar />
-                <span>Collapse</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname === "/about"}
-                tooltip="About"
-              >
-                <Link href="/about">
-                  <IconInfoCircle />
-                  <span>About</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
+        <ShellSidebarFooter />
       </Sidebar>
       <SidebarInset
         id="main-content"
