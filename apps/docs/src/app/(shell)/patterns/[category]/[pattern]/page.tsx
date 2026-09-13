@@ -14,7 +14,13 @@ import { PropsTable } from "@/components/preview/props-table";
 import { TableOfContents } from "@/components/preview/table-of-contents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CardDescription, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { PreviewSection } from "@/components/workbench/preview-section";
 import { patternExplanations } from "@/data/pattern-explanations";
@@ -101,11 +107,11 @@ export default async function PatternPage({
         <div className="flex min-w-0 flex-col gap-4">
           {/* Overview */}
           <section id="overview" className="scroll-mt-24">
-            <div className="border-border bg-background supports-[backdrop-filter]:bg-background/60 overflow-hidden rounded-2xl border shadow-sm supports-[backdrop-filter]:backdrop-blur-xl">
-              <div className="border-border bg-muted/50 border-b px-5 py-3">
-                <h3 className="text-sm font-semibold">Overview</h3>
-              </div>
-              <div className="p-5">
+            <Card>
+              <CardHeader>
+                <CardTitle>Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-3">
                     <div
@@ -144,8 +150,8 @@ export default async function PatternPage({
                     />
                   </Link>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Interactive Demo */}
