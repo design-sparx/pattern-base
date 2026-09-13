@@ -1,12 +1,23 @@
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconChevronRight,
+} from "@tabler/icons-react";
+import { cn } from "cn";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import type { RelatedPatternLink } from "@/components/preview/docs-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { RelatedPatternLink } from "@/components/workbench/inspector-pane";
 import { Workbench } from "@/components/workbench/workbench";
 import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
@@ -82,36 +93,55 @@ export default async function PatternPage({
     : [];
 
   return (
-    <div className="flex min-h-full flex-col p-4 md:p-6">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2">
-          <div
-            className={`flex items-center justify-center rounded-md ${colors.chip} p-1`}
-          >
-            <Icon size={16} className={colors.text} />
+    <div className="flex min-h-full flex-col gap-4">
+      {/* Hero */}
+      <Card size="sm" variant="interactive" className="rounded-2xl">
+        <CardHeader className="gap-3">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <div
+                className={cn(
+                  "flex size-11 shrink-0 items-center justify-center rounded-xl",
+                  colors.chip,
+                )}
+              >
+                <Icon size={22} className={colors.text} />
+              </div>
+              <div className="min-w-0">
+                <CardTitle className="text-xl font-semibold">
+                  {pattern.name}
+                </CardTitle>
+                <CardDescription className="mt-1 max-w-prose">
+                  {pattern.description}
+                </CardDescription>
+              </div>
+            </div>
+            <Link
+              href={`/patterns/${category.id}`}
+              className="text-muted-foreground hover:bg-primary/10 hover:text-primary border-border group inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium no-underline transition-colors"
+            >
+              {category.name}
+              <IconChevronRight
+                size={14}
+                className="transition-transform group-hover:translate-x-0.5"
+              />
+            </Link>
           </div>
-          <h1 className="text-foreground text-2xl font-semibold">
-            {pattern.name}
-          </h1>
-        </div>
-        <p className="text-muted-foreground mt-2 lg:text-lg">
-          {pattern.description}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {pattern.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      </div>
+          <div className="flex flex-wrap gap-2">
+            {pattern.tags.map((tag) => (
+              <Badge key={tag} variant="secondary">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        </CardHeader>
+      </Card>
 
-      {/* Workbench: preview + inspector */}
+      {/* Workbench: viewer + props/docs below */}
       {!snippets ? (
-        <p className="mb-6 text-red-600 dark:text-red-400">
+        <p className="mb-4 text-red-600 dark:text-red-400">
           Snippet generation missing for {`"${pattern.id}"`} — run{" "}
-          <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs dark:bg-gray-700">
+          <code className="bg-muted rounded px-1.5 py-0.5 text-xs">
             pnpm generate-snippets
           </code>
           .
@@ -127,7 +157,7 @@ export default async function PatternPage({
       )}
 
       {/* Prev/Next Navigation */}
-      <Separator className="mt-8" />
+      <Separator className="mt-2" />
       <nav
         aria-label="Pattern navigation"
         className="flex items-center justify-between gap-2 pt-4"
