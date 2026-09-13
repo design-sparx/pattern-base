@@ -87,7 +87,7 @@ export function PreviewPane({
   return (
     <Card className="overflow-hidden">
       {/* Single-row toolbar: framework pills | preview/code toggle | devices */}
-      <div className="border-border border-b p-2">
+      <div className="px-2">
         <div className="flex w-full flex-wrap items-center justify-between gap-2">
           <ToggleGroup
             type="single"
