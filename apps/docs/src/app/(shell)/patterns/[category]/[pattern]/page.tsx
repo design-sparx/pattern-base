@@ -14,12 +14,7 @@ import { PropsTable } from "@/components/preview/props-table";
 import { TableOfContents } from "@/components/preview/table-of-contents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
+import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { PreviewSection } from "@/components/workbench/preview-section";
 import { patternExplanations } from "@/data/pattern-explanations";
@@ -94,6 +89,7 @@ export default async function PatternPage({
     : [];
 
   const tocItems = [
+    { id: "overview", label: "Overview" },
     { id: "demo", label: "Interactive Demo" },
     ...(propDefinitions?.length ? [{ id: "props", label: "Props" }] : []),
     ...(explanation ? [{ id: "docs", label: "Docs" }] : []),
@@ -101,52 +97,57 @@ export default async function PatternPage({
 
   return (
     <div className="flex min-h-full flex-col gap-4">
-      {/* Hero / Overview */}
-      <Card variant="interactive" className="overflow-visible" id="overview">
-        <CardContent>
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-3">
-              <div
-                className={cn(
-                  "border-border flex size-9 shrink-0 items-center justify-center rounded-lg border",
-                )}
-              >
-                <Icon size={18} />
-              </div>
-              <div className="min-w-0">
-                <CardTitle className="text-xl font-semibold">
-                  {pattern.name}
-                </CardTitle>
-                <CardDescription className="mt-1 max-w-prose">
-                  <div className="flex flex-col gap-2">
-                    <p>{pattern.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {pattern.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </CardDescription>
-              </div>
-            </div>
-            <Link
-              href={`/patterns/${category.id}`}
-              className="text-primary hover:bg-primary/10 hover:text-primary/85 border-primary/20 group inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium no-underline transition-colors"
-            >
-              {category.name}
-              <IconChevronRight
-                size={14}
-                className="transition-transform group-hover:translate-x-0.5"
-              />
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="grid gap-4 xl:grid-cols-[1fr_16rem]">
         <div className="flex min-w-0 flex-col gap-4">
+          {/* Overview */}
+          <section id="overview" className="scroll-mt-24">
+            <div className="border-border bg-background supports-[backdrop-filter]:bg-background/60 overflow-hidden rounded-2xl border shadow-sm supports-[backdrop-filter]:backdrop-blur-xl">
+              <div className="border-border bg-muted/50 border-b px-5 py-3">
+                <h3 className="text-sm font-semibold">Overview</h3>
+              </div>
+              <div className="p-5">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div
+                      className={cn(
+                        "border-border flex size-9 shrink-0 items-center justify-center rounded-lg border",
+                      )}
+                    >
+                      <Icon size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <CardTitle className="text-xl font-semibold">
+                        {pattern.name}
+                      </CardTitle>
+                      <CardDescription className="mt-1 max-w-prose">
+                        <div className="flex flex-col gap-2">
+                          <p>{pattern.description}</p>
+                          <div className="flex flex-wrap gap-2">
+                            {pattern.tags.map((tag) => (
+                              <Badge key={tag} variant="secondary">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Link
+                    href={`/patterns/${category.id}`}
+                    className="text-primary hover:bg-primary/10 hover:text-primary/85 border-primary/20 group inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium no-underline transition-colors"
+                  >
+                    {category.name}
+                    <IconChevronRight
+                      size={14}
+                      className="transition-transform group-hover:translate-x-0.5"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Interactive Demo */}
           {!snippets ? (
             <p className="text-red-600 dark:text-red-400">
@@ -205,10 +206,7 @@ export default async function PatternPage({
           </nav>
         </div>
 
-        <TableOfContents
-          items={tocItems}
-          className="sticky top-24 self-start"
-        />
+        <TableOfContents items={tocItems} className="sticky top-4 self-start" />
       </div>
     </div>
   );
