@@ -21,7 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { PreviewPane } from "@/components/workbench/preview-pane";
+import { PreviewSection } from "@/components/workbench/preview-section";
 import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
@@ -159,7 +159,7 @@ export default async function PatternPage({
             </p>
           ) : (
             <section id="demo" className="scroll-mt-24">
-              <PreviewPane patternId={pattern.id} snippets={snippets} />
+              <PreviewSection patternId={pattern.id} snippets={snippets} />
             </section>
           )}
 
