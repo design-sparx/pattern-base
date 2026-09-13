@@ -8,49 +8,47 @@ interface PropsTableProps {
 
 export function PropsTable({ props }: Readonly<PropsTableProps>) {
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-      <div className="border-b border-gray-200 bg-gray-50 px-4 py-2 dark:border-gray-700 dark:bg-gray-800">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-          Props
-        </h3>
+    <div className="border-border bg-background supports-[backdrop-filter]:bg-background/60 overflow-hidden rounded-2xl border shadow-sm supports-[backdrop-filter]:backdrop-blur-xl">
+      <div className="border-border bg-muted/50 border-b px-5 py-3">
+        <h3 className="text-sm font-semibold">Props</h3>
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-800">
+        <table className="divide-border min-w-full divide-y">
+          <thead className="bg-muted/40">
             <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <th className="text-muted-foreground px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider">
                 Prop
               </th>
-              <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <th className="text-muted-foreground px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider">
                 Type
               </th>
-              <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <th className="text-muted-foreground px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider">
                 Default
               </th>
-              <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <th className="text-muted-foreground px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider">
                 Description
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="divide-border divide-y">
             {props.map((prop) => (
               <tr
                 key={prop.name}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                className="hover:bg-muted/40 transition-colors"
               >
-                <td className="whitespace-nowrap px-4 py-2 text-sm">
-                  <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                <td className="whitespace-nowrap px-5 py-2.5 text-sm">
+                  <code className="bg-muted text-foreground/80 rounded px-1.5 py-0.5 font-mono text-xs font-medium">
                     {prop.name}
                   </code>
                 </td>
-                <td className="whitespace-nowrap px-4 py-2 text-sm">
-                  <span className="inline-flex items-center rounded-md bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-800 dark:bg-violet-900/30 dark:text-violet-300">
+                <td className="whitespace-nowrap px-5 py-2.5 text-sm">
+                  <span className="bg-primary/10 text-primary rounded-md px-2 py-0.5 text-xs font-medium">
                     {prop.type}
                   </span>
                 </td>
-                <td className="whitespace-nowrap px-4 py-2 text-sm">
+                <td className="whitespace-nowrap px-5 py-2.5 text-sm">
                   {prop.default ? (
-                    <span className="text-xs font-medium text-gray-900 dark:text-gray-100">
+                    <span className="text-foreground text-xs font-medium">
                       {prop.default}
                     </span>
                   ) : (
@@ -59,7 +57,7 @@ export function PropsTable({ props }: Readonly<PropsTableProps>) {
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                <td className="text-muted-foreground px-5 py-2.5 text-sm">
                   {prop.description}
                 </td>
               </tr>
