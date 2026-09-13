@@ -89,7 +89,7 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
         className="gap-2 bg-transparent p-2 md:pl-0"
       >
         <Header />
-        <div className="border-border supports-[backdrop-filter]:bg-background/60 bg-background flex min-h-0 flex-1 flex-col overflow-y-auto rounded-2xl border shadow-sm backdrop-blur-xl">
+        <div className="border-border supports-[backdrop-filter]:bg-background/60 bg-background flex min-h-0 flex-1 flex-col overflow-y-auto rounded-2xl border p-4 shadow-sm backdrop-blur-xl">
           {children}
         </div>
         <Footer />

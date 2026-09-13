@@ -39,7 +39,7 @@ export function PatternsIndex() {
   const q = query.trim();
 
   return (
-    <div className="flex min-h-full flex-col p-4 md:p-6">
+    <div className="flex min-h-full flex-col">
       <PatternsToolbar
         query={query}
         tag={tag}
