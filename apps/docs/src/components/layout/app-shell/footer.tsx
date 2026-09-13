@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="border-border bg-background supports-[backdrop-filter]:bg-background/60 flex h-14 shrink-0 items-center justify-between rounded-2xl border px-4 shadow-sm backdrop-blur-xl">
+    <footer className="border-border bg-background supports-[backdrop-filter]:bg-background/60 flex h-14 shrink-0 items-center justify-between rounded-2xl border px-4 shadow-sm backdrop-blur-xl md:px-6">
       <p className="text-muted-foreground text-xs tracking-[0.03em] opacity-80">
         PatternBase v0.1.0
       </p>

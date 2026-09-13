@@ -82,7 +82,7 @@ export default async function PatternPage({
     : [];
 
   return (
-    <div className="app-container py-8">
+    <div className="flex min-h-full flex-col p-4 md:p-6">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2">
