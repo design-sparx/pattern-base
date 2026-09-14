@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "@patternbase/shadcn/styles.css";
 @import "shadcn/tailwind.css";
+@import "@mantine/core/styles.css";
 
 @custom-variant dark (&:is(.dark *));
 

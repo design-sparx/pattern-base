@@ -2,7 +2,6 @@
 const nextConfig = {
   transpilePackages: [
     "@patternbase/core",
-    "@patternbase/bootstrap",
     "@patternbase/antd",
     "@patternbase/mantine",
     "@patternbase/shadcn",

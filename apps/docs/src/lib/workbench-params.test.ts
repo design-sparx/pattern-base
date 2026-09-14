@@ -20,6 +20,7 @@ describe("parseWorkbenchParams", () => {
       tab: DEFAULT_TAB,
       viewport: DEFAULT_VIEWPORT,
     });
+    expect(DEFAULT_FRAMEWORK).toBe("mantine");
   });
 
   it("parses valid values case-sensitively", () => {
@@ -57,7 +58,7 @@ describe("buildWorkbenchQuery", () => {
   it("returns empty string when everything equals defaults", () => {
     expect(
       buildWorkbenchQuery({
-        framework: "bootstrap",
+        framework: "mantine",
         tab: "preview",
         viewport: "desktop",
       }),
@@ -74,7 +75,7 @@ describe("buildWorkbenchQuery", () => {
     ).toBe("fw=shadcn&tab=code");
     expect(
       buildWorkbenchQuery({
-        framework: "bootstrap",
+        framework: "mantine",
         tab: "docs",
         viewport: "mobile",
       }),

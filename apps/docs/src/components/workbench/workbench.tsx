@@ -17,7 +17,7 @@ import type { PropDefinition } from "@/data/props-data";
 interface WorkbenchProps {
   patternId: string;
   snippets: {
-    bootstrap: string;
+    mantine: string;
     antd: string;
     shadcn: string;
   };

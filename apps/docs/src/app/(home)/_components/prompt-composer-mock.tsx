@@ -26,7 +26,7 @@ export function PromptComposerMock() {
             <div className="mt-2 flex items-center gap-2">
               <span className="bg-muted-foreground/40 size-1.5 rounded-full" />
               <span className="text-muted-foreground text-xs">
-                Prompt-guided generation across 4 UI kits
+                Prompt-guided generation across 3 UI kits
               </span>
             </div>
           </div>

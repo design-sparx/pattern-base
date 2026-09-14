@@ -9,6 +9,7 @@ import {
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 import { useSpotlight } from "@/components/layout/spotlight-provider";
 import {
@@ -90,9 +91,20 @@ function useShellTitle(): ReactNode {
 
 export function Header() {
   const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
   const { open: openSpotlight } = useSpotlight();
   const title = useShellTitle();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  let themeIcon: ReactNode = null;
+  if (mounted) {
+    themeIcon =
+      colorScheme === "dark" ? <IconSun key="sun" /> : <IconMoon key="moon" />;
+  }
 
   return (
     <header className="border-border bg-background supports-[backdrop-filter]:bg-background/60 sticky top-2 z-10 grid h-14 shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-2xl border px-4 shadow-sm backdrop-blur-xl md:px-6">
@@ -129,7 +141,7 @@ export function Header() {
             setTheme(colorScheme === "dark" ? "light" : "dark");
           }}
         >
-          {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
+          {themeIcon}
         </Button>
         <Button variant="ghost" size="icon-sm" aria-label="GitHub" asChild>
           <a

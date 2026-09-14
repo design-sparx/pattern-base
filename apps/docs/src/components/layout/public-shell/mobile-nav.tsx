@@ -55,7 +55,7 @@ export function MobileNav() {
           <DrawerHeader className="gap-0.5 px-1 pt-2">
             <DrawerTitle>PatternBase</DrawerTitle>
             <DrawerDescription>
-              54 AI-UX patterns across four frameworks
+              54 AI-UX patterns across three frameworks
             </DrawerDescription>
           </DrawerHeader>
 

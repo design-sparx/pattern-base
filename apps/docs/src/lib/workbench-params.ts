@@ -1,4 +1,4 @@
-export const FRAMEWORKS = ["bootstrap", "antd", "shadcn"] as const;
+export const FRAMEWORKS = ["mantine", "antd", "shadcn"] as const;
 export type Framework = (typeof FRAMEWORKS)[number];
 
 export const INSPECTOR_TABS = ["preview", "code", "props", "docs"] as const;
@@ -9,7 +9,7 @@ export type Viewport = (typeof VIEWPORTS)[number];
 
 export type ViewerMode = "preview" | "code";
 
-export const DEFAULT_FRAMEWORK: Framework = "bootstrap";
+export const DEFAULT_FRAMEWORK: Framework = "mantine";
 export const DEFAULT_TAB: InspectorTab = "preview";
 export const DEFAULT_VIEWPORT: Viewport = "desktop";
 

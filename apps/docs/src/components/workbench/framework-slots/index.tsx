@@ -6,8 +6,8 @@ import { PreviewSkeleton } from "../preview-skeleton";
 
 import { type Framework } from "@/lib/workbench-params";
 
-export const LazyBootstrapSlot = dynamic(
-  () => import("./bootstrap-slot").then((m) => ({ default: m.BootstrapSlot })),
+export const LazyMantineSlot = dynamic(
+  () => import("./mantine-slot").then((m) => ({ default: m.MantineSlot })),
   { loading: () => <PreviewSkeleton /> },
 );
 
@@ -25,7 +25,7 @@ export const LazyShadcnSlot = dynamic(
 export function preloadInactiveSlots(active: Framework) {
   if (typeof window === "undefined") return;
   const targets = [
-    { name: "bootstrap", load: () => import("./bootstrap-slot") },
+    { name: "mantine", load: () => import("./mantine-slot") },
     { name: "antd", load: () => import("./antd-slot") },
     { name: "shadcn", load: () => import("./shadcn-slot") },
   ];

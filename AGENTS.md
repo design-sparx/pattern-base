@@ -1,16 +1,17 @@
 # Agent Guidelines
 
-PatternBase is a pnpm + Turborepo monorepo: 54 AI-UX pattern components (shapeof.ai patterns), each implemented with identical prop interfaces in four UI libraries (React Bootstrap, Ant Design, Mantine, shadcn/ui), plus a Next.js docs site. The `@patternbase/*` packages are published (root `publishConfig.access: public`); the private shared configs use the same prefix.
+PatternBase is a pnpm + Turborepo monorepo: 54 AI-UX pattern components (shapeof.ai patterns), each implemented with identical prop interfaces in three UI libraries (Ant Design, Mantine, shadcn/ui), plus a Next.js docs site. The `@patternbase/*` packages are published (root `publishConfig.access: public`); the private shared configs use the same prefix.
 
 Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-vory`; that URL redirects, and `origin` points at the new location).
 
 ## Layout
 
 - `packages/core` (`@patternbase/core`) — framework-agnostic types, hooks, utils. All shared prop interfaces live in `src/types/patterns.ts`. No UI, no framework imports.
-- `packages/{antd,bootstrap,mantine,shadcn}` — same 54 patterns in each; must only use the host library's primitives (antd, react-bootstrap, @mantine/\*, shadcn/ui) and keep prop parity with `core` and each other.
+- `packages/{antd,mantine,shadcn}` — same 54 patterns in each; must only use the host library's primitives (antd, @mantine/\*, shadcn/ui) and keep prop parity with `core` and each other.
+- `packages/bootstrap` (`@patternbase/bootstrap`) — still published but no longer previewed in the docs app.
 - `packages/shadcn` (`@patternbase/shadcn`) — shadcn/ui implementations. Primitives vendored in `src/components/ui/`, Tailwind v4 theme in `src/styles.css`, Radix + lucide-react bundled by tsup.
 - `packages/{eslint-config,vitest-config}` — private shared configs used by every package.
-- `apps/docs` (`@patternbase/docs`) — Next.js 16.3.1 docs site. Public shell on the home route group `(home)`; patterns live under the `(shell)` route group with a live workbench previewing three frameworks: Bootstrap, Ant Design, shadcn/ui (Mantine has no docs preview).
+- `apps/docs` (`@patternbase/docs`) — Next.js 16.3.1 docs site. Public shell on the home route group `(home)`; patterns live under the `(shell)` route group with a live workbench previewing three frameworks: Mantine, Ant Design, shadcn/ui.
 
 ## Commands (run from repo root)
 
@@ -29,9 +30,9 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 - `hooks/` — `useAIGeneration`, `useStreamingResponse`, `usePromptHistory`, `useGenerationState`
 - `utils/` — `debounce`, `confidence`, `formatPrompt`, `truncateText`
 
-**Component pattern:** each component lives in `/src/components/[name]/` with a `.tsx` implementation and `index.ts` barrel export. All four framework packages implement the same patterns with identical prop interfaces but different UI libraries. Components must use the host UI library's primitives (e.g. `react-bootstrap` Card, Button, Form; `antd` Card, Button, Input; Mantine components; shadcn/ui) — never raw HTML replacements.
+**Component pattern:** each component lives in `/src/components/[name]/` with a `.tsx` implementation and `index.ts` barrel export. All three framework packages implement the same patterns with identical prop interfaces but different UI libraries. Components must use the host UI library's primitives (e.g. `antd` Card, Button, Input; `@mantine/core` components; shadcn/ui) — never raw HTML replacements.
 
-**54 AI UX Patterns** across 5 categories — fully implemented in all four framework packages (`@patternbase/antd`, `@patternbase/bootstrap`, `@patternbase/mantine`, `@patternbase/shadcn`):
+**54 AI UX Patterns** across 5 categories — fully implemented in all three framework packages (`@patternbase/antd`, `@patternbase/mantine`, `@patternbase/shadcn`):
 
 | Category       | Count | Patterns                                                                                                                                                                         |
 | -------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -46,7 +47,7 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 1. `src/data/patterns.ts` — metadata (`PatternMeta`) + lookup helpers (`getPatternBySlug()`, `getCategoryById()`, `getPatternsByCategory()`).
 2. `src/app/(shell)/patterns/[category]/[pattern]/page.tsx` — dynamic route under the `(shell)` route group, `generateStaticParams()`, renders a TOC-based layout: Overview section, Interactive Demo section (`PreviewSection` wrapping `PreviewPane` + `WorkbenchProvider`), Props section (`PropsTable`), and Docs section (`DocsCard`), plus a sticky `TableOfContents` rail on `xl+`.
 3. `src/data/demo-data.ts` — shared demo constants (`demoSuggestions`, `demoParameters`, `demoSteps`, `demoCitations`, `demoVariations`, `demoCostBreakdown`, `demoModels`).
-4. `src/lib/registry/{index,antd,bootstrap,shadcn}.tsx` — per-framework registries of real components; `index.tsx` builds `componentRegistry: Record<string, RegistryEntry>` by intersecting the three (a pattern is dropped unless all three frameworks register it). Only bootstrap/antd/shadcn — Mantine is not doc-previewed.
+4. `src/lib/registry/{index,mantine,antd,shadcn}.tsx` — per-framework registries of real components; `index.tsx` builds `componentRegistry: Record<string, RegistryEntry>` by intersecting the three (a pattern is dropped unless all three frameworks register it).
 5. `src/data/snippet-templates.ts` — auto-generated full implementations for all three frameworks; regenerate with `pnpm generate-snippets`. The docs `build` script runs it first (`pnpm generate-snippets && next build`).
 6. `src/components/workbench/workbench.tsx` — retained for reference; the pattern page now composes sections directly: `PreviewSection` (`WorkbenchProvider` + `PreviewPane`) for the live preview, `PropsTable` for props, and `DocsCard` for docs/examples.
 7. `src/components/workbench/framework-slots/` — one slot per framework, loaded with `next/dynamic` so only the active framework's chunk mounts; `preloadInactiveSlots()` prefetches the others during idle time.
@@ -61,9 +62,9 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 - `apps/docs` has `type-check` (`tsc --noEmit`) and `test` (`vitest run`) scripts, so root `pnpm type-check`/`pnpm test` cover it.
 - The app-shell content card already applies `p-4`, so pages under `(shell)/` must NOT add their own `p-4 md:p-6` on top (double padding). `/patterns` (index) and `/patterns/[category]` follow this — the workbench page (`[category]/[pattern]`) still carries the legacy `p-4 md:p-6` wrapper it should eventually drop.
 - On Windows, `pnpm exec eslint`/`pnpm exec prettier` fail on paths that contain `(shell)` or `[category]` — the cmd.exe launcher globs/mangles the parens and brackets (`/patterns/[category]/page.tsx was unexpected at this time`). Run them via node directly with a glob that avoids the literal bracket segment: `node ./node_modules/eslint/bin/eslint.js "src/app/(shell)/**/page.tsx"` (from `apps/docs` so the ESLint config finds the right `tsconfig.json`); same trick for prettier. Plain paths (no parens/brackets) work fine via `pnpm exec`.
-- Framework deps (react, antd, react-bootstrap, @mantine/\*) are peerDependencies externalized by tsup. shadcn/ui's Radix and icon deps are bundled by tsup; only `tailwindcss` is an external peer. Never import any framework deps into `@patternbase/core`.
+- Framework deps (react, antd, @mantine/\*) are peerDependencies externalized by tsup. shadcn/ui's Radix and icon deps are bundled by tsup; only `tailwindcss` is an external peer. Never import any framework deps into `@patternbase/core`.
 - Docs resolves workspace packages from their `dist` via `next.config.mjs` `transpilePackages`, so run `pnpm build` before working against them in docs.
-- Tests live in `packages/core`, `packages/shadcn`, and `apps/docs` (vitest + jsdom). `packages/{antd,bootstrap,mantine}` currently have none. Docs lib tests: `src/lib/{registry-parity,workbench-params,public-shell}.test.ts`.
+- Tests live in `packages/core`, `packages/shadcn`, and `apps/docs` (vitest + jsdom). `packages/{antd,mantine}` currently have none. Docs lib tests: `src/lib/{registry-parity,workbench-params,public-shell}.test.ts`.
 - Snippets are auto-generated from actual component source files. Run `pnpm generate-snippets` inside `apps/docs` to regenerate. The generated file (`apps/docs/src/data/snippet-templates.ts`) is tracked and committed.
 
 ## Build & Config
@@ -71,7 +72,7 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 - tsup builds each package to both CJS and ESM with `.d.ts` declarations.
 - TypeScript strict mode via `tsconfig.base.json` (target ES2020, module ESNext, bundler resolution).
 - React and framework deps are externalized (peers); Turborepo caches build/lint/type-check; `dev` depends on `^build` and is persistent/uncached.
-- `next.config.mjs` uses `transpilePackages` for the four framework packages.
+- `next.config.mjs` uses `transpilePackages` for the three framework packages.
 - Docs uses Tailwind v4 (`@tailwindcss/postcss`) with shadcn/ui primitives. `apps/docs/src/app/globals.css` imports BOTH stylesheets — keep both:
   - `@patternbase/shadcn/styles.css` — supplies the `@theme inline` `--color-*` token mappings (made `bg-background`, `border-border`, `text-foreground`, etc. valid utilities) plus `:root`/`.dark` tokens. Dropping it breaks the build with `Cannot apply unknown utility class \`border-border\``.
   - `shadcn/tailwind.css` from the `shadcn` npm package (a direct dependency of `apps/docs`, not just a transitive) — supplies `data-open:`/`data-closed:` variants, accordion keyframes, and scroll-fade/shimmer utilities used by the vendored `apps/docs/src/components/ui/*` primitives. Dropping it breaks import resolution (`Can't resolve 'shadcn/tailwind.css'`).
@@ -97,8 +98,8 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 ## Adding a pattern
 
 1. `packages/core/src/types/patterns.ts` — prop interfaces; export from `packages/core/src/index.ts`.
-2. `packages/{antd,bootstrap,mantine,shadcn}/src/components/<name>/` — implementation + `index.ts` barrel (in shadcn, add any needed primitives to `src/components/ui/` first), then re-export from each package `src/index.ts`.
-3. Docs app: metadata in `apps/docs/src/data/patterns.ts`; demo data in `data/demo-data.ts`; registry entry in each of `src/lib/registry/{bootstrap,antd,shadcn}.tsx` (the pattern is dropped from docs unless all three register it); explanation in `data/pattern-explanations.ts`; prop table in `data/props-data.ts`. Snippets are auto-generated from component source files.
+2. `packages/{antd,mantine,shadcn}/src/components/<name>/` — implementation + `index.ts` barrel (in shadcn, add any needed primitives to `src/components/ui/` first), then re-export from each package `src/index.ts`.
+3. Docs app: metadata in `apps/docs/src/data/patterns.ts`; demo data in `data/demo-data.ts`; registry entry in each of `src/lib/registry/{mantine,antd,shadcn}.tsx` (the pattern is dropped from docs unless all three register it); explanation in `data/pattern-explanations.ts`; prop table in `data/props-data.ts`. Snippets are auto-generated from component source files.
 
 ## Plans
 

@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 import {
   LazyAntdSlot,
-  LazyBootstrapSlot,
+  LazyMantineSlot,
   LazyShadcnSlot,
   preloadInactiveSlots,
 } from "./framework-slots";
@@ -47,7 +47,7 @@ const viewportWidths: Record<Viewport, number | undefined> = {
 };
 
 const FRAMEWORK_SLOTS: Record<Framework, React.ElementType> = {
-  bootstrap: LazyBootstrapSlot,
+  mantine: LazyMantineSlot,
   antd: LazyAntdSlot,
   shadcn: LazyShadcnSlot,
 };
@@ -59,7 +59,7 @@ const viewerItem =
   "text-muted-foreground data-[state=on]:bg-primary data-[state=on]:text-primary-foreground rounded-full px-4";
 
 interface Snippets {
-  bootstrap: string;
+  mantine: string;
   antd: string;
   shadcn: string;
 }
@@ -99,8 +99,8 @@ export function PreviewPane({
             className="w-fit gap-1"
             aria-label="Framework"
           >
-            <ToggleGroupItem value="bootstrap" className={pillItem}>
-              Bootstrap
+            <ToggleGroupItem value="mantine" className={pillItem}>
+              Mantine
             </ToggleGroupItem>
             <ToggleGroupItem value="antd" className={pillItem}>
               Ant Design

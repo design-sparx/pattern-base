@@ -9,7 +9,7 @@ import { WorkbenchProvider } from "@/components/workbench/workbench-context";
 interface PreviewSectionProps {
   patternId: string;
   snippets: {
-    bootstrap: string;
+    mantine: string;
     antd: string;
     shadcn: string;
   };
