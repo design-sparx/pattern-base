@@ -14,6 +14,7 @@ export function AntdSlot({ patternId }: SlotProps) {
   const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
   const Component = antdRegistry[patternId];
   if (!Component) return null;
+
   return (
     <div className="antd-preview">
       <ConfigProvider

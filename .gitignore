@@ -27,3 +27,4 @@ nul
 .kilo/
 .lavish/
 opencode.json
+tsup.config.bundled_*.mjs

@@ -44,7 +44,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${manrope.variable} ${spaceMono.variable}`}
     >
-      <body>
+      <body suppressHydrationWarning>
         <TooltipProvider>
           <ThemeProvider
             attribute="class"

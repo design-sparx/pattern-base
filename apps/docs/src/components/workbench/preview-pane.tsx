@@ -39,14 +39,11 @@ const viewportIcons: Record<Viewport, React.ElementType> = {
   tablet: IconDeviceTablet,
   desktop: IconDeviceDesktop,
 };
-
 const viewportWidths: Record<Viewport, number | undefined> = {
   mobile: 375,
   tablet: 768,
   desktop: 1024,
 };
-
-const entranceAnimation = "animate-[entrance_280ms_ease-out_both]";
 
 const FRAMEWORK_SLOTS: Record<Framework, React.ElementType> = {
   mantine: LazyMantineSlot,
@@ -182,7 +179,7 @@ export function PreviewPane({
               }}
             >
               <div
-                className={`preview-wrapper relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl ${entranceAnimation} dark:border-neutral-700 dark:bg-neutral-900`}
+                className={`preview-wrapper relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-700 dark:bg-neutral-900`}
               >
                 <div className="flex items-center gap-2 border-b border-neutral-200 bg-white px-4 py-2 dark:border-neutral-700 dark:bg-neutral-800">
                   <div className="flex gap-1.5">
