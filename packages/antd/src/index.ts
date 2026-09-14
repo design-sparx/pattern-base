@@ -52,3 +52,4 @@ export { Variations } from "./components/variations";
 export { Verification } from "./components/verification";
 export { VoiceAndTone } from "./components/voice-and-tone";
 export { Watermark } from "./components/watermark";
+export { getAntdTheme } from "./lib/theme";
