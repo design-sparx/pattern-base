@@ -43,8 +43,10 @@ const viewportIcons: Record<Viewport, React.ElementType> = {
 const viewportWidths: Record<Viewport, number | undefined> = {
   mobile: 375,
   tablet: 768,
-  desktop: undefined,
+  desktop: 1024,
 };
+
+const entranceAnimation = "animate-[entrance_280ms_ease-out_both]";
 
 const FRAMEWORK_SLOTS: Record<Framework, React.ElementType> = {
   mantine: LazyMantineSlot,
@@ -85,9 +87,9 @@ export function PreviewPane({
   }, []);
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden bg-[radial-gradient(#e8e8e8_1px,transparent_1px)] bg-[length:16px_16px] dark:bg-[radial-gradient(#3a3a3a_1px,transparent_1px)]">
       {/* Single-row toolbar: framework pills | preview/code toggle | devices */}
-      <div className="px-2">
+      <div className="mx-2 rounded-lg border bg-white/80 p-2 shadow-xl backdrop-blur-md dark:bg-neutral-900/80">
         <div className="flex w-full flex-wrap items-center justify-between gap-2">
           <ToggleGroup
             type="single"
@@ -170,27 +172,42 @@ export function PreviewPane({
         </CardContent>
       ) : (
         <CardContent className="p-0">
-          <div className="p-3">
-            <div className="dot-grid-bg flex min-h-[180px] items-center justify-center rounded-md p-3">
+          <div className="flex min-h-[340px] items-center justify-center">
+            <div
+              className="relative px-2"
+              style={{
+                width: viewportWidths[viewport],
+                maxWidth: "100%",
+                transition: "width 200ms ease",
+              }}
+            >
               <div
-                className="w-full"
-                style={{
-                  maxWidth: viewportWidths[viewport],
-                  transition: "max-width 200ms ease",
-                }}
+                className={`preview-wrapper relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl ${entranceAnimation} dark:border-neutral-700 dark:bg-neutral-900`}
               >
-                <PreviewErrorBoundary
-                  key={`${patternId}-${framework}`}
-                  patternId={patternId}
-                >
-                  <ActiveSlot patternId={patternId} />
-                </PreviewErrorBoundary>
+                <div className="flex items-center gap-2 border-b border-neutral-200 bg-white px-4 py-2 dark:border-neutral-700 dark:bg-neutral-800">
+                  <div className="flex gap-1.5">
+                    <span className="h-3 w-3 rounded-full bg-red-400/90" />
+                    <span className="h-3 w-3 rounded-full bg-yellow-400/90" />
+                    <span className="h-3 w-3 rounded-full bg-green-400/90" />
+                  </div>
+                  <div className="ml-3 flex-1 rounded-md bg-white px-3 py-1.5 text-xs text-neutral-500 dark:bg-neutral-700 dark:text-neutral-300">
+                    patternbase.dev/patterns/{patternId}
+                  </div>
+                </div>
+                <div className="bg-white p-4 dark:bg-neutral-900">
+                  <PreviewErrorBoundary
+                    key={`${patternId}-${framework}`}
+                    patternId={patternId}
+                  >
+                    <ActiveSlot patternId={patternId} />
+                  </PreviewErrorBoundary>
+                </div>
               </div>
             </div>
-            <p className="text-muted-foreground text-center text-xs">
-              Rendered live from <code>@patternbase/{framework}</code>
-            </p>
           </div>
+          <p className="text-muted-foreground text-center text-xs">
+            Rendered live from <code>@patternbase/{framework}</code>
+          </p>
         </CardContent>
       )}
     </Card>
