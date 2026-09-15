@@ -42,7 +42,7 @@ export function Connectors({
                 ) : (
                   <Button
                     key="connect"
-                    type="primary"
+                    variant="solid"
                     size="small"
                     onClick={() => {
                       onConnect(source.id);

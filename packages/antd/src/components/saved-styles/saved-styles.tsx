@@ -36,7 +36,7 @@ export function SavedStyles({
               }}
             />
             <Button
-              type="primary"
+              variant="solid"
               disabled={saveDisabled}
               onClick={() => {
                 onSaveStyle(name.trim());
@@ -81,7 +81,7 @@ export function SavedStyles({
                     <Button
                       size="small"
                       danger
-                      type="text"
+                      variant="text"
                       onClick={(e) => {
                         e.stopPropagation();
                         onDeleteStyle(style.id);
@@ -111,7 +111,7 @@ export function SavedStyles({
             }}
           />
           <Button
-            type="primary"
+            variant="solid"
             disabled={saveDisabled}
             onClick={() => {
               onSaveStyle(name.trim());
@@ -146,7 +146,7 @@ export function SavedStyles({
                         key={`delete-${style.id}`}
                         size="small"
                         danger
-                        type="text"
+                        variant="text"
                         onClick={(e) => {
                           e.stopPropagation();
                           onDeleteStyle(style.id);

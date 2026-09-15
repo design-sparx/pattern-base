@@ -45,12 +45,15 @@ export function Summary({
               {summaryLength}/{originalLength} chars
             </Text>
           )}
-          {onCopy ? <Tooltip label="Copy">
+          {onCopy ? (
+            <Tooltip label="Copy">
               <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
                 <IconCopy size={14} />
               </ActionIcon>
-            </Tooltip> : null}
-          {onRegenerate ? <Tooltip label="Regenerate">
+            </Tooltip>
+          ) : null}
+          {onRegenerate ? (
+            <Tooltip label="Regenerate">
               <ActionIcon
                 variant="subtle"
                 size="sm"
@@ -59,17 +62,22 @@ export function Summary({
               >
                 <IconRefresh size={14} />
               </ActionIcon>
-            </Tooltip> : null}
-          {onExpand ? <Tooltip label="Expand">
+            </Tooltip>
+          ) : null}
+          {onExpand ? (
+            <Tooltip label="Expand">
               <ActionIcon variant="subtle" size="sm" onClick={onExpand}>
                 <IconZoomIn size={14} />
               </ActionIcon>
-            </Tooltip> : null}
+            </Tooltip>
+          ) : null}
           {variant === "collapsible" && (
             <ActionIcon
               variant="subtle"
               size="sm"
-              onClick={() => { setCollapsed((c) => !c); }}
+              onClick={() => {
+                setCollapsed((c) => !c);
+              }}
             >
               {collapsed ? (
                 <IconChevronDown size={14} />
@@ -81,7 +89,7 @@ export function Summary({
         </Group>
       </Group>
       {variant === "collapsible" ? (
-        <Collapse in={!collapsed}>
+        <Collapse expanded={!collapsed}>
           <Text size="sm">{content}</Text>
         </Collapse>
       ) : (

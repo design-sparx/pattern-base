@@ -74,7 +74,7 @@ export function ChainedAction({
       />
 
       <Button
-        type="primary"
+        variant="solid"
         size="small"
         onClick={onExecute}
         loading={isExecuting}

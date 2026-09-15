@@ -81,7 +81,7 @@ export function Consent({
 
       <Space style={{ marginTop: 12 }}>
         <Button
-          type="primary"
+          variant="solid"
           size="small"
           disabled={!requiredMet}
           onClick={() => {

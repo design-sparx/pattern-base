@@ -60,7 +60,7 @@ export function SampleResponse({
           ) : null}
           {onAcceptSample ? (
             <Button
-              type="primary"
+              variant="solid"
               size="small"
               icon={<CheckOutlined />}
               disabled={!sample || isGenerating}

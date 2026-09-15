@@ -85,7 +85,7 @@ export function Avatar({
             {badgeLabel ? <Tag>{badgeLabel}</Tag> : null}
             <Tag color={statusColorMap[status]}>{status}</Tag>
             {onSelect ? (
-              <Button size="small" type="link" onClick={onSelect}>
+              <Button size="small" variant="link" onClick={onSelect}>
                 View profile
               </Button>
             ) : null}

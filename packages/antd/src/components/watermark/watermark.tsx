@@ -80,7 +80,7 @@ export function Watermark({
         </Text>
       ) : null}
       {onVerify ? (
-        <Button size="small" type="link" onClick={onVerify}>
+        <Button size="small" variant="link" onClick={onVerify}>
           Verify
         </Button>
       ) : null}

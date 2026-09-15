@@ -83,7 +83,7 @@ export function Describe({
           {onReuse && inferredPrompt ? (
             <Button
               size="small"
-              type="primary"
+              variant="solid"
               icon={<SendOutlined />}
               onClick={() => {
                 onReuse(inferredPrompt);

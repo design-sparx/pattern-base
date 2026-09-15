@@ -59,7 +59,7 @@ export function Citation({ citation }: CitationProps) {
             ) : null}
           </Space>
           <Button
-            type="link"
+            variant="link"
             size="small"
             onClick={() => {
               setExpanded(!expanded);
@@ -114,7 +114,6 @@ export function CitationsList({
 
       {citations.length > maxVisible && (
         <Button
-          type="default"
           block
           size="small"
           onClick={() => {

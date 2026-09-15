@@ -38,7 +38,7 @@ export function DraftMode({
               <Button
                 key={`revert-${draft.id}`}
                 size="small"
-                type="text"
+                variant="text"
                 onClick={(e) => {
                   e.stopPropagation();
                   onRevertToDraft(draft.id);
@@ -50,7 +50,7 @@ export function DraftMode({
                 <Button
                   key={`branch-${draft.id}`}
                   size="small"
-                  type="text"
+                  variant="text"
                   onClick={(e) => {
                     e.stopPropagation();
                     onBranchFromDraft(draft.id);

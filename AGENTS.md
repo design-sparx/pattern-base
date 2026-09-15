@@ -74,6 +74,7 @@ Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-v
 - shadcn/ui components consume tokens through CSS variables mapped in `packages/shadcn/src/styles.css` via `@theme inline`. The docs app defines the actual values in `apps/docs/src/app/globals.css` (`:root` / `.dark`).
 - Mantine previews consume tokens through `getMantineTheme()` in `packages/mantine/src/lib/theme.ts`. The docs app passes these into `MantineProvider`.
 - Ant Design previews are intentionally **not** given custom token colors. `apps/docs/src/components/workbench/framework-slots/antd-slot.tsx` only passes the light/dark algorithm to `ConfigProvider`. Custom antd tokens caused a runtime crash (`derivative is not a function`) from antd's internal theme derivation; keep this slot algorithm-only until that path is revisited.
+- The antd package targets antd v6. Button `type` was deprecated in v6 in favor of `variant`; the codebase has been migrated to `variant` to avoid deprecation warnings. `@ant-design/icons` is kept on v6 alongside antd v6.
 
 ## Build & Config
 

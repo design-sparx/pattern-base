@@ -178,7 +178,7 @@ export function ActionPlan({
       {onApprove || onReject ? (
         <Space style={{ marginTop: 12 }}>
           {onApprove ? (
-            <Button type="primary" size="small" onClick={onApprove}>
+            <Button variant="solid" size="small" onClick={onApprove}>
               Approve
             </Button>
           ) : null}
@@ -499,7 +499,7 @@ export function Attachments({
             ) : null}
           </div>
           <Button
-            type="text"
+            variant="text"
             danger
             size="small"
             icon={<DeleteOutlined />}
@@ -1047,7 +1047,7 @@ export function Avatar({
             {badgeLabel ? <Tag>{badgeLabel}</Tag> : null}
             <Tag color={statusColorMap[status]}>{status}</Tag>
             {onSelect ? (
-              <Button size="small" type="link" onClick={onSelect}>
+              <Button size="small" variant="link" onClick={onSelect}>
                 View profile
               </Button>
             ) : null}
@@ -1378,7 +1378,7 @@ export function Branches({
               <Button
                 key={\`branch-\${branch.id}\`}
                 size="small"
-                type="text"
+                variant="text"
                 onClick={(e) => {
                   e.stopPropagation();
                   onCreateBranch(branch.id);
@@ -1872,7 +1872,7 @@ export function ChainedAction({
       />
 
       <Button
-        type="primary"
+        variant="solid"
         size="small"
         onClick={onExecute}
         loading={isExecuting}
@@ -2264,7 +2264,7 @@ export function Citation({ citation }: CitationProps) {
             ) : null}
           </Space>
           <Button
-            type="link"
+            variant="link"
             size="small"
             onClick={() => {
               setExpanded(!expanded);
@@ -2319,7 +2319,6 @@ export function CitationsList({
 
       {citations.length > maxVisible && (
         <Button
-          type="default"
           block
           size="small"
           onClick={() => {
@@ -3049,7 +3048,7 @@ export function Connectors({
                 ) : (
                   <Button
                     key="connect"
-                    type="primary"
+                    variant="solid"
                     size="small"
                     onClick={() => {
                       onConnect(source.id);
@@ -3387,7 +3386,7 @@ export function Consent({
 
       <Space style={{ marginTop: 12 }}>
         <Button
-          type="primary"
+          variant="solid"
           size="small"
           disabled={!requiredMet}
           onClick={() => {
@@ -4281,7 +4280,7 @@ export function DataOwnership({
                 ? [
                     <Button
                       key="delete"
-                      type="text"
+                      variant="text"
                       danger
                       size="small"
                       icon={<DeleteOutlined />}
@@ -4677,7 +4676,7 @@ export function Describe({
           {onReuse && inferredPrompt ? (
             <Button
               size="small"
-              type="primary"
+              variant="solid"
               icon={<SendOutlined />}
               onClick={() => {
                 onReuse(inferredPrompt);
@@ -5242,7 +5241,7 @@ export function DraftMode({
               <Button
                 key={\`revert-\${draft.id}\`}
                 size="small"
-                type="text"
+                variant="text"
                 onClick={(e) => {
                   e.stopPropagation();
                   onRevertToDraft(draft.id);
@@ -5254,7 +5253,7 @@ export function DraftMode({
                 <Button
                   key={\`branch-\${draft.id}\`}
                   size="small"
-                  type="text"
+                  variant="text"
                   onClick={(e) => {
                     e.stopPropagation();
                     onBranchFromDraft(draft.id);
@@ -5543,7 +5542,7 @@ export function Expand({
             <Spin size="small" />
           ) : (
             <Button
-              type="link"
+              variant="link"
               size="small"
               style={{ padding: 0 }}
               onClick={() => {
@@ -5567,7 +5566,7 @@ export function Expand({
           <Spin size="small" style={{ marginLeft: 4 }} />
         ) : !expanded ? (
           <Button
-            type="link"
+            variant="link"
             size="small"
             style={{ padding: 0, marginLeft: 4 }}
             onClick={() => {
@@ -5952,7 +5951,7 @@ export function Filters({
       >
         {title ? <Text strong>{title}</Text> : null}
         {onClear ? (
-          <Button type="link" size="small" onClick={onClear}>
+          <Button variant="link" size="small" onClick={onClear}>
             Clear all
           </Button>
         ) : null}
@@ -6289,7 +6288,7 @@ export function FollowUp({
           {visible.map((f) => (
             <Button
               key={f.id}
-              type="dashed"
+              variant="dashed"
               size="small"
               onClick={() => {
                 onSelect(f);
@@ -6597,7 +6596,7 @@ export function Footprints({
       >
         {title ? <Text strong>{title}</Text> : null}
         {onClear ? (
-          <Button type="link" size="small" onClick={onClear}>
+          <Button variant="link" size="small" onClick={onClear}>
             Clear history
           </Button>
         ) : null}
@@ -8071,7 +8070,7 @@ export function Inpainting({
             style={{ marginBottom: 8 }}
           />
           <Button
-            type="primary"
+            variant="solid"
             size="small"
             loading={isProcessing}
             onClick={() => {
@@ -8449,7 +8448,7 @@ export function Madlibs({
       ) : null}
       <div style={{ marginTop: 12 }}>
         <Button
-          type="primary"
+          variant="solid"
           loading={isGenerating}
           onClick={() => {
             onSubmit(values);
@@ -8764,7 +8763,7 @@ export function Memory({
                   <Space size={4}>
                     {isEditing ? (
                       <Button
-                        type="text"
+                        variant="text"
                         size="small"
                         icon={<SaveOutlined />}
                         onClick={() => {
@@ -8777,7 +8776,7 @@ export function Memory({
                       </Button>
                     ) : (
                       <Button
-                        type="text"
+                        variant="text"
                         size="small"
                         icon={<EditOutlined />}
                         onClick={() => {
@@ -8789,7 +8788,7 @@ export function Memory({
                       </Button>
                     )}
                     <Button
-                      type="text"
+                      variant="text"
                       size="small"
                       danger
                       icon={<DeleteOutlined />}
@@ -9583,7 +9582,7 @@ export function Nudges({
                 {n.icon ? <span>{n.icon}</span> : null}
                 <span style={{ flex: 1, fontSize: 13 }}>{n.message}</span>
                 {n.actionLabel && n.onAction ? (
-                  <Button type="link" size="small" onClick={n.onAction}>
+                  <Button variant="link" size="small" onClick={n.onAction}>
                     {n.actionLabel}
                   </Button>
                 ) : null}
@@ -9802,7 +9801,7 @@ export function OpenInput({
 
       <Space.Compact style={{ width: "100%" }}>
         <TextArea
-          ref={textareaRef}
+          ref={textareaRef as any}
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
@@ -9815,7 +9814,7 @@ export function OpenInput({
           style={{ resize: "none" }}
         />
         <Button
-          type="primary"
+          variant="solid"
           icon={isLoading ? <LoadingOutlined /> : <SendOutlined />}
           onClick={handleSubmit}
           disabled={!value.trim() || isLoading}
@@ -9827,6 +9826,7 @@ export function OpenInput({
     </Space>
   );
 }
+
 `,
     shadcn: `import { Send } from "lucide-react";
 import { type KeyboardEvent, useRef, useState } from "react";
@@ -10931,7 +10931,7 @@ export function PromptEnhancer({
           <Space>
             <Button
               size="small"
-              type="primary"
+              variant="solid"
               loading={isEnhancing}
               onClick={() => {
                 onEnhance(prompt);
@@ -11008,7 +11008,7 @@ export function PromptEnhancer({
         <Space>
           <Button
             size="small"
-            type="primary"
+            variant="solid"
             loading={isEnhancing}
             onClick={() => {
               onEnhance(prompt);
@@ -11539,7 +11539,7 @@ export function References({
                 </Space>
                 {onRemoveReference ? (
                   <Button
-                    type="text"
+                    variant="text"
                     size="small"
                     danger
                     icon={<DeleteOutlined />}
@@ -11780,7 +11780,7 @@ export function Regenerate({
   if (variant === "icon") {
     return (
       <Button
-        type="text"
+        variant="text"
         size="small"
         icon={isRegenerating ? <LoadingOutlined /> : <ReloadOutlined />}
         onClick={onRegenerate}
@@ -12038,7 +12038,6 @@ export function Restructure({
             <Button
               key={opt.id}
               size="small"
-              type="default"
               disabled={isProcessing}
               onClick={() => {
                 onRestructure(opt.id);
@@ -12839,7 +12838,7 @@ export function SampleResponse({
           ) : null}
           {onAcceptSample ? (
             <Button
-              type="primary"
+              variant="solid"
               size="small"
               icon={<CheckOutlined />}
               disabled={!sample || isGenerating}
@@ -13151,7 +13150,7 @@ export function SavedStyles({
               }}
             />
             <Button
-              type="primary"
+              variant="solid"
               disabled={saveDisabled}
               onClick={() => {
                 onSaveStyle(name.trim());
@@ -13196,7 +13195,7 @@ export function SavedStyles({
                     <Button
                       size="small"
                       danger
-                      type="text"
+                      variant="text"
                       onClick={(e) => {
                         e.stopPropagation();
                         onDeleteStyle(style.id);
@@ -13226,7 +13225,7 @@ export function SavedStyles({
             }}
           />
           <Button
-            type="primary"
+            variant="solid"
             disabled={saveDisabled}
             onClick={() => {
               onSaveStyle(name.trim());
@@ -13261,7 +13260,7 @@ export function SavedStyles({
                         key={\`delete-\${style.id}\`}
                         size="small"
                         danger
-                        type="text"
+                        variant="text"
                         onClick={(e) => {
                           e.stopPropagation();
                           onDeleteStyle(style.id);
@@ -14587,7 +14586,7 @@ export function Summary({
         </Group>
       </Group>
       {variant === "collapsible" ? (
-        <Collapse in={!collapsed}>
+        <Collapse expanded={!collapsed}>
           <Text size="sm">{content}</Text>
         </Collapse>
       ) : (
@@ -14650,7 +14649,7 @@ export function Summary({
     actions.push(
       <Button
         key="regen"
-        type="text"
+        variant="text"
         size="small"
         icon={<ReloadOutlined />}
         disabled={isGenerating}
@@ -14664,7 +14663,7 @@ export function Summary({
     actions.push(
       <Button
         key="copy"
-        type="text"
+        variant="text"
         size="small"
         icon={<CopyOutlined />}
         onClick={onCopy}
@@ -14677,7 +14676,7 @@ export function Summary({
     actions.push(
       <Button
         key="toggle"
-        type="link"
+        variant="link"
         size="small"
         onClick={() => {
           setCollapsed(!collapsed);
@@ -14691,7 +14690,7 @@ export function Summary({
     actions.push(
       <Button
         key="expand"
-        type="link"
+        variant="link"
         size="small"
         icon={<ExpandOutlined />}
         onClick={onExpand}
@@ -16968,7 +16967,7 @@ export function Watermark({
         </Text>
       ) : null}
       {onVerify ? (
-        <Button size="small" type="link" onClick={onVerify}>
+        <Button size="small" variant="link" onClick={onVerify}>
           Verify
         </Button>
       ) : null}

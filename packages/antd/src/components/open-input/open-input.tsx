@@ -52,7 +52,7 @@ export function OpenInput({
 
       <Space.Compact style={{ width: "100%" }}>
         <TextArea
-          ref={textareaRef}
+          ref={textareaRef as any}
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
@@ -65,7 +65,7 @@ export function OpenInput({
           style={{ resize: "none" }}
         />
         <Button
-          type="primary"
+          variant="solid"
           icon={isLoading ? <LoadingOutlined /> : <SendOutlined />}
           onClick={handleSubmit}
           disabled={!value.trim() || isLoading}

@@ -52,7 +52,7 @@ export function FollowUp({
           {visible.map((f) => (
             <Button
               key={f.id}
-              type="dashed"
+              variant="dashed"
               size="small"
               onClick={() => {
                 onSelect(f);

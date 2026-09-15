@@ -29,7 +29,7 @@ export function PromptEnhancer({
           <Space>
             <Button
               size="small"
-              type="primary"
+              variant="solid"
               loading={isEnhancing}
               onClick={() => {
                 onEnhance(prompt);
@@ -106,7 +106,7 @@ export function PromptEnhancer({
         <Space>
           <Button
             size="small"
-            type="primary"
+            variant="solid"
             loading={isEnhancing}
             onClick={() => {
               onEnhance(prompt);

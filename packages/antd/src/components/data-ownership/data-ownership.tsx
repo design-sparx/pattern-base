@@ -47,7 +47,7 @@ export function DataOwnership({
                 ? [
                     <Button
                       key="delete"
-                      type="text"
+                      variant="text"
                       danger
                       size="small"
                       icon={<DeleteOutlined />}
