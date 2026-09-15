@@ -2,7 +2,7 @@
 
 PatternBase is a pnpm + Turborepo monorepo: 54 AI-UX pattern components (shapeof.ai patterns), each implemented with identical prop interfaces in three UI libraries (Ant Design, Mantine, shadcn/ui), plus a Next.js docs site. The `@patternbase/*` packages are published (root `publishConfig.access: public`); the private shared configs use the same prefix.
 
-Canonical repo: `https://github.com/kelvink96/pattern-base` (was `kelvink96/ai-vory`; that URL redirects, and `origin` points at the new location).
+Canonical repo: `https://github.com/design-sparx/pattern-base` (`origin` points at this URL).
 
 ## Layout
 

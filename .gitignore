@@ -28,3 +28,5 @@ nul
 .lavish/
 opencode.json
 tsup.config.bundled_*.mjs
+docs/blogs/
+
