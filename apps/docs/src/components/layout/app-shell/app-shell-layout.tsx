@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  IconInfoCircle,
-  IconLayoutSidebar,
-  IconSparkles,
-} from "@tabler/icons-react";
+import { IconInfoCircle, IconLayoutSidebar } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -25,6 +21,7 @@ import {
   SidebarProvider,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Logo } from "@/components/layout/logo";
 
 function ShellSidebarFooter() {
   const pathname = usePathname();
@@ -69,7 +66,7 @@ function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild>
                 <Link href="/" aria-label="PatternBase home">
-                  <IconSparkles className="text-sidebar-primary" />
+                  <Logo size={22} />
                   <span className="font-semibold">PatternBase</span>
                   <span className="text-muted-foreground ml-auto font-mono text-xs">
                     v0.1.0
