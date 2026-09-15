@@ -1,6 +1,6 @@
 {
   "name": "@patternbase/mantine",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "license": "MIT",
   "description": "Mantine implementation of AI UI components",
   "main": "./dist/index.js",
