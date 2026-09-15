@@ -4,7 +4,7 @@ A multi-framework React component library for AI user experience patterns.
 
 ## Overview
 
-PatternBase provides 54 ready-to-use AI UX pattern components (based on [shapeof.ai](https://www.shapeof.ai) patterns), implemented in **Bootstrap**, **Ant Design**, **Mantine**, and **shadcn/ui**, sharing a common set of types and hooks from a framework-agnostic core package.
+PatternBase provides 54 ready-to-use AI UX pattern components (based on [shapeof.ai](https://www.shapeof.ai) patterns), implemented in **Ant Design**, **Mantine**, and **shadcn/ui**, sharing a common set of types and hooks from a framework-agnostic core package.
 
 ### AI UX Patterns
 
@@ -24,7 +24,6 @@ All 54 patterns are grouped into 5 categories:
 packages/
   core/           @patternbase/core        — Types, hooks, utilities (framework-agnostic)
   antd/           @patternbase/antd        — Ant Design implementations
-  bootstrap/      @patternbase/bootstrap   — React Bootstrap implementations
   mantine/        @patternbase/mantine     — Mantine implementations
   shadcn/         @patternbase/shadcn      — shadcn/ui implementations (Tailwind v4, Radix, vendored primitives)
   eslint-config/  @patternbase/eslint-config — Shared ESLint configs
@@ -52,9 +51,6 @@ Then open [http://localhost:3000](http://localhost:3000).
 ## Usage
 
 ```tsx
-// Bootstrap
-import { OpenInput, Suggestions } from "@patternbase/bootstrap";
-
 // Ant Design
 import { OpenInput, Suggestions } from "@patternbase/antd";
 
@@ -68,11 +64,11 @@ import { OpenInput, Suggestions } from "@patternbase/shadcn";
 import { useAIGeneration, useStreamingResponse } from "@patternbase/core";
 ```
 
-All four framework packages expose identical prop interfaces — swap between Bootstrap, Ant Design, Mantine, and shadcn/ui without changing component props.
+All three framework packages expose identical prop interfaces — swap between Ant Design, Mantine, and shadcn/ui without changing component props.
 
 ## Docs Site Architecture
 
-The documentation site (`apps/docs`) is a Next.js 16 app using Mantine UI. It provides live, interactive previews of every pattern in all four frameworks.
+The documentation site (`apps/docs`) is a Next.js 16 app using Mantine UI. It provides live, interactive previews of every pattern in all three frameworks.
 
 ### How pattern previews work
 
@@ -80,27 +76,26 @@ Each pattern detail page (e.g. `/patterns/prompt-actions/open-input`) is assembl
 
 1. **Pattern metadata** (`src/data/patterns.ts`) — Arrays of patterns and categories with IDs, slugs, names, descriptions, and tags. Lookup helpers (`getPatternBySlug`, `getCategoryById`) resolve URL params to data.
 
-2. **Component registry** (`src/lib/registry.tsx`) — A map from pattern ID to component factories. Each entry has `bootstrap`, `antd`, `mantine`, and `shadcn` functions that render the actual library component with demo data:
+2. **Component registry** (`src/lib/registry.tsx`) — A map from pattern ID to component factories. Each entry has `antd`, `mantine`, and `shadcn` functions that render the actual library component with demo data:
 
    ```ts
    'open-input': {
-     bootstrap: () => <BsOpenInput placeholder="Ask anything..." />,
-     antd: () => <AntOpenInput placeholder="Ask anything..." />,
-     mantine: () => <MnOpenInput placeholder="Ask anything..." />,
-     shadcn: () => <ShOpenInput placeholder="Ask anything..." />,
-   }
+      antd: () => <AntOpenInput placeholder="Ask anything..." />,
+      mantine: () => <MnOpenInput placeholder="Ask anything..." />,
+      shadcn: () => <ShOpenInput placeholder="Ask anything..." />,
+    }
    ```
 
 3. **Snippet templates** (`src/data/snippet-templates.ts`) — Template functions keyed by pattern ID that return framework-specific usage examples shown in the Code tab.
 
-The `ComponentPreview` component ties these together with a tabbed UI (Preview / Code) and a framework toggle (Bootstrap / Ant Design / Mantine / shadcn/ui).
+The `ComponentPreview` component ties these together with a tabbed UI (Preview / Code) and a framework toggle (Ant Design / Mantine / shadcn/ui).
 
 ### Adding a new pattern to the docs
 
 1. Add pattern metadata to `src/data/patterns.ts`
 2. Add demo data to `src/data/demo-data.ts` if needed
-3. Register all four framework components with demo data in `src/lib/registry.tsx`
-4. Add snippet templates for all four frameworks in `src/data/snippet-templates.ts`
+3. Register all three framework components with demo data in `src/lib/registry.tsx`
+4. Add snippet templates for all three frameworks in `src/data/snippet-templates.ts`
 5. Add a prop table to `src/data/props-data.ts`
 
 ## Scripts
