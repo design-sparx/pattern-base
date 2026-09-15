@@ -10,31 +10,33 @@ export interface AntdThemeOptions {
 export function getAntdTheme(options: AntdThemeOptions): ThemeConfig {
   const { tokens, colorScheme } = options;
   const isDark = colorScheme === "dark";
+  const primary = tokens.colors.primary;
+  const primaryForeground = tokens.colors.primaryForeground;
 
   return {
     token: {
-      colorPrimary: "var(--primary)",
+      colorPrimary: primary,
       colorPrimaryHover: isDark
-        ? "var(--primary)"
-        : "color-mix(in oklab, var(--primary) 88%, transparent)",
+        ? primary
+        : `color-mix(in oklab, ${primary} 88%, transparent)`,
       colorPrimaryActive: isDark
-        ? "var(--primary)"
-        : "color-mix(in oklab, var(--primary) 78%, transparent)",
-      colorPrimaryText: "var(--primary-foreground)",
-      colorSuccess: "var(--chart-2)",
-      colorWarning: "var(--chart-3)",
-      colorError: "var(--destructive)",
-      colorInfo: "var(--chart-1)",
-      colorBgLayout: "var(--background)",
-      colorBgContainer: "var(--card)",
-      colorBgElevated: "var(--popover)",
-      colorText: "var(--foreground)",
-      colorTextSecondary: "var(--muted-foreground)",
-      colorTextTertiary: "var(--muted-foreground)",
-      colorTextQuaternary: "var(--muted-foreground)",
-      colorBorder: "var(--border)",
-      colorBorderSecondary: "var(--border)",
-      colorFillTertiary: "var(--muted)",
+        ? primary
+        : `color-mix(in oklab, ${primary} 78%, transparent)`,
+      colorPrimaryText: primaryForeground,
+      colorSuccess: tokens.colors.chart2,
+      colorWarning: tokens.colors.chart3,
+      colorError: tokens.colors.destructive,
+      colorInfo: tokens.colors.chart1,
+      colorBgLayout: tokens.colors.background,
+      colorBgContainer: tokens.colors.card,
+      colorBgElevated: tokens.colors.popover,
+      colorText: tokens.colors.foreground,
+      colorTextSecondary: tokens.colors.mutedForeground,
+      colorTextTertiary: tokens.colors.mutedForeground,
+      colorTextQuaternary: tokens.colors.mutedForeground,
+      colorBorder: tokens.colors.border,
+      colorBorderSecondary: tokens.colors.border,
+      colorFillTertiary: tokens.colors.muted,
       borderRadius: 10,
       borderRadiusSM: 6,
       borderRadiusLG: 10,
