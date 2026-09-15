@@ -58,7 +58,7 @@ export function References({
                 </Space>
                 {onRemoveReference ? (
                   <Button
-                    type="text"
+                    variant="text"
                     size="small"
                     danger
                     icon={<DeleteOutlined />}

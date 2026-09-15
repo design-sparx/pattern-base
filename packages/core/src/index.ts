@@ -1,3 +1,6 @@
+// Theme
+export { darkTokens, lightTokens, type DesignTokens } from "./theme";
+
 // Types
 export * from "./types/common";
 export * from "./types/components";

@@ -1,17 +1,32 @@
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconChevronRight,
+} from "@tabler/icons-react";
+import { cn } from "cn";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import type { RelatedPatternLink } from "@/components/preview/docs-card";
+import { DocsCard } from "@/components/preview/docs-card";
+import { PropsTable } from "@/components/preview/props-table";
+import { TableOfContents } from "@/components/preview/table-of-contents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { RelatedPatternLink } from "@/components/workbench/inspector-pane";
-import { Workbench } from "@/components/workbench/workbench";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { PreviewSection } from "@/components/workbench/preview-section";
 import { patternExplanations } from "@/data/pattern-explanations";
 import { getCategoryById, getPatternBySlug, patterns } from "@/data/patterns";
 import { propsData } from "@/data/props-data";
 import { codeSnippets } from "@/data/snippet-templates";
-import { getCategoryColors } from "@/lib/category-colors";
 import { getCategoryIcon } from "@/lib/category-icons";
 
 function getRecordEntry<T>(
@@ -59,7 +74,6 @@ export default async function PatternPage({
 
   if (!pattern || !category) notFound();
 
-  const colors = getCategoryColors(pattern.category);
   const Icon = getCategoryIcon(pattern.category);
 
   const currentIndex = patterns.findIndex((p) => p.id === pattern.id);
@@ -80,80 +94,126 @@ export default async function PatternPage({
       })
     : [];
 
+  const tocItems = [
+    { id: "overview", label: "Overview" },
+    { id: "demo", label: "Interactive Demo" },
+    ...(propDefinitions?.length ? [{ id: "props", label: "Props" }] : []),
+    ...(explanation ? [{ id: "docs", label: "Docs" }] : []),
+  ];
+
   return (
-    <div className="p-4 md:p-6 lg:p-8">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2">
-          <div
-            className={`flex items-center justify-center rounded-md ${colors.chip} p-1`}
+    <div className="flex min-h-full flex-col gap-4">
+      <div className="grid gap-4 xl:grid-cols-[1fr_16rem]">
+        <div className="flex min-w-0 flex-col gap-4">
+          {/* Overview */}
+          <section id="overview" className="scroll-mt-24">
+            <Card>
+              <CardHeader>
+                <CardTitle>Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div
+                      className={cn(
+                        "border-border flex size-9 shrink-0 items-center justify-center rounded-lg border",
+                      )}
+                    >
+                      <Icon size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <CardTitle className="text-xl font-semibold">
+                        {pattern.name}
+                      </CardTitle>
+                      <CardDescription className="mt-1 max-w-prose">
+                        <div className="flex flex-col gap-2">
+                          <p>{pattern.description}</p>
+                          <div className="flex flex-wrap gap-2">
+                            {pattern.tags.map((tag) => (
+                              <Badge key={tag} variant="secondary">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Link
+                    href={`/patterns/${category.id}`}
+                    className="text-primary hover:bg-primary/10 hover:text-primary/85 border-primary/20 group inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium no-underline transition-colors"
+                  >
+                    {category.name}
+                    <IconChevronRight
+                      size={14}
+                      className="transition-transform group-hover:translate-x-0.5"
+                    />
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Interactive Demo */}
+          {!snippets ? (
+            <p className="text-red-600 dark:text-red-400">
+              Snippet generation missing for {`"${pattern.id}"`} — run{" "}
+              <code className="bg-muted rounded px-1.5 py-0.5 text-xs">
+                pnpm generate-snippets
+              </code>
+              .
+            </p>
+          ) : (
+            <section id="demo" className="scroll-mt-24">
+              <PreviewSection patternId={pattern.id} snippets={snippets} />
+            </section>
+          )}
+
+          {/* Props */}
+          {propDefinitions?.length ? (
+            <section id="props" className="scroll-mt-24">
+              <PropsTable props={propDefinitions} />
+            </section>
+          ) : null}
+
+          {/* Docs */}
+          {explanation ? (
+            <section id="docs" className="scroll-mt-24">
+              <DocsCard explanation={explanation} relatedLinks={relatedLinks} />
+            </section>
+          ) : null}
+
+          {/* Prev/Next Navigation */}
+          <Separator className="mt-2" />
+          <nav
+            aria-label="Pattern navigation"
+            className="flex items-center justify-between gap-2 pb-4"
           >
-            <Icon size={16} className={colors.text} />
-          </div>
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-            {pattern.name}
-          </h1>
+            {prev ? (
+              <Button asChild variant="outline">
+                <Link href={`/patterns/${prev.category}/${prev.slug}`}>
+                  <IconArrowLeft data-icon="inline-start" />
+                  {prev.name}
+                </Link>
+              </Button>
+            ) : (
+              <span aria-hidden />
+            )}
+            {next ? (
+              <Button asChild variant="outline">
+                <Link href={`/patterns/${next.category}/${next.slug}`}>
+                  {next.name}
+                  <IconArrowRight data-icon="inline-end" />
+                </Link>
+              </Button>
+            ) : (
+              <span aria-hidden />
+            )}
+          </nav>
         </div>
-        <p className="mt-2 text-gray-500 lg:text-lg dark:text-gray-400">
-          {pattern.description}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {pattern.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
-              {tag}
-            </Badge>
-          ))}
-        </div>
+
+        <TableOfContents items={tocItems} className="sticky top-4 self-start" />
       </div>
-
-      {/* Workbench: preview + inspector */}
-      {!snippets ? (
-        <p className="mb-6 text-red-600 dark:text-red-400">
-          Snippet generation missing for {`"${pattern.id}"`} — run{" "}
-          <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs dark:bg-gray-700">
-            pnpm generate-snippets
-          </code>
-          .
-        </p>
-      ) : (
-        <Workbench
-          patternId={pattern.id}
-          snippets={snippets}
-          explanation={explanation}
-          propDefinitions={propDefinitions}
-          relatedLinks={relatedLinks}
-        />
-      )}
-
-      {/* Prev/Next Navigation */}
-      <nav
-        id="navigation"
-        className="mt-8 flex items-center justify-between border-t border-gray-200 pt-8 dark:border-gray-700"
-        style={{ scrollMarginTop: 80 }}
-      >
-        {prev ? (
-          <Link
-            href={`/patterns/${prev.category}/${prev.slug}`}
-            className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
-          >
-            <IconArrowLeft size={14} />
-            {prev.name}
-          </Link>
-        ) : (
-          <div />
-        )}
-        {next ? (
-          <Link
-            href={`/patterns/${next.category}/${next.slug}`}
-            className="flex items-center gap-1 text-sm text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400"
-          >
-            {next.name}
-            <IconArrowRight size={14} />
-          </Link>
-        ) : (
-          <div />
-        )}
-      </nav>
     </div>
   );
 }

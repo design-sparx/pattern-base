@@ -4,7 +4,6 @@ import {
   IconBrandGithub,
   IconMoon,
   IconSearch,
-  IconSparkles,
   IconSun,
 } from "@tabler/icons-react";
 import Link from "next/link";
@@ -15,6 +14,8 @@ import { MobileNav } from "./mobile-nav";
 
 import { useSpotlight } from "@/components/layout/spotlight-provider";
 import { Button } from "@/components/ui/button";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
+import { Logo } from "@/components/layout/logo";
 
 export function PublicHeader() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -31,12 +32,8 @@ export function PublicHeader() {
             aria-label="PatternBase home"
             className="text-foreground flex items-center gap-2"
           >
-            <IconSparkles
-              size={22}
-              className="text-primary"
-              aria-hidden="true"
-            />
-            <span className="text-lg font-bold">PatternBase</span>
+            <Logo />
+            <span className="text-lg font-semibold">PatternBase</span>
           </Link>
         </div>
 
@@ -45,12 +42,17 @@ export function PublicHeader() {
         <div className="ml-auto flex items-center gap-1">
           <Button
             variant="ghost"
-            size="icon"
+            size="default"
             onClick={openSpotlight}
             aria-label="Search patterns"
-            className="text-muted-foreground"
+            className="text-muted-foreground bg-input/50 hover:bg-input/70 justify-start gap-2 px-2.5"
           >
-            <IconSearch className="size-[18px]" />
+            <IconSearch className="size-4" />
+            <span className="hidden sm:inline">Search</span>
+            <KbdGroup className="hidden sm:inline-flex">
+              <Kbd>Ctrl</Kbd>
+              <Kbd>K</Kbd>
+            </KbdGroup>
           </Button>
           <Button
             variant="ghost"

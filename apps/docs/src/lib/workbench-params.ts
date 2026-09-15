@@ -1,20 +1,27 @@
-export const FRAMEWORKS = ["bootstrap", "antd", "shadcn"] as const;
+export const FRAMEWORKS = ["mantine", "antd", "shadcn"] as const;
 export type Framework = (typeof FRAMEWORKS)[number];
 
-export const INSPECTOR_TABS = ["code", "props", "docs"] as const;
+export const INSPECTOR_TABS = ["preview", "code", "props", "docs"] as const;
 export type InspectorTab = (typeof INSPECTOR_TABS)[number];
 
 export const VIEWPORTS = ["mobile", "tablet", "desktop"] as const;
 export type Viewport = (typeof VIEWPORTS)[number];
 
-export const DEFAULT_FRAMEWORK: Framework = "bootstrap";
-export const DEFAULT_TAB: InspectorTab = "code";
+export type ViewerMode = "preview" | "code";
+
+export const DEFAULT_FRAMEWORK: Framework = "mantine";
+export const DEFAULT_TAB: InspectorTab = "preview";
 export const DEFAULT_VIEWPORT: Viewport = "desktop";
 
 export interface WorkbenchState {
   framework: Framework;
   tab: InspectorTab;
   viewport: Viewport;
+}
+
+/** The workbench viewer shows code only while the tab is `code`. */
+export function tabToViewer(tab: InspectorTab): ViewerMode {
+  return tab === "code" ? "code" : "preview";
 }
 
 interface SearchParamsLike {

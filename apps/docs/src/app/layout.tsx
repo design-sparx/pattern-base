@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
+  appleWebApp: {
+    title: "Pattern Base",
+  },
 };
 
 export default function RootLayout({
@@ -44,7 +47,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${manrope.variable} ${spaceMono.variable}`}
     >
-      <body>
+      <body suppressHydrationWarning>
         <TooltipProvider>
           <ThemeProvider
             attribute="class"

@@ -1,6 +1,6 @@
 {
-  "name": "PatternBase",
-  "short_name": "PatternBase",
+  "name": "Pattern Base",
+  "short_name": "Pattern Base",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#0e673f",
-  "background_color": "#0e673f",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "display": "standalone"
 }

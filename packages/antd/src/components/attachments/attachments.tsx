@@ -87,7 +87,7 @@ export function Attachments({
             ) : null}
           </div>
           <Button
-            type="text"
+            variant="text"
             danger
             size="small"
             icon={<DeleteOutlined />}

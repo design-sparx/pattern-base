@@ -27,7 +27,7 @@ export function Expand({
             <Spin size="small" />
           ) : (
             <Button
-              type="link"
+              variant="link"
               size="small"
               style={{ padding: 0 }}
               onClick={() => {
@@ -51,7 +51,7 @@ export function Expand({
           <Spin size="small" style={{ marginLeft: 4 }} />
         ) : !expanded ? (
           <Button
-            type="link"
+            variant="link"
             size="small"
             style={{ padding: 0, marginLeft: 4 }}
             onClick={() => {

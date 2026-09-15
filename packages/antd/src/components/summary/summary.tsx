@@ -41,7 +41,7 @@ export function Summary({
     actions.push(
       <Button
         key="regen"
-        type="text"
+        variant="text"
         size="small"
         icon={<ReloadOutlined />}
         disabled={isGenerating}
@@ -55,7 +55,7 @@ export function Summary({
     actions.push(
       <Button
         key="copy"
-        type="text"
+        variant="text"
         size="small"
         icon={<CopyOutlined />}
         onClick={onCopy}
@@ -68,7 +68,7 @@ export function Summary({
     actions.push(
       <Button
         key="toggle"
-        type="link"
+        variant="link"
         size="small"
         onClick={() => {
           setCollapsed(!collapsed);
@@ -82,7 +82,7 @@ export function Summary({
     actions.push(
       <Button
         key="expand"
-        type="link"
+        variant="link"
         size="small"
         icon={<ExpandOutlined />}
         onClick={onExpand}

@@ -1,66 +1,102 @@
 "use client";
 
+import { IconInfoCircle, IconLayoutSidebar } from "@tabler/icons-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { useState } from "react";
 
-import { AsideProvider, useAside } from "../aside-context";
 import { Footer } from "./footer";
 import { Header } from "./header";
-import { Sidebar } from "./sidebar";
+import { SidebarNav } from "./sidebar";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { Logo } from "@/components/layout/logo";
 
-function ShellContent({ children }: { children: ReactNode }) {
-  const { content: asideContent } = useAside();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+function ShellSidebarFooter() {
+  const pathname = usePathname();
+  const { toggleSidebar } = useSidebar();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header
-        onToggleSidebar={() => {
-          setSidebarOpen((o) => !o);
-        }}
-      />
-      <div className="flex flex-1">
-        <aside
-          className={`fixed inset-y-0 left-0 z-40 w-[260px] transform border-r border-gray-200 bg-white transition-transform duration-200 sm:relative sm:translate-x-0 dark:border-gray-800 dark:bg-gray-900 ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <ScrollArea className="h-[calc(100vh-60px)]">
-            <Sidebar />
-          </ScrollArea>
-        </aside>
-        {sidebarOpen ? (
-          <div
-            className="fixed inset-0 z-30 bg-black/50 sm:hidden"
-            onClick={() => {
-              setSidebarOpen(false);
-            }}
-          />
-        ) : null}
-        <main
-          id="main-content"
-          className="flex flex-1 flex-col"
-          style={{ minHeight: "calc(100vh - 60px)" }}
-        >
-          {children}
-        </main>
-        {asideContent ? (
-          <aside className="hidden w-[200px] border-l border-gray-200 p-4 lg:block dark:border-gray-800">
-            {asideContent}
-          </aside>
-        ) : null}
-      </div>
-      <Footer />
-    </div>
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            onClick={toggleSidebar}
+            tooltip="Collapse sidebar"
+            className="hidden lg:inline-flex"
+          >
+            <IconLayoutSidebar />
+            <span>Collapse</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname === "/about"}
+            tooltip="About"
+          >
+            <Link href="/about">
+              <IconInfoCircle />
+              <span>About</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
   );
 }
 
-export function AppShellLayout({ children }: { children: ReactNode }) {
+function ShellContent({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <AsideProvider>
-      <ShellContent>{children}</ShellContent>
-    </AsideProvider>
+    <SidebarProvider className="app-canvas h-svh overflow-hidden">
+      <Sidebar collapsible="icon" variant="floating">
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" asChild>
+                <Link href="/" aria-label="PatternBase home">
+                  <Logo size={22} />
+                  <span className="font-semibold">PatternBase</span>
+                  <span className="text-muted-foreground ml-auto font-mono text-xs">
+                    v0.1.0
+                  </span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarNav />
+        </SidebarContent>
+        <ShellSidebarFooter />
+      </Sidebar>
+      <SidebarInset
+        id="main-content"
+        className="gap-2 bg-transparent p-2 md:pl-0"
+      >
+        <Header />
+        <div className="border-border supports-[backdrop-filter]:bg-background/60 bg-background flex min-h-0 flex-1 flex-col overflow-y-auto rounded-2xl border p-4 shadow-sm backdrop-blur-xl">
+          {children}
+        </div>
+        <Footer />
+      </SidebarInset>
+    </SidebarProvider>
   );
+}
+
+export function AppShellLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
+  return <ShellContent>{children}</ShellContent>;
 }

@@ -54,8 +54,8 @@ function parseChangelog(): VersionSection[] {
     const versionMatch = VERSION_RE.exec(line);
     if (versionMatch) {
       current = {
-        version: versionMatch[1]?.trim() ?? "",
-        date: versionMatch[2]?.trim() ?? "",
+        version: versionMatch[1].trim() ?? "",
+        date: versionMatch[2].trim() ?? "",
         changes: [],
       };
       sections.push(current);
@@ -67,7 +67,7 @@ function parseChangelog(): VersionSection[] {
 
     const commitUrl = changeMatch[3];
     current.changes.push({
-      text: changeMatch[1]?.trim() ?? "",
+      text: changeMatch[1].trim() ?? "",
       commitHash: commitUrl ? (changeMatch[2] ?? "") : undefined,
       commitUrl,
     });

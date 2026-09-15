@@ -1,6 +1,6 @@
 {
   "name": "@patternbase/mantine",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "description": "Mantine implementation of AI UI components",
   "main": "./dist/index.js",
@@ -27,23 +27,24 @@
     "@patternbase/core": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "@mantine/core": "^7.0.0",
-    "@mantine/hooks": "^7.0.0",
-    "@mantine/dropzone": "^7.0.0",
-    "@tabler/icons-react": "^3.0.0"
+    "react": "^19.2.0",
+    "@mantine/core": "^9.6.1",
+    "@mantine/hooks": "^9.6.1",
+    "@mantine/dropzone": "^9.6.1",
+    "@tabler/icons-react": "^3.46.0"
   },
   "devDependencies": {
     "@patternbase/eslint-config": "workspace:*",
     "@patternbase/vitest-config": "workspace:*",
-    "@mantine/core": "^7.17.0",
-    "@mantine/hooks": "^7.17.0",
-    "@mantine/dropzone": "^7.17.0",
-    "@tabler/icons-react": "^3.36.1",
+    "@mantine/core": "^9.6.1",
+    "@mantine/hooks": "^9.6.1",
+    "@mantine/dropzone": "^9.6.1",
+    "@tabler/icons-react": "^3.46.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
-    "@types/react": "^18.2.45",
-    "react": "^18.3.1",
+    "@types/react": "^19.2.18",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "eslint": "^8.57.0",
     "jsdom": "^25.0.0",
     "tsup": "^8.0.1",

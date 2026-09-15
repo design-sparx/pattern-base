@@ -88,7 +88,7 @@ export function ActionPlan({
       {onApprove || onReject ? (
         <Space style={{ marginTop: 12 }}>
           {onApprove ? (
-            <Button type="primary" size="small" onClick={onApprove}>
+            <Button variant="solid" size="small" onClick={onApprove}>
               Approve
             </Button>
           ) : null}

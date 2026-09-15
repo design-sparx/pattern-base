@@ -7,7 +7,7 @@ import { patterns } from "@/data/patterns";
 
 const DEFAULT_ITEMS = [
   { value: String(patterns.length), label: "AI UX Patterns" },
-  { value: "4", label: "UI Frameworks" },
+  { value: "3", label: "UI Frameworks" },
   { value: "100%", label: "TypeScript" },
   { value: "MIT", label: "Open Source" },
 ];

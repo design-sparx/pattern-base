@@ -42,7 +42,7 @@ export function Nudges({
                 {n.icon ? <span>{n.icon}</span> : null}
                 <span style={{ flex: 1, fontSize: 13 }}>{n.message}</span>
                 {n.actionLabel && n.onAction ? (
-                  <Button type="link" size="small" onClick={n.onAction}>
+                  <Button variant="link" size="small" onClick={n.onAction}>
                     {n.actionLabel}
                   </Button>
                 ) : null}

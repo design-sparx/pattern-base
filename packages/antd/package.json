@@ -1,6 +1,6 @@
 {
   "name": "@patternbase/antd",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "description": "Ant Design implementation of AI UI components",
   "main": "./dist/index.js",
@@ -27,18 +27,18 @@
     "@patternbase/core": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "antd": "^5.0.0",
-    "@ant-design/icons": "^5.0.0"
+    "react": "^19.2.0",
+    "antd": "^6.0.0",
+    "@ant-design/icons": "^6.0.0"
   },
   "devDependencies": {
     "@patternbase/eslint-config": "workspace:*",
     "@patternbase/vitest-config": "workspace:*",
-    "@ant-design/icons": "^5.5.0",
+    "@ant-design/icons": "^6.3.3",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
-    "@types/react": "^18.2.45",
-    "antd": "^5.22.0",
+    "@types/react": "^19.2.18",
+    "antd": "^6.6.4",
     "eslint": "^8.57.0",
     "jsdom": "^25.0.0",
     "tsup": "^8.0.1",

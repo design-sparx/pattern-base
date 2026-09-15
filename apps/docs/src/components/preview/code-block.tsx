@@ -28,7 +28,7 @@ export function CodeBlock({
   };
 
   return (
-    <div className="overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
+    <div className="border-border overflow-hidden rounded-xl border">
       <div
         className="flex items-center justify-between border-b border-white/10 bg-[#1e1e2e] px-4 py-1.5"
         style={{ minHeight: 40 }}

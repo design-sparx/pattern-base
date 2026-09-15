@@ -56,7 +56,7 @@ export function Inpainting({
             style={{ marginBottom: 8 }}
           />
           <Button
-            type="primary"
+            variant="solid"
             size="small"
             loading={isProcessing}
             onClick={() => {

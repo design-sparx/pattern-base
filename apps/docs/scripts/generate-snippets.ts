@@ -2,14 +2,14 @@
  * Script to generate snippet-templates.ts from actual component implementations.
  * Run: pnpm generate-snippets (from apps/docs)
  *
- * Reads source files from packages/\{bootstrap,antd,shadcn\}/src/components/
+ * Reads source files from packages/{mantine,antd,shadcn}/src/components/
  * and generates apps/docs/src/data/snippet-templates.ts with embedded implementations.
  */
 
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-type Framework = "bootstrap" | "antd" | "shadcn";
+type Framework = "mantine" | "antd" | "shadcn";
 
 const ROOT_DIR = join(import.meta.dirname, "..", "..", "..");
 const PACKAGES_DIR = join(ROOT_DIR, "packages");
@@ -23,7 +23,7 @@ const OUTPUT_FILE = join(
 );
 
 const FRAMEWORK_DIRS: Record<Framework, string> = {
-  bootstrap: "bootstrap",
+  mantine: "mantine",
   antd: "antd",
   shadcn: "shadcn",
 };
@@ -54,8 +54,7 @@ function escapeTemplateString(str: string): string {
 }
 
 function generateSnippetTemplates(): void {
-  // Get all pattern directories from bootstrap package
-  const componentsDir = join(PACKAGES_DIR, "bootstrap", "src", "components");
+  const componentsDir = join(PACKAGES_DIR, "mantine", "src", "components");
   const patterns = readdirSync(componentsDir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
@@ -64,14 +63,14 @@ function generateSnippetTemplates(): void {
   const entries: string[] = [];
 
   for (const pattern of patterns) {
-    const bootstrap = escapeTemplateString(
-      getComponentSource("bootstrap", pattern),
+    const mantine = escapeTemplateString(
+      getComponentSource("mantine", pattern),
     );
     const antd = escapeTemplateString(getComponentSource("antd", pattern));
     const shadcn = escapeTemplateString(getComponentSource("shadcn", pattern));
 
     entries.push(`"${pattern}": {
-    bootstrap: \`${bootstrap}\`,
+    mantine: \`${mantine}\`,
     antd: \`${antd}\`,
     shadcn: \`${shadcn}\`,
   }`);
@@ -85,11 +84,11 @@ function generateSnippetTemplates(): void {
 
 export const codeSnippets: Record<
   string,
-  { bootstrap: string; antd: string; shadcn: string }
+  { mantine: string; antd: string; shadcn: string }
 > = {
 ${entries.join(",\n")}
 };
-`;
+ `;
 
   writeFileSync(OUTPUT_FILE, content, "utf-8");
   // eslint-disable-next-line no-console
@@ -97,7 +96,7 @@ ${entries.join(",\n")}
   // eslint-disable-next-line no-console
   console.log(`Patterns: ${String(patterns.length)}`);
   // eslint-disable-next-line no-console
-  console.log(`Frameworks: bootstrap, antd, shadcn`);
+  console.log(`Frameworks: mantine, antd, shadcn`);
 }
 
 generateSnippetTemplates();

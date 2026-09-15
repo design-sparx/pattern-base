@@ -52,7 +52,7 @@ export function Memory({
                   <Space size={4}>
                     {isEditing ? (
                       <Button
-                        type="text"
+                        variant="text"
                         size="small"
                         icon={<SaveOutlined />}
                         onClick={() => {
@@ -65,7 +65,7 @@ export function Memory({
                       </Button>
                     ) : (
                       <Button
-                        type="text"
+                        variant="text"
                         size="small"
                         icon={<EditOutlined />}
                         onClick={() => {
@@ -77,7 +77,7 @@ export function Memory({
                       </Button>
                     )}
                     <Button
-                      type="text"
+                      variant="text"
                       size="small"
                       danger
                       icon={<DeleteOutlined />}

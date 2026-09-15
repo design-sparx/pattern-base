@@ -35,7 +35,7 @@ export function Regenerate({
   if (variant === "icon") {
     return (
       <Button
-        type="text"
+        variant="text"
         size="small"
         icon={isRegenerating ? <LoadingOutlined /> : <ReloadOutlined />}
         onClick={onRegenerate}

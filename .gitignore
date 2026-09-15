@@ -2,6 +2,7 @@ node_modules/
 dist/
 .next/
 .turbo/
+.turbo-dev-*.log
 *.tsbuildinfo
 .superpowers/
 .env
@@ -26,3 +27,4 @@ nul
 .kilo/
 .lavish/
 opencode.json
+tsup.config.bundled_*.mjs

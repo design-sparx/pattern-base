@@ -1,6 +1,6 @@
 {
   "name": "@patternbase/shadcn",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "description": "shadcn/ui implementation of AI UI components",
   "main": "./dist/index.js",
@@ -28,8 +28,8 @@
     "@patternbase/core": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
@@ -38,8 +38,8 @@
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cn": "^0.2.6",
@@ -48,8 +48,8 @@
     "lucide-react": "^0.454.0",
     "next-themes": "^0.4.6",
     "radix-ui": "^1.6.7",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "rimraf": "^5.0.5",
     "sonner": "^2.0.8",
     "tailwind-merge": "^2.5.2",

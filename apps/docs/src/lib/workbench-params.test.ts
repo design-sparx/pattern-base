@@ -6,6 +6,7 @@ import {
   DEFAULT_TAB,
   DEFAULT_VIEWPORT,
   parseWorkbenchParams,
+  tabToViewer,
 } from "./workbench-params";
 
 function sp(query: string): URLSearchParams {
@@ -19,6 +20,7 @@ describe("parseWorkbenchParams", () => {
       tab: DEFAULT_TAB,
       viewport: DEFAULT_VIEWPORT,
     });
+    expect(DEFAULT_FRAMEWORK).toBe("mantine");
   });
 
   it("parses valid values case-sensitively", () => {
@@ -56,8 +58,8 @@ describe("buildWorkbenchQuery", () => {
   it("returns empty string when everything equals defaults", () => {
     expect(
       buildWorkbenchQuery({
-        framework: "bootstrap",
-        tab: "code",
+        framework: "mantine",
+        tab: "preview",
         viewport: "desktop",
       }),
     ).toBe("");
@@ -70,10 +72,10 @@ describe("buildWorkbenchQuery", () => {
         tab: "code",
         viewport: "desktop",
       }),
-    ).toBe("fw=shadcn");
+    ).toBe("fw=shadcn&tab=code");
     expect(
       buildWorkbenchQuery({
-        framework: "bootstrap",
+        framework: "mantine",
         tab: "docs",
         viewport: "mobile",
       }),
@@ -88,5 +90,14 @@ describe("buildWorkbenchQuery", () => {
         viewport: "tablet",
       }),
     ).toBe("fw=antd&tab=props&vp=tablet");
+  });
+});
+
+describe("tabToViewer", () => {
+  it("maps code to code and everything else to preview", () => {
+    expect(tabToViewer("code")).toBe("code");
+    expect(tabToViewer("preview")).toBe("preview");
+    expect(tabToViewer("props")).toBe("preview");
+    expect(tabToViewer("docs")).toBe("preview");
   });
 });

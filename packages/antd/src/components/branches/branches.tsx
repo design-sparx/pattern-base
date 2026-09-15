@@ -36,7 +36,7 @@ export function Branches({
               <Button
                 key={`branch-${branch.id}`}
                 size="small"
-                type="text"
+                variant="text"
                 onClick={(e) => {
                   e.stopPropagation();
                   onCreateBranch(branch.id);

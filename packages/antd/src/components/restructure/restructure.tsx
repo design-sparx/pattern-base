@@ -51,7 +51,6 @@ export function Restructure({
             <Button
               key={opt.id}
               size="small"
-              type="default"
               disabled={isProcessing}
               onClick={() => {
                 onRestructure(opt.id);

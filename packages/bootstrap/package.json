@@ -1,6 +1,6 @@
 {
   "name": "@patternbase/bootstrap",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "description": "Bootstrap implementation of AI UI components",
   "main": "./dist/index.js",
@@ -27,7 +27,7 @@
     "@patternbase/core": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
+    "react": "^19.2.0",
     "react-bootstrap": "^2.10.0",
     "bootstrap": "^5.3.0"
   },
@@ -36,10 +36,11 @@
     "@patternbase/vitest-config": "workspace:*",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
-    "@types/react": "^18.2.45",
+    "@types/react": "^19.2.18",
     "bootstrap": "^5.3.0",
     "eslint": "^8.57.0",
     "jsdom": "^25.0.0",
+    "react": "^19.2.0",
     "react-bootstrap": "^2.10.0",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",

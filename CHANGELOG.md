@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.3.3 (2026-09-12)</small>
+
+- chore: delete next-env.d.ts ([c632110](https://github.com/kelvink96/pattern-base/commit/c632110))
+
 ## <small>0.3.2 (2026-09-12)</small>
 
 - fix(docs): drop per-category counts from patterns dropdown ([17c69ce](https://github.com/kelvink96/pattern-base/commit/17c69ce))

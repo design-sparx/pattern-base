@@ -6,75 +6,12 @@
 
 export const codeSnippets: Record<
   string,
-  { bootstrap: string; antd: string; shadcn: string }
+  { mantine: string; antd: string; shadcn: string }
 > = {
 "action-plan": {
-    bootstrap: `import { Button, Card } from "react-bootstrap";
+    mantine: `import { Button, Card, Group, Stack, Stepper, Text } from "@mantine/core";
 
-import type { ActionPlanProps, ActionPlanStep } from "@patternbase/core";
-
-const statusIcons: Record<ActionPlanStep["status"], string> = {
-  pending: "\\u25CB",
-  "in-progress": "\\u25D4",
-  completed: "\\u2713",
-  failed: "\\u2717",
-  skipped: "\\u2014",
-};
-
-const statusColors: Record<ActionPlanStep["status"], string> = {
-  pending: "text-muted",
-  "in-progress": "text-primary",
-  completed: "text-success",
-  failed: "text-danger",
-  skipped: "text-secondary",
-};
-
-function StepItem({
-  step,
-  index,
-  onStepClick,
-  showEstimates,
-}: Readonly<{
-  step: ActionPlanStep;
-  index: number;
-  onStepClick?: (id: string) => void;
-  showEstimates?: boolean;
-}>) {
-  return (
-    <div
-      className={\`d-flex align-items-start mb-2 gap-2 \${onStepClick ? "cursor-pointer" : ""}\`}
-      style={{ cursor: onStepClick ? "pointer" : undefined }}
-      onClick={() => onStepClick?.(step.id)}
-    >
-      <span className={\`\${statusColors[step.status]} fw-bold\`}>
-        {statusIcons[step.status]}
-      </span>
-      <div className="flex-grow-1">
-        <div className="small fw-semibold">
-          {index + 1}. {step.title}
-          {step.tool ? (
-            <span className="text-muted ms-1">({step.tool})</span>
-          ) : null}
-        </div>
-        {step.description ? (
-          <div className="text-muted small">{step.description}</div>
-        ) : null}
-        {showEstimates && step.estimatedDuration ? (
-          <div className="text-muted small">Est: {step.estimatedDuration}</div>
-        ) : null}
-        {step.substeps?.map((sub, i) => (
-          <StepItem
-            key={sub.id}
-            step={sub}
-            index={i}
-            onStepClick={onStepClick}
-            showEstimates={showEstimates}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
+import type { ActionPlanProps } from "@patternbase/core";
 
 export function ActionPlan({
   steps,
@@ -84,36 +21,69 @@ export function ActionPlan({
   onStepClick,
   showEstimates = false,
 }: Readonly<ActionPlanProps>) {
+  const activeIndex = steps.findIndex((s) => s.status === "in-progress");
+  const active =
+    activeIndex >= 0
+      ? activeIndex
+      : steps.filter((s) => s.status === "completed").length;
+
   return (
-    <Card>
-      <Card.Body>
-        {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-        <div>
-          {steps.map((step, i) => (
-            <StepItem
+    <Card padding="sm" withBorder>
+      <Stack gap="sm">
+        {title ? <Text fw={600}>{title}</Text> : null}
+
+        <Stepper active={active} orientation="vertical" size="sm">
+          {steps.map((step) => (
+            <Stepper.Step
               key={step.id}
-              step={step}
-              index={i}
-              onStepClick={onStepClick}
-              showEstimates={showEstimates}
+              label={
+                <Text
+                  size="sm"
+                  fw={500}
+                  style={{ cursor: onStepClick ? "pointer" : undefined }}
+                  onClick={() => onStepClick?.(step.id)}
+                >
+                  {step.title}
+                  {step.tool ? <Text component="span" size="xs" c="dimmed" ml="xs">
+                      ({step.tool})
+                    </Text> : null}
+                </Text>
+              }
+              description={
+                <Stack gap={2}>
+                  {step.description ? <Text size="xs" c="dimmed">
+                      {step.description}
+                    </Text> : null}
+                  {showEstimates && step.estimatedDuration ? <Text size="xs" c="dimmed">
+                      Est: {step.estimatedDuration}
+                    </Text> : null}
+                </Stack>
+              }
+              color={
+                step.status === "failed" ? "red"
+                : step.status === "completed" ? "green"
+                : step.status === "skipped" ? "gray"
+                : undefined
+              }
+              loading={step.status === "in-progress"}
             />
           ))}
-        </div>
-        {onApprove || onReject ? (
-          <div className="d-flex mt-3 gap-2">
-            {onApprove ? (
-              <Button variant="primary" size="sm" onClick={onApprove}>
+        </Stepper>
+
+        {(onApprove ?? onReject) ? <Group gap="sm" mt="xs">
+            {onApprove ? <Button size="sm" onClick={onApprove}>
                 Approve
-              </Button>
-            ) : null}
-            {onReject ? (
-              <Button variant="outline-danger" size="sm" onClick={onReject}>
+              </Button> : null}
+            {onReject ? <Button
+                size="sm"
+                color="red"
+                variant="outline"
+                onClick={onReject}
+              >
                 Reject
-              </Button>
-            ) : null}
-          </div>
-        ) : null}
-      </Card.Body>
+              </Button> : null}
+          </Group> : null}
+      </Stack>
     </Card>
   );
 }
@@ -208,7 +178,7 @@ export function ActionPlan({
       {onApprove || onReject ? (
         <Space style={{ marginTop: 12 }}>
           {onApprove ? (
-            <Button type="primary" size="small" onClick={onApprove}>
+            <Button variant="solid" size="small" onClick={onApprove}>
               Approve
             </Button>
           ) : null}
@@ -340,12 +310,14 @@ export function ActionPlan({
 `,
   },
 "attachments": {
-    bootstrap: `import { Badge, Button, Card, ProgressBar } from "react-bootstrap";
+    mantine: `import { ActionIcon, Badge, Group, Progress, Stack, Text } from "@mantine/core";
+import { Dropzone } from "@mantine/dropzone";
+import { IconTrash, IconUpload } from "@tabler/icons-react";
 
 import type { AttachmentsProps } from "@patternbase/core";
 
 function formatSize(bytes: number): string {
-  if (bytes < 1024) return \`\${bytes} B\`;
+  if (bytes < 1024) return \`\${String(bytes)} B\`;
   if (bytes < 1024 * 1024) return \`\${(bytes / 1024).toFixed(1)} KB\`;
   return \`\${(bytes / (1024 * 1024)).toFixed(1)} MB\`;
 }
@@ -357,51 +329,44 @@ export function Attachments({
   maxFiles,
   acceptedTypes,
   showPreview = false,
-  variant = "full",
 }: Readonly<AttachmentsProps>) {
   const canAdd = !maxFiles || attachments.length < maxFiles;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      onAdd(Array.from(e.target.files));
-      e.target.value = "";
-    }
-  };
+  const mimeTypes = acceptedTypes?.reduce<Record<string, string[]>>(
+    (acc, type) => {
+      acc[type] = [];
+      return acc;
+    },
+    {},
+  );
 
   return (
-    <div>
-      {canAdd ? (
-        <Card
-          className="mb-3 border-dashed text-center"
-          style={{ borderStyle: "dashed", cursor: "pointer" }}
+    <Stack gap="sm">
+      {canAdd ? <Dropzone
+          onDrop={(files) => { onAdd(files as unknown as File[]); }}
+          accept={mimeTypes}
+          multiple
         >
-          <Card.Body className="py-3">
-            <label style={{ cursor: "pointer", display: "block" }}>
-              <div className="text-muted mb-1">
-                Drop files here or click to upload
-              </div>
-              <Button variant="outline-primary" size="sm" as="span">
-                Choose Files
-              </Button>
-              <input
-                type="file"
-                multiple
-                hidden
-                accept={acceptedTypes?.join(",")}
-                onChange={handleFileChange}
-              />
-            </label>
-          </Card.Body>
-        </Card>
-      ) : null}
+          <Group
+            justify="center"
+            gap="xs"
+            style={{ minHeight: 60, pointerEvents: "none" }}
+          >
+            <Dropzone.Accept>
+              <IconUpload size={20} />
+            </Dropzone.Accept>
+            <Dropzone.Idle>
+              <IconUpload size={20} style={{ opacity: 0.4 }} />
+            </Dropzone.Idle>
+            <Text size="sm" c="dimmed">
+              Drop files here or click to upload
+            </Text>
+          </Group>
+        </Dropzone> : null}
 
       {attachments.map((a) => (
-        <div
-          key={a.id}
-          className="d-flex align-items-center mb-2 gap-2 rounded border p-2"
-        >
-          {showPreview && a.previewUrl && variant === "full" ? (
-            <img
+        <Group key={a.id} gap="sm" align="flex-start">
+          {showPreview && a.previewUrl ? <img
               src={a.previewUrl}
               alt={a.name}
               style={{
@@ -410,34 +375,38 @@ export function Attachments({
                 objectFit: "cover",
                 borderRadius: 4,
               }}
-            />
-          ) : null}
-          <div className="flex-grow-1">
-            <div className="small fw-semibold">{a.name}</div>
-            <div className="d-flex align-items-center gap-2">
-              <small className="text-muted">{formatSize(a.size)}</small>
-              {a.status === "error" ? <Badge bg="danger">Error</Badge> : null}
-            </div>
-            {a.status === "uploading" && a.progress != null ? (
-              <ProgressBar
-                now={a.progress}
-                style={{ height: 4 }}
-                className="mt-1"
-              />
-            ) : null}
-          </div>
-          <Button
-            variant="outline-danger"
-            size="sm"
-            onClick={() => {
-              onRemove(a.id);
-            }}
-          >
-            &times;
-          </Button>
-        </div>
+            /> : null}
+          <Stack gap={2} style={{ flex: 1 }}>
+            <Group justify="space-between" align="center">
+              <Text size="sm" fw={500}>
+                {a.name}
+              </Text>
+              <ActionIcon
+                variant="subtle"
+                color="red"
+                size="sm"
+                onClick={() => { onRemove(a.id); }}
+              >
+                <IconTrash size={14} />
+              </ActionIcon>
+            </Group>
+            <Group gap="xs">
+              <Text size="xs" c="dimmed">
+                {formatSize(a.size)}
+              </Text>
+              {a.status === "error" && (
+                <Badge size="xs" color="red">
+                  Error
+                </Badge>
+              )}
+            </Group>
+            {a.status === "uploading" && a.progress !== undefined && (
+              <Progress value={a.progress} size="xs" mt={2} />
+            )}
+          </Stack>
+        </Group>
       ))}
-    </div>
+    </Stack>
   );
 }
 `,
@@ -530,7 +499,7 @@ export function Attachments({
             ) : null}
           </div>
           <Button
-            type="text"
+            variant="text"
             danger
             size="small"
             icon={<DeleteOutlined />}
@@ -637,8 +606,15 @@ export function Attachments({
 `,
   },
 "auto-fill": {
-    bootstrap: `import { useState } from "react";
-import { Dropdown, Form, Spinner } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Card,
+  Group,
+  Loader,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
 
 import type { AutoFillProps } from "@patternbase/core";
 
@@ -646,67 +622,71 @@ export function AutoFill({
   suggestions,
   onSelect,
   onQueryChange,
-  query: controlledQuery,
+  query = "",
   isLoading = false,
   placeholder = "Start typing...",
   maxSuggestions,
-}: Readonly<AutoFillProps>) {
-  const [internalQuery, setInternalQuery] = useState("");
-  const query = controlledQuery ?? internalQuery;
-  const [open, setOpen] = useState(false);
-
-  const visible = maxSuggestions
+  highlightMatch = true,
+}: AutoFillProps) {
+  const displayed = maxSuggestions
     ? suggestions.slice(0, maxSuggestions)
     : suggestions;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (controlledQuery === undefined) setInternalQuery(val);
-    onQueryChange?.(val);
-    setOpen(val.length > 0);
+  const highlight = (text: string) => {
+    if (!highlightMatch || !query.trim()) return text;
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return text;
+    return (
+      <>
+        {text.substring(0, idx)}
+        <mark
+          style={{
+            background: "var(--mantine-color-yellow-3)",
+            borderRadius: 2,
+          }}
+        >
+          {text.substring(idx, idx + query.length)}
+        </mark>
+        {text.substring(idx + query.length)}
+      </>
+    );
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      <Form.Control
-        placeholder={placeholder}
+    <Stack gap="xs">
+      <TextInput
         value={query}
-        onChange={handleChange}
-        onFocus={() => {
-          if (query.length > 0) setOpen(true);
-        }}
-        onBlur={() => {
-          setTimeout(() => {
-            setOpen(false);
-          }, 150);
-        }}
+        onChange={(e) => onQueryChange?.(e.currentTarget.value)}
+        placeholder={placeholder}
+        rightSection={isLoading ? <Loader size="xs" /> : null}
       />
-      {isLoading ? (
-        <Spinner
-          animation="border"
-          size="sm"
-          style={{ position: "absolute", right: 12, top: 10 }}
-        />
-      ) : null}
-      {open && visible.length > 0 ? (
-        <Dropdown.Menu show style={{ width: "100%", position: "absolute" }}>
-          {visible.map((s) => (
-            <Dropdown.Item
+
+      {displayed.length > 0 && (
+        <Stack gap={4}>
+          {displayed.map((s) => (
+            <Card
               key={s.id}
-              onClick={() => {
-                onSelect(s);
-                setOpen(false);
-              }}
+              padding="xs"
+              withBorder
+              style={{ cursor: "pointer" }}
+              onClick={() => { onSelect(s); }}
             >
-              <div>{s.text}</div>
-              {s.source ? (
-                <small className="text-muted">{s.source}</small>
-              ) : null}
-            </Dropdown.Item>
+              <Group justify="space-between" align="center">
+                <Text size="sm">{highlight(s.text)}</Text>
+                {s.matchScore !== undefined && (
+                  <Badge size="xs" variant="light" color="gray">
+                    {Math.round(s.matchScore * 100)}%
+                  </Badge>
+                )}
+              </Group>
+              {s.source ? <Text size="xs" c="dimmed">
+                  {s.source}
+                </Text> : null}
+            </Card>
           ))}
-        </Dropdown.Menu>
-      ) : null}
-    </div>
+        </Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -862,61 +842,16 @@ export function AutoFill({
 `,
   },
 "avatar": {
-    bootstrap: `import { Badge, Button, Card, Image, Stack } from "react-bootstrap";
+    mantine: `import {
+  Avatar as MantineAvatar,
+  Badge,
+  Card,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
 
 import type { AvatarProps } from "@patternbase/core";
-
-const statusClassMap = {
-  online: "success",
-  idle: "warning",
-  offline: "secondary",
-} as const;
-
-const sizeMap = {
-  small: 28,
-  medium: 36,
-  large: 48,
-} as const;
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part.trim().charAt(0))
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
-function AvatarImage({
-  name,
-  imageUrl,
-  size,
-}: Readonly<{
-  name: string;
-  imageUrl?: string;
-  size: "small" | "medium" | "large";
-}>) {
-  const pixelSize = sizeMap[size];
-  if (imageUrl) {
-    return (
-      <Image
-        src={imageUrl}
-        roundedCircle
-        width={pixelSize}
-        height={pixelSize}
-        alt={name}
-      />
-    );
-  }
-  return (
-    <div
-      className="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white"
-      style={{ width: pixelSize, height: pixelSize, fontSize: 12 }}
-    >
-      {getInitials(name)}
-    </div>
-  );
-}
 
 export function Avatar({
   name,
@@ -927,70 +862,101 @@ export function Avatar({
   size = "medium",
   variant = "inline",
   onSelect,
-}: Readonly<AvatarProps>) {
-  const statusClass = statusClassMap[status];
+}: AvatarProps) {
+  const sizeMap = { small: "sm", medium: "md", large: "lg" } as const;
+  const dotSize = { small: 8, medium: 10, large: 14 };
+  const statusColor = {
+    online: "var(--mantine-color-green-6)",
+    idle: "var(--mantine-color-orange-6)",
+    offline: "var(--mantine-color-gray-4)",
+  };
 
-  const avatarNode = (
-    <div className="position-relative">
-      <AvatarImage name={name} imageUrl={imageUrl} size={size} />
-      <span
-        className={\`position-absolute bottom-0 end-0 bg-\${statusClass} rounded-circle border border-white\`}
-        style={{ width: 10, height: 10 }}
+  const avatarEl = (
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <MantineAvatar
+        src={imageUrl}
+        name={name}
+        size={sizeMap[size]}
+        radius="xl"
+        color="violet"
       />
+      <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            width: dotSize[size],
+            height: dotSize[size],
+            borderRadius: "50%",
+            backgroundColor: statusColor[status],
+            border: "2px solid var(--mantine-color-body)",
+          }}
+        />
     </div>
   );
 
   if (variant === "compact") {
     return (
-      <Stack direction="horizontal" className="align-items-center gap-2">
-        {avatarNode}
-        <div>
-          <div className="fw-semibold small">{name}</div>
-          {persona ? <small className="text-muted">{persona}</small> : null}
-        </div>
-        {badgeLabel ? <Badge bg="secondary">{badgeLabel}</Badge> : null}
-      </Stack>
+      <Group
+        gap="xs"
+        style={{ cursor: onSelect ? "pointer" : "default" }}
+        onClick={onSelect}
+      >
+        {avatarEl}
+        <Text size="sm" fw={500}>
+          {name}
+        </Text>
+        {badgeLabel ? <Badge size="xs" variant="light">
+            {badgeLabel}
+          </Badge> : null}
+      </Group>
     );
   }
 
   if (variant === "card") {
     return (
-      <Card>
-        <Card.Body>
-          <Stack gap={2}>
-            <Stack direction="horizontal" className="align-items-center gap-2">
-              {avatarNode}
-              <div>
-                <div className="fw-semibold">{name}</div>
-                {persona ? (
-                  <small className="text-muted">{persona}</small>
-                ) : null}
-              </div>
-            </Stack>
-            <Stack direction="horizontal" className="align-items-center gap-2">
-              {badgeLabel ? <Badge bg="secondary">{badgeLabel}</Badge> : null}
-              <Badge bg={statusClass}>{status}</Badge>
-              {onSelect ? (
-                <Button size="sm" variant="link" onClick={onSelect}>
-                  View profile
-                </Button>
-              ) : null}
-            </Stack>
+      <Card
+        withBorder
+        padding="md"
+        style={{ cursor: onSelect ? "pointer" : "default" }}
+        onClick={onSelect}
+      >
+        <Stack gap="sm" align="center" ta="center">
+          {avatarEl}
+          <Stack gap={4}>
+            <Text fw={600}>{name}</Text>
+            {persona ? <Text size="sm" c="dimmed">
+                {persona}
+              </Text> : null}
+            {badgeLabel ? <Badge size="sm" variant="light">
+                {badgeLabel}
+              </Badge> : null}
           </Stack>
-        </Card.Body>
+        </Stack>
       </Card>
     );
   }
 
   return (
-    <Stack direction="horizontal" className="align-items-center gap-2">
-      {avatarNode}
-      <div>
-        <div className="small fw-semibold">{name}</div>
-        {persona ? <small className="text-muted">{persona}</small> : null}
-      </div>
-      {badgeLabel ? <Badge bg="secondary">{badgeLabel}</Badge> : null}
-    </Stack>
+    <Group
+      gap="sm"
+      align="center"
+      style={{ cursor: onSelect ? "pointer" : "default" }}
+      onClick={onSelect}
+    >
+      {avatarEl}
+      <Stack gap={2}>
+        <Text size="sm" fw={500}>
+          {name}
+        </Text>
+        {persona ? <Text size="xs" c="dimmed">
+            {persona}
+          </Text> : null}
+        {badgeLabel ? <Badge size="xs" variant="light">
+            {badgeLabel}
+          </Badge> : null}
+      </Stack>
+    </Group>
   );
 }
 `,
@@ -1081,7 +1047,7 @@ export function Avatar({
             {badgeLabel ? <Tag>{badgeLabel}</Tag> : null}
             <Tag color={statusColorMap[status]}>{status}</Tag>
             {onSelect ? (
-              <Button size="small" type="link" onClick={onSelect}>
+              <Button size="small" variant="link" onClick={onSelect}>
                 View profile
               </Button>
             ) : null}
@@ -1244,7 +1210,16 @@ export function Avatar({
 `,
   },
 "branches": {
-    bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  Timeline,
+} from "@mantine/core";
+import { IconGitBranch } from "@tabler/icons-react";
 
 import type { BranchesProps } from "@patternbase/core";
 
@@ -1253,54 +1228,115 @@ export function Branches({
   activeBranchId,
   onSelectBranch,
   onCreateBranch,
-  title = "Branches",
-  variant = "tree",
-}: Readonly<BranchesProps>) {
+  title,
+  variant = "list",
+}: BranchesProps) {
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <ListGroup variant="flush">
-        {branches.map((branch) => (
-          <ListGroup.Item
-            key={branch.id}
-            action
-            active={activeBranchId === branch.id}
-            style={{
-              marginLeft: variant === "tree" ? (branch.depth ?? 0) * 16 : 0,
-            }}
-            onClick={() => {
-              onSelectBranch(branch.id);
-            }}
-            className="d-flex justify-content-between align-items-start"
-          >
-            <div>
-              <div className="d-flex align-items-center gap-2">
-                <strong className="small">{branch.label}</strong>
-                {activeBranchId === branch.id ? (
-                  <Badge bg="primary">Active</Badge>
-                ) : null}
-              </div>
-              {branch.preview ? (
-                <small className="text-muted">{branch.preview}</small>
-              ) : null}
-            </div>
-            <Button
-              size="sm"
-              variant="link"
-              className="p-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                onCreateBranch(branch.id);
-              }}
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        {title ? <Text fw={600} size="sm">
+            {title}
+          </Text> : null}
+      </Group>
+
+      {variant === "tree" ? (
+        <Timeline bulletSize={20} lineWidth={2}>
+          {branches.map((branch) => (
+            <Timeline.Item
+              key={branch.id}
+              bullet={<IconGitBranch size={12} />}
+              title={
+                <Group
+                  gap="xs"
+                  style={{ paddingLeft: (branch.depth ?? 0) * 16 }}
+                >
+                  <Text
+                    size="sm"
+                    fw={activeBranchId === branch.id ? 600 : 400}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => { onSelectBranch(branch.id); }}
+                  >
+                    {branch.label}
+                  </Text>
+                  {activeBranchId === branch.id && (
+                    <Badge size="xs" variant="filled" color="violet">
+                      Active
+                    </Badge>
+                  )}
+                </Group>
+              }
             >
-              Branch
-            </Button>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Card>
+              {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                  {branch.preview}
+                </Text> : null}
+              {branch.createdAt ? <Text size="xs" c="dimmed">
+                  {branch.createdAt.toLocaleDateString()}
+                </Text> : null}
+              <Button
+                variant="subtle"
+                size="compact-xs"
+                mt={4}
+                onClick={() => { onCreateBranch(branch.id); }}
+              >
+                Branch from here
+              </Button>
+            </Timeline.Item>
+          ))}
+        </Timeline>
+      ) : (
+        <Stack gap="xs">
+          {branches.map((branch) => (
+            <Card
+              key={branch.id}
+              padding="sm"
+              withBorder
+              style={{
+                cursor: "pointer",
+                outline:
+                  activeBranchId === branch.id
+                    ? "2px solid var(--mantine-color-violet-6)"
+                    : undefined,
+              }}
+              onClick={() => { onSelectBranch(branch.id); }}
+            >
+              <Group justify="space-between" align="flex-start">
+                <Stack gap={2} style={{ flex: 1 }}>
+                  <Group gap="xs">
+                    <Text size="sm" fw={500}>
+                      {branch.label}
+                    </Text>
+                    {activeBranchId === branch.id && (
+                      <Badge size="xs" variant="filled" color="violet">
+                        Active
+                      </Badge>
+                    )}
+                    {branch.parentId ? <Badge size="xs" variant="light" color="gray">
+                        branch
+                      </Badge> : null}
+                  </Group>
+                  {branch.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                      {branch.preview}
+                    </Text> : null}
+                  {branch.createdAt ? <Text size="xs" c="dimmed">
+                      {branch.createdAt.toLocaleDateString()}
+                    </Text> : null}
+                </Stack>
+                <Button
+                  variant="subtle"
+                  size="compact-xs"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCreateBranch(branch.id);
+                  }}
+                >
+                  Branch
+                </Button>
+              </Group>
+            </Card>
+          ))}
+        </Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -1342,7 +1378,7 @@ export function Branches({
               <Button
                 key={\`branch-\${branch.id}\`}
                 size="small"
-                type="text"
+                variant="text"
                 onClick={(e) => {
                   e.stopPropagation();
                   onCreateBranch(branch.id);
@@ -1510,15 +1546,10 @@ export function Branches({
 `,
   },
 "caveat": {
-    bootstrap: `import { Alert } from "react-bootstrap";
+    mantine: `import { Alert, Anchor, Text } from "@mantine/core";
+import { IconAlertTriangle, IconInfoCircle, IconX } from "@tabler/icons-react";
 
 import type { CaveatProps } from "@patternbase/core";
-
-const severityVariant: Record<string, string> = {
-  info: "info",
-  warning: "warning",
-  error: "danger",
-};
 
 export function Caveat({
   message,
@@ -1528,45 +1559,41 @@ export function Caveat({
   learnMoreUrl,
   dismissible = false,
   onDismiss,
-}: Readonly<CaveatProps>) {
-  if (variant === "inline") {
-    return (
-      <span
-        className={\`text-\${severity === "error" ? "danger" : severity === "warning" ? "warning" : "muted"} small\`}
-      >
-        {message}
-        {learnMoreUrl ? (
-          <a
-            href={learnMoreUrl}
-            className="ms-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn more
-          </a>
-        ) : null}
-      </span>
-    );
-  }
+}: CaveatProps) {
+  const iconMap = {
+    info: <IconInfoCircle size={16} />,
+    warning: <IconAlertTriangle size={16} />,
+    error: <IconX size={16} />,
+  };
+
+  const colorMap = {
+    info: "blue",
+    warning: "orange",
+    error: "red",
+  };
 
   return (
     <Alert
-      variant={severityVariant[severity] ?? "info"}
-      dismissible={dismissible}
-      onClose={onDismiss}
+      icon={iconMap[severity]}
+      color={colorMap[severity]}
+      title={title}
+      withCloseButton={dismissible}
+      onClose={() => {
+        onDismiss?.();
+      }}
+      variant={variant === "banner" ? "filled" : "light"}
     >
-      {title ? <Alert.Heading className="fs-6">{title}</Alert.Heading> : null}
-      {message}
-      {learnMoreUrl ? (
-        <Alert.Link
+      <Text size="sm">{message}</Text>
+      {learnMoreUrl ? <Anchor
           href={learnMoreUrl}
-          className="ms-1"
           target="_blank"
+          size="xs"
           rel="noopener noreferrer"
+          mt={4}
+          display="block"
         >
           Learn more
-        </Alert.Link>
-      ) : null}
+        </Anchor> : null}
     </Alert>
   );
 }
@@ -1705,23 +1732,9 @@ export function Caveat({
 `,
   },
 "chained-action": {
-    bootstrap: `import { Badge, Button, Card, Spinner } from "react-bootstrap";
+    mantine: `import { Button, Stack, Stepper, Text } from "@mantine/core";
 
 import type { ChainedActionProps } from "@patternbase/core";
-
-const statusColors: Record<string, string> = {
-  idle: "secondary",
-  active: "primary",
-  completed: "success",
-  error: "danger",
-};
-
-const statusIcons: Record<string, string> = {
-  idle: "\\u25CB",
-  active: "\\u25D4",
-  completed: "\\u2713",
-  error: "\\u2717",
-};
 
 export function ChainedAction({
   steps,
@@ -1729,56 +1742,57 @@ export function ChainedAction({
   onStepClick,
   isExecuting = false,
   title,
-}: Readonly<ChainedActionProps>) {
+}: ChainedActionProps) {
+  const activeIndex = steps.findIndex((s) => s.status === "active");
+  const active =
+    activeIndex >= 0
+      ? activeIndex
+      : steps.filter((s) => s.status === "completed").length;
+
   return (
-    <Card>
-      <Card.Body>
-        {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-        <div>
-          {steps.map((step, i) => (
-            <div key={step.id} className="d-flex align-items-start mb-2 gap-2">
-              <Badge bg={statusColors[step.status ?? "idle"]}>
-                {statusIcons[step.status ?? "idle"]}
-              </Badge>
-              <div
-                className="flex-grow-1"
+    <Stack gap="md">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
+
+      <Stepper active={active} size="sm">
+        {steps.map((step) => (
+          <Stepper.Step
+            key={step.id}
+            label={
+              <Text
+                size="sm"
+                fw={500}
                 style={{ cursor: onStepClick ? "pointer" : undefined }}
                 onClick={() => onStepClick?.(step.id)}
               >
-                <div className="small fw-semibold">
-                  {i + 1}. {step.label}
-                </div>
-                {step.description ? (
-                  <div className="text-muted small">{step.description}</div>
-                ) : null}
-                {step.result ? (
-                  <div className="small fst-italic mt-1">{step.result}</div>
-                ) : null}
-              </div>
-              {step.status === "active" ? (
-                <Spinner animation="border" size="sm" />
-              ) : null}
-            </div>
-          ))}
-        </div>
-        <Button
-          variant="primary"
-          size="sm"
-          className="mt-2"
-          onClick={onExecute}
-          disabled={isExecuting}
-        >
-          {isExecuting ? (
-            <>
-              <Spinner animation="border" size="sm" className="me-1" />
-              Running...
-            </>
-          ) : (
-            "Execute"
-          )}
-        </Button>
-      </Card.Body>
-    </Card>
+                {step.label}
+              </Text>
+            }
+            description={step.description}
+            color={
+              step.status === "error" ? "red"
+              : step.status === "completed" ? "green"
+              : undefined
+            }
+            loading={step.status === "active" && isExecuting}
+          >
+            {step.result ? <Text size="xs" c="dimmed" mt="xs">
+                {step.result}
+              </Text> : null}
+          </Stepper.Step>
+        ))}
+      </Stepper>
+
+      <Button
+        onClick={onExecute}
+        loading={isExecuting}
+        disabled={steps.every((s) => s.status === "completed")}
+        size="sm"
+      >
+        Execute
+      </Button>
+    </Stack>
   );
 }
 `,
@@ -1858,7 +1872,7 @@ export function ChainedAction({
       />
 
       <Button
-        type="primary"
+        variant="solid"
         size="small"
         onClick={onExecute}
         loading={isExecuting}
@@ -2048,8 +2062,8 @@ export function ChainedAction({
 `,
   },
 "citation": {
-    bootstrap: `import { useState } from "react";
-import { Badge, Button, Card, Collapse, Stack } from "react-bootstrap";
+    mantine: `import { Anchor, Badge, Button, Card, Group, Stack, Text } from "@mantine/core";
+import { useState } from "react";
 
 import type {
   CitationProps,
@@ -2057,63 +2071,68 @@ import type {
   InlineCitationProps,
 } from "@patternbase/core";
 
+function getRelevanceColor(score: number) {
+  if (score >= 0.8) return "green";
+  if (score >= 0.5) return "orange";
+  return "gray";
+}
+
+function getRelevanceLabel(score: number) {
+  if (score >= 0.8) return "High";
+  if (score >= 0.5) return "Medium";
+  return "Low";
+}
+
 export function Citation({ citation }: CitationProps) {
   const [expanded, setExpanded] = useState(false);
   const { source, url, snippet, relevance = 1 } = citation;
 
-  const getBadge = (score: number) => {
-    if (score >= 0.8) return { variant: "success" as const, text: "High" };
-    if (score >= 0.5) return { variant: "warning" as const, text: "Medium" };
-    return { variant: "secondary" as const, text: "Low" };
-  };
-
-  const badge = getBadge(relevance);
-
   return (
-    <Card className="mb-2">
-      <Card.Body className="p-3">
-        <div className="d-flex justify-content-between align-items-start mb-2">
-          <div className="flex-grow-1">
-            <div className="d-flex align-items-center mb-1 gap-2">
-              <strong className="text-primary" style={{ fontSize: "14px" }}>
+    <Card padding="sm" withBorder mb="xs">
+      <Stack gap="xs">
+        <Group justify="space-between" align="flex-start">
+          <Stack gap={2}>
+            <Group gap="xs">
+              <Text fw={600} size="sm" c="violet">
                 {source}
-              </strong>
-              <Badge bg={badge.variant} className="small">
-                {badge.text} Relevance
+              </Text>
+              <Badge
+                size="xs"
+                color={getRelevanceColor(relevance)}
+                variant="light"
+              >
+                {getRelevanceLabel(relevance)} Relevance
               </Badge>
-            </div>
-            {url ? (
-              <a
+            </Group>
+            {url ? <Anchor
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted small"
-                style={{ textDecoration: "none" }}
+                size="xs"
               >
                 {url.length > 60 ? \`\${url.substring(0, 60)}...\` : url}
-              </a>
-            ) : null}
-          </div>
+              </Anchor> : null}
+          </Stack>
           <Button
-            variant="link"
-            size="sm"
-            onClick={() => {
-              setExpanded(!expanded);
-            }}
-            className="text-decoration-none"
+            variant="subtle"
+            size="compact-xs"
+            onClick={() => { setExpanded(!expanded); }}
           >
             {expanded ? "Hide" : "View"} excerpt
           </Button>
-        </div>
+        </Group>
 
-        <Collapse in={expanded}>
-          <div>
-            <blockquote className="border-start border-3 border-primary bg-body-secondary mb-0 p-3">
-              <p className="small fst-italic mb-0">&ldquo;{snippet}&rdquo;</p>
-            </blockquote>
-          </div>
-        </Collapse>
-      </Card.Body>
+        {expanded && snippet ? <Text
+            size="sm"
+            style={{
+              fontStyle: "italic",
+              borderLeft: "3px solid var(--mantine-color-violet-6)",
+              paddingLeft: 12,
+            }}
+          >
+            &ldquo;{snippet}&rdquo;
+          </Text> : null}
+      </Stack>
     </Card>
   );
 }
@@ -2127,11 +2146,15 @@ export function CitationsList({
   const display = showAll ? citations : citations.slice(0, maxVisible);
 
   return (
-    <Stack gap={2}>
-      <div className="d-flex align-items-center gap-2">
-        <h6 className="mb-0">{title}</h6>
-        <Badge bg="secondary">{citations.length}</Badge>
-      </div>
+    <Stack gap="xs">
+      <Group gap="xs">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        <Badge size="xs" variant="light">
+          {citations.length}
+        </Badge>
+      </Group>
 
       {display.map((c) => (
         <Citation key={c.id} citation={c} />
@@ -2139,12 +2162,10 @@ export function CitationsList({
 
       {citations.length > maxVisible && (
         <Button
-          variant="outline-primary"
-          size="sm"
-          onClick={() => {
-            setShowAll(!showAll);
-          }}
-          className="w-100"
+          variant="default"
+          size="compact-sm"
+          fullWidth
+          onClick={() => { setShowAll(!showAll); }}
         >
           {showAll
             ? "Show fewer"
@@ -2162,14 +2183,22 @@ export function InlineCitation({
 }: InlineCitationProps) {
   return (
     <sup>
-      <a
+      <Anchor
         href={url ?? "#"}
         title={source}
-        className="badge bg-primary text-decoration-none"
-        style={{ fontSize: "10px", marginLeft: "2px" }}
+        size="xs"
+        style={{
+          background: "var(--mantine-color-violet-6)",
+          color: "white",
+          padding: "0 4px",
+          borderRadius: 4,
+          fontSize: 10,
+          textDecoration: "none",
+          marginLeft: 2,
+        }}
       >
         [{citationNumber}]
-      </a>
+      </Anchor>
     </sup>
   );
 }
@@ -2235,7 +2264,7 @@ export function Citation({ citation }: CitationProps) {
             ) : null}
           </Space>
           <Button
-            type="link"
+            variant="link"
             size="small"
             onClick={() => {
               setExpanded(!expanded);
@@ -2290,7 +2319,6 @@ export function CitationsList({
 
       {citations.length > maxVisible && (
         <Button
-          type="default"
           block
           size="small"
           onClick={() => {
@@ -2463,7 +2491,16 @@ export function InlineCitation({
 `,
   },
 "color": {
-    bootstrap: `import { Badge, Card, Stack } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Card,
+  ColorSwatch,
+  Group,
+  SimpleGrid,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 
 import type { ColorProps } from "@patternbase/core";
 
@@ -2471,96 +2508,118 @@ export function Color({
   options,
   selectedColorId,
   onSelectColor,
-  title = "AI Identity Color",
-  showLabels = true,
+  title,
+  showLabels = false,
   variant = "swatches",
-}: Readonly<ColorProps>) {
-  const renderSwatch = (option: {
-    id: string;
-    label: string;
-    value: string;
-  }) => {
-    const selected = option.id === selectedColorId;
-    return (
-      <button
-        key={option.id}
-        type="button"
-        onClick={() => {
-          onSelectColor?.(option.id);
-        }}
-        style={{
-          width: variant === "chips" ? 22 : 28,
-          height: variant === "chips" ? 22 : 28,
-          borderRadius: "50%",
-          border: selected
-            ? "2px solid var(--bs-emphasis-color)"
-            : "1px solid var(--bs-border-color)",
-          backgroundColor: option.value,
-          cursor: onSelectColor ? "pointer" : "default",
-        }}
-        aria-label={option.label}
-      />
-    );
-  };
-
+}: ColorProps) {
   if (variant === "chips") {
     return (
-      <Stack direction="horizontal" className="flex-wrap gap-2">
-        {options.map((option) => (
-          <Badge
-            key={option.id}
-            bg={option.id === selectedColorId ? "dark" : "secondary"}
-            className="d-inline-flex align-items-center gap-2"
-            style={{ cursor: onSelectColor ? "pointer" : "default" }}
-            onClick={() => {
-              onSelectColor?.(option.id);
-            }}
-          >
-            {renderSwatch(option)}
-            {option.label}
-          </Badge>
-        ))}
+      <Stack gap="xs">
+        {title ? <Text size="sm" fw={500}>
+            {title}
+          </Text> : null}
+        <Group gap="xs" wrap="wrap">
+          {options.map((option) => (
+            <Badge
+              key={option.id}
+              variant={selectedColorId === option.id ? "filled" : "outline"}
+              style={{
+                cursor: onSelectColor ? "pointer" : "default",
+                borderColor: option.value,
+                color: selectedColorId === option.id ? "white" : option.value,
+                backgroundColor:
+                  selectedColorId === option.id ? option.value : undefined,
+              }}
+              leftSection={<ColorSwatch color={option.value} size={10} />}
+              onClick={() => onSelectColor?.(option.id)}
+            >
+              {option.label}
+            </Badge>
+          ))}
+        </Group>
       </Stack>
     );
   }
 
   if (variant === "card") {
     return (
-      <Card>
-        <Card.Body>
-          {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-          <Stack direction="horizontal" className="mb-2 flex-wrap gap-2">
-            {options.map((option) => renderSwatch(option))}
-          </Stack>
-          {showLabels ? (
-            <Stack gap={1}>
-              {options.map((option) => (
-                <small key={option.id} className="text-muted">
-                  {option.label}: {option.value}
-                </small>
-              ))}
-            </Stack>
-          ) : null}
-        </Card.Body>
+      <Card withBorder padding="md">
+        <Stack gap="sm">
+          {title ? <Text fw={600} size="sm">
+              {title}
+            </Text> : null}
+          <SimpleGrid cols={4} spacing="xs">
+            {options.map((option) => (
+              <Stack key={option.id} gap={4} align="center">
+                <Tooltip label={option.label} withArrow>
+                  <ColorSwatch
+                    color={option.value}
+                    size={32}
+                    onClick={() => onSelectColor?.(option.id)}
+                    style={{
+                      cursor: onSelectColor ? "pointer" : "default",
+                      outline:
+                        selectedColorId === option.id
+                          ? "3px solid var(--mantine-color-violet-6)"
+                          : undefined,
+                      outlineOffset: 2,
+                    }}
+                  />
+                </Tooltip>
+                <Text size="xs" c="dimmed" ta="center">
+                  {option.label}
+                </Text>
+                {option.description ? <Text size="xs" c="dimmed" ta="center" lineClamp={1}>
+                    {option.description}
+                  </Text> : null}
+              </Stack>
+            ))}
+          </SimpleGrid>
+        </Stack>
       </Card>
     );
   }
 
   return (
-    <Stack gap={2}>
-      {title ? <strong>{title}</strong> : null}
-      <Stack direction="horizontal" className="flex-wrap gap-2">
-        {options.map((option) => renderSwatch(option))}
-      </Stack>
-      {showLabels ? (
-        <Stack direction="horizontal" className="flex-wrap gap-2">
-          {options.map((option) => (
-            <small key={option.id} className="text-muted">
-              {option.label}
-            </small>
-          ))}
-        </Stack>
-      ) : null}
+    <Stack gap="xs">
+      {title ? <Text size="sm" fw={500}>
+          {title}
+        </Text> : null}
+      <Group gap="xs" wrap="wrap">
+        {options.map((option) => (
+          <Tooltip key={option.id} label={option.label} withArrow>
+            <Stack gap={4} align="center">
+              <ColorSwatch
+                color={option.value}
+                size={24}
+                onClick={() => onSelectColor?.(option.id)}
+                style={{
+                  cursor: onSelectColor ? "pointer" : "default",
+                  outline:
+                    selectedColorId === option.id
+                      ? "2px solid var(--mantine-color-violet-6)"
+                      : undefined,
+                  outlineOffset: 2,
+                }}
+              />
+              {showLabels ? <Text size="xs" c="dimmed">
+                  {option.label}
+                </Text> : null}
+            </Stack>
+          </Tooltip>
+        ))}
+      </Group>
+      {selectedColorId ? <Group gap="xs">
+          <ColorSwatch
+            color={
+              options.find((o) => o.id === selectedColorId)?.value ?? "#000"
+            }
+            size={16}
+          />
+          <Text size="xs" c="dimmed">
+            {options.find((o) => o.id === selectedColorId)?.label}
+          </Text>
+        </Group> : null}
     </Stack>
   );
 }
@@ -2847,97 +2906,101 @@ export function Color({
 `,
   },
 "connectors": {
-    bootstrap: `import { Badge, Button, Card, ListGroup, Stack } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@mantine/core";
+import { IconRefresh } from "@tabler/icons-react";
 
 import type { ConnectorsProps } from "@patternbase/core";
-
-const statusBadgeMap = {
-  connected: "success",
-  syncing: "info",
-  error: "danger",
-  disconnected: "secondary",
-} as const;
 
 export function Connectors({
   sources,
   onConnect,
   onDisconnect,
   onSync,
-  title = "Connectors",
+  title,
+  variant = "list",
 }: ConnectorsProps) {
-  return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <ListGroup variant="flush">
-        {sources.map((source) => {
-          const isConnected = source.status === "connected";
-          const isSyncing = source.status === "syncing";
-          return (
-            <ListGroup.Item key={source.id}>
-              <Stack gap={1}>
-                <div className="d-flex justify-content-between align-items-start gap-2">
-                  <div className="d-flex align-items-center flex-wrap gap-2">
-                    <strong className="small">{source.name}</strong>
-                    {source.type ? (
-                      <Badge bg="light" text="dark" className="border">
-                        {source.type}
-                      </Badge>
-                    ) : null}
-                    <Badge bg={statusBadgeMap[source.status]}>
-                      {source.status}
-                    </Badge>
-                  </div>
-                  <div className="d-flex gap-2">
-                    {isConnected ? (
-                      <Button
-                        size="sm"
-                        variant="outline-secondary"
-                        onClick={() => {
-                          onDisconnect(source.id);
-                        }}
-                      >
-                        Disconnect
-                      </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        onClick={() => {
-                          onConnect(source.id);
-                        }}
-                      >
-                        Connect
-                      </Button>
-                    )}
-                    {onSync && isConnected ? (
-                      <Button
-                        size="sm"
-                        variant="outline-primary"
-                        disabled={isSyncing}
-                        onClick={() => {
-                          onSync(source.id);
-                        }}
-                      >
-                        {isSyncing ? "Syncing..." : "Sync"}
-                      </Button>
-                    ) : null}
-                  </div>
-                </div>
-                {source.description ? (
-                  <small className="text-muted">{source.description}</small>
-                ) : null}
-                {source.lastSyncedAt ? (
-                  <small className="text-muted">
-                    Last synced: {source.lastSyncedAt.toLocaleString()}
-                  </small>
-                ) : null}
-              </Stack>
-            </ListGroup.Item>
-          );
-        })}
-      </ListGroup>
+  const statusColor = (status: string) => {
+    if (status === "connected") return "green";
+    if (status === "syncing") return "blue";
+    if (status === "error") return "red";
+    return "gray";
+  };
+
+  const renderSource = (source: (typeof sources)[0]) => (
+    <Card key={source.id} padding="sm" withBorder>
+      <Group justify="space-between" align="flex-start">
+        <Stack gap={2} style={{ flex: 1 }}>
+          <Group gap="xs">
+            <Text size="sm" fw={600}>
+              {source.name}
+            </Text>
+            <Badge size="xs" color={statusColor(source.status)} variant="light">
+              {source.status}
+            </Badge>
+            {source.type ? <Badge size="xs" variant="light" color="gray">
+                {source.type}
+              </Badge> : null}
+          </Group>
+          {source.description ? <Text size="xs" c="dimmed">
+              {source.description}
+            </Text> : null}
+          {source.lastSyncedAt ? <Text size="xs" c="dimmed">
+              Last synced: {source.lastSyncedAt.toLocaleString()}
+            </Text> : null}
+        </Stack>
+        <Group gap="xs">
+          {onSync && source.status === "connected" ? <Button
+              variant="subtle"
+              size="compact-xs"
+              leftSection={<IconRefresh size={12} />}
+              onClick={() => { onSync(source.id); }}
+            >
+              Sync
+            </Button> : null}
+          {source.status === "disconnected" || source.status === "error" ? (
+            <Button
+              variant="light"
+              size="compact-xs"
+              onClick={() => { onConnect(source.id); }}
+            >
+              Connect
+            </Button>
+          ) : (
+            <Button
+              variant="subtle"
+              color="gray"
+              size="compact-xs"
+              onClick={() => { onDisconnect(source.id); }}
+            >
+              Disconnect
+            </Button>
+          )}
+        </Group>
+      </Group>
     </Card>
+  );
+
+  return (
+    <Stack gap="sm">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
+      {variant === "cards" ? (
+        <SimpleGrid cols={2} spacing="sm">
+          {sources.map(renderSource)}
+        </SimpleGrid>
+      ) : (
+        <Stack gap="xs">{sources.map(renderSource)}</Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -2985,7 +3048,7 @@ export function Connectors({
                 ) : (
                   <Button
                     key="connect"
-                    type="primary"
+                    variant="solid"
                     size="small"
                     onClick={() => {
                       onConnect(source.id);
@@ -3140,8 +3203,8 @@ export function Connectors({
 `,
   },
 "consent": {
-    bootstrap: `import { useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
+    mantine: `import { Button, Card, Checkbox, Divider, Stack, Text } from "@mantine/core";
+import { useState } from "react";
 
 import type { ConsentProps } from "@patternbase/core";
 
@@ -3153,75 +3216,89 @@ export function Consent({
   description,
   acceptLabel = "Accept",
   declineLabel = "Decline",
-}: Readonly<ConsentProps>) {
-  const [checked, setChecked] = useState<Set<string>>(() => {
-    const initial = new Set<string>();
-    for (const item of items) {
-      if (item.defaultChecked) initial.add(item.id);
-    }
-    return initial;
-  });
-
-  const requiredMet = items
-    .filter((i) => i.required)
-    .every((i) => checked.has(i.id));
+  variant = "inline",
+}: ConsentProps) {
+  const [checked, setChecked] = useState<Record<string, boolean>>(
+    Object.fromEntries(
+      items.map((item) => [item.id, item.defaultChecked ?? false]),
+    ),
+  );
 
   const toggle = (id: string) => {
-    setChecked((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+    setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  return (
-    <Card>
-      <Card.Body>
-        {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-        {description ? <p className="text-muted small">{description}</p> : null}
+  const requiredItems = items.filter((i) => i.required);
+  const allRequiredChecked = requiredItems.every((i) => checked[i.id]);
 
+  const handleAccept = () => {
+    const acceptedIds = Object.entries(checked)
+      .filter(([, v]) => v)
+      .map(([k]) => k);
+    onAccept(acceptedIds);
+  };
+
+  const inner = (
+    <Stack gap="sm">
+      {title ? <Text fw={600}>{title}</Text> : null}
+      {description ? (
+        <Text size="sm" c="dimmed">
+          {description}
+        </Text>
+      ) : null}
+
+      <Stack gap="xs">
         {items.map((item) => (
-          <Form.Check
+          <Checkbox
             key={item.id}
-            type="checkbox"
-            className="mb-2"
             label={
-              <span>
-                {item.label}
-                {item.required ? (
-                  <span className="text-danger ms-1">*</span>
-                ) : null}
+              <Stack gap={2}>
+                <Text size="sm">
+                  {item.label}
+                  {item.required ? (
+                    <Text component="span" c="red" ml={4}>
+                      *
+                    </Text>
+                  ) : null}
+                </Text>
                 {item.description ? (
-                  <div className="text-muted small">{item.description}</div>
+                  <Text size="xs" c="dimmed">
+                    {item.description}
+                  </Text>
                 ) : null}
-              </span>
+              </Stack>
             }
-            checked={checked.has(item.id)}
+            checked={Boolean(checked[item.id])}
             onChange={() => {
               toggle(item.id);
             }}
+            disabled={item.required ? !item.defaultChecked : undefined}
           />
         ))}
+      </Stack>
 
-        <div className="d-flex mt-3 gap-2">
-          <Button
-            variant="primary"
-            size="sm"
-            disabled={!requiredMet}
-            onClick={() => {
-              onAccept(Array.from(checked));
-            }}
-          >
-            {acceptLabel}
+      <Divider />
+
+      <Stack gap="xs">
+        <Button onClick={handleAccept} disabled={!allRequiredChecked}>
+          {acceptLabel}
+        </Button>
+        {onDecline ? (
+          <Button variant="subtle" color="gray" onClick={onDecline}>
+            {declineLabel}
           </Button>
-          {onDecline ? (
-            <Button variant="outline-secondary" size="sm" onClick={onDecline}>
-              {declineLabel}
-            </Button>
-          ) : null}
-        </div>
-      </Card.Body>
+        ) : null}
+      </Stack>
+    </Stack>
+  );
+
+  if (variant === "inline") {
+    return inner;
+  }
+
+  return (
+    <Card withBorder padding="md">
+      {inner}
     </Card>
   );
 }
@@ -3309,7 +3386,7 @@ export function Consent({
 
       <Space style={{ marginTop: 12 }}>
         <Button
-          type="primary"
+          variant="solid"
           size="small"
           disabled={!requiredMet}
           onClick={() => {
@@ -3453,68 +3530,107 @@ export function Consent({
 `,
   },
 "controls": {
-    bootstrap: `import { Badge, Card, Form, ListGroup, Stack } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Card,
+  Group,
+  Stack,
+  Switch,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 
 import type { ControlsProps } from "@patternbase/core";
-
-const statusBadgeMap = {
-  active: "success",
-  disabled: "secondary",
-  restricted: "warning",
-} as const;
 
 export function Controls({
   controls,
   onToggleControl,
-  title = "Controls",
+  title,
   variant = "list",
   showStatus = true,
-}: Readonly<ControlsProps>) {
-  return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <ListGroup
-        variant="flush"
-        horizontal={variant === "cards" ? "md" : undefined}
-        className={variant === "cards" ? "flex-wrap" : undefined}
-      >
-        {controls.map((control) => (
-          <ListGroup.Item
-            key={control.id}
-            className={
-              variant === "cards" ? "col-md-6 border-bottom" : undefined
-            }
-          >
-            <Stack gap={1}>
-              <div className="d-flex align-items-center justify-content-between gap-2">
-                <div className="d-flex align-items-center flex-wrap gap-2">
-                  <strong className="small">{control.label}</strong>
-                  {showStatus && control.status ? (
-                    <Badge bg={statusBadgeMap[control.status]}>
-                      {control.status}
-                    </Badge>
-                  ) : null}
-                </div>
-                <Form.Check
-                  type="switch"
-                  id={\`control-\${control.id}\`}
-                  checked={control.enabled}
-                  disabled={control.locked}
-                  onChange={(e) => {
-                    onToggleControl(control.id, e.currentTarget.checked);
-                  }}
-                />
-              </div>
-              {control.description ? (
-                <small className="text-muted">{control.description}</small>
+}: ControlsProps) {
+  const statusColor = (status?: string) => {
+    if (status === "active") return "green";
+    if (status === "restricted") return "orange";
+    if (status === "disabled") return "gray";
+    return "gray";
+  };
+
+  const renderControl = (control: (typeof controls)[0]) => {
+    let switchLabel = "Enable";
+    if (control.locked) {
+      switchLabel = "This control is locked";
+    } else if (control.enabled) {
+      switchLabel = "Disable";
+    }
+
+    return (
+      <Card key={control.id} padding="sm" withBorder>
+        <Group justify="space-between" align="center">
+          <Stack gap={2} style={{ flex: 1 }}>
+            <Group gap="xs">
+              <Text size="sm" fw={500}>
+                {control.label}
+              </Text>
+              {showStatus && control.status ? (
+                <Badge
+                  size="xs"
+                  color={statusColor(control.status)}
+                  variant="light"
+                >
+                  {control.status}
+                </Badge>
               ) : null}
-            </Stack>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Card>
+              {control.locked ? (
+                <Badge size="xs" variant="light" color="gray">
+                  Locked
+                </Badge>
+              ) : null}
+            </Group>
+            {control.description ? (
+              <Text size="xs" c="dimmed">
+                {control.description}
+              </Text>
+            ) : null}
+          </Stack>
+          <Tooltip label={switchLabel}>
+            <Switch
+              checked={control.enabled}
+              onChange={(e) => {
+                if (!control.locked) {
+                  onToggleControl(control.id, e.currentTarget.checked);
+                }
+              }}
+              disabled={control.locked}
+              size="sm"
+            />
+          </Tooltip>
+        </Group>
+      </Card>
+    );
+  };
+
+  return (
+    <Stack gap="sm">
+      {title ? (
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+      ) : null}
+      {variant === "cards" ? (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "var(--mantine-spacing-xs)",
+          }}
+        >
+          {controls.map(renderControl)}
+        </div>
+      ) : (
+        <Stack gap="xs">{controls.map(renderControl)}</Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -3683,7 +3799,15 @@ export function Controls({
 `,
   },
 "cost-estimate": {
-    bootstrap: `import { Badge, Card, ProgressBar, Table } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Card,
+  Group,
+  Progress,
+  Stack,
+  Table,
+  Text,
+} from "@mantine/core";
 
 import type { CostEstimateProps } from "@patternbase/core";
 
@@ -3705,67 +3829,59 @@ export function CostEstimate({
 
   const inputPct =
     breakdown.totalTokens > 0
-      ? (breakdown.inputTokens / breakdown.totalTokens) * 100
+      ? Math.round((breakdown.inputTokens / breakdown.totalTokens) * 100)
       : 0;
 
   return (
-    <Card>
-      <Card.Body className="p-3">
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h6 className="mb-0">Cost Estimate</h6>
-          <Badge bg="dark">{formatCost(breakdown.totalCost)}</Badge>
-        </div>
+    <Card padding="sm" withBorder>
+      <Stack gap="sm">
+        <Group justify="space-between" align="center">
+          <Text fw={600} size="sm">
+            Cost Estimate
+          </Text>
+          <Badge variant="light">{formatCost(breakdown.totalCost)}</Badge>
+        </Group>
 
-        {breakdown.model ? (
-          <div className="text-muted small mb-2">Model: {breakdown.model}</div>
-        ) : null}
+        {breakdown.model ? <Text size="xs" c="dimmed">
+            Model: {breakdown.model}
+          </Text> : null}
 
-        {showTokens ? (
-          <>
-            <ProgressBar className="mb-2" style={{ height: 8 }}>
-              <ProgressBar variant="primary" now={inputPct} key={1} label="" />
-              <ProgressBar
-                variant="success"
-                now={100 - inputPct}
-                key={2}
-                label=""
-              />
-            </ProgressBar>
+        {showTokens ? <>
+            <Progress value={inputPct} size="sm" color="violet" />
 
-            <Table size="sm" borderless className="small mb-0">
-              <tbody>
-                <tr>
-                  <td className="text-muted">Input tokens</td>
-                  <td className="text-end">
+            <Table fz="xs" withRowBorders={false}>
+              <Table.Tbody>
+                <Table.Tr>
+                  <Table.Td c="dimmed">Input</Table.Td>
+                  <Table.Td ta="right">
                     {formatTokens(breakdown.inputTokens)}
-                  </td>
-                  <td className="text-end">
+                  </Table.Td>
+                  <Table.Td ta="right">
                     {formatCost(breakdown.inputCost)}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-muted">Output tokens</td>
-                  <td className="text-end">
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td c="dimmed">Output</Table.Td>
+                  <Table.Td ta="right">
                     {formatTokens(breakdown.outputTokens)}
-                  </td>
-                  <td className="text-end">
+                  </Table.Td>
+                  <Table.Td ta="right">
                     {formatCost(breakdown.outputCost)}
-                  </td>
-                </tr>
-                <tr className="fw-semibold border-top">
-                  <td>Total</td>
-                  <td className="text-end">
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={700}>Total</Table.Td>
+                  <Table.Td ta="right" fw={700}>
                     {formatTokens(breakdown.totalTokens)}
-                  </td>
-                  <td className="text-end">
+                  </Table.Td>
+                  <Table.Td ta="right" fw={700}>
                     {formatCost(breakdown.totalCost)}
-                  </td>
-                </tr>
-              </tbody>
+                  </Table.Td>
+                </Table.Tr>
+              </Table.Tbody>
             </Table>
-          </>
-        ) : null}
-      </Card.Body>
+          </> : null}
+      </Stack>
     </Card>
   );
 }
@@ -3965,7 +4081,17 @@ export function CostEstimate({
 `,
   },
 "data-ownership": {
-    bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
+    mantine: `import {
+  ActionIcon,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Table,
+  Text,
+} from "@mantine/core";
+import { IconDownload, IconTrash } from "@tabler/icons-react";
 
 import type { DataOwnershipProps } from "@patternbase/core";
 
@@ -3974,63 +4100,134 @@ export function DataOwnership({
   onDelete,
   onExport,
   onDeleteAll,
-  title,
-  variant: _variant = "list",
-}: Readonly<DataOwnershipProps>) {
-  return (
-    <Card>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          {title ? (
-            <Card.Title className="fs-6 mb-0">{title}</Card.Title>
-          ) : null}
-          <div className="d-flex gap-2">
-            {onExport ? (
-              <Button variant="outline-secondary" size="sm" onClick={onExport}>
-                Export data
-              </Button>
-            ) : null}
-            {onDeleteAll ? (
-              <Button variant="outline-danger" size="sm" onClick={onDeleteAll}>
-                Delete all
-              </Button>
-            ) : null}
-          </div>
-        </div>
+  title = "Your Data",
+  variant = "list",
+}: DataOwnershipProps) {
+  if (variant === "table") {
+    return (
+      <Stack gap="sm">
+        <Group justify="space-between" align="center">
+          <Text fw={600} size="sm">
+            {title}
+          </Text>
+          <Group gap="xs">
+            {onExport ? <Button
+                variant="default"
+                size="compact-sm"
+                leftSection={<IconDownload size={14} />}
+                onClick={onExport}
+              >
+                Export
+              </Button> : null}
+            {onDeleteAll ? <Button
+                variant="subtle"
+                color="red"
+                size="compact-sm"
+                leftSection={<IconTrash size={14} />}
+                onClick={onDeleteAll}
+              >
+                Delete All
+              </Button> : null}
+          </Group>
+        </Group>
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Data Type</Table.Th>
+              <Table.Th>Retention</Table.Th>
+              <Table.Th />
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {items.map((item) => (
+              <Table.Tr key={item.id}>
+                <Table.Td>
+                  <Stack gap={2}>
+                    <Text size="sm" fw={500}>
+                      {item.dataType}
+                    </Text>
+                    {item.description ? <Text size="xs" c="dimmed">
+                        {item.description}
+                      </Text> : null}
+                  </Stack>
+                </Table.Td>
+                <Table.Td>
+                  {item.retention ? <Badge size="xs" variant="light">
+                      {item.retention}
+                    </Badge> : null}
+                </Table.Td>
+                <Table.Td>
+                  {item.deletable && onDelete ? <ActionIcon
+                      variant="subtle"
+                      color="red"
+                      size="sm"
+                      onClick={() => { onDelete(item.id); }}
+                    >
+                      <IconTrash size={14} />
+                    </ActionIcon> : null}
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+      </Stack>
+    );
+  }
 
-        <ListGroup variant="flush">
-          {items.map((item) => (
-            <ListGroup.Item
-              key={item.id}
-              className="d-flex justify-content-between align-items-center"
+  return (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        <Group gap="xs">
+          {onExport ? <Button
+              variant="default"
+              size="compact-sm"
+              leftSection={<IconDownload size={14} />}
+              onClick={onExport}
             >
-              <div>
-                <div className="fw-semibold small">{item.dataType}</div>
-                {item.description ? (
-                  <div className="text-muted small">{item.description}</div>
-                ) : null}
-                {item.retention ? (
-                  <Badge bg="light" text="dark" className="mt-1">
+              Export
+            </Button> : null}
+          {onDeleteAll ? <Button
+              variant="subtle"
+              color="red"
+              size="compact-sm"
+              onClick={onDeleteAll}
+            >
+              Delete All
+            </Button> : null}
+        </Group>
+      </Group>
+
+      <Stack gap="xs">
+        {items.map((item) => (
+          <Card key={item.id} padding="sm" withBorder>
+            <Group justify="space-between" align="flex-start">
+              <Stack gap={2} style={{ flex: 1 }}>
+                <Text size="sm" fw={500}>
+                  {item.dataType}
+                </Text>
+                {item.description ? <Text size="xs" c="dimmed">
+                    {item.description}
+                  </Text> : null}
+                {item.retention ? <Badge size="xs" variant="light" color="gray">
                     Retention: {item.retention}
-                  </Badge>
-                ) : null}
-              </div>
-              {item.deletable && onDelete ? (
-                <Button
-                  variant="outline-danger"
+                  </Badge> : null}
+              </Stack>
+              {item.deletable && onDelete ? <ActionIcon
+                  variant="subtle"
+                  color="red"
                   size="sm"
-                  onClick={() => {
-                    onDelete(item.id);
-                  }}
+                  onClick={() => { onDelete(item.id); }}
                 >
-                  Delete
-                </Button>
-              ) : null}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </Card.Body>
-    </Card>
+                  <IconTrash size={14} />
+                </ActionIcon> : null}
+            </Group>
+          </Card>
+        ))}
+      </Stack>
+    </Stack>
   );
 }
 `,
@@ -4083,7 +4280,7 @@ export function DataOwnership({
                 ? [
                     <Button
                       key="delete"
-                      type="text"
+                      variant="text"
                       danger
                       size="small"
                       icon={<DeleteOutlined />}
@@ -4284,9 +4481,33 @@ export function DataOwnership({
 `,
   },
 "describe": {
-    bootstrap: `import { Badge, Button, Card } from "react-bootstrap";
+    mantine: `import {
+  ActionIcon,
+  Badge,
+  Card,
+  Code,
+  Group,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
+import { IconCopy } from "@tabler/icons-react";
 
-import type { DescribeProps } from "@patternbase/core";
+import type { DescribeDetail, DescribeProps } from "@patternbase/core";
+
+function renderDetailValue(detail: DescribeDetail) {
+  if (detail.type === "badge") {
+    return (
+      <Badge size="xs" variant="light">
+        {detail.value}
+      </Badge>
+    );
+  }
+  if (detail.type === "code" || detail.type === "json") {
+    return <Code fz="xs">{detail.value}</Code>;
+  }
+  return <Text size="xs">{detail.value}</Text>;
+}
 
 export function Describe({
   output,
@@ -4296,88 +4517,76 @@ export function Describe({
   seed,
   onReuse,
   onCopy,
-  title,
+  title = "Description",
   variant = "panel",
-}: Readonly<DescribeProps>) {
-  if (variant === "inline") {
-    return (
-      <div>
-        {title ? <h6>{title}</h6> : null}
-        <div className="bg-body-secondary mb-2 rounded p-2">
-          <p className="small mb-0">{output}</p>
-        </div>
-        {inferredPrompt ? (
-          <div className="mb-2">
-            <small className="text-muted d-block">Inferred prompt:</small>
-            <code className="small" style={{ color: "var(--bs-body-color)" }}>
-              {inferredPrompt}
-            </code>
-          </div>
-        ) : null}
-        <div className="d-flex flex-wrap gap-1">
-          {details.map((d) => (
-            <Badge key={d.id} bg="light" text="dark" className="fw-normal">
-              {d.label}: {d.value}
-            </Badge>
+}: DescribeProps) {
+  const inner = (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        <Group gap={4}>
+          {model ? <Badge size="xs" variant="light">
+              {model}
+            </Badge> : null}
+          {seed ? <Badge size="xs" variant="light" color="gray">
+              seed: {seed}
+            </Badge> : null}
+          {onCopy ? <Tooltip label="Copy">
+              <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
+                <IconCopy size={14} />
+              </ActionIcon>
+            </Tooltip> : null}
+        </Group>
+      </Group>
+
+      <Text size="sm">{output}</Text>
+
+      {inferredPrompt ? <Stack gap={4}>
+          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+            Inferred Prompt
+          </Text>
+          <Card padding="xs" withBorder>
+            <Group justify="space-between" align="center">
+              <Text size="xs" style={{ fontStyle: "italic", flex: 1 }}>
+                &ldquo;{inferredPrompt}&rdquo;
+              </Text>
+              {onReuse ? <Badge
+                  size="xs"
+                  variant="light"
+                  color="violet"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => { onReuse(inferredPrompt); }}
+                >
+                  Reuse
+                </Badge> : null}
+            </Group>
+          </Card>
+        </Stack> : null}
+
+      {details.length > 0 && (
+        <Stack gap={4}>
+          {details.map((detail) => (
+            <Group key={detail.id} justify="space-between" align="flex-start">
+              <Text size="xs" c="dimmed">
+                {detail.label}
+              </Text>
+              {renderDetailValue(detail)}
+            </Group>
           ))}
-          {model ? <Badge bg="primary">{model}</Badge> : null}
-          {seed ? <Badge bg="secondary">Seed: {seed}</Badge> : null}
-        </div>
-      </div>
-    );
+        </Stack>
+      )}
+    </Stack>
+  );
+
+  if (variant === "inline") {
+    return <Stack gap="sm">{inner}</Stack>;
   }
 
   return (
-    <Card>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-start mb-2">
-          <Card.Title className="fs-6">{title ?? "Describe Output"}</Card.Title>
-          <div className="d-flex gap-1">
-            {onCopy ? (
-              <Button variant="outline-secondary" size="sm" onClick={onCopy}>
-                Copy
-              </Button>
-            ) : null}
-            {onReuse && inferredPrompt ? (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => {
-                  onReuse(inferredPrompt);
-                }}
-              >
-                Reuse Prompt
-              </Button>
-            ) : null}
-          </div>
-        </div>
-        <p className="small">{output}</p>
-        {inferredPrompt ? (
-          <div className="mb-3">
-            <small className="text-muted d-block mb-1">Inferred Prompt</small>
-            <code
-              className="small d-block bg-body-secondary rounded p-2"
-              style={{ color: "var(--bs-body-color)", fontFamily: "monospace" }}
-            >
-              {inferredPrompt}
-            </code>
-          </div>
-        ) : null}
-        <div className="d-flex flex-wrap gap-1">
-          {details.map((d) => (
-            <Badge
-              key={d.id}
-              bg={d.type === "code" ? "info" : "light"}
-              text={d.type === "code" ? "white" : "dark"}
-              className="fw-normal"
-            >
-              {d.label}: <strong>{d.value}</strong>
-            </Badge>
-          ))}
-          {model ? <Badge bg="primary">{model}</Badge> : null}
-          {seed ? <Badge bg="secondary">Seed: {seed}</Badge> : null}
-        </div>
-      </Card.Body>
+    <Card withBorder padding="md">
+      {inner}
     </Card>
   );
 }
@@ -4467,7 +4676,7 @@ export function Describe({
           {onReuse && inferredPrompt ? (
             <Button
               size="small"
-              type="primary"
+              variant="solid"
               icon={<SendOutlined />}
               onClick={() => {
                 onReuse(inferredPrompt);
@@ -4644,7 +4853,8 @@ export function Describe({
 `,
   },
 "disclosure": {
-    bootstrap: `import { Alert, Badge } from "react-bootstrap";
+    mantine: `import { Alert, Badge, Text } from "@mantine/core";
+import { IconRobot } from "@tabler/icons-react";
 
 import type { DisclosureProps } from "@patternbase/core";
 
@@ -4654,10 +4864,10 @@ const TYPE_LABELS: Record<DisclosureProps["type"], string> = {
   "ai-suggested": "AI Suggested",
 };
 
-const TYPE_VARIANTS: Record<DisclosureProps["type"], string> = {
-  "ai-generated": "info",
-  "ai-assisted": "primary",
-  "ai-suggested": "secondary",
+const TYPE_COLORS: Record<DisclosureProps["type"], string> = {
+  "ai-generated": "violet",
+  "ai-assisted": "blue",
+  "ai-suggested": "gray",
 };
 
 export function Disclosure({
@@ -4668,42 +4878,44 @@ export function Disclosure({
   customLabel,
 }: DisclosureProps) {
   const label = customLabel ?? TYPE_LABELS[type];
-  const color = TYPE_VARIANTS[type];
+  const color = TYPE_COLORS[type];
 
   if (variant === "badge") {
     return (
-      <Badge bg={color} className="d-inline-flex align-items-center gap-1">
-        <span>{"\\uD83E\\uDD16"}</span>
+      <Badge
+        color={color}
+        leftSection={<IconRobot size={10} />}
+        variant="light"
+      >
         {label}
-        {model ? <span className="fw-normal opacity-75">({model})</span> : null}
+        {model ? \` (\${model})\` : ""}
       </Badge>
     );
   }
 
   if (variant === "banner") {
     return (
-      <Alert
-        variant={color}
-        className="d-flex align-items-center small mb-2 gap-2 px-3 py-2"
-      >
-        <span>{"\\uD83E\\uDD16"}</span>
-        <span>{label}</span>
-        {model ? <span className="text-muted">- {model}</span> : null}
-        {timestamp ? (
-          <span className="text-muted ms-auto">
-            {new Date(timestamp).toLocaleDateString()}
-          </span>
-        ) : null}
+      <Alert icon={<IconRobot size={16} />} color="blue" mb="xs">
+        <Text size="sm">
+          {label}
+          {model ? \` — \${model}\` : ""}
+          {timestamp ? <Text component="span" size="xs" c="dimmed" ml="xs">
+              {new Date(timestamp).toLocaleDateString()}
+            </Text> : null}
+        </Text>
       </Alert>
     );
   }
 
-  // inline
   return (
-    <span className={\`text-\${color} small\`}>
-      {"\\uD83E\\uDD16"} {label}
-      {model ? <span className="text-muted"> ({model})</span> : null}
-    </span>
+    <Text size="xs" c="dimmed">
+      <IconRobot
+        size={12}
+        style={{ marginRight: 4, verticalAlign: "middle" }}
+      />
+      {label}
+      {model ? \` (\${model})\` : ""}
+    </Text>
   );
 }
 `,
@@ -4843,7 +5055,16 @@ export function Disclosure({
 `,
   },
 "draft-mode": {
-    bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  Timeline,
+} from "@mantine/core";
+import { IconArrowBack, IconGitBranch } from "@tabler/icons-react";
 
 import type { DraftModeProps } from "@patternbase/core";
 
@@ -4853,72 +5074,130 @@ export function DraftMode({
   onSelectDraft,
   onRevertToDraft,
   onBranchFromDraft,
-  title = "Draft Mode",
+  title = "Draft History",
   variant = "list",
-}: Readonly<DraftModeProps>) {
+}: DraftModeProps) {
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <ListGroup variant="flush">
-        {drafts.map((draft) => (
-          <ListGroup.Item
-            key={draft.id}
-            action
-            active={activeDraftId === draft.id}
-            style={{
-              marginLeft:
-                variant === "timeline" ? Math.max(draft.number - 1, 0) * 8 : 0,
-            }}
-            onClick={() => {
-              onSelectDraft(draft.id);
-            }}
-            className="d-flex justify-content-between align-items-start"
-          >
-            <div>
-              <div className="d-flex align-items-center gap-2">
-                <strong className="small">
-                  {draft.label ?? \`Draft \${draft.number}\`}
-                </strong>
-                {activeDraftId === draft.id ? (
-                  <Badge bg="primary">Active</Badge>
-                ) : null}
-              </div>
-              {draft.preview ? (
-                <small className="text-muted">{draft.preview}</small>
-              ) : null}
-            </div>
-            <div className="d-flex gap-2">
-              <Button
-                size="sm"
-                variant="link"
-                className="p-0"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRevertToDraft(draft.id);
-                }}
-              >
-                Revert
-              </Button>
-              {onBranchFromDraft ? (
+    <Stack gap="sm">
+      <Text fw={600} size="sm">
+        {title}
+      </Text>
+
+      {variant === "timeline" ? (
+        <Timeline bulletSize={16} lineWidth={2}>
+          {drafts.map((draft) => (
+            <Timeline.Item
+              key={draft.id}
+              title={
+                <Group gap="xs">
+                  <Text
+                    size="sm"
+                    fw={activeDraftId === draft.id ? 600 : 400}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => { onSelectDraft(draft.id); }}
+                  >
+                    {draft.label ?? \`Draft \${String(draft.number)}\`}
+                  </Text>
+                  {activeDraftId === draft.id && (
+                    <Badge size="xs" variant="filled" color="violet">
+                      Active
+                    </Badge>
+                  )}
+                </Group>
+              }
+            >
+              {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                  {draft.preview}
+                </Text> : null}
+              {draft.createdAt ? <Text size="xs" c="dimmed">
+                  {draft.createdAt.toLocaleString()}
+                </Text> : null}
+              <Group gap="xs" mt={4}>
                 <Button
-                  size="sm"
-                  variant="link"
-                  className="p-0"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onBranchFromDraft(draft.id);
-                  }}
+                  variant="subtle"
+                  size="compact-xs"
+                  leftSection={<IconArrowBack size={12} />}
+                  onClick={() => { onRevertToDraft(draft.id); }}
                 >
-                  Branch
+                  Revert
                 </Button>
-              ) : null}
-            </div>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Card>
+                {onBranchFromDraft ? <Button
+                    variant="subtle"
+                    size="compact-xs"
+                    leftSection={<IconGitBranch size={12} />}
+                    onClick={() => { onBranchFromDraft(draft.id); }}
+                  >
+                    Branch
+                  </Button> : null}
+              </Group>
+            </Timeline.Item>
+          ))}
+        </Timeline>
+      ) : (
+        <Stack gap="xs">
+          {drafts.map((draft) => (
+            <Card
+              key={draft.id}
+              padding="sm"
+              withBorder
+              style={{
+                cursor: "pointer",
+                outline:
+                  activeDraftId === draft.id
+                    ? "2px solid var(--mantine-color-violet-6)"
+                    : undefined,
+              }}
+              onClick={() => { onSelectDraft(draft.id); }}
+            >
+              <Group justify="space-between" align="flex-start">
+                <Stack gap={2} style={{ flex: 1 }}>
+                  <Group gap="xs">
+                    <Text size="sm" fw={500}>
+                      {draft.label ?? \`Draft \${String(draft.number)}\`}
+                    </Text>
+                    {activeDraftId === draft.id && (
+                      <Badge size="xs" variant="filled" color="violet">
+                        Active
+                      </Badge>
+                    )}
+                  </Group>
+                  {draft.preview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                      {draft.preview}
+                    </Text> : null}
+                  {draft.createdAt ? <Text size="xs" c="dimmed">
+                      {draft.createdAt.toLocaleString()}
+                    </Text> : null}
+                </Stack>
+                <Group gap="xs">
+                  <Button
+                    variant="subtle"
+                    size="compact-xs"
+                    leftSection={<IconArrowBack size={12} />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRevertToDraft(draft.id);
+                    }}
+                  >
+                    Revert
+                  </Button>
+                  {onBranchFromDraft ? <Button
+                      variant="subtle"
+                      size="compact-xs"
+                      leftSection={<IconGitBranch size={12} />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onBranchFromDraft(draft.id);
+                      }}
+                    >
+                      Branch
+                    </Button> : null}
+                </Group>
+              </Group>
+            </Card>
+          ))}
+        </Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -4962,7 +5241,7 @@ export function DraftMode({
               <Button
                 key={\`revert-\${draft.id}\`}
                 size="small"
-                type="text"
+                variant="text"
                 onClick={(e) => {
                   e.stopPropagation();
                   onRevertToDraft(draft.id);
@@ -4974,7 +5253,7 @@ export function DraftMode({
                 <Button
                   key={\`branch-\${draft.id}\`}
                   size="small"
-                  type="text"
+                  variant="text"
                   onClick={(e) => {
                     e.stopPropagation();
                     onBranchFromDraft(draft.id);
@@ -5161,8 +5440,8 @@ export function DraftMode({
 `,
   },
 "expand": {
-    bootstrap: `import { useState } from "react";
-import { Button, Card, Spinner } from "react-bootstrap";
+    mantine: `import { Accordion, Button, Stack, Text } from "@mantine/core";
+import { IconChevronDown } from "@tabler/icons-react";
 
 import type { ExpandProps } from "@patternbase/core";
 
@@ -5173,80 +5452,64 @@ export function Expand({
   isExpanding = false,
   title,
   variant = "button",
-}: Readonly<ExpandProps>) {
-  const [expanded, setExpanded] = useState(false);
-
-  const displayContent =
-    expanded && expandedContent ? expandedContent : content;
-
+}: ExpandProps) {
   if (variant === "accordion") {
     return (
-      <Card>
-        <Card.Body>
-          {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-          <Card.Text className="small">{displayContent}</Card.Text>
-          {isExpanding ? (
-            <Spinner animation="border" size="sm" />
-          ) : (
-            <Button
-              variant="link"
-              size="sm"
-              className="p-0"
-              onClick={() => {
-                if (!expanded) onExpand();
-                setExpanded(!expanded);
-              }}
-            >
-              {expanded ? "Show less" : "Expand"}
-            </Button>
-          )}
-        </Card.Body>
-      </Card>
+      <Accordion variant="separated" radius="sm">
+        <Accordion.Item value="expand">
+          <Accordion.Control onClick={onExpand}>
+            <Text size="sm" fw={500}>
+              {title ?? "Show full content"}
+            </Text>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Text size="sm">{expandedContent ?? content}</Text>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     );
   }
 
   if (variant === "inline") {
     return (
-      <span>
-        {displayContent}
-        {isExpanding ? (
-          <Spinner animation="border" size="sm" className="ms-1" />
-        ) : !expanded ? (
-          <Button
-            variant="link"
-            size="sm"
-            className="ms-1 p-0"
-            onClick={() => {
-              onExpand();
-              setExpanded(true);
-            }}
-          >
-            ... expand
-          </Button>
-        ) : null}
-      </span>
+      <Stack gap="xs">
+        <Text size="sm">{content}</Text>
+        {expandedContent ? <Text size="sm" c="dimmed">
+            {expandedContent}
+          </Text> : null}
+        <Button
+          variant="subtle"
+          size="compact-sm"
+          rightSection={<IconChevronDown size={14} />}
+          onClick={onExpand}
+          loading={isExpanding}
+          w="fit-content"
+        >
+          Expand
+        </Button>
+      </Stack>
     );
   }
 
   return (
-    <div>
-      {title ? <h6>{title}</h6> : null}
-      <p className="small">{displayContent}</p>
-      {isExpanding ? (
-        <Spinner animation="border" size="sm" />
-      ) : !expanded ? (
-        <Button
-          variant="outline-primary"
-          size="sm"
-          onClick={() => {
-            onExpand();
-            setExpanded(true);
-          }}
-        >
-          Expand content
-        </Button>
-      ) : null}
-    </div>
+    <Stack gap="xs">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
+      <Text size="sm">{content}</Text>
+      {expandedContent ? <Text size="sm" c="dimmed">
+          {expandedContent}
+        </Text> : null}
+      <Button
+        variant="default"
+        size="sm"
+        onClick={onExpand}
+        loading={isExpanding}
+        w="fit-content"
+      >
+        Expand
+      </Button>
+    </Stack>
   );
 }
 `,
@@ -5279,7 +5542,7 @@ export function Expand({
             <Spin size="small" />
           ) : (
             <Button
-              type="link"
+              variant="link"
               size="small"
               style={{ padding: 0 }}
               onClick={() => {
@@ -5303,7 +5566,7 @@ export function Expand({
           <Spin size="small" style={{ marginLeft: 4 }} />
         ) : !expanded ? (
           <Button
-            type="link"
+            variant="link"
             size="small"
             style={{ padding: 0, marginLeft: 4 }}
             onClick={() => {
@@ -5430,7 +5693,16 @@ export function Expand({
 `,
   },
 "filters": {
-    bootstrap: `import { Button, Card, Form } from "react-bootstrap";
+    mantine: `import {
+  Button,
+  Checkbox,
+  Group,
+  Radio,
+  Select,
+  Slider,
+  Stack,
+  Text,
+} from "@mantine/core";
 
 import type { FiltersProps } from "@patternbase/core";
 
@@ -5441,103 +5713,125 @@ export function Filters({
   onClear,
   layout = "vertical",
   title,
-}: Readonly<FiltersProps>) {
-  const content = groups.map((group) => (
-    <div key={group.id} className={layout === "horizontal" ? "" : "mb-3"}>
-      <Form.Label className="fw-semibold small">{group.label}</Form.Label>
+}: FiltersProps) {
+  const hasValues = Object.values(values).some((v) =>
+    Array.isArray(v) ? v.length > 0 : v !== undefined && v !== null && v !== "",
+  );
 
-      {group.type === "checkbox" && group.options
-        ? group.options.map((opt) => (
-            <Form.Check
-              key={opt.id}
-              type="checkbox"
-              label={
-                opt.count != null ? \`\${opt.label} (\${opt.count})\` : opt.label
-              }
-              checked={
-                Array.isArray(values[group.id])
-                  ? (values[group.id] as string[]).includes(opt.value)
-                  : false
-              }
-              onChange={(e) => {
-                const current = (values[group.id] as string[]) ?? [];
-                const next = e.target.checked
-                  ? [...current, opt.value]
-                  : current.filter((v) => v !== opt.value);
-                onChange(group.id, next);
-              }}
-            />
-          ))
-        : null}
+  const renderGroup = (group: (typeof groups)[0]) => (
+    <Stack key={group.id} gap="xs">
+      <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+        {group.label}
+      </Text>
 
-      {group.type === "radio" && group.options
-        ? group.options.map((opt) => (
-            <Form.Check
-              key={opt.id}
-              type="radio"
-              name={group.id}
-              label={opt.label}
-              checked={values[group.id] === opt.value}
-              onChange={() => {
-                onChange(group.id, opt.value);
-              }}
-            />
-          ))
-        : null}
+      {group.type === "checkbox" && group.options ? <Stack gap={4}>
+          {group.options.map((opt) => {
+            const currentVal = values[group.id];
+            const checked = Array.isArray(currentVal)
+              ? (currentVal as string[]).includes(opt.value)
+              : currentVal === opt.value;
+            return (
+              <Checkbox
+                key={opt.id}
+                label={
+                  <Group gap="xs">
+                    <span>{opt.label}</span>
+                    {opt.count !== undefined && (
+                      <Text size="xs" c="dimmed">
+                        ({opt.count})
+                      </Text>
+                    )}
+                  </Group>
+                }
+                checked={Boolean(checked)}
+                onChange={(e) => {
+                  const current = (values[group.id] as string[]) ?? [];
+                  if (e.currentTarget.checked) {
+                    onChange(group.id, [...current, opt.value]);
+                  } else {
+                    onChange(
+                      group.id,
+                      current.filter((v) => v !== opt.value),
+                    );
+                  }
+                }}
+                size="sm"
+              />
+            );
+          })}
+        </Stack> : null}
 
-      {group.type === "range" ? (
-        <Form.Range
-          min={group.min ?? 0}
-          max={group.max ?? 100}
-          step={group.step ?? 1}
-          value={(values[group.id] as number) ?? group.min ?? 0}
-          onChange={(e) => {
-            onChange(group.id, Number(e.target.value));
-          }}
-        />
-      ) : null}
-
-      {group.type === "select" && group.options ? (
-        <Form.Select
-          size="sm"
+      {group.type === "radio" && group.options ? <Radio.Group
           value={(values[group.id] as string) ?? ""}
-          onChange={(e) => {
-            onChange(group.id, e.target.value);
-          }}
+          onChange={(val) => { onChange(group.id, val); }}
         >
-          <option value="">All</option>
-          {group.options.map((opt) => (
-            <option key={opt.id} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </Form.Select>
-      ) : null}
-    </div>
-  ));
+          <Stack gap={4}>
+            {group.options.map((opt) => (
+              <Radio
+                key={opt.id}
+                value={opt.value}
+                label={opt.label}
+                size="sm"
+              />
+            ))}
+          </Stack>
+        </Radio.Group> : null}
+
+      {group.type === "range" && (
+        <Stack gap="xs">
+          <Slider
+            min={group.min ?? 0}
+            max={group.max ?? 100}
+            step={group.step ?? 1}
+            value={(values[group.id] as number) ?? group.min ?? 0}
+            onChange={(val) => { onChange(group.id, val); }}
+          />
+          <Group justify="space-between">
+            <Text size="xs" c="dimmed">
+              {group.min ?? 0}
+            </Text>
+            <Text size="xs" c="dimmed">
+              {group.max ?? 100}
+            </Text>
+          </Group>
+        </Stack>
+      )}
+
+      {group.type === "select" && group.options ? <Select
+          data={group.options.map((o) => ({ value: o.value, label: o.label }))}
+          value={(values[group.id] as string) ?? null}
+          onChange={(val) => { onChange(group.id, val ?? ""); }}
+          placeholder="Select..."
+          size="sm"
+          clearable
+        /> : null}
+    </Stack>
+  );
 
   return (
-    <Card>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          {title ? (
-            <Card.Title className="fs-6 mb-0">{title}</Card.Title>
-          ) : null}
-          {onClear ? (
-            <Button variant="link" size="sm" onClick={onClear}>
-              Clear all
-            </Button>
-          ) : null}
-        </div>
-        <div
-          className={
-            layout === "horizontal" ? "d-flex flex-wrap gap-4" : undefined
-          }
-        >
-          {content}
-        </div>
-      </Card.Body>
-    </Card>
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        {title ? <Text fw={500} size="sm">
+            {title}
+          </Text> : null}
+        {onClear && hasValues ? <Button
+            variant="subtle"
+            size="compact-xs"
+            color="gray"
+            onClick={onClear}
+          >
+            Clear all
+          </Button> : null}
+      </Group>
+
+      {layout === "horizontal" ? (
+        <Group gap="md" align="flex-start" wrap="wrap">
+          {groups.map(renderGroup)}
+        </Group>
+      ) : (
+        <Stack gap="md">{groups.map(renderGroup)}</Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -5657,7 +5951,7 @@ export function Filters({
       >
         {title ? <Text strong>{title}</Text> : null}
         {onClear ? (
-          <Button type="link" size="small" onClick={onClear}>
+          <Button variant="link" size="small" onClick={onClear}>
             Clear all
           </Button>
         ) : null}
@@ -5840,7 +6134,15 @@ export function Filters({
 `,
   },
 "follow-up": {
-    bootstrap: `import { Badge, Button, ListGroup } from "react-bootstrap";
+    mantine: `import {
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  UnstyledButton,
+} from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons-react";
 
 import type { FollowUpProps } from "@patternbase/core";
 
@@ -5850,78 +6152,85 @@ export function FollowUp({
   variant = "chip",
   title,
   maxVisible,
-}: Readonly<FollowUpProps>) {
-  const visible = maxVisible ? followUps.slice(0, maxVisible) : followUps;
+}: FollowUpProps) {
+  const displayed = maxVisible ? followUps.slice(0, maxVisible) : followUps;
 
-  if (variant === "list") {
-    return (
-      <div>
-        {title ? <h6 className="mb-2">{title}</h6> : null}
-        <ListGroup>
-          {visible.map((f) => (
-            <ListGroup.Item
-              key={f.id}
-              action
+  const renderItems = () => {
+    if (variant === "list") {
+      return (
+        <Stack gap={4}>
+          {displayed.map((item) => (
+            <UnstyledButton
+              key={item.id}
               onClick={() => {
-                onSelect(f);
+                onSelect(item);
               }}
             >
-              {f.icon ? <span className="me-2">{f.icon}</span> : null}
-              {f.text}
-            </ListGroup.Item>
+              <Card padding="xs" withBorder style={{ cursor: "pointer" }}>
+                <Group gap="xs" justify="space-between">
+                  <Group gap="xs">
+                    {item.icon ? <span>{item.icon}</span> : null}
+                    <Text size="sm">{item.text}</Text>
+                  </Group>
+                  <IconArrowRight size={14} style={{ opacity: 0.4 }} />
+                </Group>
+              </Card>
+            </UnstyledButton>
           ))}
-        </ListGroup>
-      </div>
-    );
-  }
+        </Stack>
+      );
+    }
 
-  if (variant === "button") {
-    return (
-      <div>
-        {title ? <h6 className="mb-2">{title}</h6> : null}
-        <div className="d-flex flex-wrap gap-2">
-          {visible.map((f) => (
+    if (variant === "button") {
+      return (
+        <Stack gap="xs">
+          {displayed.map((item) => (
             <Button
-              key={f.id}
-              variant="outline-primary"
+              key={item.id}
+              variant="default"
               size="sm"
+              leftSection={item.icon ? <span>{item.icon}</span> : undefined}
+              rightSection={<IconArrowRight size={14} />}
               onClick={() => {
-                onSelect(f);
+                onSelect(item);
               }}
             >
-              {f.icon ? <span className="me-1">{f.icon}</span> : null}
-              {f.text}
+              {item.text}
             </Button>
           ))}
-        </div>
-      </div>
-    );
-  }
+        </Stack>
+      );
+    }
 
-  return (
-    <div>
-      {title ? <h6 className="mb-2">{title}</h6> : null}
-      <div className="d-flex flex-wrap gap-2">
-        {visible.map((f) => (
-          <Badge
-            key={f.id}
-            bg="primary"
-            pill
-            style={{
-              cursor: "pointer",
-              fontSize: "0.85em",
-              padding: "6px 14px",
-            }}
+    return (
+      <Group gap="xs" wrap="wrap">
+        {displayed.map((item) => (
+          <Button
+            key={item.id}
+            variant="light"
+            size="compact-sm"
+            rightSection={<IconArrowRight size={12} />}
             onClick={() => {
-              onSelect(f);
+              onSelect(item);
             }}
           >
-            {f.icon ? <span className="me-1">{f.icon}</span> : null}
-            {f.text}
-          </Badge>
+            {item.text}
+          </Button>
         ))}
-      </div>
-    </div>
+      </Group>
+    );
+  };
+
+  return (
+    <Stack gap="xs">
+      {title ? (
+        <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+          {title}
+        </Text>
+      ) : null}
+
+      {renderItems()}
+    </Stack>
   );
 }
 `,
@@ -5979,7 +6288,7 @@ export function FollowUp({
           {visible.map((f) => (
             <Button
               key={f.id}
-              type="dashed"
+              variant="dashed"
               size="small"
               onClick={() => {
                 onSelect(f);
@@ -6115,7 +6424,16 @@ export function FollowUp({
 `,
   },
 "footprints": {
-    bootstrap: `import { Badge, Button, Card, ListGroup } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  Timeline,
+} from "@mantine/core";
+import { IconActivity } from "@tabler/icons-react";
 
 import type { FootprintsProps } from "@patternbase/core";
 
@@ -6123,81 +6441,129 @@ export function Footprints({
   entries,
   onEntryClick,
   onClear,
-  title,
+  title = "Activity History",
   maxVisible,
   showTimestamps = true,
-  variant = "list",
-}: Readonly<FootprintsProps>) {
-  const visible = maxVisible ? entries.slice(0, maxVisible) : entries;
+  variant = "timeline",
+}: FootprintsProps) {
+  const displayed = maxVisible ? entries.slice(0, maxVisible) : entries;
+
+  const renderEntries = () => {
+    if (variant === "compact") {
+      return (
+        <Stack gap={4}>
+          {displayed.map((entry) => (
+            <Group
+              key={entry.id}
+              gap="xs"
+              style={{ cursor: onEntryClick ? "pointer" : "default" }}
+              onClick={() => onEntryClick?.(entry.id)}
+            >
+              <Text size="xs" c="dimmed" style={{ minWidth: 120 }}>
+                {showTimestamps ? entry.timestamp.toLocaleTimeString() : ""}
+              </Text>
+              <Text size="xs">{entry.action}</Text>
+              {entry.model ? <Badge size="xs" variant="light">
+                  {entry.model}
+                </Badge> : null}
+            </Group>
+          ))}
+        </Stack>
+      );
+    }
+
+    if (variant === "list") {
+      return (
+        <Stack gap="xs">
+          {displayed.map((entry) => (
+            <Card
+              key={entry.id}
+              padding="xs"
+              withBorder
+              style={{ cursor: onEntryClick ? "pointer" : "default" }}
+              onClick={() => onEntryClick?.(entry.id)}
+            >
+              <Group justify="space-between" align="flex-start">
+                <Stack gap={2} style={{ flex: 1 }}>
+                  <Group gap="xs">
+                    <Text size="sm" fw={500}>
+                      {entry.action}
+                    </Text>
+                    {entry.model ? <Badge size="xs" variant="light">
+                        {entry.model}
+                      </Badge> : null}
+                  </Group>
+                  {entry.inputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                      {entry.inputPreview}
+                    </Text> : null}
+                </Stack>
+                {showTimestamps ? <Text size="xs" c="dimmed">
+                    {entry.timestamp.toLocaleString()}
+                  </Text> : null}
+              </Group>
+            </Card>
+          ))}
+        </Stack>
+      );
+    }
+
+    return (
+      <Timeline bulletSize={16} lineWidth={2}>
+        {displayed.map((entry) => (
+          <Timeline.Item
+            key={entry.id}
+            bullet={<IconActivity size={10} />}
+            title={
+              <Group
+                gap="xs"
+                style={{ cursor: onEntryClick ? "pointer" : "default" }}
+                onClick={() => onEntryClick?.(entry.id)}
+              >
+                <Text size="sm" fw={500}>
+                  {entry.action}
+                </Text>
+                {entry.model ? <Badge size="xs" variant="light">
+                    {entry.model}
+                  </Badge> : null}
+              </Group>
+            }
+          >
+            {entry.inputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                {entry.inputPreview}
+              </Text> : null}
+            {entry.outputPreview ? <Text size="xs" c="dimmed" lineClamp={1}>
+                {entry.outputPreview}
+              </Text> : null}
+            {showTimestamps ? <Text size="xs" c="dimmed">
+                {entry.timestamp.toLocaleString()}
+              </Text> : null}
+            {entry.metadata && Object.keys(entry.metadata).length > 0 ? <Badge size="xs" variant="light" mt={2}>
+                {Object.keys(entry.metadata).length} details
+              </Badge> : null}
+          </Timeline.Item>
+        ))}
+      </Timeline>
+    );
+  };
 
   return (
-    <Card>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          {title ? (
-            <Card.Title className="fs-6 mb-0">{title}</Card.Title>
-          ) : null}
-          {onClear ? (
-            <Button variant="link" size="sm" onClick={onClear}>
-              Clear history
-            </Button>
-          ) : null}
-        </div>
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {onClear ? <Button
+            variant="subtle"
+            color="gray"
+            size="compact-xs"
+            onClick={onClear}
+          >
+            Clear
+          </Button> : null}
+      </Group>
 
-        {variant === "compact" ? (
-          <div className="d-flex flex-column gap-1">
-            {visible.map((e) => (
-              <div
-                key={e.id}
-                className="small d-flex align-items-center gap-2"
-                style={{ cursor: onEntryClick ? "pointer" : undefined }}
-                onClick={() => onEntryClick?.(e.id)}
-              >
-                <span className="text-muted">
-                  {showTimestamps ? e.timestamp.toLocaleTimeString() : null}
-                </span>
-                <span>{e.action}</span>
-                {e.model ? <Badge bg="secondary">{e.model}</Badge> : null}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <ListGroup variant="flush">
-            {visible.map((e) => (
-              <ListGroup.Item
-                key={e.id}
-                action={Boolean(onEntryClick)}
-                onClick={() => onEntryClick?.(e.id)}
-              >
-                <div className="d-flex justify-content-between">
-                  <span className="fw-semibold small">{e.action}</span>
-                  {showTimestamps ? (
-                    <small className="text-muted">
-                      {e.timestamp.toLocaleString()}
-                    </small>
-                  ) : null}
-                </div>
-                {e.model ? (
-                  <Badge bg="secondary" className="me-1 mt-1">
-                    {e.model}
-                  </Badge>
-                ) : null}
-                {e.inputPreview ? (
-                  <div className="text-muted small text-truncate mt-1">
-                    In: {e.inputPreview}
-                  </div>
-                ) : null}
-                {e.outputPreview ? (
-                  <div className="text-muted small text-truncate">
-                    Out: {e.outputPreview}
-                  </div>
-                ) : null}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        )}
-      </Card.Body>
-    </Card>
+      {renderEntries()}
+    </Stack>
   );
 }
 `,
@@ -6230,7 +6596,7 @@ export function Footprints({
       >
         {title ? <Text strong>{title}</Text> : null}
         {onClear ? (
-          <Button type="link" size="small" onClick={onClear}>
+          <Button variant="link" size="small" onClick={onClear}>
             Clear history
           </Button>
         ) : null}
@@ -6504,7 +6870,17 @@ export function Footprints({
 `,
   },
 "gallery": {
-    bootstrap: `import { Card, Col, Row, Spinner } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  Image,
+  Loader,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@mantine/core";
 
 import type { GalleryProps } from "@patternbase/core";
 
@@ -6516,64 +6892,77 @@ export function Gallery({
   selectable = false,
   loading = false,
   emptyMessage = "No items to display",
-}: Readonly<GalleryProps>) {
+}: GalleryProps) {
   if (items.length === 0 && !loading) {
-    return <p className="text-muted py-4 text-center">{emptyMessage}</p>;
+    return (
+      <Text size="sm" c="dimmed" ta="center">
+        {emptyMessage}
+      </Text>
+    );
   }
 
   return (
-    <div>
-      <Row xs={1} md={columns} className="g-3">
+    <Stack gap="sm">
+      <SimpleGrid cols={columns} spacing="sm">
         {items.map((item) => (
-          <Col key={item.id}>
-            <Card
-              className="h-100"
-              style={{
-                cursor: selectable || onSelect ? "pointer" : undefined,
-                borderColor: item.selected ? "var(--bs-primary)" : undefined,
-                borderWidth: item.selected ? 2 : undefined,
-              }}
-              onClick={() => onSelect?.(item)}
-            >
+          <Card
+            key={item.id}
+            padding="xs"
+            withBorder
+            style={{
+              cursor: (onSelect ?? selectable) ? "pointer" : "default",
+              outline: item.selected
+                ? "2px solid var(--mantine-color-violet-6)"
+                : undefined,
+            }}
+            onClick={() => onSelect?.(item)}
+          >
+            <Stack gap="xs">
               {item.type === "image" && item.src ? (
-                <Card.Img
-                  variant="top"
+                <Image
                   src={item.src}
                   alt={item.alt ?? item.title ?? ""}
-                  style={{ objectFit: "cover", height: 160 }}
+                  radius="sm"
+                  h={120}
+                  fit="cover"
                 />
               ) : null}
-              <Card.Body>
+              {item.type === "text" && item.content ? (
+                <Text size="xs" lineClamp={4}>
+                  {item.content}
+                </Text>
+              ) : null}
+              <Group justify="space-between" align="center">
                 {item.title ? (
-                  <Card.Title className="fs-6">{item.title}</Card.Title>
+                  <Text size="xs" fw={500}>
+                    {item.title}
+                  </Text>
                 ) : null}
-                {item.content ? (
-                  <Card.Text className="small">{item.content}</Card.Text>
+                {item.selected ? (
+                  <Badge size="xs" variant="filled" color="violet">
+                    Selected
+                  </Badge>
                 ) : null}
-              </Card.Body>
-            </Card>
-          </Col>
+              </Group>
+            </Stack>
+          </Card>
         ))}
-      </Row>
+      </SimpleGrid>
 
       {loading ? (
-        <div className="py-3 text-center">
-          <Spinner animation="border" size="sm" />
-        </div>
+        <Group justify="center">
+          <Loader size="sm" />
+        </Group>
       ) : null}
 
       {onLoadMore && !loading ? (
-        <div className="mt-3 text-center">
-          <button
-            type="button"
-            className="btn btn-outline-secondary btn-sm"
-            onClick={onLoadMore}
-          >
+        <Group justify="center">
+          <Button variant="subtle" size="sm" onClick={onLoadMore}>
             Load more
-          </button>
-        </div>
+          </Button>
+        </Group>
       ) : null}
-    </div>
+    </Stack>
   );
 }
 `,
@@ -6741,16 +7130,19 @@ export function Gallery({
 `,
   },
 "incognito-mode": {
-    bootstrap: `import { Alert, Badge, Button, Card, Stack } from "react-bootstrap";
+    mantine: `import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Switch,
+  Text,
+} from "@mantine/core";
+import { IconEyeOff } from "@tabler/icons-react";
 
 import type { IncognitoModeProps } from "@patternbase/core";
-
-const DEFAULT_DESCRIPTION_ON =
-  "This private session is excluded from history and account memory.";
-const DEFAULT_DESCRIPTION_OFF =
-  "Session activity may be stored in history and used for future context.";
-const DEFAULT_NOTICE =
-  "Prompts, uploads, and outputs are discarded when the incognito session ends.";
 
 export function IncognitoMode({
   enabled,
@@ -6760,108 +7152,62 @@ export function IncognitoMode({
   description,
   retentionNotice,
   variant = "card",
-}: Readonly<IncognitoModeProps>) {
-  const statusLabel = enabled ? "Incognito On" : "Incognito Off";
-  const summaryText =
-    description ?? (enabled ? DEFAULT_DESCRIPTION_ON : DEFAULT_DESCRIPTION_OFF);
-  const noticeText = retentionNotice ?? DEFAULT_NOTICE;
+}: IncognitoModeProps) {
+  const inner = (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Group gap="sm">
+          <IconEyeOff size={20} style={{ opacity: 0.7 }} />
+          <Stack gap={2}>
+            <Group gap="xs">
+              <Text fw={600} size="sm">
+                {title}
+              </Text>
+              {enabled ? <Badge size="xs" color="green" variant="light">
+                  Active
+                </Badge> : null}
+            </Group>
+            {description ? <Text size="xs" c="dimmed">
+                {description}
+              </Text> : null}
+          </Stack>
+        </Group>
+        <Switch
+          checked={enabled}
+          onChange={(e) => onToggle?.(e.currentTarget.checked)}
+          size="md"
+        />
+      </Group>
 
-  if (variant === "inline") {
-    return (
-      <Stack
-        direction="horizontal"
-        gap={2}
-        className="align-items-center flex-wrap"
-      >
-        <Badge bg={enabled ? "success" : "secondary"}>👁 {statusLabel}</Badge>
-        {onToggle ? (
-          <div className="form-check form-switch mb-0">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              role="switch"
-              checked={enabled}
-              onChange={(e) => {
-                onToggle(e.target.checked);
-              }}
-            />
-          </div>
-        ) : null}
-        <small className="text-muted">{summaryText}</small>
-      </Stack>
-    );
-  }
+      {enabled && retentionNotice ? <Alert icon={<IconEyeOff size={14} />} color="gray" variant="light">
+          <Text size="xs">{retentionNotice}</Text>
+        </Alert> : null}
+
+      {enabled && onEndSession ? <Button variant="subtle" color="gray" size="sm" onClick={onEndSession}>
+          End Session
+        </Button> : null}
+    </Stack>
+  );
 
   if (variant === "banner") {
     return (
       <Alert
-        variant={enabled ? "success" : "info"}
-        className="d-flex align-items-start gap-3"
+        icon={<IconEyeOff size={16} />}
+        color={enabled ? "green" : "gray"}
+        variant="light"
       >
-        <span>👁</span>
-        <div className="flex-grow-1">
-          <strong>{title}</strong>
-          <p className="small mb-1">{summaryText}</p>
-          <small className="text-muted">{noticeText}</small>
-        </div>
-        {onToggle ? (
-          <div className="form-check form-switch mb-0">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              role="switch"
-              checked={enabled}
-              onChange={(e) => {
-                onToggle(e.target.checked);
-              }}
-            />
-          </div>
-        ) : null}
+        {inner}
       </Alert>
     );
   }
 
+  if (variant === "inline") {
+    return <Stack gap="sm">{inner}</Stack>;
+  }
+
   return (
-    <Card>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          <Card.Title className="fs-6 mb-0">{title}</Card.Title>
-          {onToggle ? (
-            <div className="form-check form-switch mb-0">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                role="switch"
-                checked={enabled}
-                onChange={(e) => {
-                  onToggle(e.target.checked);
-                }}
-              />
-            </div>
-          ) : null}
-        </div>
-        <Stack gap={2}>
-          <Badge
-            bg={enabled ? "success" : "secondary"}
-            className="align-self-start"
-          >
-            👁 {statusLabel}
-          </Badge>
-          <p className="small mb-0">{summaryText}</p>
-          <small className="text-muted">{noticeText}</small>
-          {enabled && onEndSession ? (
-            <div>
-              <Button
-                size="sm"
-                variant="outline-secondary"
-                onClick={onEndSession}
-              >
-                End Incognito Session
-              </Button>
-            </div>
-          ) : null}
-        </Stack>
-      </Card.Body>
+    <Card withBorder padding="md">
+      {inner}
     </Card>
   );
 }
@@ -7069,7 +7415,15 @@ export function IncognitoMode({
 `,
   },
 "initial-cta": {
-    bootstrap: `import { Button, Card, Col, Row } from "react-bootstrap";
+    mantine: `import {
+  Button,
+  Card,
+  Group,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 
 import type { InitialCtaProps } from "@patternbase/core";
 
@@ -7079,84 +7433,81 @@ export function InitialCta({
   actions,
   onAction,
   variant = "centered",
-}: Readonly<InitialCtaProps>) {
-  if (variant === "minimal") {
+}: InitialCtaProps) {
+  if (variant === "cards") {
     return (
-      <div className="py-3 text-center">
-        <h5>{title}</h5>
-        {subtitle ? <p className="text-muted small">{subtitle}</p> : null}
-        <div className="d-flex justify-content-center mt-2 flex-wrap gap-2">
-          {actions.map((a) => (
-            <Button
-              key={a.id}
-              variant="outline-primary"
-              size="sm"
-              onClick={() => {
-                onAction(a);
-              }}
+      <Stack gap="md" align="center" py="lg">
+        <Title order={3} ta="center">
+          {title}
+        </Title>
+        {subtitle ? <Text size="sm" c="dimmed" ta="center" maw={480}>
+            {subtitle}
+          </Text> : null}
+        <SimpleGrid cols={Math.min(actions.length, 3)} spacing="sm">
+          {actions.map((action) => (
+            <Card
+              key={action.id}
+              padding="md"
+              withBorder
+              style={{ cursor: "pointer", textAlign: "center" }}
+              onClick={() => { onAction(action); }}
             >
-              {a.icon ? <span className="me-1">{a.icon}</span> : null}
-              {a.label}
-            </Button>
+              <Stack gap="xs" align="center">
+                {action.icon ? <span style={{ fontSize: 24 }}>{action.icon}</span> : null}
+                <Text fw={600} size="sm">
+                  {action.label}
+                </Text>
+                {action.description ? <Text size="xs" c="dimmed">
+                    {action.description}
+                  </Text> : null}
+              </Stack>
+            </Card>
           ))}
-        </div>
-      </div>
+        </SimpleGrid>
+      </Stack>
     );
   }
 
-  if (variant === "cards") {
+  if (variant === "minimal") {
     return (
-      <div>
-        <div className="mb-3 text-center">
-          <h5>{title}</h5>
-          {subtitle ? <p className="text-muted small">{subtitle}</p> : null}
-        </div>
-        <Row xs={1} md={Math.min(actions.length, 3)} className="g-3">
-          {actions.map((a) => (
-            <Col key={a.id}>
-              <Card
-                className="h-100 text-center"
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  onAction(a);
-                }}
-              >
-                <Card.Body>
-                  {a.icon ? <div className="fs-3 mb-2">{a.icon}</div> : null}
-                  <Card.Title className="fs-6">{a.label}</Card.Title>
-                  {a.description ? (
-                    <Card.Text className="text-muted small">
-                      {a.description}
-                    </Card.Text>
-                  ) : null}
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </div>
+      <Group gap="sm" wrap="wrap">
+        <Text size="sm" fw={500}>
+          {title}
+        </Text>
+        {actions.map((action) => (
+          <Button
+            key={action.id}
+            variant="subtle"
+            size="compact-sm"
+            leftSection={action.icon ? <span>{action.icon}</span> : undefined}
+            onClick={() => { onAction(action); }}
+          >
+            {action.label}
+          </Button>
+        ))}
+      </Group>
     );
   }
 
   return (
-    <div className="py-4 text-center">
-      <h4>{title}</h4>
-      {subtitle ? <p className="text-muted">{subtitle}</p> : null}
-      <div className="d-flex justify-content-center mt-3 flex-wrap gap-2">
-        {actions.map((a, i) => (
+    <Stack gap="md" align="center" ta="center" py="lg">
+      <Title order={3}>{title}</Title>
+      {subtitle ? <Text size="sm" c="dimmed" maw={480}>
+          {subtitle}
+        </Text> : null}
+      <Group gap="sm" justify="center" wrap="wrap">
+        {actions.map((action, i) => (
           <Button
-            key={a.id}
-            variant={i === 0 ? "primary" : "outline-primary"}
-            onClick={() => {
-              onAction(a);
-            }}
+            key={action.id}
+            variant={i === 0 ? "filled" : "default"}
+            leftSection={action.icon ? <span>{action.icon}</span> : undefined}
+            onClick={() => { onAction(action); }}
           >
-            {a.icon ? <span className="me-1">{a.icon}</span> : null}
-            {a.label}
+            {action.label}
           </Button>
         ))}
-      </div>
-    </div>
+      </Group>
+    </Stack>
   );
 }
 `,
@@ -7365,73 +7716,43 @@ export function InitialCta({
 `,
   },
 "inline-action": {
-    bootstrap: `import { Button } from "react-bootstrap";
+    mantine: `import { ActionIcon, Group, Tooltip } from "@mantine/core";
 
 import type { InlineActionProps } from "@patternbase/core";
-
-const typeVariantMap: Record<string, string> = {
-  primary: "primary",
-  secondary: "outline-secondary",
-  danger: "outline-danger",
-};
 
 export function InlineAction({
   actions,
   onAction,
-  content,
-  variant = "toolbar",
-  size = "small",
-}: Readonly<InlineActionProps>) {
-  const btnSize = size === "small" ? "sm" : undefined;
-
-  if (variant === "contextual" || variant === "floating") {
-    return (
-      <div className={variant === "floating" ? "position-relative" : ""}>
-        {content ? <span className="small">{content}</span> : null}
-        <div
-          className="d-inline-flex ms-2 gap-1"
-          style={
-            variant === "floating"
-              ? { position: "absolute", top: -4, right: 0 }
-              : undefined
-          }
-        >
-          {actions.map((a) => (
-            <Button
-              key={a.id}
-              variant={
-                typeVariantMap[a.type ?? "secondary"] ?? "outline-secondary"
-              }
-              size={btnSize}
-              onClick={() => {
-                onAction(a.id);
-              }}
-            >
-              {a.icon ? <span className="me-1">{a.icon}</span> : null}
-              {a.label}
-            </Button>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  size = "medium",
+}: InlineActionProps) {
+  const iconSize = size === "small" ? 12 : 14;
+  const actionIconSize = size === "small" ? "sm" : "md";
 
   return (
-    <div className="d-flex flex-wrap gap-1 rounded border p-2">
-      {actions.map((a) => (
-        <Button
-          key={a.id}
-          variant={typeVariantMap[a.type ?? "secondary"] ?? "outline-secondary"}
-          size={btnSize}
-          onClick={() => {
-            onAction(a.id);
-          }}
-        >
-          {a.icon ? <span className="me-1">{a.icon}</span> : null}
-          {a.label}
-        </Button>
+    <Group gap={4}>
+      {actions.map((action) => (
+        <Tooltip key={action.id} label={action.label} withArrow>
+          <ActionIcon
+            variant={action.type === "primary" ? "light" : "subtle"}
+            color={
+              action.type === "danger" ? "red"
+              : action.type === "primary" ? "violet"
+              : "gray"
+            }
+            size={actionIconSize}
+            onClick={() => { onAction(action.id); }}
+          >
+            {typeof action.icon === "string" ? (
+              <span style={{ fontSize: iconSize }}>{action.icon}</span>
+            ) : action.icon ? (
+              action.icon
+            ) : (
+              <span style={{ fontSize: iconSize }}>·</span>
+            )}
+          </ActionIcon>
+        </Tooltip>
       ))}
-    </div>
+    </Group>
   );
 }
 `,
@@ -7589,7 +7910,18 @@ export function InlineAction({
 `,
   },
 "inpainting": {
-    bootstrap: `import { Badge, Button, Card, Form, Spinner } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  Loader,
+  Stack,
+  Text,
+  Textarea,
+} from "@mantine/core";
+import { IconBrush } from "@tabler/icons-react";
+import { useState } from "react";
 
 import type { InpaintingProps } from "@patternbase/core";
 
@@ -7602,63 +7934,81 @@ export function Inpainting({
   isProcessing = false,
   prompt = "",
   onPromptChange,
-  title,
-  variant: _variant = "segment",
-}: Readonly<InpaintingProps>) {
+  title = "Inpainting",
+  variant = "segment",
+}: InpaintingProps) {
+  const [localPrompt, setLocalPrompt] = useState(prompt);
+
+  const handlePromptChange = (value: string) => {
+    setLocalPrompt(value);
+    onPromptChange?.(value);
+  };
+
+  const selectedRegion = regions.find((r) => r.id === selectedRegionId);
+
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title className="fs-6">{title ?? "Edit Region"}</Card.Title>
-        <p className="small">{content}</p>
-        <div className="mb-3">
-          <small className="text-muted d-block mb-2">
-            Select a region to edit:
-          </small>
-          <div className="d-flex flex-wrap gap-1">
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {isProcessing ? <Loader size="xs" /> : null}
+      </Group>
+
+      <Card padding="sm" withBorder>
+        <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+          {content}
+        </Text>
+      </Card>
+
+      {regions.length > 0 && (
+        <Stack gap="xs">
+          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+            Regions
+          </Text>
+          <Group gap="xs" wrap="wrap">
             {regions.map((region) => (
               <Badge
                 key={region.id}
-                bg={selectedRegionId === region.id ? "primary" : "light"}
-                text={selectedRegionId === region.id ? "white" : "dark"}
+                variant={selectedRegionId === region.id ? "filled" : "light"}
                 style={{ cursor: "pointer" }}
-                onClick={() => {
-                  onRegionSelect(region.id);
-                }}
+                onClick={() => { onRegionSelect(region.id); }}
               >
-                {selectedRegionId === region.id ? "✓ " : ""}
-                {region.label ?? \`Region \${region.id}\`}
+                {region.label ?? region.id}
               </Badge>
             ))}
-          </div>
-        </div>
-        {selectedRegionId ? (
-          <div>
-            <Form.Control
-              as="textarea"
-              rows={2}
-              size="sm"
-              placeholder="Describe how to modify this region..."
-              value={prompt}
-              onChange={(e) => onPromptChange?.(e.target.value)}
-              className="mb-2"
-            />
-            <Button
-              variant="primary"
-              size="sm"
-              disabled={isProcessing}
-              onClick={() => {
-                onApply(selectedRegionId, prompt);
-              }}
-            >
-              {isProcessing ? (
-                <Spinner animation="border" size="sm" className="me-1" />
-              ) : null}
-              Apply Changes
-            </Button>
-          </div>
-        ) : null}
-      </Card.Body>
-    </Card>
+          </Group>
+        </Stack>
+      )}
+
+      {selectedRegion ? <Text size="xs" c="dimmed">
+          Selected: <strong>{selectedRegion.label ?? selectedRegion.id}</strong>
+        </Text> : null}
+
+      <Textarea
+        placeholder="Describe what to replace in the selected region..."
+        value={localPrompt}
+        onChange={(e) => { handlePromptChange(e.currentTarget.value); }}
+        minRows={2}
+        autosize
+        disabled={!selectedRegionId}
+      />
+
+      <Button
+        leftSection={<IconBrush size={14} />}
+        onClick={() => {
+          if (selectedRegionId && localPrompt.trim()) {
+            onApply(selectedRegionId, localPrompt.trim());
+          }
+        }}
+        disabled={!selectedRegionId || !localPrompt.trim() || isProcessing}
+        loading={isProcessing}
+        size="sm"
+        variant={variant === "brush" ? "filled" : "default"}
+      >
+        Apply
+      </Button>
+    </Stack>
   );
 }
 `,
@@ -7720,7 +8070,7 @@ export function Inpainting({
             style={{ marginBottom: 8 }}
           />
           <Button
-            type="primary"
+            variant="solid"
             size="small"
             loading={isProcessing}
             onClick={() => {
@@ -7851,98 +8201,141 @@ export function Inpainting({
 `,
   },
 "madlibs": {
-    bootstrap: `import { Button, Card, Form, Spinner } from "react-bootstrap";
+    mantine: `import {
+  Button,
+  Card,
+  Group,
+  NumberInput,
+  Select,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
+import { IconSend } from "@tabler/icons-react";
+import { useState } from "react";
 
 import type { MadlibsProps } from "@patternbase/core";
 
 export function Madlibs({
   template,
   variables,
-  values = {},
+  values: externalValues,
   onChange,
   onSubmit,
   title,
   description,
   isGenerating = false,
-  showPreview = false,
+  showPreview = true,
   variant: _variant = "form",
-}: Readonly<MadlibsProps>) {
-  const filledTemplate = variables.reduce((acc, v) => {
-    const val = values[v.id] ?? v.defaultValue ?? \`{{\${v.label}}}\`;
-    return acc.replace(new RegExp(\`\\\\{\\\\{\${v.id}\\\\}\\\\}\`, "g"), val);
-  }, template);
+}: MadlibsProps) {
+  const [localValues, setLocalValues] = useState<Record<string, string>>(
+    Object.fromEntries(
+      variables.map((v) => [
+        v.id,
+        externalValues?.[v.id] ?? v.defaultValue ?? "",
+      ]),
+    ),
+  );
+
+  const values = externalValues ?? localValues;
+
+  const handleChange = (id: string, value: string) => {
+    setLocalValues((prev) => ({ ...prev, [id]: value }));
+    onChange(id, value);
+  };
+
+  const renderTemplate = () => {
+    let result = template;
+    variables.forEach((v) => {
+      result = result.replace(\`{{\${v.id}}}\`, values[v.id] || \`[\${v.label}]\`);
+    });
+    return result;
+  };
+
+  const allFilled = variables
+    .filter((v) => v.required)
+    .every((v) => values[v.id]?.trim());
 
   return (
-    <Card>
-      <Card.Body>
-        {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-        {description ? <p className="small text-muted">{description}</p> : null}
-        {variables.map((v) => (
-          <Form.Group key={v.id} className="mb-3">
-            <Form.Label className="small fw-semibold">
-              {v.label}
-              {v.required ? <span className="text-danger"> *</span> : null}
-            </Form.Label>
-            {v.type === "select" && v.options ? (
-              <Form.Select
-                size="sm"
-                value={values[v.id] ?? v.defaultValue ?? ""}
-                onChange={(e) => {
-                  onChange(v.id, e.target.value);
-                }}
-              >
-                <option value="">{v.placeholder ?? "Select..."}</option>
-                {v.options.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </Form.Select>
-            ) : v.type === "textarea" ? (
-              <Form.Control
-                as="textarea"
-                rows={2}
-                size="sm"
-                placeholder={v.placeholder}
-                value={values[v.id] ?? v.defaultValue ?? ""}
-                onChange={(e) => {
-                  onChange(v.id, e.target.value);
-                }}
-              />
-            ) : (
-              <Form.Control
-                size="sm"
-                type={v.type === "number" ? "number" : "text"}
-                placeholder={v.placeholder}
-                value={values[v.id] ?? v.defaultValue ?? ""}
-                onChange={(e) => {
-                  onChange(v.id, e.target.value);
-                }}
-              />
-            )}
-          </Form.Group>
-        ))}
-        {showPreview ? (
-          <div className="bg-body-secondary mb-3 rounded border p-2">
-            <small className="text-muted d-block mb-1">Preview</small>
-            <p className="small mb-0">{filledTemplate}</p>
-          </div>
-        ) : null}
+    <Stack gap="sm">
+      {title ? <Text fw={600}>{title}</Text> : null}
+      {description ? <Text size="sm" c="dimmed">
+          {description}
+        </Text> : null}
+
+      {showPreview ? <Card padding="sm" withBorder>
+          <Text size="sm" style={{ fontStyle: "italic" }}>
+            {renderTemplate()}
+          </Text>
+        </Card> : null}
+
+      {variables.map((variable) => {
+        const commonProps = {
+          key: variable.id,
+          label: variable.label,
+          placeholder:
+            variable.placeholder ?? \`Enter \${variable.label.toLowerCase()}...\`,
+          required: variable.required,
+        };
+
+        if (variable.type === "select" && variable.options) {
+          return (
+            <Select
+              {...commonProps}
+              data={variable.options.map((o) => ({
+                value: o.value,
+                label: o.label,
+              }))}
+              value={values[variable.id] ?? ""}
+              onChange={(val) => { handleChange(variable.id, val ?? ""); }}
+            />
+          );
+        }
+
+        if (variable.type === "number") {
+          return (
+            <NumberInput
+              {...commonProps}
+              value={values[variable.id] ? Number(values[variable.id]) : ""}
+              onChange={(val) => { handleChange(variable.id, String(val)); }}
+            />
+          );
+        }
+
+        if (variable.type === "textarea") {
+          return (
+            <Textarea
+              {...commonProps}
+              value={values[variable.id] ?? ""}
+              onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
+              minRows={2}
+              autosize
+            />
+          );
+        }
+
+        return (
+          <TextInput
+            {...commonProps}
+            value={values[variable.id] ?? ""}
+            onChange={(e) => { handleChange(variable.id, e.currentTarget.value); }}
+          />
+        );
+      })}
+
+      <Group justify="flex-end">
         <Button
-          variant="primary"
+          leftSection={<IconSend size={14} />}
+          onClick={() => { onSubmit(values); }}
+          disabled={!allFilled || isGenerating}
+          loading={isGenerating}
           size="sm"
-          disabled={isGenerating}
-          onClick={() => {
-            onSubmit(values);
-          }}
         >
-          {isGenerating ? (
-            <Spinner animation="border" size="sm" className="me-1" />
-          ) : null}
-          Generate
+          Submit
         </Button>
-      </Card.Body>
-    </Card>
+      </Group>
+    </Stack>
   );
 }
 `,
@@ -8055,7 +8448,7 @@ export function Madlibs({
       ) : null}
       <div style={{ marginTop: 12 }}>
         <Button
-          type="primary"
+          variant="solid"
           loading={isGenerating}
           onClick={() => {
             onSubmit(values);
@@ -8243,8 +8636,8 @@ export function Madlibs({
 `,
   },
 "memory": {
-    bootstrap: `import { useState } from "react";
-import { Badge, Button, Card, Form, ListGroup, Stack } from "react-bootstrap";
+    mantine: `import { ActionIcon, Badge, Card, Group, Stack, Text } from "@mantine/core";
+import { IconLock, IconPencil, IconTrash } from "@tabler/icons-react";
 
 import type { MemoryProps } from "@patternbase/core";
 
@@ -8253,104 +8646,66 @@ export function Memory({
   onEditMemory,
   onDeleteMemory,
   title = "Memory",
-  variant = "list",
-  showTimestamps = true,
-}: Readonly<MemoryProps>) {
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [draftValue, setDraftValue] = useState("");
+  variant: _variant = "list",
+  showTimestamps = false,
+}: MemoryProps) {
+  const renderEntry = (entry: (typeof memories)[0]) => (
+    <Card key={entry.id} padding="sm" withBorder>
+      <Group justify="space-between" align="flex-start">
+        <Stack gap={2} style={{ flex: 1 }}>
+          <Group gap="xs">
+            <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+              {entry.label}
+            </Text>
+            {entry.category ? <Badge size="xs" variant="light">
+                {entry.category}
+              </Badge> : null}
+            {entry.locked ? <Badge
+                size="xs"
+                variant="light"
+                color="gray"
+                leftSection={<IconLock size={10} />}
+              >
+                Locked
+              </Badge> : null}
+          </Group>
+          <Text size="sm">{entry.value}</Text>
+          {showTimestamps && entry.updatedAt ? <Text size="xs" c="dimmed">
+              {entry.updatedAt.toLocaleString()}
+            </Text> : null}
+        </Stack>
+        <Group gap="xs">
+          {!entry.locked && (
+            <ActionIcon
+              variant="subtle"
+              size="sm"
+              onClick={() => { onEditMemory(entry.id, entry.value); }}
+            >
+              <IconPencil size={14} />
+            </ActionIcon>
+          )}
+          {!entry.locked && (
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              size="sm"
+              onClick={() => { onDeleteMemory(entry.id); }}
+            >
+              <IconTrash size={14} />
+            </ActionIcon>
+          )}
+        </Group>
+      </Group>
+    </Card>
+  );
 
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <ListGroup
-        variant="flush"
-        horizontal={variant === "cards" ? "md" : undefined}
-        className={variant === "cards" ? "flex-wrap" : undefined}
-      >
-        {memories.map((memory) => {
-          const isEditing = editingId === memory.id;
-          return (
-            <ListGroup.Item
-              key={memory.id}
-              className={
-                variant === "cards" ? "col-md-6 border-bottom" : undefined
-              }
-            >
-              <Stack gap={2}>
-                <div className="d-flex justify-content-between align-items-start gap-2">
-                  <div className="d-flex align-items-center flex-wrap gap-2">
-                    <strong className="small">{memory.label}</strong>
-                    {memory.category ? (
-                      <Badge bg="light" text="dark" className="border">
-                        {memory.category}
-                      </Badge>
-                    ) : null}
-                    {memory.locked ? <Badge bg="warning">Locked</Badge> : null}
-                  </div>
-                  <div className="d-flex gap-2">
-                    {isEditing ? (
-                      <Button
-                        size="sm"
-                        variant="outline-primary"
-                        onClick={() => {
-                          onEditMemory(memory.id, draftValue);
-                          setEditingId(null);
-                          setDraftValue("");
-                        }}
-                      >
-                        Save
-                      </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant="outline-secondary"
-                        onClick={() => {
-                          setEditingId(memory.id);
-                          setDraftValue(memory.value);
-                        }}
-                      >
-                        Edit
-                      </Button>
-                    )}
-                    <Button
-                      size="sm"
-                      variant="outline-danger"
-                      disabled={memory.locked}
-                      onClick={() => {
-                        onDeleteMemory(memory.id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-
-                {isEditing ? (
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    value={draftValue}
-                    onChange={(e) => {
-                      setDraftValue(e.currentTarget.value);
-                    }}
-                  />
-                ) : (
-                  <small className="text-muted">{memory.value}</small>
-                )}
-
-                {showTimestamps && memory.updatedAt ? (
-                  <small className="text-muted">
-                    Updated: {memory.updatedAt.toLocaleString()}
-                  </small>
-                ) : null}
-              </Stack>
-            </ListGroup.Item>
-          );
-        })}
-      </ListGroup>
-    </Card>
+    <Stack gap="sm">
+      <Text fw={600} size="sm">
+        {title}
+      </Text>
+      <Stack gap="xs">{memories.map(renderEntry)}</Stack>
+    </Stack>
   );
 }
 `,
@@ -8408,7 +8763,7 @@ export function Memory({
                   <Space size={4}>
                     {isEditing ? (
                       <Button
-                        type="text"
+                        variant="text"
                         size="small"
                         icon={<SaveOutlined />}
                         onClick={() => {
@@ -8421,7 +8776,7 @@ export function Memory({
                       </Button>
                     ) : (
                       <Button
-                        type="text"
+                        variant="text"
                         size="small"
                         icon={<EditOutlined />}
                         onClick={() => {
@@ -8433,7 +8788,7 @@ export function Memory({
                       </Button>
                     )}
                     <Button
-                      type="text"
+                      variant="text"
                       size="small"
                       danger
                       icon={<DeleteOutlined />}
@@ -8551,7 +8906,7 @@ export function Memory({
 `,
   },
 "model-management": {
-    bootstrap: `import { Badge, Card, Form, ListGroup, Stack } from "react-bootstrap";
+    mantine: `import { Badge, Card, Group, Radio, Stack, Text } from "@mantine/core";
 
 import type { ModelInfo, ModelManagementProps } from "@patternbase/core";
 
@@ -8571,74 +8926,71 @@ export function ModelManagement({
       }, {})
     : { All: models };
 
-  const renderModel = (model: ModelInfo) => (
-    <ListGroup.Item
-      key={model.id}
-      action
-      active={model.id === selectedModelId}
-      onClick={() => {
-        onSelectModel(model.id);
-      }}
-      className="d-flex flex-column gap-1"
-    >
-      <div className="d-flex justify-content-between align-items-center">
-        <div className="d-flex align-items-center gap-2">
-          <Form.Check
-            type="radio"
-            checked={model.id === selectedModelId}
-            onChange={() => {
-              onSelectModel(model.id);
-            }}
-            className="pe-none"
-          />
-          <strong className="small">{model.name}</strong>
-        </div>
-        {model.capabilities && model.capabilities.length > 0 ? (
-          <div className="d-flex gap-1">
-            {model.capabilities.slice(0, 3).map((c) => (
-              <Badge key={c} bg="light" text="dark" className="small border">
-                {c}
-              </Badge>
-            ))}
-          </div>
-        ) : null}
-      </div>
-
-      {showDetails ? (
-        <div className="small text-muted d-flex gap-3 ps-4">
-          {model.description ? <span>{model.description}</span> : null}
-          {model.contextWindow ? (
-            <span>Context: {(model.contextWindow / 1000).toFixed(0)}k</span>
-          ) : null}
-          {model.costPer1kInput !== undefined && (
-            <span>\${model.costPer1kInput}/1k in</span>
-          )}
-        </div>
-      ) : null}
-    </ListGroup.Item>
-  );
-
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">Model Selection</h6>
-      </Card.Header>
-      <Card.Body className="p-0">
-        {Object.entries(grouped).map(([provider, providerModels]) => (
-          <Stack key={provider} gap={0}>
-            {groupByProvider ? (
-              <div className="bg-body-secondary border-bottom px-3 py-2">
-                <small className="fw-semibold text-uppercase text-muted">
-                  {provider}
-                </small>
+    <Card padding="sm" withBorder>
+      <Stack gap="sm">
+        <Text fw={600}>Model Selection</Text>
+        <Radio.Group value={selectedModelId} onChange={onSelectModel}>
+          <Stack gap="sm">
+            {Object.entries(grouped).map(([provider, providerModels]) => (
+              <div key={provider}>
+                {groupByProvider ? <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb="xs">
+                    {provider}
+                  </Text> : null}
+                <Stack gap="xs">
+                  {providerModels.map((model) => (
+                    <Card
+                      key={model.id}
+                      padding="xs"
+                      withBorder
+                      style={{
+                        cursor: "pointer",
+                        backgroundColor:
+                          model.id === selectedModelId
+                            ? "var(--mantine-color-violet-light)"
+                            : undefined,
+                      }}
+                      onClick={() => { onSelectModel(model.id); }}
+                    >
+                      <Group justify="space-between" align="flex-start">
+                        <Group gap="xs" align="flex-start">
+                          <Radio value={model.id} mt={2} />
+                          <Stack gap={2}>
+                            <Text size="sm" fw={600}>
+                              {model.name}
+                            </Text>
+                            {showDetails && model.description ? <Text size="xs" c="dimmed">
+                                {model.description}
+                              </Text> : null}
+                            {showDetails ? <Group gap="xs">
+                                {model.contextWindow ? <Text size="xs" c="dimmed">
+                                    {(model.contextWindow / 1000).toFixed(0)}k
+                                    ctx
+                                  </Text> : null}
+                                {model.costPer1kInput !== undefined && (
+                                  <Text size="xs" c="dimmed">
+                                    \${model.costPer1kInput}/1k in
+                                  </Text>
+                                )}
+                              </Group> : null}
+                          </Stack>
+                        </Group>
+                        {model.capabilities ? <Group gap={4}>
+                            {model.capabilities.slice(0, 2).map((c) => (
+                              <Badge key={c} size="xs" variant="light">
+                                {c}
+                              </Badge>
+                            ))}
+                          </Group> : null}
+                      </Group>
+                    </Card>
+                  ))}
+                </Stack>
               </div>
-            ) : null}
-            <ListGroup variant="flush">
-              {providerModels.map(renderModel)}
-            </ListGroup>
+            ))}
           </Stack>
-        ))}
-      </Card.Body>
+        </Radio.Group>
+      </Stack>
     </Card>
   );
 }
@@ -8874,14 +9226,14 @@ export function ModelManagement({
 `,
   },
 "modes": {
-    bootstrap: `import {
-  ButtonGroup,
+    mantine: `import {
   Card,
+  Group,
+  SegmentedControl,
   Stack,
-  Tab,
   Tabs,
-  ToggleButton,
-} from "react-bootstrap";
+  Text,
+} from "@mantine/core";
 
 import type { ModesProps } from "@patternbase/core";
 
@@ -8889,87 +9241,77 @@ export function Modes({
   modes,
   selectedModeId,
   onModeChange,
-  title = "Modes",
+  title,
   variant = "segmented",
-}: Readonly<ModesProps>) {
-  const enabledModes = modes.filter((mode) => !mode.disabled);
-
-  if (variant === "tabs") {
-    return (
-      <Card>
-        <Card.Header>
-          <h6 className="mb-0">{title}</h6>
-        </Card.Header>
-        <Card.Body>
-          <Tabs
-            activeKey={selectedModeId}
-            onSelect={(key) => {
-              if (key) onModeChange(key);
-            }}
-            className="mb-3"
-          >
-            {enabledModes.map((mode) => (
-              <Tab
-                key={mode.id}
-                eventKey={mode.id}
-                title={
-                  <span>
-                    {mode.icon ? (
-                      <span style={{ marginRight: 4 }}>{mode.icon}</span>
-                    ) : null}
-                    {mode.label}
-                  </span>
-                }
-              >
-                {mode.description ? (
-                  <small className="text-muted">{mode.description}</small>
-                ) : null}
-              </Tab>
-            ))}
-          </Tabs>
-        </Card.Body>
-      </Card>
-    );
-  }
+}: ModesProps) {
+  const selectedMode = modes.find((m) => m.id === selectedModeId);
 
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <Card.Body>
-        <Stack gap={2}>
-          <ButtonGroup size="sm">
-            {enabledModes.map((mode) => (
-              <ToggleButton
+    <Stack gap="sm">
+      {title ? (
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+      ) : null}
+
+      {variant === "tabs" ? (
+        <Tabs
+          value={selectedModeId}
+          onChange={(id) => {
+            if (id) {
+              onModeChange(id);
+            }
+          }}
+        >
+          <Tabs.List>
+            {modes.map((mode) => (
+              <Tabs.Tab
                 key={mode.id}
-                id={\`mode-\${mode.id}\`}
-                type="radio"
-                name="mode-options"
                 value={mode.id}
-                checked={selectedModeId === mode.id}
-                variant="outline-primary"
-                onChange={(e) => {
-                  onModeChange(e.currentTarget.value);
-                }}
+                leftSection={mode.icon ? <span>{mode.icon}</span> : undefined}
+                disabled={mode.disabled}
               >
-                {mode.icon ? (
-                  <span style={{ marginRight: 4 }}>{mode.icon}</span>
-                ) : null}
                 {mode.label}
-              </ToggleButton>
+              </Tabs.Tab>
             ))}
-          </ButtonGroup>
-          {enabledModes.map((mode) =>
-            mode.id === selectedModeId && mode.description ? (
-              <small key={mode.id} className="text-muted">
-                {mode.description}
-              </small>
-            ) : null,
-          )}
-        </Stack>
-      </Card.Body>
-    </Card>
+          </Tabs.List>
+          {selectedMode?.description ? (
+            <Tabs.Panel value={selectedModeId} pt="sm">
+              <Card padding="xs" withBorder>
+                <Text size="xs" c="dimmed">
+                  {selectedMode.description}
+                </Text>
+              </Card>
+            </Tabs.Panel>
+          ) : null}
+        </Tabs>
+      ) : (
+        <>
+          <SegmentedControl
+            data={modes.map((m) => ({
+              value: m.id,
+              label: (
+                <Group gap="xs" wrap="nowrap">
+                  {m.icon ? <span>{m.icon}</span> : null}
+                  <span>{m.label}</span>
+                </Group>
+              ),
+              disabled: m.disabled,
+            }))}
+            value={selectedModeId}
+            onChange={onModeChange}
+            fullWidth
+          />
+          {selectedMode?.description ? (
+            <Card padding="xs" withBorder>
+              <Text size="xs" c="dimmed">
+                {selectedMode.description}
+              </Text>
+            </Card>
+          ) : null}
+        </>
+      )}
+    </Stack>
   );
 }
 `,
@@ -9132,60 +9474,67 @@ export function Modes({
 `,
   },
 "nudges": {
-    bootstrap: `import { Alert, Button } from "react-bootstrap";
+    mantine: `import { Alert, Button, Stack } from "@mantine/core";
+import {
+  IconAlertTriangle,
+  IconBulb,
+  IconInfoCircle,
+} from "@tabler/icons-react";
+import { useState } from "react";
 
 import type { NudgesProps } from "@patternbase/core";
-
-const typeVariant: Record<string, string> = {
-  tip: "info",
-  reminder: "warning",
-  suggestion: "primary",
-};
 
 export function Nudges({
   nudges,
   onDismiss,
-  variant = "inline",
+  variant: _variant = "inline",
   maxVisible,
-}: Readonly<NudgesProps>) {
-  const visible = maxVisible ? nudges.slice(0, maxVisible) : nudges;
+}: NudgesProps) {
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
+
+  const visible = nudges
+    .filter((n) => !dismissed.has(n.id))
+    .slice(0, maxVisible ?? nudges.length);
+
+  if (visible.length === 0) return null;
+
+  const getIcon = (type?: string) => {
+    if (type === "reminder") return <IconAlertTriangle size={16} />;
+    if (type === "suggestion") return <IconInfoCircle size={16} />;
+    return <IconBulb size={16} />;
+  };
+
+  const getColor = (type?: string) => {
+    if (type === "reminder") return "orange";
+    if (type === "suggestion") return "blue";
+    return "yellow";
+  };
 
   return (
-    <div
-      className={variant === "toast" ? "position-fixed end-0 p-3" : ""}
-      style={
-        variant === "toast"
-          ? { top: 16, right: 16, zIndex: 1050, maxWidth: 350 }
-          : undefined
-      }
-    >
-      {visible.map((n) => (
+    <Stack gap="xs">
+      {visible.map((nudge) => (
         <Alert
-          key={n.id}
-          variant={typeVariant[n.type ?? "tip"] ?? "info"}
-          dismissible={Boolean(onDismiss)}
-          onClose={() => onDismiss?.(n.id)}
-          className="mb-2"
+          key={nudge.id}
+          icon={nudge.icon ? <span>{nudge.icon}</span> : getIcon(nudge.type)}
+          color={getColor(nudge.type)}
+          withCloseButton
+          onClose={() => {
+            setDismissed((prev) => new Set(prev).add(nudge.id));
+            onDismiss?.(nudge.id);
+          }}
         >
-          <div className="d-flex align-items-center gap-2">
-            {n.icon ? <span>{n.icon}</span> : null}
-            <div className="flex-grow-1">
-              <span className="small">{n.message}</span>
-            </div>
-            {n.actionLabel && n.onAction ? (
-              <Button
-                variant="link"
-                size="sm"
-                className="p-0"
-                onClick={n.onAction}
-              >
-                {n.actionLabel}
-              </Button>
-            ) : null}
-          </div>
+          {nudge.message}
+          {nudge.actionLabel && nudge.onAction ? <Button
+              variant="subtle"
+              size="compact-xs"
+              mt="xs"
+              onClick={nudge.onAction}
+            >
+              {nudge.actionLabel}
+            </Button> : null}
         </Alert>
       ))}
-    </div>
+    </Stack>
   );
 }
 `,
@@ -9233,7 +9582,7 @@ export function Nudges({
                 {n.icon ? <span>{n.icon}</span> : null}
                 <span style={{ flex: 1, fontSize: 13 }}>{n.message}</span>
                 {n.actionLabel && n.onAction ? (
-                  <Button type="link" size="small" onClick={n.onAction}>
+                  <Button variant="link" size="small" onClick={n.onAction}>
                     {n.actionLabel}
                   </Button>
                 ) : null}
@@ -9311,8 +9660,16 @@ export function Nudges({ nudges, onDismiss, maxVisible }: NudgesProps) {
 `,
   },
 "open-input": {
-    bootstrap: `import { type KeyboardEvent, useRef, useState } from "react";
-import { Badge, Button, Form, InputGroup, Stack } from "react-bootstrap";
+    mantine: `import {
+  ActionIcon,
+  Badge,
+  Group,
+  Stack,
+  Textarea,
+  Tooltip,
+} from "@mantine/core";
+import { IconSend } from "@tabler/icons-react";
+import { type KeyboardEvent, useRef, useState } from "react";
 
 import type { OpenInputProps } from "@patternbase/core";
 
@@ -9341,15 +9698,13 @@ export function OpenInput({
   };
 
   return (
-    <Stack gap={2}>
+    <Stack gap="xs">
       {suggestions.length > 0 && !value && (
-        <div className="d-flex flex-wrap gap-1">
+        <Group gap="xs" wrap="wrap">
           {suggestions.map((s) => (
             <Badge
               key={s}
-              bg="light"
-              text="dark"
-              className="border"
+              variant="light"
               style={{ cursor: "pointer" }}
               onClick={() => {
                 setValue(s);
@@ -9359,39 +9714,35 @@ export function OpenInput({
               {s}
             </Badge>
           ))}
-        </div>
+        </Group>
       )}
 
-      <InputGroup>
-        <Form.Control
-          as="textarea"
+      <Group gap="xs" align="flex-end">
+        <Textarea
           ref={textareaRef}
           value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
+          onChange={(e) => { setValue(e.currentTarget.value); }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={isLoading}
-          rows={1}
+          autosize
+          minRows={1}
+          maxRows={6}
           maxLength={maxLength}
-          style={{ resize: "none" }}
+          style={{ flex: 1 }}
         />
-        <Button
-          variant="primary"
-          onClick={handleSubmit}
-          disabled={!value.trim() || isLoading}
-        >
-          {isLoading ? (
-            <>
-              <span className="spinner-border spinner-border-sm me-1" />
-              Generating...
-            </>
-          ) : (
-            "Send"
-          )}
-        </Button>
-      </InputGroup>
+        <Tooltip label={isLoading ? "Generating..." : "Send"}>
+          <ActionIcon
+            size="lg"
+            variant="filled"
+            onClick={handleSubmit}
+            disabled={!value.trim() || isLoading}
+            loading={isLoading}
+          >
+            <IconSend size={16} />
+          </ActionIcon>
+        </Tooltip>
+      </Group>
     </Stack>
   );
 }
@@ -9450,7 +9801,7 @@ export function OpenInput({
 
       <Space.Compact style={{ width: "100%" }}>
         <TextArea
-          ref={textareaRef}
+          ref={textareaRef as any}
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
@@ -9463,7 +9814,7 @@ export function OpenInput({
           style={{ resize: "none" }}
         />
         <Button
-          type="primary"
+          variant="solid"
           icon={isLoading ? <LoadingOutlined /> : <SendOutlined />}
           onClick={handleSubmit}
           disabled={!value.trim() || isLoading}
@@ -9475,6 +9826,7 @@ export function OpenInput({
     </Space>
   );
 }
+
 `,
     shadcn: `import { Send } from "lucide-react";
 import { type KeyboardEvent, useRef, useState } from "react";
@@ -9574,7 +9926,8 @@ export function OpenInput({
 `,
   },
 "parameter-control": {
-    bootstrap: `import { Form, OverlayTrigger, Stack, Tooltip } from "react-bootstrap";
+    mantine: `import { Select, Slider, Stack, Switch, Text, Tooltip } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 import type { ParameterControlProps } from "@patternbase/core";
 
@@ -9585,73 +9938,71 @@ export function ParameterControl({
   layout = "vertical",
 }: ParameterControlProps) {
   return (
-    <Stack gap={3}>
-      {title ? <h6 className="mb-0">{title}</h6> : null}
-      <div className={layout === "horizontal" ? "d-flex flex-wrap gap-3" : ""}>
+    <Stack gap="md">
+      {title ? <Text fw={600} size="md">
+          {title}
+        </Text> : null}
+
+      <div
+        style={
+          layout === "horizontal"
+            ? { display: "flex", flexWrap: "wrap", gap: 16 }
+            : undefined
+        }
+      >
         {parameters.map((param) => (
-          <div
+          <Stack
             key={param.id}
-            className={layout === "horizontal" ? "flex-fill" : "mb-2"}
+            gap="xs"
+            style={{
+              width: layout === "horizontal" ? 200 : "100%",
+              marginBottom: layout === "vertical" ? 12 : 0,
+            }}
           >
-            <div className="d-flex align-items-center mb-1 gap-2">
-              <Form.Label className="fw-semibold small mb-0">
-                {param.label}
-              </Form.Label>
-              {param.description ? (
-                <OverlayTrigger
-                  overlay={<Tooltip>{param.description}</Tooltip>}
-                >
-                  <span
-                    className="text-muted"
-                    style={{ cursor: "help", fontSize: "12px" }}
-                  >
-                    &#9432;
-                  </span>
-                </OverlayTrigger>
-              ) : null}
-            </div>
+            <Text
+              fw={500}
+              size="sm"
+              style={{ display: "flex", alignItems: "center", gap: 4 }}
+            >
+              {param.label}
+              {param.description ? <Tooltip label={param.description} withArrow>
+                  <IconInfoCircle size={14} style={{ opacity: 0.5 }} />
+                </Tooltip> : null}
+            </Text>
 
             {param.type === "slider" && (
               <>
-                <Form.Range
+                <Slider
                   min={param.min ?? 0}
                   max={param.max ?? 100}
                   step={param.step ?? 1}
                   value={param.value as number}
-                  onChange={(e) => {
-                    onChange(param.id, Number(e.target.value));
-                  }}
+                  onChange={(v) => { onChange(param.id, v); }}
                 />
-                <Form.Text className="text-muted">
+                <Text size="xs" c="dimmed">
                   Current: {String(param.value)}
-                </Form.Text>
+                </Text>
               </>
             )}
 
             {param.type === "toggle" && (
-              <Form.Check
-                type="switch"
+              <Switch
                 checked={param.value as boolean}
-                onChange={(e) => {
-                  onChange(param.id, e.target.checked);
-                }}
+                onChange={(e) => { onChange(param.id, e.currentTarget.checked); }}
+                onLabel="On"
+                offLabel="Off"
               />
             )}
 
             {param.type === "select" && (
-              <Form.Select
+              <Select
                 value={param.value as string}
-                onChange={(e) => {
-                  onChange(param.id, e.target.value);
-                }}
-                size="sm"
-              >
-                {param.options?.map((opt) => (
-                  <option key={String(opt.value)} value={opt.value as string}>
-                    {opt.label}
-                  </option>
-                ))}
-              </Form.Select>
+                onChange={(v) => { onChange(param.id, v ?? ""); }}
+                data={param.options?.map((opt) => ({
+                  label: opt.label,
+                  value: opt.value as string,
+                }))}
+              />
             )}
 
             {param.type === "matrix" &&
@@ -9660,39 +10011,39 @@ export function ParameterControl({
                   | Record<string, number>
                   | undefined;
                 return (
-                  <div className="row g-2">
-                    <div className="col-6">
-                      <Form.Label className="small text-muted">
-                        {param.options?.[0]?.label ?? "X"}
-                      </Form.Label>
-                      <Form.Range
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: 16,
+                    }}
+                  >
+                    <div>
+                      <Text size="xs" c="dimmed">
+                        {param.options?.[0]?.label ?? "X Axis"}
+                      </Text>
+                      <Slider
                         value={matrixValue?.x ?? 50}
-                        onChange={(e) => {
-                          onChange(param.id, {
-                            ...matrixValue,
-                            x: Number(e.target.value),
-                          });
-                        }}
+                        onChange={(x) =>
+                          { onChange(param.id, { ...matrixValue, x }); }
+                        }
                       />
                     </div>
-                    <div className="col-6">
-                      <Form.Label className="small text-muted">
-                        {param.options?.[1]?.label ?? "Y"}
-                      </Form.Label>
-                      <Form.Range
+                    <div>
+                      <Text size="xs" c="dimmed">
+                        {param.options?.[1]?.label ?? "Y Axis"}
+                      </Text>
+                      <Slider
                         value={matrixValue?.y ?? 50}
-                        onChange={(e) => {
-                          onChange(param.id, {
-                            ...matrixValue,
-                            y: Number(e.target.value),
-                          });
-                        }}
+                        onChange={(y) =>
+                          { onChange(param.id, { ...matrixValue, y }); }
+                        }
                       />
                     </div>
                   </div>
                 );
               })()}
-          </div>
+          </Stack>
         ))}
       </div>
     </Stack>
@@ -10006,7 +10357,15 @@ export function ParameterControl({
 `,
   },
 "preset-styles": {
-    bootstrap: `import { Button, Card } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@mantine/core";
 
 import type { PresetStylesProps } from "@patternbase/core";
 
@@ -10014,77 +10373,68 @@ export function PresetStyles({
   presets,
   selectedPresetId,
   onApplyPreset,
-  title = "Preset Styles",
+  title,
   variant = "buttons",
-}: Readonly<PresetStylesProps>) {
-  if (variant === "cards") {
-    return (
-      <Card>
-        <Card.Header>
-          <h6 className="mb-0">{title}</h6>
-        </Card.Header>
-        <Card.Body>
-          <div
-            className="d-grid gap-2"
-            style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-            }}
-          >
-            {presets.map((preset) => (
-              <Card
-                key={preset.id}
-                className={
-                  selectedPresetId === preset.id ? "border-primary" : undefined
-                }
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  onApplyPreset(preset.id, preset.values);
-                }}
-              >
-                <Card.Body className="px-3 py-2">
-                  <div className="small fw-semibold">
-                    {preset.icon ? (
-                      <span style={{ marginRight: 4 }}>{preset.icon}</span>
-                    ) : null}
-                    {preset.label}
-                  </div>
-                  {preset.description ? (
-                    <small className="text-muted">{preset.description}</small>
-                  ) : null}
-                </Card.Body>
-              </Card>
-            ))}
-          </div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
+}: PresetStylesProps) {
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <Card.Body>
-        <div className="d-flex flex-wrap gap-2">
+    <Stack gap="sm">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
+
+      {variant === "cards" ? (
+        <SimpleGrid cols={2} spacing="sm">
+          {presets.map((preset) => (
+            <Card
+              key={preset.id}
+              padding="sm"
+              withBorder
+              style={{
+                cursor: "pointer",
+                outline:
+                  selectedPresetId === preset.id
+                    ? "2px solid var(--mantine-color-violet-6)"
+                    : undefined,
+              }}
+              onClick={() => { onApplyPreset(preset.id, preset.values); }}
+            >
+              <Stack gap="xs">
+                <Group justify="space-between" align="flex-start">
+                  <Group gap="xs">
+                    {preset.icon ? <span>{preset.icon}</span> : null}
+                    <Text fw={600} size="sm">
+                      {preset.label}
+                    </Text>
+                  </Group>
+                  {selectedPresetId === preset.id && (
+                    <Badge size="xs" variant="filled" color="violet">
+                      Active
+                    </Badge>
+                  )}
+                </Group>
+                {preset.description ? <Text size="xs" c="dimmed">
+                    {preset.description}
+                  </Text> : null}
+              </Stack>
+            </Card>
+          ))}
+        </SimpleGrid>
+      ) : (
+        <Group gap="xs" wrap="wrap">
           {presets.map((preset) => (
             <Button
               key={preset.id}
+              variant={selectedPresetId === preset.id ? "filled" : "default"}
               size="sm"
-              variant={
-                selectedPresetId === preset.id ? "primary" : "outline-secondary"
-              }
-              onClick={() => {
-                onApplyPreset(preset.id, preset.values);
-              }}
+              leftSection={preset.icon ? <span>{preset.icon}</span> : undefined}
+              onClick={() => { onApplyPreset(preset.id, preset.values); }}
             >
-              {preset.icon ? <span className="me-1">{preset.icon}</span> : null}
               {preset.label}
             </Button>
           ))}
-        </div>
-      </Card.Body>
-    </Card>
+        </Group>
+      )}
+    </Stack>
   );
 }
 `,
@@ -10244,7 +10594,7 @@ export function PresetStyles({
 `,
   },
 "prompt-details": {
-    bootstrap: `import { Badge, Card } from "react-bootstrap";
+    mantine: `import { Anchor, Badge, Card, Group, Stack, Text } from "@mantine/core";
 
 import type { PromptDetailsProps } from "@patternbase/core";
 
@@ -10255,62 +10605,70 @@ export function PromptDetails({
   model,
   tokenCount,
   variant = "card",
-}: Readonly<PromptDetailsProps>) {
-  const metaItems = (
-    <div className="d-flex mt-2 flex-wrap gap-2">
-      {model ? <Badge bg="secondary">{model}</Badge> : null}
-      {tokenCount != null ? (
-        <Badge bg="outline-secondary" className="border">
-          {tokenCount} tokens
-        </Badge>
-      ) : null}
-      {timestamp ? (
-        <small className="text-muted">{timestamp.toLocaleString()}</small>
-      ) : null}
-    </div>
-  );
-
-  const detailList = (
-    <div className="mt-2">
-      {details.map((d) => (
-        <div key={d.id} className="d-flex mb-1 gap-2">
-          <small className="text-muted fw-semibold">{d.label}:</small>
-          {d.type === "badge" ? (
-            <Badge bg="info">{d.value}</Badge>
-          ) : d.type === "link" && d.url ? (
-            <a
-              href={d.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="small"
-            >
-              {d.value}
-            </a>
-          ) : (
-            <small>{d.value}</small>
+}: PromptDetailsProps) {
+  const inner = (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          Prompt Details
+        </Text>
+        <Group gap="xs">
+          {model ? <Badge variant="light" size="sm">
+              {model}
+            </Badge> : null}
+          {tokenCount !== undefined && (
+            <Badge variant="light" size="sm" color="gray">
+              {tokenCount} tokens
+            </Badge>
           )}
-        </div>
-      ))}
-    </div>
+        </Group>
+      </Group>
+
+      <Text size="sm" style={{ fontStyle: "italic" }} c="dimmed">
+        &ldquo;{prompt}&rdquo;
+      </Text>
+
+      {timestamp ? <Text size="xs" c="dimmed">
+          {timestamp.toLocaleString()}
+        </Text> : null}
+
+      {details.length > 0 && (
+        <Stack gap={4}>
+          {details.map((detail) => (
+            <Group key={detail.id} justify="space-between" align="center">
+              <Text size="xs" c="dimmed">
+                {detail.label}
+              </Text>
+              {detail.type === "badge" ? (
+                <Badge size="xs" variant="light">
+                  {detail.value}
+                </Badge>
+              ) : detail.type === "link" && detail.url ? (
+                <Anchor
+                  href={detail.url}
+                  target="_blank"
+                  size="xs"
+                  rel="noopener noreferrer"
+                >
+                  {detail.value}
+                </Anchor>
+              ) : (
+                <Text size="xs">{detail.value}</Text>
+              )}
+            </Group>
+          ))}
+        </Stack>
+      )}
+    </Stack>
   );
 
   if (variant === "inline") {
-    return (
-      <div>
-        <p className="small mb-1">{prompt}</p>
-        {detailList}
-        {metaItems}
-      </div>
-    );
+    return <Stack gap="sm">{inner}</Stack>;
   }
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Text className="small">{prompt}</Card.Text>
-        {detailList}
-        {metaItems}
-      </Card.Body>
+    <Card padding="sm" withBorder>
+      {inner}
     </Card>
   );
 }
@@ -10467,7 +10825,16 @@ export function PromptDetails({
 `,
   },
 "prompt-enhancer": {
-    bootstrap: `import { Button, Card, Form } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  Textarea,
+} from "@mantine/core";
+import { IconSparkles } from "@tabler/icons-react";
 
 import type { PromptEnhancerProps } from "@patternbase/core";
 
@@ -10478,122 +10845,58 @@ export function PromptEnhancer({
   onApply,
   onEnhancedPromptChange,
   isEnhancing = false,
-  title = "Prompt Enhancer",
-  variant = "split",
-  showDiff = true,
-}: Readonly<PromptEnhancerProps>) {
-  const value = enhancedPrompt ?? "";
-
-  if (variant === "inline") {
-    return (
-      <Card>
-        <Card.Header>
-          <h6 className="mb-0">{title}</h6>
-        </Card.Header>
-        <Card.Body>
-          <div className="d-flex flex-column gap-2">
-            <Form.Control as="textarea" rows={3} value={prompt} readOnly />
-            <div className="d-flex gap-2">
-              <Button
-                size="sm"
-                onClick={() => {
-                  onEnhance(prompt);
-                }}
-                disabled={isEnhancing}
-              >
-                {isEnhancing ? "Enhancing..." : "Enhance"}
-              </Button>
-              {onApply ? (
-                <Button
-                  size="sm"
-                  variant="outline-primary"
-                  disabled={!value}
-                  onClick={() => {
-                    onApply(value);
-                  }}
-                >
-                  Apply
-                </Button>
-              ) : null}
-            </div>
-            {value ? (
-              <Form.Control
-                as="textarea"
-                rows={4}
-                value={value}
-                onChange={(e) => {
-                  onEnhancedPromptChange?.(e.target.value);
-                }}
-                readOnly={!onEnhancedPromptChange}
-              />
-            ) : null}
-          </div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
+  title,
+  showDiff = false,
+}: PromptEnhancerProps) {
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <Card.Body>
-        <div
-          className="d-grid gap-2"
-          style={{ gridTemplateColumns: "1fr 1fr" }}
-        >
-          <div>
-            <small className="fw-semibold">Original</small>
-            <Form.Control as="textarea" rows={4} value={prompt} readOnly />
-          </div>
-          <div>
-            <small className="fw-semibold">Enhanced</small>
-            <Form.Control
-              as="textarea"
-              rows={4}
-              value={value}
-              placeholder="Enhanced prompt appears here"
-              onChange={(e) => {
-                onEnhancedPromptChange?.(e.target.value);
-              }}
-              readOnly={!onEnhancedPromptChange}
-            />
-          </div>
-        </div>
+    <Stack gap="sm">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
 
-        {showDiff && value ? (
-          <small className="text-muted d-block mt-2">
-            Diff preview: added context, constraints, and output formatting
-            instructions.
-          </small>
-        ) : null}
+      <Stack gap="xs">
+        <Text size="xs" c="dimmed" fw={500}>
+          Original
+        </Text>
+        <Card padding="sm" withBorder>
+          <Text size="sm">{prompt}</Text>
+        </Card>
+      </Stack>
 
-        <div className="d-flex mt-2 gap-2">
-          <Button
-            size="sm"
-            onClick={() => {
-              onEnhance(prompt);
-            }}
-            disabled={isEnhancing}
-          >
-            {isEnhancing ? "Enhancing..." : "Enhance"}
-          </Button>
-          {onApply ? (
-            <Button
-              size="sm"
-              variant="outline-primary"
-              disabled={!value}
-              onClick={() => {
-                onApply(value);
-              }}
-            >
-              Apply Enhanced Prompt
-            </Button>
-          ) : null}
-        </div>
-      </Card.Body>
-    </Card>
+      <Button
+        leftSection={<IconSparkles size={14} />}
+        onClick={() => { onEnhance(prompt); }}
+        loading={isEnhancing}
+        variant="default"
+        size="sm"
+      >
+        Enhance Prompt
+      </Button>
+
+      {enhancedPrompt ? <Stack gap="xs">
+          <Group justify="space-between" align="center">
+            <Text size="xs" c="dimmed" fw={500}>
+              Enhanced
+            </Text>
+            <Badge size="xs" variant="light" color="violet">
+              AI Improved
+            </Badge>
+          </Group>
+          <Textarea
+            value={enhancedPrompt}
+            onChange={(e) => onEnhancedPromptChange?.(e.currentTarget.value)}
+            minRows={2}
+            autosize
+            readOnly={!onEnhancedPromptChange}
+          />
+          {showDiff ? <Text size="xs" c="dimmed">
+              {prompt.length} → {enhancedPrompt.length} chars
+            </Text> : null}
+          {onApply ? <Button size="compact-sm" onClick={() => { onApply(enhancedPrompt); }}>
+              Apply
+            </Button> : null}
+        </Stack> : null}
+    </Stack>
   );
 }
 `,
@@ -10628,7 +10931,7 @@ export function PromptEnhancer({
           <Space>
             <Button
               size="small"
-              type="primary"
+              variant="solid"
               loading={isEnhancing}
               onClick={() => {
                 onEnhance(prompt);
@@ -10705,7 +11008,7 @@ export function PromptEnhancer({
         <Space>
           <Button
             size="small"
-            type="primary"
+            variant="solid"
             loading={isEnhancing}
             onClick={() => {
               onEnhance(prompt);
@@ -10820,7 +11123,16 @@ export function PromptEnhancer({
 `,
   },
 "randomize": {
-    bootstrap: `import { Button, Form, InputGroup, Spinner } from "react-bootstrap";
+    mantine: `import {
+  ActionIcon,
+  Button,
+  Group,
+  Stack,
+  Text,
+  TextInput,
+  Tooltip,
+} from "@mantine/core";
+import { IconArrowsShuffle,IconDice } from "@tabler/icons-react";
 
 import type { RandomizeProps } from "@patternbase/core";
 
@@ -10832,45 +11144,68 @@ export function Randomize({
   showSeed = false,
   label = "Randomize",
   variant = "button",
-}: Readonly<RandomizeProps>) {
-  const button = (
-    <Button
-      variant={variant === "icon" ? "link" : "outline-primary"}
-      size={variant === "fab" ? "lg" : "sm"}
-      onClick={onRandomize}
-      disabled={isRandomizing}
-      className={variant === "fab" ? "rounded-circle" : ""}
-    >
-      {isRandomizing ? (
-        <Spinner animation="border" size="sm" />
-      ) : (
-        <>
-          <span className="me-1">{"\\uD83C\\uDFB2"}</span>
-          {variant !== "icon" ? label : null}
-        </>
-      )}
-    </Button>
-  );
-
-  if (showSeed && onSeedChange) {
+}: RandomizeProps) {
+  if (variant === "icon") {
     return (
-      <div className="d-flex align-items-center gap-2">
-        {button}
-        <InputGroup size="sm" style={{ maxWidth: 200 }}>
-          <InputGroup.Text>Seed</InputGroup.Text>
-          <Form.Control
-            value={currentSeed ?? ""}
-            onChange={(e) => {
-              onSeedChange(e.target.value);
-            }}
-            placeholder="auto"
-          />
-        </InputGroup>
-      </div>
+      <Tooltip label={label}>
+        <ActionIcon
+          variant="default"
+          size="lg"
+          onClick={onRandomize}
+          loading={isRandomizing}
+        >
+          <IconDice size={18} />
+        </ActionIcon>
+      </Tooltip>
     );
   }
 
-  return button;
+  if (variant === "fab") {
+    return (
+      <ActionIcon
+        variant="filled"
+        size="xl"
+        radius="xl"
+        onClick={onRandomize}
+        loading={isRandomizing}
+      >
+        <IconArrowsShuffle size={22} />
+      </ActionIcon>
+    );
+  }
+
+  return (
+    <Stack gap="xs">
+      <Group gap="xs">
+        <Button
+          leftSection={<IconDice size={14} />}
+          variant="default"
+          size="sm"
+          onClick={onRandomize}
+          loading={isRandomizing}
+        >
+          {label}
+        </Button>
+      </Group>
+      {showSeed ? <TextInput
+          label="Seed"
+          placeholder="Random seed..."
+          value={currentSeed ?? ""}
+          onChange={(e) => onSeedChange?.(e.currentTarget.value)}
+          size="xs"
+          rightSection={
+            <Tooltip label="Randomize seed">
+              <ActionIcon variant="subtle" size="sm" onClick={onRandomize}>
+                <IconDice size={12} />
+              </ActionIcon>
+            </Tooltip>
+          }
+        /> : null}
+      {currentSeed && !showSeed ? <Text size="xs" c="dimmed">
+          Seed: {currentSeed}
+        </Text> : null}
+    </Stack>
+  );
 }
 `,
     antd: `import { Button, Input, Space, Spin } from "antd";
@@ -11035,14 +11370,18 @@ export function Randomize({
 `,
   },
 "references": {
-    bootstrap: `import {
+    mantine: `import {
+  ActionIcon,
+  Anchor,
   Badge,
-  Button,
   Card,
-  ListGroup,
-  ProgressBar,
+  Group,
+  Progress,
+  SimpleGrid,
   Stack,
-} from "react-bootstrap";
+  Text,
+} from "@mantine/core";
+import { IconX } from "@tabler/icons-react";
 
 import type { ReferencesProps } from "@patternbase/core";
 
@@ -11052,80 +11391,91 @@ export function References({
   onRemoveReference,
   title = "References",
   variant = "list",
-  showRelevance = true,
-}: Readonly<ReferencesProps>) {
-  return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <ListGroup
-        variant="flush"
-        horizontal={variant === "cards" ? "md" : undefined}
-        className={variant === "cards" ? "flex-wrap" : undefined}
-      >
-        {references.map((reference) => (
-          <ListGroup.Item
-            key={reference.id}
-            className={
-              variant === "cards" ? "col-md-6 border-bottom" : undefined
-            }
-            action={Boolean(onSelectReference)}
-            active={Boolean(reference.selected)}
-            onClick={() => {
-              onSelectReference?.(reference.id);
+  showRelevance = false,
+}: ReferencesProps) {
+  const renderItem = (ref: (typeof references)[0]) => (
+    <Card
+      key={ref.id}
+      padding="sm"
+      withBorder
+      style={{
+        cursor: onSelectReference ? "pointer" : "default",
+        outline: ref.selected
+          ? "2px solid var(--mantine-color-violet-6)"
+          : undefined,
+      }}
+      onClick={() => onSelectReference?.(ref.id)}
+    >
+      <Group justify="space-between" align="flex-start">
+        <Stack gap={2} style={{ flex: 1 }}>
+          <Group gap="xs">
+            <Text size="sm" fw={500}>
+              {ref.title}
+            </Text>
+            {ref.type ? <Badge size="xs" variant="light">
+                {ref.type}
+              </Badge> : null}
+            {ref.selected ? <Badge size="xs" variant="filled" color="violet">
+                Selected
+              </Badge> : null}
+          </Group>
+          {ref.excerpt ? <Text size="xs" c="dimmed" lineClamp={2}>
+              {ref.excerpt}
+            </Text> : null}
+          {ref.location ? <Anchor
+              href={ref.location}
+              target="_blank"
+              size="xs"
+              rel="noopener noreferrer"
+            >
+              {ref.location.length > 50
+                ? \`\${ref.location.substring(0, 50)}...\`
+                : ref.location}
+            </Anchor> : null}
+          {showRelevance && ref.relevance !== undefined ? <Group gap="xs" align="center">
+              <Progress
+                value={ref.relevance * 100}
+                size="xs"
+                style={{ flex: 1 }}
+              />
+              <Text size="xs" c="dimmed">
+                {Math.round(ref.relevance * 100)}%
+              </Text>
+            </Group> : null}
+        </Stack>
+        {onRemoveReference ? <ActionIcon
+            variant="subtle"
+            color="gray"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemoveReference(ref.id);
             }}
           >
-            <Stack gap={1}>
-              <div className="d-flex justify-content-between align-items-start gap-2">
-                <div className="d-flex align-items-center flex-wrap gap-2">
-                  <strong className="small">{reference.title}</strong>
-                  {reference.type ? (
-                    <Badge bg="light" text="dark" className="border">
-                      {reference.type}
-                    </Badge>
-                  ) : null}
-                </div>
-                {onRemoveReference ? (
-                  <Button
-                    size="sm"
-                    variant="outline-danger"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onRemoveReference(reference.id);
-                    }}
-                  >
-                    Remove
-                  </Button>
-                ) : null}
-              </div>
-              {reference.location ? (
-                <a
-                  href={reference.location}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="small text-decoration-none"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  {reference.location}
-                </a>
-              ) : null}
-              {reference.excerpt ? (
-                <small className="text-muted">{reference.excerpt}</small>
-              ) : null}
-              {showRelevance && typeof reference.relevance === "number" ? (
-                <ProgressBar
-                  now={Math.round(reference.relevance * 100)}
-                  style={{ height: 6 }}
-                />
-              ) : null}
-            </Stack>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+            <IconX size={12} />
+          </ActionIcon> : null}
+      </Group>
     </Card>
+  );
+
+  return (
+    <Stack gap="sm">
+      <Group gap="xs">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        <Badge size="xs" variant="light">
+          {references.length}
+        </Badge>
+      </Group>
+      {variant === "cards" ? (
+        <SimpleGrid cols={2} spacing="sm">
+          {references.map(renderItem)}
+        </SimpleGrid>
+      ) : (
+        <Stack gap="xs">{references.map(renderItem)}</Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -11189,7 +11539,7 @@ export function References({
                 </Space>
                 {onRemoveReference ? (
                   <Button
-                    type="text"
+                    variant="text"
                     size="small"
                     danger
                     icon={<DeleteOutlined />}
@@ -11328,7 +11678,8 @@ export function References({
 `,
   },
 "regenerate": {
-    bootstrap: `import { Button, Dropdown, Spinner } from "react-bootstrap";
+    mantine: `import { ActionIcon, Button, Menu, Tooltip } from "@mantine/core";
+import { IconRefresh } from "@tabler/icons-react";
 
 import type { RegenerateProps } from "@patternbase/core";
 
@@ -11338,72 +11689,56 @@ export function Regenerate({
   variant = "button",
   options,
 }: RegenerateProps) {
-  if (variant === "dropdown" && options && options.length > 0) {
+  if (variant === "icon") {
     return (
-      <Dropdown>
-        <Dropdown.Toggle
-          variant="outline-secondary"
-          size="sm"
-          disabled={isRegenerating}
+      <Tooltip label="Regenerate">
+        <ActionIcon
+          variant="subtle"
+          color="gray"
+          onClick={onRegenerate}
+          loading={isRegenerating}
         >
-          {isRegenerating ? (
-            <>
-              <Spinner animation="border" size="sm" className="me-1" />
-              Regenerating...
-            </>
-          ) : (
-            "\\u21BB Regenerate"
-          )}
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={onRegenerate}>
-            Regenerate response
-          </Dropdown.Item>
-          <Dropdown.Divider />
-          {options.map((opt) => (
-            <Dropdown.Item key={opt.label} onClick={opt.onSelect}>
-              {opt.label}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
+          <IconRefresh size={16} />
+        </ActionIcon>
+      </Tooltip>
     );
   }
 
-  if (variant === "icon") {
+  if (variant === "dropdown" && options && options.length > 0) {
     return (
-      <Button
-        variant="link"
-        size="sm"
-        onClick={onRegenerate}
-        disabled={isRegenerating}
-        title="Regenerate"
-        className="p-1"
-      >
-        {isRegenerating ? (
-          <Spinner animation="border" size="sm" />
-        ) : (
-          <span style={{ fontSize: "1.2em" }}>{"\\u21BB"}</span>
-        )}
-      </Button>
+      <Menu>
+        <Menu.Target>
+          <Button
+            variant="default"
+            leftSection={<IconRefresh size={14} />}
+            loading={isRegenerating}
+            size="sm"
+          >
+            Regenerate
+          </Button>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item onClick={onRegenerate}>Regenerate</Menu.Item>
+          <Menu.Divider />
+          {options.map((opt) => (
+            <Menu.Item key={opt.label} onClick={opt.onSelect}>
+              {opt.label}
+            </Menu.Item>
+          ))}
+        </Menu.Dropdown>
+      </Menu>
     );
   }
 
   return (
     <Button
-      variant="outline-secondary"
-      size="sm"
+      variant="default"
+      leftSection={<IconRefresh size={14} />}
       onClick={onRegenerate}
-      disabled={isRegenerating}
+      loading={isRegenerating}
+      size="sm"
     >
-      {isRegenerating ? (
-        <>
-          <Spinner animation="border" size="sm" className="me-1" />
-          Regenerating...
-        </>
-      ) : (
-        "\\u21BB Regenerate"
-      )}
+      Regenerate
     </Button>
   );
 }
@@ -11445,7 +11780,7 @@ export function Regenerate({
   if (variant === "icon") {
     return (
       <Button
-        type="text"
+        variant="text"
         size="small"
         icon={isRegenerating ? <LoadingOutlined /> : <ReloadOutlined />}
         onClick={onRegenerate}
@@ -11562,7 +11897,15 @@ export function Regenerate({
 `,
   },
 "restructure": {
-    bootstrap: `import { Button, Card, Spinner } from "react-bootstrap";
+    mantine: `import {
+  Button,
+  Card,
+  Group,
+  Loader,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@mantine/core";
 
 import type { RestructureProps } from "@patternbase/core";
 
@@ -11573,52 +11916,72 @@ export function Restructure({
   restructuredContent,
   isProcessing = false,
   showDiff = false,
-  title,
-  variant: _variant = "buttons",
-}: Readonly<RestructureProps>) {
-  const displayContent = restructuredContent ?? content;
-
+  title = "Restructure",
+  variant = "buttons",
+}: RestructureProps) {
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title className="fs-6">{title ?? "Restructure"}</Card.Title>
-        <p className="small">{displayContent}</p>
-        {showDiff && restructuredContent ? (
-          <div
-            className="mb-3 rounded p-2"
-            style={{
-              background: "var(--bs-success-bg-subtle)",
-              border: "1px solid var(--bs-success-border-subtle)",
-            }}
-          >
-            <small className="text-muted d-block">Original:</small>
-            <p
-              className="small text-muted mb-0"
-              style={{ textDecoration: "line-through" }}
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {isProcessing ? <Loader size="xs" /> : null}
+      </Group>
+
+      <Card padding="sm" withBorder>
+        <Text size="sm">{content}</Text>
+      </Card>
+
+      {variant === "presets" ? (
+        <SimpleGrid cols={2} spacing="xs">
+          {options.map((option) => (
+            <Card
+              key={option.id}
+              padding="sm"
+              withBorder
+              style={{ cursor: "pointer" }}
+              onClick={() => { onRestructure(option.id); }}
             >
-              {content}
-            </p>
-          </div>
-        ) : null}
-        <div className="d-flex flex-wrap gap-2">
-          {options.map((opt) => (
+              <Group gap="xs">
+                {option.icon ? <span>{option.icon}</span> : null}
+                <Stack gap={2}>
+                  <Text size="sm" fw={500}>
+                    {option.label}
+                  </Text>
+                  {option.description ? <Text size="xs" c="dimmed">
+                      {option.description}
+                    </Text> : null}
+                </Stack>
+              </Group>
+            </Card>
+          ))}
+        </SimpleGrid>
+      ) : (
+        <Group gap="xs" wrap="wrap">
+          {options.map((option) => (
             <Button
-              key={opt.id}
-              variant="outline-secondary"
+              key={option.id}
+              variant="default"
               size="sm"
+              leftSection={option.icon ? <span>{option.icon}</span> : undefined}
+              onClick={() => { onRestructure(option.id); }}
               disabled={isProcessing}
-              onClick={() => {
-                onRestructure(opt.id);
-              }}
             >
-              {opt.icon ? <span className="me-1">{opt.icon}</span> : null}
-              {opt.label}
+              {option.label}
             </Button>
           ))}
-          {isProcessing ? <Spinner animation="border" size="sm" /> : null}
-        </div>
-      </Card.Body>
-    </Card>
+        </Group>
+      )}
+
+      {restructuredContent ? <Stack gap="xs">
+          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+            {showDiff ? "Changes" : "Result"}
+          </Text>
+          <Card padding="sm" withBorder>
+            <Text size="sm">{restructuredContent}</Text>
+          </Card>
+        </Stack> : null}
+    </Stack>
   );
 }
 `,
@@ -11675,7 +12038,6 @@ export function Restructure({
             <Button
               key={opt.id}
               size="small"
-              type="default"
               disabled={isProcessing}
               onClick={() => {
                 onRestructure(opt.id);
@@ -11831,7 +12193,17 @@ export function Restructure({
 `,
   },
 "restyle": {
-    bootstrap: `import { Button, Card, Form, Spinner } from "react-bootstrap";
+    mantine: `import {
+  Card,
+  Group,
+  Loader,
+  SimpleGrid,
+  Slider,
+  Stack,
+  Text,
+  UnstyledButton,
+} from "@mantine/core";
+import { useState } from "react";
 
 import type { RestyleProps } from "@patternbase/core";
 
@@ -11843,129 +12215,155 @@ export function Restyle({
   isProcessing = false,
   intensity,
   onIntensityChange,
-  title,
+  title = "Restyle",
   variant = "presets",
-}: Readonly<RestyleProps>) {
-  const displayContent = restyledContent ?? content;
+}: RestyleProps) {
+  const [selectedId, setSelectedId] = useState(options[0]?.id ?? "");
 
-  if (variant === "gallery") {
-    return (
-      <Card>
-        <Card.Body>
-          <Card.Title className="fs-6">{title ?? "Restyle"}</Card.Title>
-          <p className="small">{displayContent}</p>
-          <div
-            className="d-grid gap-2"
-            style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-            }}
-          >
-            {options.map((opt) => (
-              <Button
-                key={opt.id}
-                variant="outline-secondary"
-                size="sm"
-                disabled={isProcessing}
-                className="text-start"
-                style={{ whiteSpace: "normal" }}
-                onClick={() => {
-                  onRestyle(opt.id);
+  const handleSelect = (id: string) => {
+    setSelectedId(id);
+    onRestyle(id);
+  };
+
+  const renderOptions = () => {
+    if (variant === "gallery") {
+      return (
+        <SimpleGrid cols={2} spacing="xs">
+          {options.map((option) => (
+            <UnstyledButton
+              key={option.id}
+              onClick={() => { handleSelect(option.id); }}
+            >
+              <Card
+                padding="sm"
+                withBorder
+                style={{
+                  outline:
+                    selectedId === option.id
+                      ? "2px solid var(--mantine-color-violet-6)"
+                      : undefined,
                 }}
               >
-                {opt.icon ? (
-                  <span className="d-block mb-1" style={{ fontSize: 18 }}>
-                    {opt.icon}
-                  </span>
-                ) : null}
-                <strong className="d-block small">{opt.label}</strong>
-                {opt.description ? (
-                  <small className="text-muted">{opt.description}</small>
-                ) : null}
-              </Button>
-            ))}
-          </div>
-          {isProcessing ? (
-            <div className="mt-2 text-center">
-              <Spinner animation="border" size="sm" />
-            </div>
-          ) : null}
-        </Card.Body>
-      </Card>
-    );
-  }
+                <Stack gap={4}>
+                  {option.preview ? <Text
+                      size="xs"
+                      c="dimmed"
+                      style={{ fontStyle: "italic" }}
+                      lineClamp={2}
+                    >
+                      {option.preview}
+                    </Text> : null}
+                  <Text size="xs" fw={500}>
+                    {option.label}
+                  </Text>
+                  {option.description ? <Text size="xs" c="dimmed">
+                      {option.description}
+                    </Text> : null}
+                </Stack>
+              </Card>
+            </UnstyledButton>
+          ))}
+        </SimpleGrid>
+      );
+    }
 
-  if (variant === "slider") {
-    return (
-      <Card>
-        <Card.Body>
-          <Card.Title className="fs-6">{title ?? "Restyle"}</Card.Title>
-          <p className="small">{displayContent}</p>
-          {options.length > 0 ? (
-            <div className="d-flex mb-3 flex-wrap gap-1">
-              {options.map((opt) => (
-                <Button
-                  key={opt.id}
-                  variant="outline-secondary"
+    if (variant === "slider") {
+      return (
+        <Stack gap="xs">
+          <Text size="xs" fw={500} c="dimmed">
+            Style
+          </Text>
+          <Group gap="xs" wrap="wrap">
+            {options.map((option) => (
+              <UnstyledButton
+                key={option.id}
+                onClick={() => { handleSelect(option.id); }}
+              >
+                <Text
                   size="sm"
-                  disabled={isProcessing}
-                  onClick={() => {
-                    onRestyle(opt.id);
-                  }}
+                  fw={selectedId === option.id ? 600 : 400}
+                  c={selectedId === option.id ? "violet" : "dimmed"}
                 >
-                  {opt.icon ? <span className="me-1">{opt.icon}</span> : null}
-                  {opt.label}
-                </Button>
-              ))}
-            </div>
-          ) : null}
-          {onIntensityChange ? (
-            <Form.Group>
-              <Form.Label className="small text-muted">Intensity</Form.Label>
-              <Form.Range
-                min={0}
-                max={100}
-                value={intensity ?? 50}
-                onChange={(e) => {
-                  onIntensityChange(Number(e.target.value));
-                }}
-                disabled={isProcessing}
-              />
-            </Form.Group>
-          ) : null}
-          {isProcessing ? (
-            <div className="mt-2 text-center">
-              <Spinner animation="border" size="sm" />
-            </div>
-          ) : null}
-        </Card.Body>
-      </Card>
-    );
-  }
+                  {option.label}
+                </Text>
+              </UnstyledButton>
+            ))}
+          </Group>
+        </Stack>
+      );
+    }
 
-  return (
-    <Card>
-      <Card.Body>
-        <Card.Title className="fs-6">{title ?? "Restyle"}</Card.Title>
-        <p className="small">{displayContent}</p>
-        <div className="d-flex flex-wrap gap-2">
-          {options.map((opt) => (
-            <Button
-              key={opt.id}
-              variant="outline-secondary"
-              size="sm"
-              disabled={isProcessing}
-              onClick={() => {
-                onRestyle(opt.id);
+    return (
+      <Group gap="xs" wrap="wrap">
+        {options.map((option) => (
+          <UnstyledButton
+            key={option.id}
+            onClick={() => { handleSelect(option.id); }}
+          >
+            <Card
+              padding="xs"
+              withBorder
+              style={{
+                cursor: "pointer",
+                outline:
+                  selectedId === option.id
+                    ? "2px solid var(--mantine-color-violet-6)"
+                    : undefined,
               }}
             >
-              {opt.icon ? <span className="me-1">{opt.icon}</span> : null}
-              {opt.label}
-            </Button>
-          ))}
-          {isProcessing ? <Spinner animation="border" size="sm" /> : null}
-        </div>
-      </Card.Body>
-    </Card>
+              <Group gap="xs">
+                {option.icon ? <span>{option.icon}</span> : null}
+                <Text size="sm">{option.label}</Text>
+              </Group>
+            </Card>
+          </UnstyledButton>
+        ))}
+      </Group>
+    );
+  };
+
+  return (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {isProcessing ? <Loader size="xs" /> : null}
+      </Group>
+
+      <Card padding="sm" withBorder>
+        <Text size="sm">{content}</Text>
+      </Card>
+
+      {renderOptions()}
+
+      {intensity !== undefined && onIntensityChange ? <Stack gap={4}>
+          <Group justify="space-between">
+            <Text size="xs" fw={500}>
+              Intensity
+            </Text>
+            <Text size="xs" c="dimmed">
+              {intensity}%
+            </Text>
+          </Group>
+          <Slider
+            value={intensity}
+            onChange={onIntensityChange}
+            min={0}
+            max={100}
+            step={1}
+          />
+        </Stack> : null}
+
+      {restyledContent ? <Stack gap="xs">
+          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+            Result
+          </Text>
+          <Card padding="sm" withBorder>
+            <Text size="sm">{restyledContent}</Text>
+          </Card>
+        </Stack> : null}
+    </Stack>
   );
 }
 `,
@@ -12294,7 +12692,16 @@ export function Restyle({
 `,
   },
 "sample-response": {
-    bootstrap: `import { Button, Card, Spinner, Stack } from "react-bootstrap";
+    mantine: `import {
+  Button,
+  Card,
+  Group,
+  Loader,
+  Stack,
+  Text,
+  Textarea,
+} from "@mantine/core";
+import { IconCheck, IconRefresh, IconWand } from "@tabler/icons-react";
 
 import type { SampleResponseProps } from "@patternbase/core";
 
@@ -12307,68 +12714,64 @@ export function SampleResponse({
   isGenerating = false,
   title = "Sample Response",
   variant = "card",
-}: Readonly<SampleResponseProps>) {
+}: SampleResponseProps) {
+  const inner = (
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {isGenerating ? <Loader size="xs" /> : null}
+      </Group>
+
+      {prompt ? <Text size="xs" c="dimmed" style={{ fontStyle: "italic" }}>
+          &ldquo;{prompt}&rdquo;
+        </Text> : null}
+
+      {sample ? (
+        <>
+          <Textarea value={sample} readOnly minRows={3} autosize />
+          <Group gap="xs">
+            {onRegenerateSample ? <Button
+                variant="default"
+                size="sm"
+                leftSection={<IconRefresh size={14} />}
+                onClick={onRegenerateSample}
+                disabled={isGenerating}
+              >
+                Regenerate
+              </Button> : null}
+            {onAcceptSample ? <Button
+                size="sm"
+                leftSection={<IconCheck size={14} />}
+                onClick={onAcceptSample}
+                disabled={isGenerating}
+              >
+                Accept
+              </Button> : null}
+          </Group>
+        </>
+      ) : (
+        <Button
+          leftSection={<IconWand size={14} />}
+          onClick={onGenerateSample}
+          loading={isGenerating}
+          size="sm"
+          variant="default"
+        >
+          Generate Sample
+        </Button>
+      )}
+    </Stack>
+  );
+
   if (variant === "inline") {
-    return (
-      <Stack gap={2}>
-        <div className="d-flex align-items-center gap-2">
-          <strong>{title}</strong>
-          <Button size="sm" onClick={onGenerateSample} disabled={isGenerating}>
-            {isGenerating ? "Generating..." : "Sample"}
-          </Button>
-        </div>
-        {sample ? <small className="text-muted">{sample}</small> : null}
-      </Stack>
-    );
+    return <Stack gap="sm">{inner}</Stack>;
   }
 
   return (
-    <Card>
-      <Card.Header className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h6 className="mb-0">{title}</h6>
-        <div className="d-flex gap-2">
-          <Button size="sm" onClick={onGenerateSample} disabled={isGenerating}>
-            Sample
-          </Button>
-          {onRegenerateSample ? (
-            <Button
-              variant="outline-secondary"
-              size="sm"
-              onClick={onRegenerateSample}
-              disabled={isGenerating}
-            >
-              Regenerate
-            </Button>
-          ) : null}
-          {onAcceptSample ? (
-            <Button
-              variant="success"
-              size="sm"
-              onClick={onAcceptSample}
-              disabled={!sample || isGenerating}
-            >
-              Generate Full
-            </Button>
-          ) : null}
-        </div>
-      </Card.Header>
-      <Card.Body>
-        {prompt ? (
-          <small className="text-muted d-block mb-2">Prompt: {prompt}</small>
-        ) : null}
-        {isGenerating ? (
-          <div className="d-flex align-items-center gap-2">
-            <Spinner animation="border" size="sm" />
-            <small className="text-muted">Generating sample...</small>
-          </div>
-        ) : sample ? (
-          <p className="small mb-0">{sample}</p>
-        ) : (
-          <small className="text-muted">
-            Generate a short preview response before running the full output.
-          </small>
-        )}
-      </Card.Body>
+    <Card padding="sm" withBorder>
+      {inner}
     </Card>
   );
 }
@@ -12435,7 +12838,7 @@ export function SampleResponse({
           ) : null}
           {onAcceptSample ? (
             <Button
-              type="primary"
+              variant="solid"
               size="small"
               icon={<CheckOutlined />}
               disabled={!sample || isGenerating}
@@ -12558,8 +12961,18 @@ export function SampleResponse({
 `,
   },
 "saved-styles": {
-    bootstrap: `import { useMemo, useState } from "react";
-import { Badge, Button, Card, Form, ListGroup } from "react-bootstrap";
+    mantine: `import {
+  ActionIcon,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { IconDeviceFloppy, IconStar, IconTrash } from "@tabler/icons-react";
+import { useState } from "react";
 
 import type { SavedStylesProps } from "@patternbase/core";
 
@@ -12569,145 +12982,133 @@ export function SavedStyles({
   onSelectStyle,
   onSaveStyle,
   onDeleteStyle,
-  title = "Saved Styles",
+  title,
   variant = "list",
   maxVisible,
-}: Readonly<SavedStylesProps>) {
-  const [name, setName] = useState("");
-  const visibleStyles = useMemo(
-    () => (maxVisible ? styles.slice(0, maxVisible) : styles),
-    [maxVisible, styles],
-  );
+}: SavedStylesProps) {
+  const [saveName, setSaveName] = useState("");
 
-  const saveDisabled = !name.trim();
-
-  const saveControls = (
-    <div className="d-flex gap-2">
-      <Form.Control
-        size="sm"
-        placeholder="Save current style as..."
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      />
-      <Button
-        size="sm"
-        disabled={saveDisabled}
-        onClick={() => {
-          onSaveStyle(name.trim());
-          setName("");
-        }}
-      >
-        Save
-      </Button>
-    </div>
-  );
-
-  if (variant === "cards") {
-    return (
-      <Card>
-        <Card.Header>
-          <h6 className="mb-0">{title}</h6>
-        </Card.Header>
-        <Card.Body className="d-flex flex-column gap-2">
-          {saveControls}
-          <div
-            className="d-grid gap-2"
-            style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-            }}
-          >
-            {visibleStyles.map((style) => (
-              <Card
-                key={style.id}
-                className={
-                  selectedStyleId === style.id ? "border-primary" : undefined
-                }
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  onSelectStyle(style.id);
-                }}
-              >
-                <Card.Body className="px-3 py-2">
-                  <div className="d-flex align-items-center mb-1 gap-2">
-                    <strong className="small">{style.name}</strong>
-                    {style.isDefault ? (
-                      <Badge bg="primary">Default</Badge>
-                    ) : null}
-                  </div>
-                  {style.description ? (
-                    <small className="text-muted d-block">
-                      {style.description}
-                    </small>
-                  ) : null}
-                  {onDeleteStyle && !style.isDefault ? (
-                    <Button
-                      size="sm"
-                      variant="link"
-                      className="text-danger mt-1 p-0"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteStyle(style.id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  ) : null}
-                </Card.Body>
-              </Card>
-            ))}
-          </div>
-        </Card.Body>
-      </Card>
-    );
-  }
+  const displayed = maxVisible ? styles.slice(0, maxVisible) : styles;
 
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <Card.Body className="d-flex flex-column gap-2">
-        {saveControls}
-        <ListGroup>
-          {visibleStyles.map((style) => (
-            <ListGroup.Item
+    <Stack gap="sm">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
+
+      <Group gap="xs">
+        <TextInput
+          placeholder="Style name..."
+          value={saveName}
+          onChange={(e) => { setSaveName(e.currentTarget.value); }}
+          size="sm"
+          style={{ flex: 1 }}
+        />
+        <Button
+          leftSection={<IconDeviceFloppy size={14} />}
+          variant="default"
+          size="sm"
+          onClick={() => {
+            if (saveName.trim()) {
+              onSaveStyle(saveName.trim());
+              setSaveName("");
+            }
+          }}
+          disabled={!saveName.trim()}
+        >
+          Save
+        </Button>
+      </Group>
+
+      {variant === "cards" ? (
+        <Stack gap="xs">
+          {displayed.map((style) => (
+            <Card
               key={style.id}
-              action
-              active={selectedStyleId === style.id}
-              onClick={() => {
-                onSelectStyle(style.id);
+              padding="sm"
+              withBorder
+              style={{
+                cursor: "pointer",
+                outline:
+                  selectedStyleId === style.id
+                    ? "2px solid var(--mantine-color-violet-6)"
+                    : undefined,
               }}
-              className="d-flex justify-content-between align-items-start"
+              onClick={() => { onSelectStyle(style.id); }}
             >
-              <div>
-                <div className="d-flex align-items-center gap-2">
-                  <strong className="small">{style.name}</strong>
-                  {style.isDefault ? <Badge bg="primary">Default</Badge> : null}
-                </div>
-                {style.description ? (
-                  <small className="text-muted">{style.description}</small>
-                ) : null}
-              </div>
-              {onDeleteStyle && !style.isDefault ? (
-                <Button
-                  size="sm"
-                  variant="link"
-                  className="text-danger p-0"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteStyle(style.id);
-                  }}
-                >
-                  Delete
-                </Button>
-              ) : null}
-            </ListGroup.Item>
+              <Group justify="space-between" align="center">
+                <Stack gap={2}>
+                  <Group gap="xs">
+                    <Text size="sm" fw={600}>
+                      {style.name}
+                    </Text>
+                    {style.isDefault ? <Badge
+                        size="xs"
+                        variant="light"
+                        color="yellow"
+                        leftSection={<IconStar size={10} />}
+                      >
+                        Default
+                      </Badge> : null}
+                    {selectedStyleId === style.id && (
+                      <Badge size="xs" variant="filled" color="violet">
+                        Active
+                      </Badge>
+                    )}
+                  </Group>
+                  {style.description ? <Text size="xs" c="dimmed">
+                      {style.description}
+                    </Text> : null}
+                </Stack>
+                {onDeleteStyle ? <ActionIcon
+                    variant="subtle"
+                    color="red"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteStyle(style.id);
+                    }}
+                  >
+                    <IconTrash size={14} />
+                  </ActionIcon> : null}
+              </Group>
+            </Card>
           ))}
-        </ListGroup>
-      </Card.Body>
-    </Card>
+        </Stack>
+      ) : (
+        <Stack gap="xs">
+          {displayed.map((style) => (
+            <Group key={style.id} justify="space-between" align="center">
+              <Group
+                gap="xs"
+                style={{ cursor: "pointer", flex: 1 }}
+                onClick={() => { onSelectStyle(style.id); }}
+              >
+                <Text size="sm" fw={selectedStyleId === style.id ? 600 : 400}>
+                  {style.name}
+                </Text>
+                {style.isDefault ? <Badge size="xs" variant="light" color="yellow">
+                    Default
+                  </Badge> : null}
+                {selectedStyleId === style.id && (
+                  <Badge size="xs" variant="filled" color="violet">
+                    Active
+                  </Badge>
+                )}
+              </Group>
+              {onDeleteStyle ? <ActionIcon
+                  variant="subtle"
+                  color="red"
+                  size="sm"
+                  onClick={() => { onDeleteStyle(style.id); }}
+                >
+                  <IconTrash size={14} />
+                </ActionIcon> : null}
+            </Group>
+          ))}
+        </Stack>
+      )}
+    </Stack>
   );
 }
 `,
@@ -12749,7 +13150,7 @@ export function SavedStyles({
               }}
             />
             <Button
-              type="primary"
+              variant="solid"
               disabled={saveDisabled}
               onClick={() => {
                 onSaveStyle(name.trim());
@@ -12794,7 +13195,7 @@ export function SavedStyles({
                     <Button
                       size="small"
                       danger
-                      type="text"
+                      variant="text"
                       onClick={(e) => {
                         e.stopPropagation();
                         onDeleteStyle(style.id);
@@ -12824,7 +13225,7 @@ export function SavedStyles({
             }}
           />
           <Button
-            type="primary"
+            variant="solid"
             disabled={saveDisabled}
             onClick={() => {
               onSaveStyle(name.trim());
@@ -12859,7 +13260,7 @@ export function SavedStyles({
                         key={\`delete-\${style.id}\`}
                         size="small"
                         danger
-                        type="text"
+                        variant="text"
                         onClick={(e) => {
                           e.stopPropagation();
                           onDeleteStyle(style.id);
@@ -13051,16 +13452,21 @@ export function SavedStyles({
 `,
   },
 "shared-vision": {
-    bootstrap: `import { useState } from "react";
-import { Badge, Button, Card, Form, ListGroup, Stack } from "react-bootstrap";
+    mantine: `import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Group,
+  SimpleGrid,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import { useState } from "react";
 
 import type { SharedVisionProps } from "@patternbase/core";
-
-const priorityBadgeMap = {
-  high: "danger",
-  medium: "warning",
-  low: "primary",
-} as const;
 
 export function SharedVision({
   participants,
@@ -13070,107 +13476,165 @@ export function SharedVision({
   onSelectParticipant,
   title = "Shared Vision",
   variant = "board",
-}: Readonly<SharedVisionProps>) {
-  const [goalDraft, setGoalDraft] = useState("");
+}: SharedVisionProps) {
+  const [newGoal, setNewGoal] = useState("");
+
+  const priorityColor = (priority?: string) => {
+    if (priority === "high") return "red";
+    if (priority === "medium") return "orange";
+    return "blue";
+  };
+
+  const contextTypeColor = (type?: string) => {
+    if (type === "constraint") return "red";
+    if (type === "assumption") return "yellow";
+    return "blue";
+  };
+
+  if (variant === "compact") {
+    return (
+      <Stack gap="sm">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        <Group gap="xs" wrap="wrap">
+          {participants.map((p) => (
+            <Badge
+              key={p.id}
+              variant="light"
+              color={p.isActive ? "green" : "gray"}
+              style={{ cursor: onSelectParticipant ? "pointer" : "default" }}
+              onClick={() => onSelectParticipant?.(p.id)}
+            >
+              {p.name}
+            </Badge>
+          ))}
+        </Group>
+        <Stack gap={4}>
+          {goals.map((g) => (
+            <Group key={g.id} gap="xs">
+              <Badge size="xs" color={priorityColor(g.priority)} variant="dot">
+                {g.priority ?? "low"}
+              </Badge>
+              <Text size="sm">{g.text}</Text>
+            </Group>
+          ))}
+        </Stack>
+      </Stack>
+    );
+  }
 
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <Card.Body>
-        <Stack gap={3}>
-          <div className="d-flex flex-wrap gap-2">
-            {participants.map((participant) => (
-              <Badge
-                key={participant.id}
-                bg={participant.isActive ? "success" : "secondary"}
-                style={{ cursor: onSelectParticipant ? "pointer" : "default" }}
-                onClick={() => {
-                  onSelectParticipant?.(participant.id);
-                }}
-              >
-                {participant.name}
-                {participant.role ? \` (\${participant.role})\` : ""}
-              </Badge>
-            ))}
-          </div>
+    <Stack gap="md">
+      <Text fw={600}>{title}</Text>
 
-          <Card>
-            <Card.Header className="py-2">
-              <strong className="small">Goals</strong>
-            </Card.Header>
-            <ListGroup variant="flush">
-              {goals.map((goal) => (
-                <ListGroup.Item
-                  key={goal.id}
-                  className="d-flex align-items-center gap-2"
+      <SimpleGrid cols={3} spacing="sm">
+        <Card withBorder padding="sm">
+          <Stack gap="sm">
+            <Text size="xs" fw={600} tt="uppercase" c="dimmed">
+              Participants
+            </Text>
+            {participants.map((p) => (
+              <Group
+                key={p.id}
+                gap="xs"
+                style={{ cursor: onSelectParticipant ? "pointer" : "default" }}
+                onClick={() => onSelectParticipant?.(p.id)}
+              >
+                <Avatar name={p.name} size="sm" radius="xl" color="violet" />
+                <Stack gap={0}>
+                  <Text size="sm" fw={500}>
+                    {p.name}
+                  </Text>
+                  {p.role ? <Text size="xs" c="dimmed">
+                      {p.role}
+                    </Text> : null}
+                </Stack>
+                {p.isActive ? <Badge size="xs" color="green" variant="dot">
+                    active
+                  </Badge> : null}
+              </Group>
+            ))}
+          </Stack>
+        </Card>
+
+        <Card withBorder padding="sm">
+          <Stack gap="sm">
+            <Text size="xs" fw={600} tt="uppercase" c="dimmed">
+              Goals
+            </Text>
+            {goals.map((g) => (
+              <Group key={g.id} gap="xs" align="flex-start">
+                <Badge
+                  size="xs"
+                  color={priorityColor(g.priority)}
+                  variant="light"
                 >
-                  <span className="small">{goal.text}</span>
-                  {goal.priority ? (
-                    <Badge bg={priorityBadgeMap[goal.priority]}>
-                      {goal.priority}
-                    </Badge>
-                  ) : null}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-            {onAddGoal ? (
-              <Card.Footer className="d-flex gap-2">
-                <Form.Control
-                  size="sm"
-                  value={goalDraft}
-                  placeholder="Add shared goal..."
-                  onChange={(e) => {
-                    setGoalDraft(e.currentTarget.value);
-                  }}
+                  {g.priority ?? "low"}
+                </Badge>
+                <Text size="sm" style={{ flex: 1 }}>
+                  {g.text}
+                </Text>
+              </Group>
+            ))}
+            {onAddGoal ? <Group gap="xs">
+                <TextInput
+                  placeholder="Add goal..."
+                  value={newGoal}
+                  onChange={(e) => { setNewGoal(e.currentTarget.value); }}
+                  size="xs"
+                  style={{ flex: 1 }}
                   onKeyDown={(e) => {
-                    if (e.key !== "Enter") return;
-                    e.preventDefault();
-                    if (!goalDraft.trim()) return;
-                    onAddGoal(goalDraft.trim());
-                    setGoalDraft("");
+                    if (e.key === "Enter" && newGoal.trim()) {
+                      onAddGoal(newGoal.trim());
+                      setNewGoal("");
+                    }
                   }}
                 />
                 <Button
-                  size="sm"
+                  size="compact-xs"
                   onClick={() => {
-                    if (!goalDraft.trim()) return;
-                    onAddGoal(goalDraft.trim());
-                    setGoalDraft("");
+                    if (newGoal.trim()) {
+                      onAddGoal(newGoal.trim());
+                      setNewGoal("");
+                    }
                   }}
+                  disabled={!newGoal.trim()}
                 >
-                  Add
+                  <IconPlus size={12} />
                 </Button>
-              </Card.Footer>
-            ) : null}
-          </Card>
+              </Group> : null}
+          </Stack>
+        </Card>
 
-          <Card>
-            <Card.Header className="py-2">
-              <strong className="small">
-                {variant === "compact" ? "Context" : "Shared Context"}
-              </strong>
-            </Card.Header>
-            <ListGroup variant="flush">
-              {context.map((item) => (
-                <ListGroup.Item key={item.id}>
-                  <div className="d-flex align-items-center mb-1 gap-2">
-                    <strong className="small">{item.label}</strong>
-                    {item.type ? (
-                      <Badge bg="light" text="dark" className="border">
-                        {item.type}
-                      </Badge>
-                    ) : null}
-                  </div>
-                  <small className="text-muted">{item.value}</small>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Card>
-        </Stack>
-      </Card.Body>
-    </Card>
+        <Card withBorder padding="sm">
+          <Stack gap="sm">
+            <Text size="xs" fw={600} tt="uppercase" c="dimmed">
+              Context
+            </Text>
+            {context.map((c) => (
+              <Stack key={c.id} gap={2}>
+                <Group gap="xs">
+                  <Badge
+                    size="xs"
+                    color={contextTypeColor(c.type)}
+                    variant="light"
+                  >
+                    {c.type ?? "input"}
+                  </Badge>
+                  <Text size="xs" fw={500}>
+                    {c.label}
+                  </Text>
+                </Group>
+                <Text size="xs" c="dimmed">
+                  {c.value}
+                </Text>
+              </Stack>
+            ))}
+          </Stack>
+        </Card>
+      </SimpleGrid>
+    </Stack>
   );
 }
 `,
@@ -13505,16 +13969,15 @@ export function SharedVision({
 `,
   },
 "stream-of-thought": {
-    bootstrap: `import { useState } from "react";
-import { Accordion, Badge, Spinner, Stack } from "react-bootstrap";
+    mantine: `import { Accordion, Badge, Group, Loader, Stack, Text } from "@mantine/core";
 
 import type { StreamOfThoughtProps } from "@patternbase/core";
 
 const STEP_CONFIG: Record<string, { icon: string; color: string }> = {
-  thinking: { icon: "\\uD83D\\uDCAD", color: "var(--bs-purple)" },
-  action: { icon: "\\u26A1", color: "var(--bs-primary)" },
-  tool_call: { icon: "\\uD83D\\uDD27", color: "var(--bs-warning)" },
-  result: { icon: "\\u2705", color: "var(--bs-success)" },
+  thinking: { icon: "💭", color: "violet" },
+  action: { icon: "⚡", color: "blue" },
+  tool_call: { icon: "🔧", color: "orange" },
+  result: { icon: "✅", color: "green" },
 };
 
 export function StreamOfThought({
@@ -13522,96 +13985,106 @@ export function StreamOfThought({
   isStreaming = false,
   collapsible = true,
 }: StreamOfThoughtProps) {
-  const [activeKeys, setActiveKeys] = useState<string[]>([]);
+  if (collapsible) {
+    return (
+      <Stack gap="xs">
+        <Group gap="xs">
+          <Text size="sm">🧠</Text>
+          <Text fw={600} size="sm">
+            Reasoning Process
+          </Text>
+          {isStreaming ? <Loader size="xs" /> : null}
+          <Badge size="xs" variant="light">
+            {steps.length} steps
+          </Badge>
+        </Group>
 
-  return (
-    <Stack gap={2}>
-      <div className="d-flex align-items-center gap-2">
-        <span>\\uD83E\\uDDE0</span>
-        <h6 className="mb-0">Reasoning Process</h6>
-        {isStreaming ? <Spinner animation="border" size="sm" /> : null}
-        <Badge bg="secondary">{steps.length} steps</Badge>
-      </div>
-
-      {collapsible ? (
-        <Accordion
-          activeKey={activeKeys}
-          onSelect={(keys) => {
-            setActiveKeys(keys as string[]);
-          }}
-          alwaysOpen
-        >
+        <Accordion variant="separated" radius="sm">
           {steps.map((step, index) => {
             const config = STEP_CONFIG[step.type] ?? {
-              icon: "\\u2022",
-              color: "var(--bs-secondary-color)",
+              icon: "•",
+              color: "gray",
             };
             return (
-              <Accordion.Item key={step.id} eventKey={step.id}>
-                <Accordion.Header>
-                  <div className="d-flex align-items-center flex-grow-1 gap-2">
-                    <Badge bg="secondary" pill>
+              <Accordion.Item key={step.id} value={step.id}>
+                <Accordion.Control>
+                  <Group gap="xs">
+                    <Badge size="xs" variant="light" color="gray">
                       {index + 1}
                     </Badge>
-                    <span style={{ color: config.color }}>{config.icon}</span>
-                    <span className="text-capitalize small fw-semibold">
+                    <span>{config.icon}</span>
+                    <Text size="sm" fw={500} tt="capitalize">
                       {step.type.replace(/_/g, " ")}
-                    </span>
-                    <span
-                      className="text-muted small text-truncate"
-                      style={{ maxWidth: 300 }}
+                    </Text>
+                    <Text
+                      size="xs"
+                      c="dimmed"
+                      style={{ flex: 1 }}
+                      lineClamp={1}
                     >
                       {step.content.substring(0, 80)}
-                    </span>
-                  </div>
-                </Accordion.Header>
-                <Accordion.Body>
-                  <pre
-                    className="small mb-2"
-                    style={{ whiteSpace: "pre-wrap" }}
-                  >
-                    {step.content}
-                  </pre>
-                  {step.metadata && Object.keys(step.metadata).length > 0 ? (
-                    <div className="border-top mt-2 pt-2">
-                      <strong className="small">Metadata:</strong>
-                      <pre className="small text-muted">
+                    </Text>
+                  </Group>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Stack gap="xs">
+                    <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+                      {step.content}
+                    </Text>
+                    {step.metadata && Object.keys(step.metadata).length > 0 ? <Text
+                        size="xs"
+                        c="dimmed"
+                        style={{ fontFamily: "monospace" }}
+                      >
                         {JSON.stringify(step.metadata, null, 2)}
-                      </pre>
-                    </div>
-                  ) : null}
-                  <div className="text-muted small">
-                    {new Date(step.timestamp).toLocaleString()}
-                  </div>
-                </Accordion.Body>
+                      </Text> : null}
+                    <Text size="xs" c="dimmed">
+                      {new Date(step.timestamp).toLocaleString()}
+                    </Text>
+                  </Stack>
+                </Accordion.Panel>
               </Accordion.Item>
             );
           })}
         </Accordion>
-      ) : (
-        <Stack gap={2}>
-          {steps.map((step, index) => {
-            const config = STEP_CONFIG[step.type] ?? {
-              icon: "\\u2022",
-              color: "var(--bs-secondary-color)",
-            };
-            return (
-              <div key={step.id} className="rounded border p-2">
-                <div className="d-flex align-items-center mb-1 gap-2">
-                  <Badge bg="secondary" pill>
-                    {index + 1}
-                  </Badge>
-                  <span style={{ color: config.color }}>{config.icon}</span>
-                  <span className="text-capitalize small fw-semibold">
-                    {step.type.replace(/_/g, " ")}
-                  </span>
-                </div>
-                <p className="small mb-0">{step.content}</p>
-              </div>
-            );
-          })}
-        </Stack>
-      )}
+      </Stack>
+    );
+  }
+
+  return (
+    <Stack gap="xs">
+      <Group gap="xs">
+        <Text size="sm">🧠</Text>
+        <Text fw={600} size="sm">
+          Reasoning Process
+        </Text>
+        {isStreaming ? <Loader size="xs" /> : null}
+      </Group>
+      {steps.map((step, index) => {
+        const config = STEP_CONFIG[step.type] ?? { icon: "•", color: "gray" };
+        return (
+          <Stack
+            key={step.id}
+            gap="xs"
+            p="sm"
+            style={{
+              border: "1px solid var(--mantine-color-default-border)",
+              borderRadius: 8,
+            }}
+          >
+            <Group gap="xs">
+              <Badge size="xs" variant="light" color="gray">
+                {index + 1}
+              </Badge>
+              <span>{config.icon}</span>
+              <Text size="sm" fw={500} tt="capitalize">
+                {step.type.replace(/_/g, " ")}
+              </Text>
+            </Group>
+            <Text size="sm">{step.content}</Text>
+          </Stack>
+        );
+      })}
     </Stack>
   );
 }
@@ -13828,7 +14301,7 @@ export function StreamOfThought({
 `,
   },
 "suggestions": {
-    bootstrap: `import { Badge, Card, Col, Row } from "react-bootstrap";
+    mantine: `import { Badge, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core";
 
 import type { SuggestionsProps } from "@patternbase/core";
 
@@ -13840,55 +14313,47 @@ export function Suggestions({
 }: SuggestionsProps) {
   if (variant === "chip") {
     return (
-      <div className="d-flex flex-wrap gap-2">
+      <Group gap="xs" wrap="wrap">
         {suggestions.map((s) => (
           <Badge
             key={s.id}
-            bg="primary"
-            pill
-            style={{
-              cursor: "pointer",
-              fontSize: "0.9em",
-              padding: "8px 16px",
-            }}
-            onClick={() => {
-              onSelect(s);
-            }}
+            variant="light"
+            size="lg"
+            style={{ cursor: "pointer" }}
+            onClick={() => { onSelect(s); }}
           >
-            {s.icon ? <span className="me-1">{s.icon}</span> : null}
+            {s.icon ? <span style={{ marginRight: 4 }}>{s.icon}</span> : null}
             {s.title}
           </Badge>
         ))}
-      </div>
+      </Group>
     );
   }
 
   return (
-    <Row xs={1} md={columns} className="g-3">
+    <SimpleGrid cols={columns} spacing="sm">
       {suggestions.map((s) => (
-        <Col key={s.id}>
-          <Card
-            className="h-100"
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              onSelect(s);
-            }}
-          >
-            <Card.Body>
-              <Card.Title className="fs-6">
-                {s.icon ? <span className="me-2">{s.icon}</span> : null}
-                {s.title}
-              </Card.Title>
-              {s.description ? (
-                <Card.Text className="text-muted small">
-                  {s.description}
-                </Card.Text>
-              ) : null}
-            </Card.Body>
-          </Card>
-        </Col>
+        <Card
+          key={s.id}
+          padding="sm"
+          withBorder
+          style={{ cursor: "pointer" }}
+          onClick={() => { onSelect(s); }}
+        >
+          <Stack gap={4}>
+            <Text fw={600} size="sm">
+              {s.icon ? <span style={{ marginRight: 6 }}>{s.icon}</span> : null}
+              {s.title}
+            </Text>
+            {s.description ? (
+              <Text size="xs" c="dimmed">
+                {s.description}
+              </Text>
+            ) : null}
+          </Stack>
+        </Card>
       ))}
-    </Row>
+    </SimpleGrid>
   );
 }
 `,
@@ -14038,8 +14503,24 @@ export function Suggestions({
 `,
   },
 "summary": {
-    bootstrap: `import { useState } from "react";
-import { Button, Card, Spinner } from "react-bootstrap";
+    mantine: `import {
+  ActionIcon,
+  Card,
+  Collapse,
+  Group,
+  Loader,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconCopy,
+  IconRefresh,
+  IconZoomIn,
+} from "@tabler/icons-react";
+import { useState } from "react";
 
 import type { SummaryProps } from "@patternbase/core";
 
@@ -14051,89 +14532,76 @@ export function Summary({
   onCopy,
   onExpand,
   isGenerating = false,
-  title,
+  title = "Summary",
   variant = "card",
-}: Readonly<SummaryProps>) {
-  const [collapsed, setCollapsed] = useState(variant === "collapsible");
+}: SummaryProps) {
+  const [collapsed, setCollapsed] = useState(true);
+
+  const inner = (
+    <Stack gap="xs">
+      <Group justify="space-between" align="center">
+        <Group gap="xs">
+          <Text fw={600}>{title}</Text>
+          {isGenerating ? <Loader size="xs" /> : null}
+        </Group>
+        <Group gap={4}>
+          {originalLength !== undefined && summaryLength !== undefined && (
+            <Text size="xs" c="dimmed">
+              {summaryLength}/{originalLength} chars
+            </Text>
+          )}
+          {onCopy ? <Tooltip label="Copy">
+              <ActionIcon variant="subtle" size="sm" onClick={onCopy}>
+                <IconCopy size={14} />
+              </ActionIcon>
+            </Tooltip> : null}
+          {onRegenerate ? <Tooltip label="Regenerate">
+              <ActionIcon
+                variant="subtle"
+                size="sm"
+                onClick={onRegenerate}
+                disabled={isGenerating}
+              >
+                <IconRefresh size={14} />
+              </ActionIcon>
+            </Tooltip> : null}
+          {onExpand ? <Tooltip label="Expand">
+              <ActionIcon variant="subtle" size="sm" onClick={onExpand}>
+                <IconZoomIn size={14} />
+              </ActionIcon>
+            </Tooltip> : null}
+          {variant === "collapsible" && (
+            <ActionIcon
+              variant="subtle"
+              size="sm"
+              onClick={() => { setCollapsed((c) => !c); }}
+            >
+              {collapsed ? (
+                <IconChevronDown size={14} />
+              ) : (
+                <IconChevronUp size={14} />
+              )}
+            </ActionIcon>
+          )}
+        </Group>
+      </Group>
+      {variant === "collapsible" ? (
+        <Collapse expanded={!collapsed}>
+          <Text size="sm">{content}</Text>
+        </Collapse>
+      ) : (
+        <Text size="sm">{content}</Text>
+      )}
+    </Stack>
+  );
 
   if (variant === "inline") {
-    return (
-      <div>
-        {title ? <strong className="me-1">{title}:</strong> : null}
-        {isGenerating ? (
-          <Spinner animation="border" size="sm" />
-        ) : (
-          <span>{content}</span>
-        )}
-      </div>
-    );
+    return <Stack gap="xs">{inner}</Stack>;
   }
 
   return (
-    <Card>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          {title ? (
-            <Card.Title className="fs-6 mb-0">{title}</Card.Title>
-          ) : null}
-          {originalLength != null && summaryLength != null ? (
-            <small className="text-muted">
-              {summaryLength} / {originalLength} chars
-            </small>
-          ) : null}
-        </div>
-
-        {isGenerating ? (
-          <div className="py-3 text-center">
-            <Spinner animation="border" size="sm" />
-            <div className="text-muted small mt-1">Generating summary...</div>
-          </div>
-        ) : (
-          <>
-            {variant === "collapsible" && collapsed ? (
-              <p className="small mb-2">
-                {content.slice(0, 150)}
-                {content.length > 150 ? "..." : ""}
-              </p>
-            ) : (
-              <p className="small mb-2">{content}</p>
-            )}
-          </>
-        )}
-      </Card.Body>
-      <Card.Footer className="d-flex gap-2">
-        {onRegenerate ? (
-          <Button
-            variant="outline-primary"
-            size="sm"
-            onClick={onRegenerate}
-            disabled={isGenerating}
-          >
-            Regenerate
-          </Button>
-        ) : null}
-        {onCopy ? (
-          <Button variant="outline-secondary" size="sm" onClick={onCopy}>
-            Copy
-          </Button>
-        ) : null}
-        {variant === "collapsible" ? (
-          <Button
-            variant="link"
-            size="sm"
-            onClick={() => {
-              setCollapsed(!collapsed);
-            }}
-          >
-            {collapsed ? "Expand" : "Collapse"}
-          </Button>
-        ) : null}
-        {onExpand && variant !== "collapsible" ? (
-          <Button variant="link" size="sm" onClick={onExpand}>
-            View full
-          </Button>
-        ) : null}
-      </Card.Footer>
+    <Card withBorder padding="md">
+      {inner}
     </Card>
   );
 }
@@ -14181,7 +14649,7 @@ export function Summary({
     actions.push(
       <Button
         key="regen"
-        type="text"
+        variant="text"
         size="small"
         icon={<ReloadOutlined />}
         disabled={isGenerating}
@@ -14195,7 +14663,7 @@ export function Summary({
     actions.push(
       <Button
         key="copy"
-        type="text"
+        variant="text"
         size="small"
         icon={<CopyOutlined />}
         onClick={onCopy}
@@ -14208,7 +14676,7 @@ export function Summary({
     actions.push(
       <Button
         key="toggle"
-        type="link"
+        variant="link"
         size="small"
         onClick={() => {
           setCollapsed(!collapsed);
@@ -14222,7 +14690,7 @@ export function Summary({
     actions.push(
       <Button
         key="expand"
-        type="link"
+        variant="link"
         size="small"
         icon={<ExpandOutlined />}
         onClick={onExpand}
@@ -14403,22 +14871,20 @@ export function Summary({
 `,
   },
 "synthesis": {
-    bootstrap: `import {
+    mantine: `import {
+  Anchor,
   Badge,
   Button,
   Card,
-  ListGroup,
-  ProgressBar,
-  Spinner,
-} from "react-bootstrap";
+  Group,
+  Loader,
+  Progress,
+  Stack,
+  Text,
+} from "@mantine/core";
+import { IconRefresh } from "@tabler/icons-react";
 
 import type { SynthesisProps } from "@patternbase/core";
-
-const insightTypeBg: Record<string, string> = {
-  fact: "success",
-  inference: "warning",
-  theme: "info",
-};
 
 export function Synthesis({
   sources,
@@ -14426,113 +14892,142 @@ export function Synthesis({
   onSourceClick,
   onRegenerate,
   isProcessing = false,
-  title,
+  title = "Synthesis",
   showSources = true,
-  showConfidence = true,
+  showConfidence = false,
   variant: _variant = "aggregated",
-}: Readonly<SynthesisProps>) {
+}: SynthesisProps) {
+  const insightTypeColor = (type?: string) => {
+    if (type === "fact") return "blue";
+    if (type === "inference") return "violet";
+    if (type === "theme") return "teal";
+    return "gray";
+  };
+
   return (
-    <Card>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <Card.Title className="fs-6 mb-0">{title ?? "Synthesis"}</Card.Title>
-          {onRegenerate ? (
-            <Button
-              variant="outline-secondary"
-              size="sm"
-              disabled={isProcessing}
-              onClick={onRegenerate}
-            >
-              {isProcessing ? (
-                <Spinner animation="border" size="sm" className="me-1" />
-              ) : null}
-              Regenerate
-            </Button>
-          ) : null}
-        </div>
-        <ListGroup variant="flush">
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Group gap="xs">
+          <Text fw={600} size="sm">
+            {title}
+          </Text>
+          {isProcessing ? <Loader size="xs" /> : null}
+          {sources.length > 0 && (
+            <Badge size="xs" variant="light">
+              {sources.length} sources
+            </Badge>
+          )}
+        </Group>
+        {onRegenerate ? <Button
+            variant="subtle"
+            size="compact-sm"
+            leftSection={<IconRefresh size={14} />}
+            onClick={onRegenerate}
+            disabled={isProcessing}
+          >
+            Regenerate
+          </Button> : null}
+      </Group>
+
+      {insights.length > 0 && (
+        <Stack gap="xs">
+          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+            Insights
+          </Text>
           {insights.map((insight) => (
-            <ListGroup.Item key={insight.id} className="px-0">
-              <div className="d-flex align-items-start gap-2">
-                {insight.type ? (
-                  <Badge
-                    bg={insightTypeBg[insight.type] ?? "secondary"}
-                    className="flex-shrink-0"
-                    style={{ fontSize: 10 }}
-                  >
-                    {insight.type}
-                  </Badge>
-                ) : null}
-                <p className="small flex-grow-1 mb-0">{insight.text}</p>
-              </div>
-              <div className="d-flex align-items-center mt-1 gap-2">
-                {showConfidence && insight.confidence != null ? (
-                  <div style={{ width: 80 }}>
-                    <ProgressBar
-                      now={Math.round(insight.confidence * 100)}
-                      variant={
-                        insight.confidence >= 0.8
-                          ? "success"
-                          : insight.confidence >= 0.5
-                            ? "warning"
-                            : "danger"
-                      }
-                      style={{ height: 4 }}
+            <Card key={insight.id} padding="sm" withBorder>
+              <Stack gap="xs">
+                <Group gap="xs">
+                  {insight.type ? <Badge
+                      size="xs"
+                      color={insightTypeColor(insight.type)}
+                      variant="light"
+                    >
+                      {insight.type}
+                    </Badge> : null}
+                  <Text size="sm">{insight.text}</Text>
+                </Group>
+                {showConfidence && insight.confidence !== undefined ? <Group gap="xs" align="center">
+                    <Text size="xs" c="dimmed">
+                      Confidence:
+                    </Text>
+                    <Progress
+                      value={insight.confidence * 100}
+                      size="xs"
+                      style={{ flex: 1 }}
                     />
-                  </div>
-                ) : null}
-                {insight.sourceIds.length > 0 ? (
-                  <div className="d-flex gap-1">
-                    {insight.sourceIds.map((sid) => {
-                      const src = sources.find((s) => s.id === sid);
+                    <Text size="xs" c="dimmed">
+                      {Math.round(insight.confidence * 100)}%
+                    </Text>
+                  </Group> : null}
+                {insight.sourceIds.length > 0 && (
+                  <Group gap={4} wrap="wrap">
+                    {insight.sourceIds.map((id) => {
+                      const src = sources.find((s) => s.id === id);
                       return src ? (
                         <Badge
-                          key={sid}
-                          bg="light"
-                          text="dark"
+                          key={id}
+                          size="xs"
+                          variant="outline"
                           style={{
-                            fontSize: 10,
-                            cursor: onSourceClick ? "pointer" : undefined,
+                            cursor: onSourceClick ? "pointer" : "default",
                           }}
-                          onClick={() => onSourceClick?.(sid)}
+                          onClick={() => onSourceClick?.(id)}
                         >
                           {src.title}
                         </Badge>
                       ) : null;
                     })}
-                  </div>
-                ) : null}
-              </div>
-            </ListGroup.Item>
+                  </Group>
+                )}
+              </Stack>
+            </Card>
           ))}
-        </ListGroup>
-        {showSources && sources.length > 0 ? (
-          <div className="mt-3">
-            <small className="text-muted d-block mb-2">
-              Sources ({sources.length})
-            </small>
-            {sources.map((src) => (
-              <div
-                key={src.id}
-                className="bg-body-secondary mb-1 rounded px-2 py-1"
-                style={{ cursor: onSourceClick ? "pointer" : undefined }}
-                role={onSourceClick ? "button" : undefined}
-                tabIndex={onSourceClick ? 0 : undefined}
-                onClick={() => onSourceClick?.(src.id)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") onSourceClick?.(src.id);
-                }}
-              >
-                <strong className="small">{src.title}</strong>
-                {src.url ? (
-                  <small className="text-muted ms-2">{src.url}</small>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        ) : null}
-      </Card.Body>
-    </Card>
+        </Stack>
+      )}
+
+      {showSources && sources.length > 0 ? <Stack gap="xs">
+          <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+            Sources
+          </Text>
+          {sources.map((source) => (
+            <Card
+              key={source.id}
+              padding="xs"
+              withBorder
+              style={{ cursor: onSourceClick ? "pointer" : "default" }}
+              onClick={() => onSourceClick?.(source.id)}
+            >
+              <Group justify="space-between" align="flex-start">
+                <Stack gap={2} style={{ flex: 1 }}>
+                  <Text size="xs" fw={500}>
+                    {source.title}
+                  </Text>
+                  {source.content ? <Text size="xs" c="dimmed" lineClamp={2}>
+                      {source.content}
+                    </Text> : null}
+                  {source.url ? <Anchor
+                      href={source.url}
+                      target="_blank"
+                      size="xs"
+                      rel="noopener noreferrer"
+                      onClick={(e) => { e.stopPropagation(); }}
+                    >
+                      {source.url.length > 50
+                        ? \`\${source.url.substring(0, 50)}...\`
+                        : source.url}
+                    </Anchor> : null}
+                </Stack>
+                {source.relevance !== undefined && (
+                  <Badge size="xs" variant="light" color="gray">
+                    {Math.round(source.relevance * 100)}% relevant
+                  </Badge>
+                )}
+              </Group>
+            </Card>
+          ))}
+        </Stack> : null}
+    </Stack>
   );
 }
 `,
@@ -14860,8 +15355,17 @@ export function Synthesis({
 `,
   },
 "templates": {
-    bootstrap: `import { useState } from "react";
-import { Card, Col, Form, ListGroup, Row } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Card,
+  Group,
+  SimpleGrid,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
+import { useState } from "react";
 
 import type { TemplatesProps } from "@patternbase/core";
 
@@ -14869,103 +15373,110 @@ export function Templates({
   templates,
   onSelect,
   layout = "grid",
-  columns = 3,
+  columns = 2,
   searchable = false,
   groupByCategory = false,
-}: Readonly<TemplatesProps>) {
-  const [search, setSearch] = useState("");
+}: TemplatesProps) {
+  const [query, setQuery] = useState("");
 
-  const filtered = search
+  const filtered = query.trim()
     ? templates.filter(
         (t) =>
-          t.name.toLowerCase().includes(search.toLowerCase()) ||
-          t.description?.toLowerCase().includes(search.toLowerCase()),
+          t.name.toLowerCase().includes(query.toLowerCase()) ||
+          t.description?.toLowerCase().includes(query.toLowerCase()),
       )
     : templates;
+
+  const renderItem = (t: (typeof templates)[0]) => (
+    <Card
+      key={t.id}
+      padding="sm"
+      withBorder
+      style={{ cursor: "pointer" }}
+      onClick={() => {
+        onSelect(t);
+      }}
+    >
+      <Stack gap="xs">
+        <Group justify="space-between" align="flex-start">
+          <Group gap="xs">
+            {t.icon ? <span>{t.icon}</span> : null}
+            <Text fw={600} size="sm">
+              {t.name}
+            </Text>
+          </Group>
+          {t.category ? (
+            <Badge variant="light" size="xs">
+              {t.category}
+            </Badge>
+          ) : null}
+        </Group>
+        {t.description ? (
+          <Text size="xs" c="dimmed">
+            {t.description}
+          </Text>
+        ) : null}
+      </Stack>
+    </Card>
+  );
 
   const grouped = groupByCategory
     ? filtered.reduce<Record<string, typeof filtered>>((acc, t) => {
         const cat = t.category ?? "Other";
-        if (!acc[cat]) acc[cat] = [];
-        acc[cat].push(t);
+        acc[cat] = [...(acc[cat] ?? []), t];
         return acc;
       }, {})
-    : { "": filtered };
+    : null;
 
-  const renderTemplate = (t: (typeof templates)[0]) => {
-    if (layout === "list") {
+  const renderTemplates = () => {
+    if (grouped) {
       return (
-        <ListGroup.Item
-          key={t.id}
-          action
-          onClick={() => {
-            onSelect(t);
-          }}
-        >
-          <div className="d-flex align-items-center">
-            {t.icon ? <span className="fs-5 me-2">{t.icon}</span> : null}
-            <div>
-              <div className="fw-semibold">{t.name}</div>
-              {t.description ? (
-                <small className="text-muted">{t.description}</small>
-              ) : null}
-            </div>
-          </div>
-        </ListGroup.Item>
+        <Stack gap="md">
+          {Object.entries(grouped).map(([category, items]) => (
+            <Stack key={category} gap="xs">
+              <Text size="xs" fw={500} c="dimmed" tt="uppercase">
+                {category}
+              </Text>
+              {layout === "grid" ? (
+                <SimpleGrid cols={columns} spacing="sm">
+                  {items.map(renderItem)}
+                </SimpleGrid>
+              ) : (
+                <Stack gap="xs">{items.map(renderItem)}</Stack>
+              )}
+            </Stack>
+          ))}
+        </Stack>
       );
     }
 
-    return (
-      <Col key={t.id}>
-        <Card
-          className="h-100"
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            onSelect(t);
-          }}
-        >
-          <Card.Body>
-            <Card.Title className="fs-6">
-              {t.icon ? <span className="me-2">{t.icon}</span> : null}
-              {t.name}
-            </Card.Title>
-            {t.description ? (
-              <Card.Text className="text-muted small">
-                {t.description}
-              </Card.Text>
-            ) : null}
-          </Card.Body>
-        </Card>
-      </Col>
-    );
+    if (layout === "grid") {
+      return (
+        <SimpleGrid cols={columns} spacing="sm">
+          {filtered.map(renderItem)}
+        </SimpleGrid>
+      );
+    }
+
+    return <Stack gap="xs">{filtered.map(renderItem)}</Stack>;
   };
 
   return (
-    <div>
+    <Stack gap="sm">
       {searchable ? (
-        <Form.Control
-          className="mb-3"
+        <TextInput
           placeholder="Search templates..."
-          value={search}
+          leftSection={<IconSearch size={14} />}
+          value={query}
           onChange={(e) => {
-            setSearch(e.target.value);
+            setQuery(e.currentTarget.value);
           }}
+          size="sm"
         />
       ) : null}
 
-      {Object.entries(grouped).map(([category, items]) => (
-        <div key={category} className={category ? "mb-4" : ""}>
-          {category ? <h6 className="mb-2">{category}</h6> : null}
-          {layout === "list" ? (
-            <ListGroup>{items.map(renderTemplate)}</ListGroup>
-          ) : (
-            <Row xs={1} md={columns} className="g-3">
-              {items.map(renderTemplate)}
-            </Row>
-          )}
-        </div>
-      ))}
-    </div>
+      {renderTemplates()}
+    </Stack>
   );
 }
 `,
@@ -15218,7 +15729,8 @@ export function Templates({
 `,
   },
 "transform": {
-    bootstrap: `import { Button, Card, Dropdown, Spinner } from "react-bootstrap";
+    mantine: `import { Button, Card, Group, Stack, Text } from "@mantine/core";
+import { IconWand } from "@tabler/icons-react";
 
 import type { TransformProps } from "@patternbase/core";
 
@@ -15229,98 +15741,34 @@ export function Transform({
   transformedContent,
   isTransforming = false,
   title,
-  variant = "buttons",
-}: Readonly<TransformProps>) {
-  const displayContent = transformedContent ?? content;
-
-  if (variant === "dropdown") {
-    return (
-      <Card>
-        <Card.Body>
-          {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-          <Card.Text className="small">{displayContent}</Card.Text>
-          <div className="d-flex align-items-center gap-2">
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="outline-primary"
-                size="sm"
-                disabled={isTransforming}
-              >
-                Transform
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {options.map((opt) => (
-                  <Dropdown.Item
-                    key={opt.id}
-                    onClick={() => {
-                      onTransform(opt.id);
-                    }}
-                  >
-                    {opt.icon ? <span className="me-1">{opt.icon}</span> : null}
-                    {opt.label}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-            {isTransforming ? <Spinner animation="border" size="sm" /> : null}
-          </div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
-  if (variant === "toolbar") {
-    return (
-      <div>
-        {title ? <h6>{title}</h6> : null}
-        <div className="mb-2 rounded border p-2">
-          <p className="small mb-0">{displayContent}</p>
-        </div>
-        <div className="d-flex flex-wrap gap-1">
-          {options.map((opt) => (
-            <Button
-              key={opt.id}
-              variant="light"
-              size="sm"
-              disabled={isTransforming}
-              onClick={() => {
-                onTransform(opt.id);
-              }}
-            >
-              {opt.icon ? <span className="me-1">{opt.icon}</span> : null}
-              {opt.label}
-            </Button>
-          ))}
-          {isTransforming ? <Spinner animation="border" size="sm" /> : null}
-        </div>
-      </div>
-    );
-  }
-
+}: TransformProps) {
   return (
-    <Card>
-      <Card.Body>
-        {title ? <Card.Title className="fs-6">{title}</Card.Title> : null}
-        <Card.Text className="small">{displayContent}</Card.Text>
-        <div className="d-flex flex-wrap gap-2">
-          {options.map((opt) => (
-            <Button
-              key={opt.id}
-              variant="outline-secondary"
-              size="sm"
-              disabled={isTransforming}
-              onClick={() => {
-                onTransform(opt.id);
-              }}
-            >
-              {opt.icon ? <span className="me-1">{opt.icon}</span> : null}
-              {opt.label}
-            </Button>
-          ))}
-          {isTransforming ? <Spinner animation="border" size="sm" /> : null}
-        </div>
-      </Card.Body>
-    </Card>
+    <Stack gap="sm">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
+
+      <Card padding="sm" withBorder>
+        <Text size="sm">{transformedContent ?? content}</Text>
+      </Card>
+
+      <Group gap="xs" wrap="wrap">
+        {options.map((opt) => (
+          <Button
+            key={opt.id}
+            variant="default"
+            size="compact-sm"
+            leftSection={
+              opt.icon ? <span>{opt.icon}</span> : <IconWand size={12} />
+            }
+            onClick={() => { onTransform(opt.id); }}
+            loading={isTransforming}
+          >
+            {opt.label}
+          </Button>
+        ))}
+      </Group>
+    </Stack>
   );
 }
 `,
@@ -15503,7 +15951,16 @@ export function Transform({
 `,
   },
 "variations": {
-    bootstrap: `import { Badge, Card, Col, Nav, Row, Tab } from "react-bootstrap";
+    mantine: `import {
+  Badge,
+  Card,
+  Group,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  Text,
+} from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 
 import type { VariationsProps } from "@patternbase/core";
 
@@ -15516,75 +15973,102 @@ export function Variations({
 }: VariationsProps) {
   if (layout === "tabs") {
     return (
-      <Tab.Container defaultActiveKey={selectedId ?? variations[0]?.id}>
-        <Nav variant="tabs" className="mb-3">
+      <Tabs
+        value={selectedId ?? variations[0]?.id}
+        onChange={(key) => key && onSelect?.(key)}
+      >
+        <Tabs.List>
           {variations.map((v, i) => (
-            <Nav.Item key={v.id}>
-              <Nav.Link eventKey={v.id} onClick={() => onSelect?.(v.id)}>
-                {v.label ?? \`Variation \${String(i + 1)}\`}
-              </Nav.Link>
-            </Nav.Item>
+            <Tabs.Tab key={v.id} value={v.id}>
+              {v.label ?? \`Variation \${String(i + 1)}\`}
+            </Tabs.Tab>
           ))}
-        </Nav>
-        <Tab.Content>
-          {variations.map((v) => (
-            <Tab.Pane key={v.id} eventKey={v.id}>
-              <div className="rounded border p-3">{v.content}</div>
-            </Tab.Pane>
-          ))}
-        </Tab.Content>
-      </Tab.Container>
+        </Tabs.List>
+        {variations.map((v) => (
+          <Tabs.Panel key={v.id} value={v.id} pt="sm">
+            <Text size="sm">{v.content}</Text>
+          </Tabs.Panel>
+        ))}
+      </Tabs>
     );
   }
 
   if (layout === "list") {
     return (
-      <div className="d-flex flex-column gap-2">
+      <Stack gap="sm">
         {variations.map((v, i) => (
           <Card
             key={v.id}
-            className={selectedId === v.id ? "border-primary" : ""}
-            style={{ cursor: onSelect ? "pointer" : "default" }}
+            padding="sm"
+            withBorder
+            style={{
+              outline:
+                selectedId === v.id
+                  ? "2px solid var(--mantine-color-violet-6)"
+                  : undefined,
+              cursor: onSelect ? "pointer" : "default",
+            }}
             onClick={() => onSelect?.(v.id)}
           >
-            <Card.Body className="p-3">
-              <div className="d-flex align-items-center mb-1 gap-2">
-                <Badge bg="secondary" pill>
+            <Stack gap="xs">
+              <Group gap="xs">
+                <Badge size="xs" variant="light">
                   {v.label ?? \`#\${String(i + 1)}\`}
                 </Badge>
-                {selectedId === v.id && <Badge bg="primary">Selected</Badge>}
-              </div>
-              <p className="small mb-0">{v.content}</p>
-            </Card.Body>
+                {selectedId === v.id && (
+                  <Badge
+                    size="xs"
+                    color="violet"
+                    leftSection={<IconCheck size={10} />}
+                  >
+                    Selected
+                  </Badge>
+                )}
+              </Group>
+              <Text size="sm">{v.content}</Text>
+            </Stack>
           </Card>
         ))}
-      </div>
+      </Stack>
     );
   }
 
-  // grid
   return (
-    <Row xs={1} md={columns} className="g-3">
+    <SimpleGrid cols={columns} spacing="sm">
       {variations.map((v, i) => (
-        <Col key={v.id}>
-          <Card
-            className={\`h-100 \${selectedId === v.id ? "border-primary" : ""}\`}
-            style={{ cursor: onSelect ? "pointer" : "default" }}
-            onClick={() => onSelect?.(v.id)}
-          >
-            <Card.Body>
-              <div className="d-flex align-items-center mb-2 gap-2">
-                <Badge bg="secondary" pill>
-                  {v.label ?? \`Variation \${String(i + 1)}\`}
+        <Card
+          key={v.id}
+          padding="sm"
+          withBorder
+          style={{
+            outline:
+              selectedId === v.id
+                ? "2px solid var(--mantine-color-violet-6)"
+                : undefined,
+            cursor: onSelect ? "pointer" : "default",
+          }}
+          onClick={() => onSelect?.(v.id)}
+        >
+          <Stack gap="xs">
+            <Group gap="xs">
+              <Badge size="xs" variant="light">
+                {v.label ?? \`Variation \${String(i + 1)}\`}
+              </Badge>
+              {selectedId === v.id && (
+                <Badge
+                  size="xs"
+                  color="violet"
+                  leftSection={<IconCheck size={10} />}
+                >
+                  Selected
                 </Badge>
-                {selectedId === v.id && <Badge bg="primary">Selected</Badge>}
-              </div>
-              <p className="small mb-0">{v.content}</p>
-            </Card.Body>
-          </Card>
-        </Col>
+              )}
+            </Group>
+            <Text size="sm">{v.content}</Text>
+          </Stack>
+        </Card>
       ))}
-    </Row>
+    </SimpleGrid>
   );
 }
 `,
@@ -15780,22 +16264,24 @@ export function Variations({
 `,
   },
 "verification": {
-    bootstrap: `import {
+    mantine: `import {
+  Anchor,
   Badge,
   Button,
   Card,
-  ListGroup,
-  ProgressBar,
+  Group,
+  Progress,
   Stack,
-} from "react-bootstrap";
+  Text,
+} from "@mantine/core";
+import {
+  IconCheck,
+  IconExternalLink,
+  IconHelp,
+  IconX,
+} from "@tabler/icons-react";
 
 import type { VerificationProps } from "@patternbase/core";
-
-const statusBadgeMap = {
-  verified: "success",
-  uncertain: "warning",
-  disputed: "danger",
-} as const;
 
 export function Verification({
   claims,
@@ -15803,82 +16289,89 @@ export function Verification({
   onSelectClaim,
   title = "Verification",
   showSources = true,
-  variant = "list",
-}: Readonly<VerificationProps>) {
-  if (variant === "inline") {
-    return (
-      <Stack gap={2}>
-        <div className="d-flex align-items-center gap-2">
-          <strong>{title}</strong>
-          {onRunVerification ? (
-            <Button size="sm" onClick={onRunVerification}>
-              Verify
-            </Button>
-          ) : null}
-        </div>
-        {claims.map((claim) => (
-          <small key={claim.id} className="text-muted">
-            {claim.text} ({Math.round(claim.confidence * 100)}%)
-          </small>
-        ))}
-      </Stack>
-    );
-  }
+  variant: _variant = "list",
+}: VerificationProps) {
+  const statusColor = (status?: string) => {
+    if (status === "verified") return "green";
+    if (status === "disputed") return "red";
+    if (status === "uncertain") return "orange";
+    return "gray";
+  };
+
+  const statusIcon = (status?: string) => {
+    if (status === "verified") return <IconCheck size={12} />;
+    if (status === "disputed") return <IconX size={12} />;
+    return <IconHelp size={12} />;
+  };
 
   return (
-    <Card>
-      <Card.Header className="d-flex justify-content-between align-items-center">
-        <h6 className="mb-0">{title}</h6>
-        {onRunVerification ? (
-          <Button size="sm" onClick={onRunVerification}>
+    <Stack gap="sm">
+      <Group justify="space-between" align="center">
+        <Text fw={600} size="sm">
+          {title}
+        </Text>
+        {onRunVerification ? <Button variant="light" size="compact-sm" onClick={onRunVerification}>
             Run Verification
-          </Button>
-        ) : null}
-      </Card.Header>
-      <ListGroup variant="flush">
+          </Button> : null}
+      </Group>
+
+      <Stack gap="xs">
         {claims.map((claim) => (
-          <ListGroup.Item
+          <Card
             key={claim.id}
-            action={Boolean(onSelectClaim)}
-            onClick={() => {
-              onSelectClaim?.(claim.id);
-            }}
+            padding="sm"
+            withBorder
+            style={{ cursor: onSelectClaim ? "pointer" : "default" }}
+            onClick={() => onSelectClaim?.(claim.id)}
           >
-            <Stack gap={1}>
-              <div className="d-flex align-items-center flex-wrap gap-2">
-                <span className="small">{claim.text}</span>
-                {claim.status ? (
-                  <Badge bg={statusBadgeMap[claim.status]}>
-                    {claim.status}
-                  </Badge>
-                ) : null}
-              </div>
-              <ProgressBar
-                now={Math.round(claim.confidence * 100)}
-                style={{ height: 6 }}
-              />
-              {showSources && claim.source ? (
-                claim.url ? (
-                  <a
-                    href={claim.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="small text-decoration-none"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    Source: {claim.source}
-                  </a>
-                ) : (
-                  <small className="text-muted">Source: {claim.source}</small>
-                )
-              ) : null}
+            <Stack gap="xs">
+              <Group justify="space-between" align="flex-start">
+                <Text size="sm" style={{ flex: 1 }}>
+                  {claim.text}
+                </Text>
+                <Badge
+                  color={statusColor(claim.status)}
+                  variant="light"
+                  leftSection={statusIcon(claim.status)}
+                >
+                  {claim.status ?? "unknown"}
+                </Badge>
+              </Group>
+
+              <Group gap="xs" align="center">
+                <Text size="xs" c="dimmed">
+                  Confidence:
+                </Text>
+                <Progress
+                  value={claim.confidence * 100}
+                  size="xs"
+                  color={statusColor(claim.status)}
+                  style={{ flex: 1 }}
+                />
+                <Text size="xs" c="dimmed">
+                  {Math.round(claim.confidence * 100)}%
+                </Text>
+              </Group>
+
+              {showSources && claim.url ? <Anchor
+                  href={claim.url}
+                  target="_blank"
+                  size="xs"
+                  rel="noopener noreferrer"
+                >
+                  <Group gap={4}>
+                    <IconExternalLink size={10} />
+                    {claim.source ?? "Source"}
+                  </Group>
+                </Anchor> : null}
+              {showSources && claim.source && !claim.url ? <Text size="xs" c="dimmed">
+                  {claim.source}
+                </Text> : null}
             </Stack>
-          </ListGroup.Item>
+          </Card>
         ))}
-      </ListGroup>
-    </Card>
+      </Stack>
+    </Stack>
   );
 }
 `,
@@ -16085,56 +16578,81 @@ export function Verification({
 `,
   },
 "voice-and-tone": {
-    bootstrap: `import { Card, Form } from "react-bootstrap";
+    mantine: `import { Group, Slider, Stack, Text } from "@mantine/core";
 
 import type { VoiceAndToneProps } from "@patternbase/core";
 
 export function VoiceAndTone({
   axes,
   onChange,
-  title = "Voice and Tone",
-  showValues = true,
+  title = "Voice & Tone",
+  showValues = false,
   variant = "sliders",
-}: Readonly<VoiceAndToneProps>) {
+}: VoiceAndToneProps) {
   return (
-    <Card>
-      <Card.Header>
-        <h6 className="mb-0">{title}</h6>
-      </Card.Header>
-      <Card.Body className="d-flex flex-column gap-3">
-        {axes.map((axis) => (
-          <div key={axis.id}>
-            <div className="d-flex justify-content-between mb-1">
-              <small className="fw-semibold">{axis.label}</small>
-              {showValues ? (
-                <small className="text-muted">{axis.value}</small>
-              ) : null}
-            </div>
-            <div className="d-flex align-items-center gap-2">
-              {variant === "sliders" ? (
-                <small className="text-muted text-nowrap">
-                  {axis.leftLabel}
-                </small>
-              ) : null}
-              <Form.Range
-                min={axis.min ?? -100}
+    <Stack gap="md">
+      {title ? <Text fw={600} size="sm">
+          {title}
+        </Text> : null}
+
+      {axes.map((axis) => (
+        <Stack key={axis.id} gap="xs">
+          <Group justify="space-between" align="center">
+            <Text size="sm" fw={500}>
+              {axis.label}
+            </Text>
+            {showValues ? <Text size="xs" c="dimmed">
+                {axis.value}
+              </Text> : null}
+          </Group>
+          {variant === "compact" ? (
+            <Group gap="xs" align="center">
+              <Text size="xs" c="dimmed" style={{ minWidth: 60 }}>
+                {axis.leftLabel}
+              </Text>
+              <Slider
+                min={axis.min ?? 0}
                 max={axis.max ?? 100}
                 step={axis.step ?? 1}
                 value={axis.value}
-                onChange={(e) => {
-                  onChange(axis.id, Number(e.currentTarget.value));
-                }}
+                onChange={(v) => { onChange(axis.id, v); }}
+                style={{ flex: 1 }}
+                size="xs"
               />
-              {variant === "sliders" ? (
-                <small className="text-muted text-nowrap">
+              <Text
+                size="xs"
+                c="dimmed"
+                style={{ minWidth: 60, textAlign: "right" }}
+              >
+                {axis.rightLabel}
+              </Text>
+            </Group>
+          ) : (
+            <>
+              <Slider
+                min={axis.min ?? 0}
+                max={axis.max ?? 100}
+                step={axis.step ?? 1}
+                value={axis.value}
+                onChange={(v) => { onChange(axis.id, v); }}
+                marks={[
+                  { value: axis.min ?? 0, label: axis.leftLabel },
+                  { value: axis.max ?? 100, label: axis.rightLabel },
+                ]}
+              />
+              <Group justify="space-between">
+                <Text size="xs" c="dimmed">
+                  {axis.leftLabel}
+                </Text>
+                <Text size="xs" c="dimmed">
                   {axis.rightLabel}
-                </small>
-              ) : null}
-            </div>
-          </div>
-        ))}
-      </Card.Body>
-    </Card>
+                </Text>
+              </Group>
+            </>
+          )}
+        </Stack>
+      ))}
+    </Stack>
   );
 }
 `,
@@ -16280,80 +16798,90 @@ export function VoiceAndTone({
 `,
   },
 "watermark": {
-    bootstrap: `import { Alert, Badge, Button, Stack } from "react-bootstrap";
+    mantine: `import { Badge, Button, Group, Stack, Text } from "@mantine/core";
+import { IconDroplet, IconShieldCheck } from "@tabler/icons-react";
 
 import type { WatermarkProps } from "@patternbase/core";
 
-const DEFAULT_LABEL = "AI Provenance";
-
 export function Watermark({
-  label = DEFAULT_LABEL,
+  label = "AI Generated",
   visibility = "visible",
   variant = "badge",
   confidence,
   algorithm,
   onVerify,
-}: Readonly<WatermarkProps>) {
-  const modeLabel =
-    visibility === "visible" ? "Visible watermark" : "Invisible watermark";
-  const confidencePercent =
-    confidence !== undefined ? Math.round(confidence * 100) : undefined;
-  const confidenceLabel =
-    confidencePercent !== undefined
-      ? \`Confidence: \${String(confidencePercent)}%\`
-      : undefined;
+}: WatermarkProps) {
+  if (visibility === "invisible" && variant !== "banner") {
+    return null;
+  }
 
   if (variant === "inline") {
     return (
-      <small className="text-muted">
-        {label} ({modeLabel}){confidenceLabel ? \` · \${confidenceLabel}\` : null}
-      </small>
+      <Group gap="xs" align="center">
+        <IconDroplet size={12} style={{ opacity: 0.5 }} />
+        <Text size="xs" c="dimmed">
+          {label}
+        </Text>
+        {confidence !== undefined && (
+          <Text size="xs" c="dimmed">
+            ({Math.round(confidence * 100)}%)
+          </Text>
+        )}
+        {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
+            Verify
+          </Button> : null}
+      </Group>
     );
   }
 
   if (variant === "banner") {
     return (
-      <Alert
-        variant="info"
-        className="d-flex align-items-start justify-content-between mb-0 gap-3"
+      <Stack
+        gap="xs"
+        p="xs"
+        style={{ background: "var(--mantine-color-gray-0)", borderRadius: 4 }}
       >
-        <div>
-          <div className="fw-semibold">{label}</div>
-          <div className="small">{modeLabel}</div>
-          {algorithm ? (
-            <small className="text-muted d-block">Algorithm: {algorithm}</small>
-          ) : null}
-          {confidenceLabel ? (
-            <small className="text-muted d-block">{confidenceLabel}</small>
-          ) : null}
-        </div>
-        {onVerify ? (
-          <Button size="sm" variant="outline-primary" onClick={onVerify}>
+        <Group gap="xs">
+          <IconShieldCheck size={16} />
+          <Text size="sm" fw={500}>
+            {label}
+          </Text>
+          {confidence !== undefined && (
+            <Badge size="xs" variant="light">
+              {Math.round(confidence * 100)}% confident
+            </Badge>
+          )}
+        </Group>
+        {algorithm ? <Text size="xs" c="dimmed">
+            Algorithm: {algorithm}
+          </Text> : null}
+        {onVerify ? <Button
+            variant="light"
+            size="compact-sm"
+            leftSection={<IconShieldCheck size={12} />}
+            onClick={onVerify}
+          >
             Verify
-          </Button>
-        ) : null}
-      </Alert>
+          </Button> : null}
+      </Stack>
     );
   }
 
   return (
-    <Stack
-      direction="horizontal"
-      className="align-items-center flex-wrap gap-2"
-    >
-      <Badge bg={visibility === "visible" ? "info" : "secondary"}>
+    <Group gap="xs">
+      <Badge
+        size="sm"
+        variant="light"
+        color="gray"
+        leftSection={<IconDroplet size={10} />}
+      >
         {label}
+        {confidence !== undefined && \` · \${String(Math.round(confidence * 100))}%\`}
       </Badge>
-      <small className="text-muted">{modeLabel}</small>
-      {confidenceLabel ? (
-        <small className="text-muted">{confidenceLabel}</small>
-      ) : null}
-      {onVerify ? (
-        <Button size="sm" variant="link" onClick={onVerify}>
+      {onVerify ? <Button variant="subtle" size="compact-xs" onClick={onVerify}>
           Verify
-        </Button>
-      ) : null}
-    </Stack>
+        </Button> : null}
+    </Group>
   );
 }
 `,
@@ -16439,7 +16967,7 @@ export function Watermark({
         </Text>
       ) : null}
       {onVerify ? (
-        <Button size="small" type="link" onClick={onVerify}>
+        <Button size="small" variant="link" onClick={onVerify}>
           Verify
         </Button>
       ) : null}
@@ -16532,3 +17060,4 @@ export function Watermark({
 `,
   }
 };
+ 

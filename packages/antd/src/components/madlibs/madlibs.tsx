@@ -107,7 +107,7 @@ export function Madlibs({
       ) : null}
       <div style={{ marginTop: 12 }}>
         <Button
-          type="primary"
+          variant="solid"
           loading={isGenerating}
           onClick={() => {
             onSubmit(values);

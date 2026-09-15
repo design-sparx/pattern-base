@@ -114,7 +114,7 @@ export function Filters({
       >
         {title ? <Text strong>{title}</Text> : null}
         {onClear ? (
-          <Button type="link" size="small" onClick={onClear}>
+          <Button variant="link" size="small" onClick={onClear}>
             Clear all
           </Button>
         ) : null}
