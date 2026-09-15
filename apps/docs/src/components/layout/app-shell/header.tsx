@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { getCategoryById, getPatternBySlug } from "@/data/patterns";
+import { Logo } from "@/components/layout/logo";
 
 function useShellTitle(): ReactNode {
   const pathname = usePathname();
@@ -110,6 +111,9 @@ export function Header() {
     <header className="border-border bg-background supports-[backdrop-filter]:bg-background/60 sticky top-2 z-10 grid h-14 shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-2xl border px-4 shadow-sm backdrop-blur-xl md:px-6">
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="lg:hidden" />
+        <div className="hidden min-w-0 items-center gap-1.5 text-sm sm:flex">
+          <Logo size={18} />
+        </div>
         {title ? (
           <div className="hidden min-w-0 items-center gap-1.5 text-sm sm:flex">
             {title}
